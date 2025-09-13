@@ -53,8 +53,8 @@ export function Footer() {
         <div className="flex flex-col items-center text-center md:items-start md:text-left">
           <h3 className="font-headline text-lg font-bold">Get in Touch</h3>
           <div className="mt-4 flex flex-col gap-2">
-            <a href="mailto:valleygwr@gmail.com" className="text-sm text-muted-foreground transition-colors hover:text-primary">
-              Email: valleygwr@gmail.com
+            <a href="mailto:info@valleyfarmsecrets.com" className="text-sm text-muted-foreground transition-colors hover:text-primary">
+              Email: info@valleyfarmsecrets.com
             </a>
             <a href="tel:+263788679000" className="text-sm text-muted-foreground transition-colors hover:text-primary">
               WhatsApp: +263 788 679 000

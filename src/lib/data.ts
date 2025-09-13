@@ -109,8 +109,8 @@ export const contactDetails = [
     {
         icon: Mail,
         label: "Email",
-        value: "valleygwr@gmail.com / valleyhre@gmail.com",
-        href: "mailto:valleygwr@gmail.com"
+        value: "info@valleyfarmsecrets.com",
+        href: "mailto:info@valleyfarmsecrets.com"
     },
     {
         icon: MapPin,
