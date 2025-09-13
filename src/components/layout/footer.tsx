@@ -3,6 +3,7 @@ import { Sprout, Facebook, Instagram } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons/whatsapp-icon";
 
 const navLinks = [
+  { href: "/producers", label: "For Producers" },
   { href: "/become-a-partner", label: "Become a Partner" },
   { href: "/#services", label: "Services" },
   { href: "/#locations", label: "Branches" },
