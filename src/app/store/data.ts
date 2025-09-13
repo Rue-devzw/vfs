@@ -6,6 +6,32 @@ export const categories = [
 
 export type Category = typeof categories[number];
 
+export const subCategories = [
+    "None",
+    "Baby",
+    "Beverages",
+    "Cereals",
+    "Cleaning Products",
+    "Cosmetics",
+    "Dairy",
+    "Dried",
+    "Oils & Sauces",
+    "Other Items",
+    "Salad Dressing",
+    "Seasoning",
+    "Snack",
+    "Soups",
+    "Spices",
+    "Spreads",
+    "Starch",
+    "Stationery",
+    "Tea & Breakfast",
+    "Toiletries",
+    "Canned Foods"
+] as const;
+
+export type SubCategory = typeof subCategories[number];
+
 export type Product = {
   id: number;
   name: string;
@@ -13,6 +39,7 @@ export type Product = {
   oldPrice?: number;
   unit: string;
   category: Category;
+  subcategory?: SubCategory;
   image: string;
   onSpecial: boolean;
 };
@@ -80,6 +107,7 @@ export const products: Product[] = [
     price: 3.0,
     unit: "/loaf",
     category: "Grocery & Spices",
+    subcategory: "Starch",
     image: "product-bread",
     onSpecial: false,
   },
@@ -89,6 +117,7 @@ export const products: Product[] = [
     price: 2.5,
     unit: "/jar",
     category: "Grocery & Spices",
+    subcategory: "Spices",
     image: "product-spices",
     onSpecial: false,
   },
@@ -98,6 +127,7 @@ export const products: Product[] = [
     price: 2.8,
     unit: "/dozen",
     category: "Grocery & Spices",
+    subcategory: "Dairy",
     image: "product-eggs",
     onSpecial: true,
     oldPrice: 3.2,
