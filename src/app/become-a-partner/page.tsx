@@ -4,7 +4,7 @@ import { Handshake } from "lucide-react";
 import { FarmersForum } from "@/components/pages/producers/farmers-forum";
 import { PreBookingForm } from "@/components/pages/producers/pre-booking-form";
 
-export default function ProducerPortalPage() {
+export default function BecomeAPartnerPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
@@ -17,7 +17,7 @@ export default function ProducerPortalPage() {
                 <Handshake className="h-10 w-10 text-primary" />
               </div>
               <h1 className="mt-4 font-headline text-4xl font-bold md:text-5xl">
-                Producer Portal
+                Become a Partner
               </h1>
               <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
                 Partner with Valley Farm Secrets. We provide a reliable market for your produce,

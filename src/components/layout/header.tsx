@@ -8,7 +8,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/s
 import { cn } from "@/lib/utils";
 
 const navLinks = [
-  { href: "/producers", label: "For Producers" },
+  { href: "/become-a-partner", label: "Become a Partner" },
   { href: "/#services", label: "Services" },
   { href: "/#locations", label: "Branches" },
   { href: "/#gallery", label: "Gallery" },
