@@ -53,17 +53,17 @@ export function Footer() {
         <div className="flex flex-col items-center text-center md:items-start md:text-left">
           <h3 className="font-headline text-lg font-bold">Get in Touch</h3>
           <div className="mt-4 flex flex-col gap-2">
-            <a href="mailto:info@valleyfarmsecrets.com" className="text-sm text-muted-foreground transition-colors hover:text-primary">
-              Email: info@valleyfarmsecrets.com
+            <a href="mailto:valleygwr@gmail.com" className="text-sm text-muted-foreground transition-colors hover:text-primary">
+              Email: valleygwr@gmail.com
             </a>
-            <a href="tel:+263777777777" className="text-sm text-muted-foreground transition-colors hover:text-primary">
-              WhatsApp: +263 777 777 777
+            <a href="tel:+263788679000" className="text-sm text-muted-foreground transition-colors hover:text-primary">
+              WhatsApp: +263 788 679 000
             </a>
           </div>
           <div className="mt-6 flex gap-4">
             <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-muted-foreground transition-colors hover:text-primary"><Facebook /></a>
             <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-muted-foreground transition-colors hover:text-primary"><Instagram /></a>
-            <a href="https://wa.me/263777777777" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="text-muted-foreground transition-colors hover:text-primary"><WhatsAppIcon /></a>
+            <a href="https://wa.me/263788679000" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="text-muted-foreground transition-colors hover:text-primary"><WhatsAppIcon /></a>
           </div>
         </div>
       </div>

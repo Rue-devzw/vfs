@@ -23,7 +23,7 @@ export function Contact() {
                   <div>
                     <h3 className="font-semibold">{detail.label}</h3>
                     {detail.href ? (
-                       <Link href={detail.href} className="text-muted-foreground hover:text-primary transition-colors">
+                       <Link href={detail.href} className="text-muted-foreground hover:text-primary transition-colors whitespace-pre-wrap">
                           {detail.value}
                        </Link>
                     ) : (

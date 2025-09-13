@@ -79,42 +79,48 @@ export const whyChooseUsFeatures = [
 export const locations = [
   {
     city: "Gweru",
-    role: "Distribution Hub & Main Store",
-    address: "123 Fresh Produce Ave, Gweru",
-    services: ["Fruit & Veg", "Butchery", "Wholesale", "Groceries"],
-    mapLink: "https://www.google.com/maps/search/?api=1&query=Gweru"
+    role: "Head Office & Main Store",
+    address: "75 Main Street, Gweru, Zimbabwe",
+    services: ["Retail", "Butchery", "Groceries", "Wholesale pick-ups"],
+    mapLink: "https://www.google.com/maps/place/Valley+Farm+Secrets+-+Gweru/@-19.4532987,29.8133877,19.5z/data=!4m14!1m7!3m6!1s0x1934949bd34326b9:0x965f9389f867d850!2s75+Main+St,+Gweru!3b1!8m2!3d-19.4539183!4d29.8181887!3m5!1s0x193495958c4efd75:0x3bb86223848bd918!8m2!3d-19.4530493!4d29.813689!16s%2Fg%2F11txsg04x6?entry=ttu&g_ep=EgoyMDI1MDkwNy4wIKXMDSoASAFQAw%3D%3D"
   },
   {
     city: "Harare",
-    role: "City Branch & Collection Point",
-    address: "456 Capital Gardens, Harare",
-    services: ["Fruit & Veg", "Butchery", "Online Order Pickup"],
-    mapLink: "https://www.google.com/maps/search/?api=1&query=Harare"
+    role: "Administration & Order Desk",
+    address: "Harare (full retail branch in progress, admin operations active)",
+    services: ["Order coordination", "Account management", "Supply arrangements"],
+    mapLink: "https://www.google.com/maps/place/Valley+Farm+Secrets/@-17.8335312,31.0504988,17z/data=!3m1!4b1!4m6!3m5!1s0x1931a55f3e0116f9:0x91393f1c21700bcb!8m2!3d-17.8335312!4d31.0504988!16s%2Fg%2F11h3m77mgn?entry=ttu&g_ep=EgoyMDI1MDkwNy4wIKXMDSoASAFQAw%3D%3D"
   }
 ];
 
 export const contactDetails = [
     {
         icon: Phone,
-        label: "Phone / WhatsApp",
-        value: "+263 777 777 777",
-        href: "tel:+263777777777"
+        label: "WhatsApp / Call",
+        value: "+263 788 679 000 / +263 711 406 919",
+        href: "tel:+263788679000"
+    },
+     {
+        icon: Phone,
+        label: "Landline (Gweru)",
+        value: "054 222 5955",
+        href: "tel:0542225955"
     },
     {
         icon: Mail,
         label: "Email",
-        value: "info@valleyfarmsecrets.com",
-        href: "mailto:info@valleyfarmsecrets.com"
+        value: "valleygwr@gmail.com / valleyhre@gmail.com",
+        href: "mailto:valleygwr@gmail.com"
     },
     {
         icon: MapPin,
         label: "Address",
-        value: "123 Fresh Produce Ave, Gweru, Zimbabwe"
+        value: "75 Main Street, Gweru, Zimbabwe"
     },
     {
         icon: Clock,
         label: "Hours",
-        value: "Mon-Sat: 8:00 AM - 6:00 PM"
+        value: "Mon-Sat: 8:00 AM - 7:00 PM, Sun: Closed"
     }
 ];
 
