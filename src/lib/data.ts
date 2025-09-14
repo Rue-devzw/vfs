@@ -17,40 +17,55 @@ import {
   Mail,
   MapPin,
   Clock,
-  BookOpen
+  BookOpen,
+  ShoppingBasket,
+  Package,
+  Search,
+  FileText,
+  Laptop
 } from "lucide-react";
 
 export const services = [
   {
     icon: Carrot,
-    title: "Fruit & Veg",
-    description: "A wide variety of locally sourced, fresh fruits and vegetables.",
+    title: "Fruit & Vegetables",
+    description: "Retail & wholesale supply of all fruits and vegetables: cabbages, carrots, green beans, green pepper, tomatoes, watermelon, cucumber, and more.",
   },
   {
     icon: Beef,
     title: "Butchery",
-    description: "Quality cuts of meat, processed with the highest standards of hygiene.",
+    description: "Fresh beef, lamb, goat, rabbit, chicken, fish, mince, sausages, braai packs; cold-room managed for guaranteed freshness.",
   },
   {
-    icon: Warehouse,
+    icon: ShoppingBasket,
     title: "Grocery & Spices",
-    description: "A selection of essential groceries and exotic spices to complement your meals.",
+    description: "Essentials like bread, sugar, flour, milk, cooking oil, plus Valley Farm Secrets branded spice packs.",
   },
   {
     icon: Truck,
     title: "Wholesale Supply",
-    description: "Bulk supply of our fresh produce to businesses and restaurants.",
+    description: "Scheduled deliveries & bulk orders for schools, colleges, churches, NGOs, and hospitality businesses.",
   },
   {
-    icon: Building2,
-    title: "Branch Network",
-    description: "Conveniently located branches in major cities for easy access.",
+    icon: Package,
+    title: "Pre-Pack Solutions",
+    description: "Graded, chopped, and portion-packed vegetables ready for kitchens.",
   },
   {
-    icon: Apple,
-    title: "Producer Partnership",
-    description: "We partner with local farmers to bring the best produce to the market.",
+    icon: Search,
+    title: "Sourcing Services",
+    description: "We secure hard-to-find produce & volumes at competitive prices.",
   },
+  {
+    icon: FileText,
+    title: "Corporate Accounts & Invoicing",
+    description: "Professional billing, VAT-compliant receipts, and Pastel accounting.",
+  },
+  {
+    icon: Laptop,
+    title: "Valley Farm Digital (Coming Soon)",
+    description: "Kitchenware, Office ware, and Electronics under one roof.",
+  }
 ];
 
 export const whyChooseUsFeatures = [
