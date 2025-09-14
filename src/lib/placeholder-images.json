@@ -3,85 +3,85 @@
     {
       "id": "hero-produce",
       "description": "A vibrant assortment of fresh farm produce on a wooden table.",
-      "imageUrl": "/images/hero-produce.jpg",
+      "imageUrl": "/images/hero-produce.webp",
       "imageHint": "fresh produce"
     },
     {
       "id": "gallery-1",
       "description": "Close-up of ripe, red tomatoes on the vine.",
-      "imageUrl": "/images/gallery-1.jpg",
+      "imageUrl": "/images/gallery-1.webp",
       "imageHint": "tomatoes vine"
     },
     {
       "id": "gallery-2",
       "description": "A butcher skillfully preparing a cut of meat.",
-      "imageUrl": "/images/gallery-2.jpg",
+      "imageUrl": "/images/gallery-2.webp",
       "imageHint": "butcher meat"
     },
     {
       "id": "gallery-3",
       "description": "Rows of green lettuce growing in a field.",
-      "imageUrl": "/images/gallery-3.jpg",
+      "imageUrl": "/images/gallery-3.webp",
       "imageHint": "lettuce field"
     },
     {
       "id": "gallery-4",
       "description": "A modern and clean interior of the Valley Farm Secrets store.",
-      "imageUrl": "/images/gallery-4.jpg",
+      "imageUrl": "/images/gallery-4.webp",
       "imageHint": "farm store"
     },
     {
       "id": "product-apples",
       "description": "Fresh red apples.",
-      "imageUrl": "/images/product-apples.jpg",
+      "imageUrl": "/images/product-apples.webp",
       "imageHint": "red apples"
     },
     {
       "id": "product-carrots",
       "description": "A bunch of fresh carrots.",
-      "imageUrl": "/images/product-carrots.jpg",
+      "imageUrl": "/images/product-carrots.webp",
       "imageHint": "fresh carrots"
     },
     {
       "id": "product-broccoli",
       "description": "A head of broccoli.",
-      "imageUrl": "/images/product-broccoli.jpg",
+      "imageUrl": "/images/product-broccoli.webp",
       "imageHint": "fresh broccoli"
     },
     {
       "id": "product-steak",
       "description": "A prime cut of steak.",
-      "imageUrl": "/images/product-steak.jpg",
+      "imageUrl": "/images/product-steak.webp",
       "imageHint": "raw steak"
     },
     {
       "id": "product-sausages",
       "description": "Freshly made sausages.",
-      "imageUrl": "/images/product-sausages.jpg",
+      "imageUrl": "/images/product-sausages.webp",
       "imageHint": "raw sausages"
     },
     {
       "id": "product-chicken",
       "description": "Fresh chicken fillets.",
-      "imageUrl": "/images/product-chicken.jpg",
+      "imageUrl": "/images/product-chicken.webp",
       "imageHint": "chicken fillets"
     },
     {
       "id": "product-bread",
       "description": "A loaf of artisanal bread.",
-      "imageUrl": "/images/product-bread.jpg",
+      "imageUrl": "/images/product-bread.webp",
       "imageHint": "artisanal bread"
     },
     {
       "id": "product-spices",
       "description": "A selection of exotic spices.",
-      "imageUrl": "/images/product-spices.jpg",
+      "imageUrl": "/images/product-spices.webp",
       "imageHint": "exotic spices"
     },
     {
       "id": "product-eggs",
       "description": "A dozen farm fresh eggs.",
-      "imageUrl": "/images/product-eggs.jpg",
+      "imageUrl": "/images/product-eggs.webp",
       "imageHint": "fresh eggs"
     }
   ]
