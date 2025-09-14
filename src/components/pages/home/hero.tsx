@@ -12,12 +12,7 @@ import Autoplay from "embla-carousel-autoplay";
 import { Button } from "@/components/ui/button";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 
-const heroImages = [
-  PlaceHolderImages.find(p => p.id === 'hero-produce'),
-  PlaceHolderImages.find(p => p.id === 'gallery-2'),
-  PlaceHolderImages.find(p => p.id === 'gallery-3'),
-  PlaceHolderImages.find(p => p.id === 'product-bread'),
-].filter(Boolean);
+const heroImages = PlaceHolderImages.filter(p => p.id.startsWith('hero-') && p.id !== 'hero-produce');
 
 
 export function Hero() {
