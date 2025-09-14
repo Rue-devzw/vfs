@@ -1,23 +1,57 @@
-import { Button } from "@/components/ui/button";
+"use client"
+
+import React from 'react';
 import Image from "next/image";
 import Link from "next/link";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
+import { Button } from "@/components/ui/button";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 
+const heroImages = [
+  PlaceHolderImages.find(p => p.id === 'hero-produce'),
+  PlaceHolderImages.find(p => p.id === 'gallery-2'),
+  PlaceHolderImages.find(p => p.id === 'gallery-3'),
+  PlaceHolderImages.find(p => p.id === 'product-bread'),
+].filter(Boolean);
+
+
 export function Hero() {
-  const heroImage = PlaceHolderImages.find(p => p.id === 'hero-produce');
+  const plugin = React.useRef(
+    Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEnter: true })
+  );
 
   return (
     <section className="relative h-[80svh] w-full">
-      {heroImage && (
-         <Image
-            src={heroImage.imageUrl}
-            alt={heroImage.description}
-            fill
-            className="object-cover"
-            priority
-            data-ai-hint={heroImage.imageHint}
-          />
-      )}
+       <Carousel
+        plugins={[plugin.current]}
+        className="w-full h-full"
+        opts={{
+          loop: true,
+        }}
+      >
+        <CarouselContent className="h-full">
+          {heroImages.map((heroImage) => (
+             heroImage && (
+              <CarouselItem key={heroImage.id} className="h-full">
+                  <Image
+                      src={heroImage.imageUrl}
+                      alt={heroImage.description}
+                      fill
+                      className="object-cover"
+                      priority={heroImages.indexOf(heroImage) === 0}
+                      data-ai-hint={heroImage.imageHint}
+                    />
+              </CarouselItem>
+            )
+          ))}
+        </CarouselContent>
+      </Carousel>
+
       <div className="absolute inset-0 bg-black/50" />
       <div className="relative z-10 flex h-full flex-col items-center justify-center text-center text-white p-4">
         <h1 className="font-headline text-5xl font-bold md:text-7xl animate-fade-in-up">
