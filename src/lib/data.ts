@@ -108,9 +108,15 @@ export const contactDetails = [
     },
     {
         icon: Mail,
-        label: "Email",
+        label: "General Enquiries",
         value: "info@valleyfarmsecrets.com",
         href: "mailto:info@valleyfarmsecrets.com"
+    },
+    {
+        icon: Mail,
+        label: "Support",
+        value: "support@valleyfarmsecrets.com",
+        href: "mailto:support@valleyfarmsecrets.com"
     },
     {
         icon: MapPin,

@@ -1,7 +1,8 @@
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { Handshake, Zap, Target, BarChart, Scale, Heart, ShieldCheck, TrendingUp, Lightbulb } from "lucide-react";
+import { Handshake, Zap, Target, BarChart, Scale, Heart, ShieldCheck, TrendingUp, Lightbulb, Mail } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import Link from "next/link";
 
 const whyPartnerPoints = [
     {
@@ -115,6 +116,33 @@ export default function BecomeAPartnerPage() {
                            </div>
                         </Card>
                      ))}
+                </div>
+            </section>
+
+            {/* Contact Section */}
+            <section id="contact-partner" className="mt-20">
+                <div className="text-center">
+                    <h2 className="font-headline text-3xl font-bold">Get in Touch</h2>
+                    <p className="mx-auto mt-2 max-w-xl text-muted-foreground">
+                        Ready to explore a partnership? Reach out to our dedicated team.
+                    </p>
+                </div>
+                <div className="mt-10">
+                    <Card className="mx-auto max-w-sm">
+                        <CardContent className="p-6">
+                            <div className="flex items-center gap-4">
+                                <div className="flex-shrink-0 text-primary">
+                                    <Mail className="h-6 w-6" />
+                                </div>
+                                <div>
+                                    <h3 className="font-semibold">Partnerships Email</h3>
+                                    <Link href="mailto:partners@valleyfarmsecrets.com" className="text-muted-foreground hover:text-primary transition-colors">
+                                        partners@valleyfarmsecrets.com
+                                    </Link>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
                 </div>
             </section>
 
