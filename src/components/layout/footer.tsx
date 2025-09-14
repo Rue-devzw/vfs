@@ -4,7 +4,7 @@ import { WhatsAppIcon } from "@/components/icons/whatsapp-icon";
 
 const navLinks = [
   { href: "/producers", label: "For Producers" },
-  { href: "/become-a-partner", label: "Become a Partner" },
+  { href: "/become-a-partner", label: "Partner With Us" },
   { href: "/#services", label: "Services" },
   { href: "/#locations", label: "Branches" },
   { href: "/#gallery", label: "Gallery" },

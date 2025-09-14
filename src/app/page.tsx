@@ -7,6 +7,7 @@ import { Locations } from "@/components/pages/home/locations";
 import { Gallery } from "@/components/pages/home/gallery";
 import { Wholesale } from "@/components/pages/home/wholesale";
 import { Contact } from "@/components/pages/home/contact";
+import { PartnerCTA } from "@/components/pages/home/partner-cta";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
         <Hero />
         <Services />
         <WhyChooseUs />
+        <PartnerCTA />
         <Locations />
         <Gallery />
         <Wholesale />

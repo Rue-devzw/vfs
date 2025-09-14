@@ -1,61 +1,98 @@
+"use client";
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { Handshake, Zap, Target, BarChart, Scale, Heart, ShieldCheck, TrendingUp, Lightbulb, Mail } from "lucide-react";
+import { Handshake, Sprout, Users, Heart, Globe, Building, User, Phone, Mail, FileText, CheckCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { useToast } from "@/hooks/use-toast";
 import Link from "next/link";
 
-const whyPartnerPoints = [
+
+const impactAreas = [
     {
-        icon: ShieldCheck,
-        title: "Established Operations",
-        description: "Retail, wholesale, and butchery services with a proven track record."
+        icon: Sprout,
+        title: "Food Security & Nutrition",
     },
     {
-        icon: TrendingUp,
-        title: "Proven Experience",
-        description: "Successfully supplying schools, NGOs, churches, and other institutions."
+        icon: Users,
+        title: "Farmer Empowerment",
     },
     {
-        icon: BarChart,
-        title: "Transparent Accounting",
-        description: "Utilizing Pastel POS and providing VAT-compliant invoicing for full transparency."
+        icon: User,
+        title: "Youth & Women Empowerment",
     },
     {
         icon: Heart,
-        title: "Trusted Reputation",
-        description: "A strong community presence built on trust and reliable service."
+        title: "Health & Wellness Campaigns",
     },
     {
-        icon: Target,
-        title: "Scalable Vision",
-        description: "Aligned with Zimbabwe Vision 2030 & SDGs to drive long-term growth."
+        icon: Globe,
+        title: "Sustainability Projects",
     }
 ];
 
 const partnershipOpportunities = [
     {
-        icon: Lightbulb,
-        title: "Grants & Funding",
-        description: "Support our community food security and empowerment projects through grants."
+        icon: CheckCircle,
+        title: "Funding or Grants",
+        description: "Support community food security and empowerment projects."
     },
     {
-        icon: Zap,
+        icon: CheckCircle,
         title: "CSR Collaborations",
-        description: "Work with us on impactful nutrition, health, and sustainability campaigns."
+        description: "Work with us on nutrition, health, and sustainability campaigns."
     },
     {
-        icon: Scale,
-        title: "Impact Investment",
-        description: "Co-invest in expanding cold storage, delivery fleets, and our farmer network."
+        icon: CheckCircle,
+        title: "Impact Investments",
+        description: "Co-invest in expansion of cold storage, delivery fleets, and farmer networks."
     },
     {
-        icon: Handshake,
-        title: "Skill Support",
-        description: "Provide training, technology, or mentorship to help us build capacity."
+        icon: CheckCircle,
+        title: "Training & Skills Support",
+        description: "Provide training, technology, or mentorship to build capacity."
     }
 ];
 
+const formSchema = z.object({
+  organizationName: z.string().min(2, "Organisation/Producer Name is required"),
+  contactPerson: z.string().min(2, "Contact person is required"),
+  phone: z.string().min(10, "A valid phone number is required"),
+  email: z.string().email("Invalid email address"),
+  message: z.string().min(10, "Please provide some details in your proposal.").max(1000),
+});
+
+
 export default function BecomeAPartnerPage() {
+  const { toast } = useToast();
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      organizationName: "",
+      contactPerson: "",
+      phone: "",
+      email: "",
+      message: "",
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log("Partnership Proposal:", values);
+    toast({
+      title: "✅ Thank you for submitting your partnership proposal to Valley Farm Secrets.",
+      description: "Our team will review it and get back to you within 5–7 working days. For urgent queries: +263 788 679 000 | +263 711 406 919.",
+    });
+    form.reset();
+  }
+
+
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
@@ -68,32 +105,26 @@ export default function BecomeAPartnerPage() {
                 <Handshake className="h-10 w-10 text-primary" />
               </div>
               <h1 className="mt-4 font-headline text-4xl font-bold md:text-5xl">
-                Partner With Us
+                Let’s Make an Impact Together
               </h1>
               <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-                Join Valley Farm Secrets in our mission to strengthen food security and empower local communities. We offer a range of partnership opportunities for organizations that share our vision.
+                At Valley Farm Secrets, we’re more than a food business — we are building healthy, empowered communities. Partner with us to support food security, farmer development, and youth employment in Zimbabwe.
               </p>
             </div>
 
-            {/* Why Partner with Us */}
-            <section id="why-partner" className="mt-16">
+            {/* Impact Areas */}
+            <section id="impact-areas" className="mt-16">
                 <div className="text-center">
-                    <h2 className="font-headline text-3xl font-bold">Why Partner With Us?</h2>
-                    <p className="mx-auto mt-2 max-w-xl text-muted-foreground">We are a reliable and forward-thinking organization with a strong foundation.</p>
+                    <h2 className="font-headline text-3xl font-bold">Our Impact Areas</h2>
                 </div>
-                <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                    {whyPartnerPoints.map((point) => (
-                        <Card key={point.title} className="text-center transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl">
-                            <CardHeader>
-                                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
-                                    <point.icon className="h-6 w-6" />
-                                </div>
-                                <CardTitle className="mt-4 font-headline text-xl">{point.title}</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <p className="text-muted-foreground">{point.description}</p>
-                            </CardContent>
-                        </Card>
+                <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+                    {impactAreas.map((point) => (
+                        <div key={point.title} className="text-center">
+                            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
+                                <point.icon className="h-8 w-8" />
+                            </div>
+                            <p className="mt-3 text-sm font-semibold">{point.title}</p>
+                        </div>
                     ))}
                 </div>
             </section>
@@ -101,51 +132,58 @@ export default function BecomeAPartnerPage() {
             {/* Partnership Opportunities */}
             <section id="opportunities" className="mt-20">
                 <div className="text-center">
-                    <h2 className="font-headline text-3xl font-bold">Partnership Opportunities</h2>
-                    <p className="mx-auto mt-2 max-w-xl text-muted-foreground">Let's collaborate to create a sustainable impact.</p>
+                    <h2 className="font-headline text-3xl font-bold">Opportunities to Partner</h2>
                 </div>
                 <div className="mt-10 grid grid-cols-1 gap-8 md:grid-cols-2">
                      {partnershipOpportunities.map((opportunity) => (
-                        <Card key={opportunity.title} className="flex flex-col sm:flex-row items-start gap-6 p-6">
-                           <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-accent/10 text-accent">
-                                <opportunity.icon className="h-7 w-7" />
+                        <Card key={opportunity.title} className="flex items-start gap-4 p-6 transform transition-transform duration-300 hover:-translate-y-1 hover:shadow-md">
+                           <div className="flex-shrink-0 text-primary mt-1">
+                                <opportunity.icon className="h-6 w-6" />
                            </div>
                            <div>
-                                <h3 className="font-headline text-xl font-bold">{opportunity.title}</h3>
-                                <p className="mt-2 text-muted-foreground">{opportunity.description}</p>
+                                <h3 className="text-lg font-bold">{opportunity.title}</h3>
+                                <p className="mt-1 text-muted-foreground">{opportunity.description}</p>
                            </div>
                         </Card>
                      ))}
                 </div>
             </section>
 
-            {/* Contact Section */}
-            <section id="contact-partner" className="mt-20">
+            {/* Contact Form Section */}
+            <section id="partner-form" className="mt-20">
                 <div className="text-center">
-                    <h2 className="font-headline text-3xl font-bold">Get in Touch</h2>
+                    <h2 className="font-headline text-3xl font-bold">Become a Partner</h2>
                     <p className="mx-auto mt-2 max-w-xl text-muted-foreground">
-                        Ready to explore a partnership? Reach out to our dedicated team.
+                        Ready to explore a partnership? Fill out the form below or email us at <Link href="mailto:partners@valleyfarmsecrets.com" className="text-primary underline">partners@valleyfarmsecrets.com</Link>.
                     </p>
                 </div>
-                <div className="mt-10">
-                    <Card className="mx-auto max-w-sm">
-                        <CardContent className="p-6">
-                            <div className="flex items-center gap-4">
-                                <div className="flex-shrink-0 text-primary">
-                                    <Mail className="h-6 w-6" />
-                                </div>
-                                <div>
-                                    <h3 className="font-semibold">Partnerships Email</h3>
-                                    <Link href="mailto:partners@valleyfarmsecrets.com" className="text-muted-foreground hover:text-primary transition-colors">
-                                        partners@valleyfarmsecrets.com
-                                    </Link>
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
-                </div>
+                <Card className="mt-10 p-6 sm:p-8">
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                        <FormField control={form.control} name="organizationName" render={({ field }) => (
+                          <FormItem><FormLabel>Organisation / Producer Name</FormLabel><FormControl><Input placeholder="Your Organisation" {...field} /></FormControl><FormMessage /></FormItem>
+                        )} />
+                         <FormField control={form.control} name="contactPerson" render={({ field }) => (
+                          <FormItem><FormLabel>Contact Person</FormLabel><FormControl><Input placeholder="John Doe" {...field} /></FormControl><FormMessage /></FormItem>
+                        )} />
+                      </div>
+                       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                          <FormField control={form.control} name="phone" render={({ field }) => (
+                            <FormItem><FormLabel>Phone</FormLabel><FormControl><Input placeholder="+263 7..." {...field} /></FormControl><FormMessage /></FormItem>
+                          )} />
+                          <FormField control={form.control} name="email" render={({ field }) => (
+                            <FormItem><FormLabel>Email</FormLabel><FormControl><Input placeholder="you@company.com" {...field} /></FormControl><FormMessage /></FormItem>
+                          )} />
+                       </div>
+                      <FormField control={form.control} name="message" render={({ field }) => (
+                        <FormItem><FormLabel>Proposal or Message</FormLabel><FormControl><Textarea placeholder="Tell us about your proposal or how you'd like to partner with us..." rows={6} {...field} /></FormControl><FormMessage /></FormItem>
+                      )} />
+                      <Button type="submit" size="lg" className="w-full" style={{ backgroundColor: '#4CAF50' }}>Submit Proposal</Button>
+                    </form>
+                  </Form>
+                </Card>
             </section>
-
           </div>
         </div>
       </main>
