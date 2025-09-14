@@ -29,7 +29,7 @@ export function Hero() {
     <section className="relative h-[80svh] w-full">
        <Carousel
         plugins={[plugin.current]}
-        className="w-full h-full"
+        className="absolute inset-0 w-full h-full"
         opts={{
           loop: true,
         }}
@@ -54,13 +54,13 @@ export function Hero() {
 
       <div className="absolute inset-0 bg-black/50" />
       <div className="relative z-10 flex h-full flex-col items-center justify-center text-center text-white p-4">
-        <h1 className="font-headline text-5xl font-bold md:text-7xl animate-fade-in-up">
+        <h1 className="font-headline text-5xl font-bold md:text-7xl">
           Freshness. Quality. Convenience.
         </h1>
-        <p className="mt-4 max-w-2xl text-lg md:text-xl animate-fade-in-up animation-delay-300">
+        <p className="mt-4 max-w-2xl text-lg md:text-xl">
           Your trusted partner for farm-fresh produce, from our fields to your table.
         </p>
-        <div className="mt-8 flex flex-col gap-4 sm:flex-row animate-fade-in-up animation-delay-600">
+        <div className="mt-8 flex flex-col gap-4 sm:flex-row">
           <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground transform transition-transform hover:scale-105">
             <Link href="/store">Shop Online</Link>
           </Button>
