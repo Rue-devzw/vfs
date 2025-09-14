@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { Sprout, Facebook, Instagram } from "lucide-react";
+import { Facebook, Instagram } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons/whatsapp-icon";
+import { Logo } from "../icons/logo";
 
 const navLinks = [
   { href: "/producers", label: "For Producers" },
@@ -20,7 +21,7 @@ export function Footer() {
         {/* Column 1: Branding */}
         <div className="flex flex-col items-center text-center md:items-start md:text-left">
           <Link href="/" className="flex items-center gap-2" aria-label="Valley Farm Secrets Home">
-            <Sprout className="h-8 w-8 text-primary" />
+            <Logo className="h-8 w-8 text-primary" />
             <span className="font-headline text-2xl font-bold text-primary">
               Valley Farm Secrets
             </span>

@@ -6,6 +6,9 @@ import { cn } from "@/lib/utils";
 export const metadata: Metadata = {
   title: "Valley Farm Secrets",
   description: "Freshness. Quality. Convenience. Your farm-to-table partner.",
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({

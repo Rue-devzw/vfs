@@ -2,10 +2,11 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Sprout, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import { Logo } from "../icons/logo";
 
 const navLinks = [
   { href: "/producers", label: "For Producers" },
@@ -41,7 +42,7 @@ export function Header() {
     >
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2" aria-label="Valley Farm Secrets Home">
-          <Sprout className="h-8 w-8 text-primary" />
+          <Logo className="h-8 w-8 text-primary" />
           <span className="font-headline text-2xl font-bold text-primary">
             Valley Farm Secrets
           </span>
@@ -70,7 +71,7 @@ export function Header() {
               <div className="flex h-full flex-col">
                 <div className="p-6">
                   <Link href="/" className="flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
-                      <Sprout className="h-7 w-7 text-primary" />
+                      <Logo className="h-7 w-7 text-primary" />
                       <span className="font-headline text-xl font-bold text-primary">
                           Valley Farm Secrets
                       </span>
