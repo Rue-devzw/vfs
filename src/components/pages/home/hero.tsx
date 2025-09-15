@@ -12,33 +12,35 @@ import Autoplay from "embla-carousel-autoplay";
 import { Button } from "@/components/ui/button";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 
-const heroImages = PlaceHolderImages.filter(p => p.id.startsWith('hero-') && p.id !== 'hero-produce');
+const heroImages = PlaceHolderImages.filter(p => p.id.startsWith('hero-'));
 
 
 export function Hero() {
   const plugin = React.useRef(
-    Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEnter: true })
+    Autoplay({ delay: 4000, stopOnInteraction: true })
   );
 
   return (
-    <section className="relative h-[80svh] w-full">
+    <section className="relative h-[80svh] w-full overflow-hidden">
        <Carousel
         plugins={[plugin.current]}
         className="absolute inset-0 w-full h-full"
         opts={{
           loop: true,
         }}
+        onMouseEnter={plugin.current.stop}
+        onMouseLeave={plugin.current.reset}
       >
         <CarouselContent className="h-full">
-          {heroImages.map((heroImage) => (
+          {heroImages.map((heroImage, index) => (
              heroImage && (
               <CarouselItem key={heroImage.id} className="h-full">
                   <Image
                       src={heroImage.imageUrl}
                       alt={heroImage.description}
                       fill
-                      className="object-cover"
-                      priority={heroImages.indexOf(heroImage) === 0}
+                      className="object-cover animate-fade-in"
+                      priority={index === 0}
                       data-ai-hint={heroImage.imageHint}
                     />
               </CarouselItem>
