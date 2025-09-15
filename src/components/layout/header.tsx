@@ -6,18 +6,8 @@ import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import { navLinks } from "@/lib/nav-links";
 import { Logo } from "../icons/logo";
-
-const navLinks = [
-  { href: "/producers", label: "For Producers" },
-  { href: "/become-a-partner", label: "Partner With Us" },
-  { href: "/#services", label: "Services" },
-  { href: "/#locations", label: "Branches" },
-  { href: "/#gallery", label: "Gallery" },
-  { href: "/#wholesale", label: "Wholesale" },
-  { href: "/#contact", label: "Contact Us" },
-  { href: "/store", label: "Online Store" },
-];
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
