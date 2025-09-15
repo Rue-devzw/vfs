@@ -3,14 +3,45 @@
 import { generateImageCaption as generateImageCaptionFlow, GenerateImageCaptionInput } from "@/ai/flows/image-gallery-captioning";
 import { generateFarmingTip as generateFarmingTipFlow, GenerateFarmingTipInput } from "@/ai/flows/farming-tips-flow";
 
+const ALLOWED_CONTENT_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
+
 async function imageUrlToDataUri(url: string): Promise<string> {
-    const response = await fetch(url);
+    const controller = new AbortController();
+    const response = await fetch(url, { signal: controller.signal });
     if (!response.ok) {
         throw new Error(`Failed to fetch image: ${response.statusText}`);
     }
-    const imageBuffer = await response.arrayBuffer();
-    const contentType = response.headers.get('content-type') || 'image/jpeg';
-    const base64 = Buffer.from(imageBuffer).toString('base64');
+
+    const contentType = response.headers.get("content-type")?.toLowerCase() || "";
+    if (!ALLOWED_CONTENT_TYPES.includes(contentType)) {
+        controller.abort();
+        throw new Error(`Unsupported content type: ${contentType || "unknown"}`);
+    }
+
+    const reader = response.body?.getReader();
+    if (!reader) {
+        controller.abort();
+        throw new Error("Unable to read image data");
+    }
+
+    const chunks: Buffer[] = [];
+    let total = 0;
+    while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        if (value) {
+            total += value.length;
+            if (total > MAX_IMAGE_SIZE) {
+                controller.abort();
+                throw new Error("Image exceeds 5MB limit");
+            }
+            chunks.push(Buffer.from(value));
+        }
+    }
+
+    const imageBuffer = Buffer.concat(chunks);
+    const base64 = imageBuffer.toString("base64");
     return `data:${contentType};base64,${base64}`;
 }
 
@@ -22,7 +53,8 @@ export async function generateImageCaption(imageUrl: string) {
         return { caption: result.caption, error: null };
     } catch (error) {
         console.error("Error generating image caption:", error);
-        return { caption: null, error: "Failed to generate caption. Please try again." };
+        const message = error instanceof Error ? error.message : "Failed to generate caption. Please try again.";
+        return { caption: null, error: message };
     }
 }
 
