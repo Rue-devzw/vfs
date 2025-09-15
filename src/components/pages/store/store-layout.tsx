@@ -49,7 +49,7 @@ export function StoreLayout() {
     });
   }, [searchTerm, showSpecialsOnly, selectedCategory, sortOption]);
 
-  const hasActiveFilter = searchTerm || showSpecialsOnly || selectedCategory !== "All";
+  const hasActiveFilter = Boolean(searchTerm) || showSpecialsOnly || selectedCategory !== "All";
 
   return (
     <div className="container mx-auto px-4 md:px-6 py-8">
