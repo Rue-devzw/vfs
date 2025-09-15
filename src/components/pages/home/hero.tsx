@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -10,16 +10,16 @@ import {
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import { Button } from "@/components/ui/button";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { PlaceHolderImages, ImagePlaceholder } from "@/lib/placeholder-images";
 
 export function Hero() {
-  const heroImages = React.useMemo(
-    () =>
-      [...PlaceHolderImages.filter(p => p.id.startsWith("hero-"))].sort(
-        () => Math.random() - 0.5
-      ),
-    []
-  );
+  const [heroImages, setHeroImages] = useState<ImagePlaceholder[]>([]);
+
+  useEffect(() => {
+    const allHeroImages = PlaceHolderImages.filter(p => p.id.startsWith("hero-"));
+    const shuffledImages = [...allHeroImages].sort(() => Math.random() - 0.5);
+    setHeroImages(shuffledImages);
+  }, []);
 
   const plugin = React.useRef(
     Autoplay({
@@ -39,7 +39,8 @@ export function Hero() {
         }}
       >
         <CarouselContent className="h-full">
-          {heroImages.map((heroImage, index) => (
+          {heroImages.length > 0 ? (
+            heroImages.map((heroImage, index) => (
              heroImage && (
               <CarouselItem key={heroImage.id} className="h-full">
                   <Image
@@ -52,7 +53,12 @@ export function Hero() {
                     />
               </CarouselItem>
             )
-          ))}
+          ))
+          ) : (
+             <CarouselItem className="h-full">
+                <div className="w-full h-full bg-secondary" />
+             </CarouselItem>
+          )}
         </CarouselContent>
       </Carousel>
 
