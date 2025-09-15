@@ -85,10 +85,10 @@ export default function BecomeAPartnerPage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const response = await fetch("/api/log", {
+      const response = await fetch("/api/partners", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ form: "partner", ...values }),
+        body: JSON.stringify(values),
       });
 
       if (response.ok) {

@@ -56,10 +56,10 @@ export function PreBookingForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const response = await fetch("/api/log", {
+      const response = await fetch("/api/prebookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ form: "prebooking", ...values }),
+        body: JSON.stringify(values),
       });
 
       if (response.ok) {
