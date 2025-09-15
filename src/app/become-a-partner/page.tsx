@@ -83,13 +83,34 @@ export default function BecomeAPartnerPage() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("Partnership Proposal:", values);
-    toast({
-      title: "✅ Thank you for submitting your partnership proposal to Valley Farm Secrets.",
-      description: "Our team will review it and get back to you within 5–7 working days. For urgent queries: +263 788 679 000 | +263 711 406 919.",
-    });
-    form.reset();
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const response = await fetch("/api/log", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ form: "partner", ...values }),
+      });
+
+      if (response.ok) {
+        toast({
+          title: "✅ Thank you for submitting your partnership proposal to Valley Farm Secrets.",
+          description: "Our team will review it and get back to you within 5–7 working days. For urgent queries: +263 788 679 000 | +263 711 406 919.",
+        });
+        form.reset();
+      } else {
+        toast({
+          title: "Submission failed",
+          description: "Please try again later.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Submission failed",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
+    }
   }
 
 

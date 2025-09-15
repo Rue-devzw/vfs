@@ -71,15 +71,36 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
   const subtotal = state.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const total = subtotal + (deliveryMethod === 'delivery' ? BIKER_DELIVERY_FEE : 0);
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("Order placed:", { ...values, items: state.items, total });
-    toast({
-      title: "Order Placed Successfully!",
-      description: "Thank you for your purchase. You'll receive a confirmation shortly.",
-    });
-    dispatch({ type: 'CLEAR_CART' });
-    onOpenChange(false);
-    reset();
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const response = await fetch("/api/log", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ form: "checkout", ...values, items: state.items, total }),
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Order Placed Successfully!",
+          description: "Thank you for your purchase. You'll receive a confirmation shortly.",
+        });
+        dispatch({ type: 'CLEAR_CART' });
+        onOpenChange(false);
+        reset();
+      } else {
+        toast({
+          title: "Order failed",
+          description: "Please try again later.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Order failed",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
+    }
   }
 
   return (

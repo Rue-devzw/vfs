@@ -54,13 +54,34 @@ export function PreBookingForm() {
 
   const transportRequired = form.watch("transportRequired");
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values); // In a real app, you'd send this to an API
-    toast({
-      title: "Booking Submitted!",
-      description: "Thank you for pre-booking your harvest with us. We'll be in touch.",
-    });
-    form.reset();
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const response = await fetch("/api/log", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ form: "prebooking", ...values }),
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Booking Submitted!",
+          description: "Thank you for pre-booking your harvest with us. We'll be in touch.",
+        });
+        form.reset();
+      } else {
+        toast({
+          title: "Submission failed",
+          description: "Please try again later.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Submission failed",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
+    }
   }
 
   return (

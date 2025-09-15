@@ -32,13 +32,34 @@ export function Wholesale() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values); // In a real app, you'd send this to a server
-    toast({
-      title: "Quote Request Sent!",
-      description: "Thank you! We will get back to you shortly.",
-    });
-    form.reset();
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const response = await fetch("/api/log", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ form: "wholesale", ...values }),
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Quote Request Sent!",
+          description: "Thank you! We will get back to you shortly.",
+        });
+        form.reset();
+      } else {
+        toast({
+          title: "Submission failed",
+          description: "Please try again later.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Submission failed",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
+    }
   }
 
   return (
