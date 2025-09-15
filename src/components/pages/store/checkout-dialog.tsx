@@ -73,10 +73,10 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const response = await fetch("/api/log", {
+      const response = await fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ form: "checkout", ...values, items: state.items, total }),
+        body: JSON.stringify({ ...values, items: state.items, total }),
       });
 
       if (response.ok) {

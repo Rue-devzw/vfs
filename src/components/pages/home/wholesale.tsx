@@ -34,10 +34,10 @@ export function Wholesale() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const response = await fetch("/api/log", {
+      const response = await fetch("/api/wholesale", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ form: "wholesale", ...values }),
+        body: JSON.stringify(values),
       });
 
       if (response.ok) {
