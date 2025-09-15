@@ -1,52 +1,10 @@
 {
   "placeholderImages": [
     {
-      "id": "hero-1",
+      "id": "hero-produce",
       "description": "A vibrant assortment of fresh fruits and vegetables.",
-      "imageUrl": "/images/hero-1.webp",
+      "imageUrl": "/images/hero-produce.webp",
       "imageHint": "fresh produce"
-    },
-    {
-      "id": "hero-2",
-      "description": "A pristine butchery counter with various cuts of fresh meat.",
-      "imageUrl": "/images/hero-2.webp",
-      "imageHint": "butchery counter"
-    },
-    {
-      "id": "hero-3",
-      "description": "Shelves stocked with groceries and a variety of spices.",
-      "imageUrl": "/images/hero-3.webp",
-      "imageHint": "grocery spices"
-    },
-    {
-      "id": "hero-4",
-      "description": "A delivery truck being loaded with produce boxes for wholesale.",
-      "imageUrl": "/images/hero-4.webp",
-      "imageHint": "wholesale delivery"
-    },
-    {
-      "id": "hero-5",
-      "description": "Neatly arranged pre-packaged vegetables ready for sale.",
-      "imageUrl": "/images/hero-5.webp",
-      "imageHint": "prepackaged vegetables"
-    },
-    {
-      "id": "hero-6",
-      "description": "A person inspecting produce in a large market.",
-      "imageUrl": "/images/hero-6.webp",
-      "imageHint": "produce sourcing"
-    },
-    {
-      "id": "hero-7",
-      "description": "A professional setting with a person managing invoices on a laptop.",
-      "imageUrl": "/images/hero-7.webp",
-      "imageHint": "corporate invoicing"
-    },
-    {
-      "id": "hero-8",
-      "description": "A modern display of kitchenware and electronics.",
-      "imageUrl": "/images/hero-8.webp",
-      "imageHint": "kitchenware electronics"
     },
     {
       "id": "gallery-1",
