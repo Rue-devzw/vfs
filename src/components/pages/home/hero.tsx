@@ -12,12 +12,21 @@ import Autoplay from "embla-carousel-autoplay";
 import { Button } from "@/components/ui/button";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 
-const heroImages = PlaceHolderImages.filter(p => p.id.startsWith('hero-'));
-
-
 export function Hero() {
+  const heroImages = React.useMemo(
+    () =>
+      [...PlaceHolderImages.filter(p => p.id.startsWith("hero-"))].sort(
+        () => Math.random() - 0.5
+      ),
+    []
+  );
+
   const plugin = React.useRef(
-    Autoplay({ delay: 4000, stopOnInteraction: true })
+    Autoplay({
+      delay: 4000,
+      stopOnInteraction: false,
+      stopOnMouseEnter: true,
+    })
   );
 
   return (
@@ -28,8 +37,6 @@ export function Hero() {
         opts={{
           loop: true,
         }}
-        onMouseEnter={plugin.current.stop}
-        onMouseLeave={plugin.current.reset}
       >
         <CarouselContent className="h-full">
           {heroImages.map((heroImage, index) => (
