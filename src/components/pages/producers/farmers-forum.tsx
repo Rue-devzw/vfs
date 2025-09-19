@@ -46,7 +46,7 @@ export function FarmersForum() {
   return (
     <Card className="shadow-lg">
       <CardHeader>
-        <CardTitle className="font-headline text-2xl">Farmers' Forum AI</CardTitle>
+        <CardTitle className="font-headline text-2xl">Farmers’ Forum AI</CardTitle>
         <CardDescription>
           Have a farming question? Get an instant, AI-powered tip from our agricultural expert.
         </CardDescription>

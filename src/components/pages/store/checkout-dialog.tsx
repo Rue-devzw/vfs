@@ -126,10 +126,10 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
             {isDiasporaGift ? (
               <div className="space-y-4 p-4 border rounded-md animate-fade-in-up">
                 <FormField name="recipientName" control={form.control} render={({ field }) => (
-                    <FormItem><FormLabel>Recipient's Name</FormLabel><FormControl><Input placeholder="Jane Doe" {...field} /></FormControl><FormMessage /></FormItem>
+                    <FormItem><FormLabel>Recipient’s Name</FormLabel><FormControl><Input placeholder="Jane Doe" {...field} /></FormControl><FormMessage /></FormItem>
                 )} />
                 <FormField name="recipientPhone" control={form.control} render={({ field }) => (
-                    <FormItem><FormLabel>Recipient's Phone</FormLabel><FormControl><Input placeholder="+263 7..." {...field} /></FormControl><FormMessage /></FormItem>
+                    <FormItem><FormLabel>Recipient’s Phone</FormLabel><FormControl><Input placeholder="+263 7..." {...field} /></FormControl><FormMessage /></FormItem>
                 )} />
               </div>
             ) : (

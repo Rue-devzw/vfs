@@ -12,6 +12,7 @@ interface ProductGridProps {
   setSortOption: (option: SortOption) => void;
   hasActiveFilter: boolean;
   categories: readonly Category[];
+  allProducts: Product[];
 }
 
 const ProductGrid: React.FC<ProductGridProps> = ({
@@ -20,7 +21,21 @@ const ProductGrid: React.FC<ProductGridProps> = ({
   setSortOption,
   hasActiveFilter,
   categories,
+  allProducts,
 }) => {
+  const relatedProducts = React.useMemo(() => {
+    if (!hasActiveFilter || products.length === 0) return [] as Product[];
+    const seen = new Set(products.map(product => product.id));
+    return allProducts.filter(product => !seen.has(product.id)).slice(0, 3);
+  }, [allProducts, hasActiveFilter, products]);
+
+  const anchorForCategory = (category: string) => {
+    if (category === 'Pre-Packed & Prepared Veg') {
+      return 'shop-prepack';
+    }
+    return `shop-${category.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+  };
+
   return (
     <div>
       <div className="flex justify-end mb-4">
@@ -51,7 +66,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({
             const categoryProducts = products.filter(p => p.category === category);
             if (categoryProducts.length === 0) return null;
             return (
-              <section key={category}>
+              <section key={category} id={anchorForCategory(category)}>
                 <h3 className="font-headline text-2xl font-bold mb-4 border-b pb-2">{category}</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                   {categoryProducts.map(product => (
@@ -62,6 +77,16 @@ const ProductGrid: React.FC<ProductGridProps> = ({
             )
           })}
         </div>
+      )}
+      {relatedProducts.length > 0 && (
+        <section className="mt-12 rounded-2xl border bg-background p-6 shadow-sm">
+          <h3 className="font-headline text-xl font-semibold mb-4">Customers also consider</h3>
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+            {relatedProducts.map(product => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </section>
       )}
     </div>
   );

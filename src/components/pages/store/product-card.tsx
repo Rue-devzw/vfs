@@ -1,8 +1,10 @@
 "use client";
 
+import React from 'react';
 import Image from 'next/image';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Product } from '@/app/store/data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useCart } from './cart-context';
@@ -16,14 +18,23 @@ interface ProductCardProps {
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { dispatch } = useCart();
   const { toast } = useToast();
+  const [quantity, setQuantity] = React.useState(1);
   const image = PlaceHolderImages.find(p => p.id === product.image) || PlaceHolderImages.find(p => p.id === 'product-apples');
 
   const handleAddToCart = () => {
-    dispatch({ type: 'ADD_ITEM', payload: product });
+    if (quantity < 1) {
+      toast({
+        title: "Quantity must be at least 1",
+        variant: "destructive",
+      });
+      return;
+    }
+    dispatch({ type: 'ADD_ITEM', payload: { product, quantity } });
     toast({
         title: "Added to cart",
-        description: `${product.name} has been added to your cart.`,
+        description: `${quantity} × ${product.name} added to your cart.`,
     });
+    setQuantity(1);
   };
 
   return (
@@ -56,10 +67,20 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </div>
       </CardContent>
       <CardFooter className="p-4 pt-0">
-        <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90" onClick={handleAddToCart}>
-          <ShoppingCart className="mr-2 h-4 w-4" />
-          Add to Cart
-        </Button>
+        <div className="flex w-full items-center gap-2">
+          <Input
+            type="number"
+            min={1}
+            value={quantity}
+            onChange={(event) => setQuantity(Number(event.target.value))}
+            className="w-20"
+            aria-label={`Quantity for ${product.name}`}
+          />
+          <Button className="flex-1 bg-accent text-accent-foreground hover:bg-accent/90" onClick={handleAddToCart}>
+            <ShoppingCart className="mr-2 h-4 w-4" />
+            Quick Add
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   );
