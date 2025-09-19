@@ -1,6 +1,7 @@
 import { contactDetails } from "@/lib/data";
 import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 
 export function Contact() {
   return (
@@ -23,9 +24,16 @@ export function Contact() {
                   <div>
                     <h3 className="font-semibold">{detail.label}</h3>
                     {detail.href ? (
-                       <Link href={detail.href} className="text-muted-foreground hover:text-primary transition-colors whitespace-pre-wrap">
-                          {detail.value}
-                       </Link>
+                      <Link
+                        href={detail.href}
+                        className="group inline-flex items-center gap-2 font-medium text-primary transition-colors hover:text-primary/80 whitespace-pre-wrap"
+                      >
+                        <span>{detail.value}</span>
+                        <ArrowUpRight
+                          className="h-4 w-4 transition-transform group-hover:translate-x-1"
+                          aria-hidden="true"
+                        />
+                      </Link>
                     ) : (
                       <p className="text-muted-foreground">{detail.value}</p>
                     )}

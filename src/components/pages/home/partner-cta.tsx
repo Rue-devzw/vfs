@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { Handshake } from "lucide-react";
+import { Handshake, ArrowRight } from "lucide-react";
 
 export function PartnerCTA() {
   return (
@@ -15,8 +15,16 @@ export function PartnerCTA() {
             Join us in building healthy, empowered communities. Partner with us to support food security, farmer development, and youth employment in Zimbabwe.
           </p>
           <div className="mt-8">
-            <Button asChild size="lg" style={{ backgroundColor: '#FF9800', color: 'white' }} className="font-bold transform transition-transform hover:scale-105">
-              <Link href="/become-a-partner">Partner With Us</Link>
+            <Button
+              asChild
+              size="lg"
+              style={{ backgroundColor: '#FF9800', color: 'white' }}
+              className="font-bold transform transition-transform hover:scale-105 group"
+            >
+              <Link href="/become-a-partner">
+                <span>Partner With Us</span>
+                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+              </Link>
             </Button>
           </div>
         </div>
