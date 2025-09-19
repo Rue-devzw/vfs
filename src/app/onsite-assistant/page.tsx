@@ -19,6 +19,9 @@ export default function OnsiteAssistantPage() {
                 Chat with our AI assistant to get instant answers from Valley Farm Secrets' onsite information about services,
                 locations, wholesale support, and more.
               </p>
+              <p className="mx-auto max-w-xl text-sm text-muted-foreground">
+                Look for the floating chat bubble in the bottom corner to open the assistant and dismiss it whenever you like.
+              </p>
               <p className="mx-auto max-w-2xl text-sm text-muted-foreground">
                 Need extra help? We'll automatically forward your conversation to our WhatsApp helpline (+263 788 679 000 / +263
                 711 406 919) and email team at info@valleyfarmsecrets.com whenever a human follow-up is required.
