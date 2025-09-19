@@ -2,6 +2,8 @@
 
 import { generateImageCaption as generateImageCaptionFlow, GenerateImageCaptionInput } from "@/ai/flows/image-gallery-captioning";
 import { generateFarmingTip as generateFarmingTipFlow, GenerateFarmingTipInput } from "@/ai/flows/farming-tips-flow";
+import { generateOnsiteAssistantResponse as generateOnsiteAssistantFlow } from "@/ai/flows/onsite-assistant-flow";
+import type { OnsiteAssistantMessage, OnsiteAssistantResponse } from "@/lib/assistant-types";
 
 const ALLOWED_CONTENT_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp"];
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
@@ -66,5 +68,21 @@ export async function generateFarmingTip(topic: string) {
     } catch (error) {
         console.error("Error generating farming tip:", error);
         return { tip: null, error: "Failed to generate tip. Please try again." };
+    }
+}
+
+export async function chatWithOnsiteAssistant(messages: OnsiteAssistantMessage[]): Promise<{
+    response: OnsiteAssistantResponse | null;
+    error: string | null;
+}> {
+    try {
+        const response = await generateOnsiteAssistantFlow({ messages });
+        return { response, error: null };
+    } catch (error) {
+        console.error("Error generating onsite assistant response:", error);
+        return {
+            response: null,
+            error: "We couldn't reach the assistant right now. Please try again shortly.",
+        };
     }
 }
