@@ -37,14 +37,15 @@ export function Header() {
             Valley Farm Secrets
           </span>
         </Link>
-        <nav className="hidden items-center gap-6 md:flex">
+        <nav className="hidden items-center gap-4 md:flex">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="text-sm font-medium text-foreground/80 transition-colors hover:text-primary"
+              className="inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-semibold text-foreground/80 transition-colors hover:bg-accent/10 hover:text-primary"
             >
-              {link.label}
+              <link.icon aria-hidden="true" className="h-4 w-4" />
+              <span>{link.label}</span>
             </Link>
           ))}
         </nav>
@@ -57,14 +58,14 @@ export function Header() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-full max-w-sm bg-background p-0">
-                <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
+              <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
               <div className="flex h-full flex-col">
                 <div className="p-6">
                   <Link href="/" className="flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
-                      <Logo className="h-7 w-7 text-primary" />
-                      <span className="font-headline text-xl font-bold text-primary">
-                          Valley Farm Secrets
-                      </span>
+                    <Logo className="h-7 w-7 text-primary" />
+                    <span className="font-headline text-xl font-bold text-primary">
+                      Valley Farm Secrets
+                    </span>
                   </Link>
                 </div>
                 <nav className="mt-4 flex flex-col gap-2 p-6 pt-0">
@@ -73,9 +74,10 @@ export function Header() {
                       key={link.href}
                       href={link.href}
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className="rounded-md px-3 py-2 text-lg font-medium text-foreground/80 transition-colors hover:bg-accent/50 hover:text-primary"
+                      className="flex items-center gap-3 rounded-md px-3 py-2 text-lg font-semibold text-foreground/80 transition-colors hover:bg-accent/10 hover:text-primary"
                     >
-                      {link.label}
+                      <link.icon aria-hidden="true" className="h-5 w-5" />
+                      <span>{link.label}</span>
                     </Link>
                   ))}
                 </nav>
