@@ -2,13 +2,23 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { ArrowRight, ChevronDown, ChevronsLeftRight, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { navLinks } from "@/lib/nav-links";
 import type { NavLink as NavLinkConfig } from "@/lib/nav-links";
 import { Logo } from "../icons/logo";
+import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarLabel,
+  MenubarMenu,
+  MenubarSeparator,
+  MenubarTrigger,
+} from "@/components/ui/menubar";
 
 const toneClassMap: Record<NavLinkConfig["tone"], string> = {
   primary: "text-primary",
@@ -19,6 +29,8 @@ const toneClassMap: Record<NavLinkConfig["tone"], string> = {
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMenubarOpen, setIsMenubarOpen] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,11 +56,87 @@ export function Header() {
             Valley Farm Secrets
           </span>
         </Link>
-        <nav className="hidden md:flex">
-          <div className="flex items-center gap-1 rounded-full border border-border/60 bg-background/80 px-2 py-1 shadow-sm backdrop-blur">
-            {navLinks.map((link) => (
-              <NavigationLinkItem key={link.href} link={link} variant="desktop" />
-            ))}
+        <nav className="hidden items-center gap-3 md:flex">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => setIsMenubarOpen((prev) => !prev)}
+            className="flex items-center gap-2 rounded-full border border-border/60 bg-background/80 px-4 py-2 text-sm font-medium shadow-sm transition-colors hover:bg-primary/5"
+            aria-expanded={isMenubarOpen}
+            aria-controls="primary-menubar"
+          >
+            <ChevronsLeftRight
+              className={cn(
+                "h-4 w-4 transition-transform",
+                isMenubarOpen ? "rotate-0" : "-rotate-180"
+              )}
+            />
+            <span>{isMenubarOpen ? "Fold menu" : "Unfold menu"}</span>
+          </Button>
+          <div
+            className={cn(
+              "overflow-hidden transition-[max-width,opacity,transform] duration-300 ease-in-out",
+              isMenubarOpen ? "max-w-4xl opacity-100 translate-y-0" : "max-w-0 -translate-y-1 opacity-0"
+            )}
+          >
+            <Menubar
+              id="primary-menubar"
+              className="flex h-11 items-center space-x-1 rounded-full border border-border/60 bg-background/85 px-2 shadow-sm backdrop-blur"
+            >
+              {navLinks.map((link) => {
+                const Icon = link.icon;
+                const toneClass = toneClassMap[link.tone];
+                return (
+                  <MenubarMenu key={link.href}>
+                    <MenubarTrigger
+                      className={cn(
+                        "group flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium text-foreground transition-colors hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background data-[state=open]:bg-primary/10 data-[state=open]:text-primary",
+                      )}
+                    >
+                      <Icon
+                        aria-hidden="true"
+                        className={cn(
+                          "h-4 w-4 transition-colors",
+                          toneClass,
+                          "group-hover:text-primary group-focus-visible:text-primary group-data-[state=open]:text-primary"
+                        )}
+                      />
+                      <span
+                        className={cn(
+                          "transition-colors",
+                          toneClass,
+                          "group-hover:text-primary group-focus-visible:text-primary group-data-[state=open]:text-primary"
+                        )}
+                      >
+                        {link.label}
+                      </span>
+                      <ChevronDown
+                        aria-hidden="true"
+                        className="ml-1 h-3.5 w-3.5 text-muted-foreground transition-transform group-data-[state=open]:rotate-180"
+                      />
+                    </MenubarTrigger>
+                    <MenubarContent className="min-w-[14rem] rounded-xl border border-border/70 bg-background/95 p-2 shadow-xl backdrop-blur">
+                      <MenubarLabel className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                        <Icon aria-hidden="true" className={cn("h-4 w-4", toneClass)} />
+                        {link.label}
+                      </MenubarLabel>
+                      <MenubarSeparator className="my-2" />
+                      <MenubarItem
+                        onSelect={(event) => {
+                          event.preventDefault();
+                          router.push(link.href);
+                        }}
+                        className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-foreground focus:bg-primary/10 focus:text-primary data-[highlighted]:bg-primary/10 data-[highlighted]:text-primary"
+                      >
+                        Visit {link.label}
+                        <ArrowRight aria-hidden="true" className="h-4 w-4 text-primary" />
+                      </MenubarItem>
+                    </MenubarContent>
+                  </MenubarMenu>
+                );
+              })}
+            </Menubar>
           </div>
         </nav>
         <div className="md:hidden">

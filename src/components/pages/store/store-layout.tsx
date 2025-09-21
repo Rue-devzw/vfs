@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useMemo, useRef, useState, useCallback } from "react";
+import React, { useMemo, useRef, useState, useCallback, useEffect } from "react";
 import { products, categories, Category } from "@/app/store/data";
 import ProductFilters from "./product-filters";
 import ProductGrid from "./product-grid";
@@ -14,7 +14,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import ProductCard from "./product-card";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { PlaceHolderImages, type ImagePlaceholder } from "@/lib/placeholder-images";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -37,6 +37,10 @@ type HeroSlide = {
   highlight: string;
   category: Category;
   cta: string;
+};
+
+type ResolvedHeroSlide = HeroSlide & {
+  image: ImagePlaceholder | null;
 };
 
 type QuickTile = {
@@ -81,7 +85,7 @@ export function StoreLayout() {
 
   const specialOffers = useMemo(() => products.filter(product => product.onSpecial), []);
 
-  const heroSlides = useMemo(() => {
+  const heroSlides = useMemo<ResolvedHeroSlide[]>(() => {
     const slides: HeroSlide[] = [
       {
         imageId: "hero-produce",
@@ -114,6 +118,30 @@ export function StoreLayout() {
       image: PlaceHolderImages.find(image => image.id === slide.imageId) ?? null,
     }));
   }, []);
+
+  const [activeHeroIndex, setActiveHeroIndex] = useState(() =>
+    heroSlides.length > 0 ? Math.floor(Math.random() * heroSlides.length) : 0
+  );
+
+  useEffect(() => {
+    if (heroSlides.length <= 1) {
+      return;
+    }
+
+    const rotation = window.setInterval(() => {
+      setActiveHeroIndex(prevIndex => {
+        let nextIndex = Math.floor(Math.random() * heroSlides.length);
+        if (nextIndex === prevIndex) {
+          nextIndex = (nextIndex + 1) % heroSlides.length;
+        }
+        return nextIndex;
+      });
+    }, 7000);
+
+    return () => window.clearInterval(rotation);
+  }, [heroSlides, heroSlides.length]);
+
+  const currentHeroSlide = heroSlides[activeHeroIndex] ?? heroSlides[0];
 
   const filteredAndSortedProducts = useMemo(() => {
     let filtered = [...products];
@@ -302,43 +330,75 @@ export function StoreLayout() {
                 </div>
               </div>
 
-              <Carousel opts={{ loop: true }} className="overflow-hidden rounded-2xl">
-                <CarouselContent>
-                  {heroSlides.map(slide => (
-                    <CarouselItem key={slide.imageId}>
-                      <div className="relative h-[260px] overflow-hidden rounded-2xl bg-muted sm:h-[320px] lg:h-[360px]">
-                        {slide.image && (
-                          <Image
-                            src={slide.image.imageUrl}
-                            alt={slide.image.description}
-                            fill
-                            className="object-cover"
-                            priority
-                            sizes="(min-width: 1280px) 960px, (min-width: 768px) 70vw, 90vw"
-                            data-ai-hint={slide.image.imageHint}
-                          />
-                        )}
-                        <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/70 to-background/10" />
-                        <div className="relative z-10 flex h-full flex-col justify-center gap-4 px-7 py-8 sm:px-10">
-                          <Badge className="w-fit bg-primary text-primary-foreground shadow">{slide.highlight}</Badge>
-                          <h2 className="font-headline text-3xl font-bold text-foreground sm:text-4xl">{slide.title}</h2>
-                          <p className="max-w-xl text-sm text-muted-foreground sm:text-base">{slide.description}</p>
-                          <div className="flex flex-wrap items-center gap-3">
-                            <Button size="lg" onClick={() => handleCategorySelect(slide.category)}>
-                              {slide.cta}
-                            </Button>
-                            <Button variant="outline" size="lg" onClick={handleViewSpecials}>
-                              See specials
-                            </Button>
-                          </div>
-                        </div>
+              <div className="relative h-[260px] overflow-hidden rounded-2xl bg-muted sm:h-[320px] lg:h-[360px]">
+                {heroSlides.map((slide, index) => {
+                  const isActive = index === activeHeroIndex;
+
+                  if (!slide.image) {
+                    return (
+                      <div
+                        key={slide.imageId}
+                        className={`${isActive ? "opacity-100" : "opacity-0"} absolute inset-0 bg-muted transition-opacity duration-700`}
+                      />
+                    );
+                  }
+
+                  return (
+                    <Image
+                      key={slide.imageId}
+                      src={slide.image.imageUrl}
+                      alt={slide.image.description}
+                      fill
+                      className={`${isActive ? "opacity-100" : "opacity-0"} object-cover transition-opacity duration-700`}
+                      priority={isActive}
+                      sizes="(min-width: 1280px) 960px, (min-width: 768px) 70vw, 90vw"
+                      data-ai-hint={slide.image.imageHint}
+                    />
+                  );
+                })}
+                <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/70 to-background/10" />
+                <div className="relative z-10 flex h-full flex-col justify-center gap-4 px-7 py-8 sm:px-10">
+                  {currentHeroSlide && (
+                    <>
+                      <Badge className="w-fit bg-primary text-primary-foreground shadow">
+                        {currentHeroSlide.highlight}
+                      </Badge>
+                      <span className="text-xs uppercase tracking-wide text-muted-foreground">
+                        Now featuring {currentHeroSlide.category}
+                      </span>
+                      <h2 className="font-headline text-3xl font-bold text-foreground sm:text-4xl">
+                        {currentHeroSlide.title}
+                      </h2>
+                      <p className="max-w-xl text-sm text-muted-foreground sm:text-base">
+                        {currentHeroSlide.description}
+                      </p>
+                      <div className="flex flex-wrap items-center gap-3">
+                        <Button size="lg" onClick={() => handleCategorySelect(currentHeroSlide.category)}>
+                          {currentHeroSlide.cta}
+                        </Button>
+                        <Button variant="outline" size="lg" onClick={handleViewSpecials}>
+                          See specials
+                        </Button>
                       </div>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious className="left-4 top-1/2 hidden h-10 w-10 -translate-y-1/2 rounded-full bg-background/90 shadow lg:flex" />
-                <CarouselNext className="right-4 top-1/2 hidden h-10 w-10 -translate-y-1/2 rounded-full bg-background/90 shadow lg:flex" />
-              </Carousel>
+                    </>
+                  )}
+                </div>
+                <div className="absolute bottom-6 right-6 z-10 flex gap-2">
+                  {heroSlides.map((slide, index) => {
+                    const isActive = index === activeHeroIndex;
+                    return (
+                      <button
+                        key={slide.imageId}
+                        type="button"
+                        onClick={() => setActiveHeroIndex(index)}
+                        className={`${isActive ? "w-8 bg-primary" : "w-4 bg-white/60 hover:bg-white/80"} h-2.5 rounded-full transition-all`}
+                        aria-label={`Show ${slide.title}`}
+                        aria-pressed={isActive}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
 
               <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
                 {categorySpotlights.map(spotlight => {
