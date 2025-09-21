@@ -194,7 +194,7 @@ export function StoreLayout() {
           <div className="flex flex-wrap items-center justify-between gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-3">
               <Badge className="bg-primary text-primary-foreground">Marketplace 2.0</Badge>
-              <span>AliExpress-inspired browsing for Valley Farm Secrets shoppers.</span>
+              <span>Marketplace browsing tailored for Valley Farm Secrets shoppers.</span>
             </div>
             <div className="flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-primary" />
