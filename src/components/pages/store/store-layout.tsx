@@ -119,9 +119,7 @@ export function StoreLayout() {
     }));
   }, []);
 
-  const [activeHeroIndex, setActiveHeroIndex] = useState(() =>
-    heroSlides.length > 0 ? Math.floor(Math.random() * heroSlides.length) : 0
-  );
+  const [activeHeroIndex, setActiveHeroIndex] = useState(0);
 
   useEffect(() => {
     if (heroSlides.length <= 1) {
@@ -129,17 +127,11 @@ export function StoreLayout() {
     }
 
     const rotation = window.setInterval(() => {
-      setActiveHeroIndex(prevIndex => {
-        let nextIndex = Math.floor(Math.random() * heroSlides.length);
-        if (nextIndex === prevIndex) {
-          nextIndex = (nextIndex + 1) % heroSlides.length;
-        }
-        return nextIndex;
-      });
+      setActiveHeroIndex(prevIndex => (prevIndex + 1) % heroSlides.length);
     }, 7000);
 
     return () => window.clearInterval(rotation);
-  }, [heroSlides, heroSlides.length]);
+  }, [heroSlides.length]);
 
   const currentHeroSlide = heroSlides[activeHeroIndex] ?? heroSlides[0];
 
@@ -339,6 +331,7 @@ export function StoreLayout() {
                       <div
                         key={slide.imageId}
                         className={`${isActive ? "opacity-100" : "opacity-0"} absolute inset-0 bg-muted transition-opacity duration-700`}
+                        aria-hidden={!isActive}
                       />
                     );
                   }
@@ -349,14 +342,15 @@ export function StoreLayout() {
                       src={slide.image.imageUrl}
                       alt={slide.image.description}
                       fill
-                      className={`${isActive ? "opacity-100" : "opacity-0"} object-cover transition-opacity duration-700`}
+                      className={`${isActive ? "opacity-100" : "opacity-0"} absolute inset-0 h-full w-full object-cover transition-opacity duration-700`}
                       priority={isActive}
                       sizes="(min-width: 1280px) 960px, (min-width: 768px) 70vw, 90vw"
                       data-ai-hint={slide.image.imageHint}
+                      aria-hidden={!isActive}
                     />
                   );
                 })}
-                <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/70 to-background/10" />
+                <div className="absolute inset-0 bg-gradient-to-r from-background/75 via-background/40 to-transparent" />
                 <div className="relative z-10 flex h-full flex-col justify-center gap-4 px-7 py-8 sm:px-10">
                   {currentHeroSlide && (
                     <>
