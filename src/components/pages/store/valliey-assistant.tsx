@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import {
   MessageCircle,
   Send,
@@ -59,12 +60,24 @@ const escalationLinks = {
 };
 
 export function VallieyAssistant() {
+  const pathname = usePathname();
+  const isStoreExperience = pathname?.startsWith("/store") ?? false;
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
   const [draft, setDraft] = useState("");
   const [isThinking, setIsThinking] = useState(false);
   const endOfMessagesRef = useRef<HTMLDivElement | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const buttonPlacementClasses = isStoreExperience
+    ? "bottom-4 right-24 sm:right-28 md:bottom-6 md:right-36"
+    : "bottom-4 right-4 md:bottom-6 md:right-24";
+
+  const panelPlacementClasses = isStoreExperience
+    ? "bottom-24 right-4 sm:right-28 md:bottom-28 md:right-36"
+    : "bottom-24 right-4 md:bottom-28 md:right-24";
+
+  const continueShoppingHref = isStoreExperience ? "#store-products" : "/store#store-products";
 
   const highlightedSuggestion = useMemo(() => {
     const assistantMessages = messages.filter(message => message.author === "assistant");
@@ -132,7 +145,8 @@ export function VallieyAssistant() {
       <Button
         size="lg"
         className={cn(
-          "group fixed bottom-4 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-all duration-300 hover:scale-105 focus-visible:ring-2 focus-visible:ring-offset-2 md:bottom-6 md:right-24",
+          "group fixed z-40 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-all duration-300 hover:scale-105 focus-visible:ring-2 focus-visible:ring-offset-2",
+          buttonPlacementClasses,
           isOpen ? "pointer-events-none scale-90 opacity-0" : "opacity-100"
         )}
         onClick={() => setIsOpen(true)}
@@ -143,7 +157,8 @@ export function VallieyAssistant() {
 
       <div
         className={cn(
-          "fixed bottom-24 right-4 z-40 w-[min(360px,calc(100vw-2rem))] max-w-sm transition-all duration-300 ease-out md:bottom-28 md:right-24",
+          "fixed z-40 w-[min(360px,calc(100vw-2rem))] max-w-sm transition-all duration-300 ease-out",
+          panelPlacementClasses,
           isOpen
             ? "pointer-events-auto translate-y-0 scale-100 opacity-100"
             : "pointer-events-none translate-y-6 scale-95 opacity-0"
@@ -275,7 +290,7 @@ export function VallieyAssistant() {
                   </a>
                 </Button>
                 <Button asChild variant="secondary" className="sm:col-span-2">
-                  <a href="#store-products" className="flex items-center gap-2">
+                  <a href={continueShoppingHref} className="flex items-center gap-2">
                     <ShoppingCart className="h-4 w-4" />
                     Continue shopping
                   </a>

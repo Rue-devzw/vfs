@@ -27,7 +27,6 @@ import {
   Sparkle,
   Zap,
 } from "lucide-react";
-import { VallieyAssistant } from "./valliey-assistant";
 
 export type SortOption = "name-asc" | "name-desc" | "price-asc" | "price-desc";
 
@@ -509,7 +508,6 @@ export function StoreLayout() {
           </div>
         </div>
       </section>
-      <VallieyAssistant />
     </div>
   );
 }
