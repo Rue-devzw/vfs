@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { locations } from "@/lib/data";
 import Link from "next/link";
-import { MapPin } from "lucide-react";
+import { MapPin, ExternalLink } from "lucide-react";
 
 export function Locations() {
   return (
@@ -37,9 +37,10 @@ export function Locations() {
                 </div>
               </CardContent>
               <div className="p-6 pt-0">
-                <Button asChild className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
+                <Button asChild className="w-full bg-accent text-accent-foreground hover:bg-accent/90 group">
                   <Link href={location.mapLink} target="_blank" rel="noopener noreferrer">
-                    View on Google Maps
+                    <span>View on Google Maps</span>
+                    <ExternalLink className="h-4 w-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
                   </Link>
                 </Button>
               </div>

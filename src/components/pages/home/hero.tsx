@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { ShoppingCart, Truck } from "lucide-react";
 
 export function Hero() {
   const heroImage = PlaceHolderImages.find(p => p.id === "hero-produce");
@@ -35,17 +36,23 @@ export function Hero() {
           <Button
             asChild
             size="lg"
-            className="bg-primary hover:bg-primary/90 text-primary-foreground transform transition-transform hover:scale-105"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground transform transition-transform hover:scale-105 group"
           >
-            <Link href="/store">Shop Online</Link>
+            <Link href="/store">
+              <ShoppingCart className="h-5 w-5 transition-transform group-hover:scale-110" aria-hidden="true" />
+              <span>Shop Online</span>
+            </Link>
           </Button>
           <Button
             asChild
             size="lg"
             variant="secondary"
-            className="bg-accent hover:bg-accent/90 text-accent-foreground transform transition-transform hover:scale-105"
+            className="bg-accent hover:bg-accent/90 text-accent-foreground transform transition-transform hover:scale-105 group"
           >
-            <Link href="#wholesale">Wholesale Enquiries</Link>
+            <Link href="#wholesale">
+              <Truck className="h-5 w-5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+              <span>Wholesale Enquiries</span>
+            </Link>
           </Button>
         </div>
       </div>
