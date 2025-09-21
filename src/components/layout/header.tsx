@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { navLinks } from "@/lib/nav-links";
+import type { NavLink as NavLinkConfig } from "@/lib/nav-links";
 import { Logo } from "../icons/logo";
 
 export function Header() {
@@ -39,27 +40,7 @@ export function Header() {
         </Link>
         <nav className="hidden items-center gap-4 md:flex">
           {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="group inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-semibold transition-colors hover:bg-accent/10"
-            >
-              <link.icon
-                aria-hidden="true"
-                className={cn(
-                  "h-4 w-4 transition-colors group-hover:text-primary",
-                  link.colorClass
-                )}
-              />
-              <span
-                className={cn(
-                  "transition-colors group-hover:text-primary",
-                  link.colorClass
-                )}
-              >
-                {link.label}
-              </span>
-            </Link>
+            <NavigationLinkItem key={link.href} link={link} variant="desktop" />
           ))}
         </nav>
         <div className="md:hidden">
@@ -83,28 +64,12 @@ export function Header() {
                 </div>
                 <nav className="mt-4 flex flex-col gap-2 p-6 pt-0">
                   {navLinks.map((link) => (
-                    <Link
+                    <NavigationLinkItem
                       key={link.href}
-                      href={link.href}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="group flex items-center gap-3 rounded-md px-3 py-2 text-lg font-semibold transition-colors hover:bg-accent/10"
-                    >
-                      <link.icon
-                        aria-hidden="true"
-                        className={cn(
-                          "h-5 w-5 transition-colors group-hover:text-primary",
-                          link.colorClass
-                        )}
-                      />
-                      <span
-                        className={cn(
-                          "transition-colors group-hover:text-primary",
-                          link.colorClass
-                        )}
-                      >
-                        {link.label}
-                      </span>
-                    </Link>
+                      link={link}
+                      variant="mobile"
+                      onNavigate={() => setIsMobileMenuOpen(false)}
+                    />
                   ))}
                 </nav>
               </div>
@@ -113,5 +78,43 @@ export function Header() {
         </div>
       </div>
     </header>
+  );
+}
+
+type NavigationLinkItemProps = {
+  link: NavLinkConfig;
+  variant: "desktop" | "mobile";
+  onNavigate?: () => void;
+};
+
+function NavigationLinkItem({ link, variant, onNavigate }: NavigationLinkItemProps) {
+  const Icon = link.icon;
+
+  return (
+    <Link
+      href={link.href}
+      onClick={onNavigate ? () => onNavigate() : undefined}
+      className={cn(
+        "group items-center gap-2 rounded-md px-3 py-2 font-semibold transition-colors hover:bg-accent/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2",
+        variant === "desktop" ? "inline-flex text-sm" : "flex text-lg"
+      )}
+    >
+      <Icon
+        aria-hidden="true"
+        className={cn(
+          variant === "desktop" ? "h-4 w-4" : "h-5 w-5",
+          "transition-colors group-hover:text-primary",
+          link.colorClass
+        )}
+      />
+      <span
+        className={cn(
+          "transition-colors group-hover:text-primary",
+          link.colorClass
+        )}
+      >
+        {link.label}
+      </span>
+    </Link>
   );
 }
