@@ -8,7 +8,7 @@ import {
   X,
   PhoneCall,
   Mail,
-  Store,
+  ShoppingCart,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -28,28 +28,28 @@ const initialMessages: ChatMessage[] = [
     id: "welcome",
     author: "assistant",
     content:
-      "Hi there! I'm Valliey, your on-site assistant. Ask me about products, services, collections, or anything else while you shop.",
+      "Hi there! I'm Valliey, your shopping assistant. I can surface products, line up specials, and guide you through checkout.",
   },
   {
     id: "escalate",
     author: "assistant",
     content:
-      "Need a person right away? Use the quick actions below to escalate any order or query to our WhatsApp or email helplines.",
+      "Need a person right away? Use the quick actions below to escalate any order or payment query to our WhatsApp or email helplines.",
   },
 ];
 
 const quickPrompts = [
   {
-    label: "What's on special today?",
-    prompt: "What specials are running in store today?",
+    label: "Show flash deals",
+    prompt: "Which flash deals are available to shop right now?",
   },
   {
-    label: "Show in-store services",
-    prompt: "What services can I access in store?",
+    label: "Build my basket",
+    prompt: "Can you help me build a basket for dinners this week?",
   },
   {
-    label: "Wholesale help",
-    prompt: "Can someone help me with a wholesale order?",
+    label: "Track my order",
+    prompt: "How do I track the status of my online order?",
   },
 ];
 
@@ -106,7 +106,7 @@ export function VallieyAssistant() {
       const assistantMessage: ChatMessage = {
         id: `assistant-${Date.now()}`,
         author: "assistant",
-        content: `I've taken note of \"${trimmedDraft}\". I can point you to the right department, pull this week's deals, or help you reserve items for collection. Use the quick actions if you'd like to escalate straight to the team.`,
+        content: `I've taken note of \"${trimmedDraft}\". I can point you to the right aisle, spotlight best-sellers, or fast-track you to checkout. Use the quick actions if you'd like to escalate straight to the team.`,
       };
 
       setMessages(prev => [...prev, assistantMessage]);
@@ -132,7 +132,7 @@ export function VallieyAssistant() {
       <Button
         size="lg"
         className={cn(
-          "group fixed bottom-4 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-all duration-300 hover:scale-105 focus-visible:ring-2 focus-visible:ring-offset-2 md:bottom-6 md:right-6",
+          "group fixed bottom-4 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-all duration-300 hover:scale-105 focus-visible:ring-2 focus-visible:ring-offset-2 md:bottom-6 md:right-24",
           isOpen ? "pointer-events-none scale-90 opacity-0" : "opacity-100"
         )}
         onClick={() => setIsOpen(true)}
@@ -143,7 +143,7 @@ export function VallieyAssistant() {
 
       <div
         className={cn(
-          "fixed bottom-24 right-4 z-40 w-[min(360px,calc(100vw-2rem))] max-w-sm transition-all duration-300 ease-out md:bottom-28 md:right-6",
+          "fixed bottom-24 right-4 z-40 w-[min(360px,calc(100vw-2rem))] max-w-sm transition-all duration-300 ease-out md:bottom-28 md:right-24",
           isOpen
             ? "pointer-events-auto translate-y-0 scale-100 opacity-100"
             : "pointer-events-none translate-y-6 scale-95 opacity-0"
@@ -160,7 +160,7 @@ export function VallieyAssistant() {
                 Valliey
               </CardTitle>
               <p className="text-xs text-muted-foreground">
-                Always-on support for everything happening in store. Let me know what you need!
+                Always-on support while you shop. Tell me what you&apos;re stocking up on and I&apos;ll guide you.
               </p>
             </div>
             <div className="flex gap-1">
@@ -240,7 +240,7 @@ export function VallieyAssistant() {
               <Textarea
                 value={draft}
                 onChange={event => setDraft(event.target.value)}
-                placeholder="Tell Valliey how she can help while you're onsite…"
+                placeholder="Tell Valliey what you're shopping for and she'll line it up…"
                 rows={3}
               />
               <div className="flex items-center justify-between">
@@ -255,7 +255,7 @@ export function VallieyAssistant() {
             </form>
 
             <div className="space-y-2 border-t pt-3">
-              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Escalate instantly</p>
+              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Order helplines</p>
               <div className="grid gap-2 sm:grid-cols-2">
                 <Button asChild variant="outline">
                   <a
@@ -275,9 +275,9 @@ export function VallieyAssistant() {
                   </a>
                 </Button>
                 <Button asChild variant="secondary" className="sm:col-span-2">
-                  <a href="#store-services" className="flex items-center gap-2">
-                    <Store className="h-4 w-4" />
-                    Explore in-store services
+                  <a href="#store-products" className="flex items-center gap-2">
+                    <ShoppingCart className="h-4 w-4" />
+                    Continue shopping
                   </a>
                 </Button>
               </div>

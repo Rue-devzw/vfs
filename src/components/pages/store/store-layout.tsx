@@ -18,16 +18,14 @@ import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { services } from "@/lib/data";
 import {
   type LucideIcon,
+  ArrowRight,
   Carrot,
   Beef,
   ShoppingBasket,
   Sparkle,
   Zap,
-  Truck,
-  Clock,
 } from "lucide-react";
 import { VallieyAssistant } from "./valliey-assistant";
 
@@ -52,6 +50,21 @@ type QuickTile = {
     href?: string;
   };
   footer?: string;
+};
+
+type CategorySpotlight = {
+  title: string;
+  description: string;
+  category: Category;
+  cta: string;
+};
+
+type ShoppingCollection = {
+  title: string;
+  description: string;
+  category: Category;
+  highlights: string[];
+  cta: string;
 };
 
 const categoryIcons: Record<Category, LucideIcon> = {
@@ -149,14 +162,57 @@ export function StoreLayout() {
     productSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, []);
 
-  const highlightServices = services.filter(service =>
-    [
-      "Fruit & Vegetables",
-      "Butchery",
-      "Grocery & Spices",
-      "Wholesale Supply",
-    ].includes(service.title),
-  );
+  const categorySpotlights: CategorySpotlight[] = [
+    {
+      title: "Meal Prep Veggie Boxes",
+      description: "Seasonal greens and fruit crates packed for weekly meal plans.",
+      category: "Fruit & Veg",
+      cta: "Shop fresh produce",
+    },
+    {
+      title: "Butcher's Signature Cuts",
+      description: "Premium steaks, sausages, and braai favourites ready for the grill.",
+      category: "Butchery",
+      cta: "Shop butchery deals",
+    },
+    {
+      title: "Pantry Power-Ups",
+      description: "Top up essentials, spices, and breakfast favourites in one go.",
+      category: "Grocery & Spices",
+      cta: "Restock the pantry",
+    },
+  ];
+
+  const shoppingCollections: ShoppingCollection[] = [
+    {
+      title: "Family Braai Night",
+      description: "Build a basket with rump steak, boerewors, and spicy condiments for the perfect weekend fire.",
+      category: "Butchery",
+      highlights: ["Premium cuts", "Bulk packs", "Marinades"],
+      cta: "Shop braai essentials",
+    },
+    {
+      title: "Fresh Market Staples",
+      description: "Fill your cart with leafy greens, crunchy veg, and sweet fruit for smoothies and salads.",
+      category: "Fruit & Veg",
+      highlights: ["Seasonal picks", "Ready-to-eat", "Juice-friendly"],
+      cta: "Explore produce crates",
+    },
+    {
+      title: "Pantry Restock",
+      description: "Grab breads, spices, and breakfast must-haves with multi-buy savings.",
+      category: "Grocery & Spices",
+      highlights: ["Everyday basics", "Bulk savings", "Breakfast wins"],
+      cta: "Fill the pantry",
+    },
+    {
+      title: "Quick Midweek Fix",
+      description: "Mix and match protein, veg, and sauces for fast dinners without the guesswork.",
+      category: "Butchery",
+      highlights: ["Ready in minutes", "Chef-curated", "Family friendly"],
+      cta: "Shop midweek combos",
+    },
+  ];
 
   const quickTiles: QuickTile[] = [
     {
@@ -169,19 +225,22 @@ export function StoreLayout() {
       },
     },
     {
-      title: "Wholesale Desk",
-      description: "Bulk pricing, deliveries, and standing orders for institutions & restaurants.",
-      icon: Truck,
+      title: "Produce Bundles",
+      description: "Curated boxes of seasonal fruit and veg pre-packed for easy checkout.",
+      icon: Carrot,
       action: {
-        label: "Call +263 788 679 000",
-        href: "tel:+263788679000",
+        label: "Shop fresh boxes",
+        onClick: () => handleCategorySelect("Fruit & Veg"),
       },
     },
     {
-      title: "Store Hours",
-      description: "Mon-Sat: 8:00 AM - 7:00 PM",
-      icon: Clock,
-      footer: "Visit us at 75 Main Street, Gweru.",
+      title: "Pantry Restock",
+      description: "Top up breakfast, baking, and spice essentials with multi-buy offers.",
+      icon: ShoppingBasket,
+      action: {
+        label: "Fill the pantry",
+        onClick: () => handleCategorySelect("Grocery & Spices"),
+      },
     },
   ];
 
@@ -283,17 +342,31 @@ export function StoreLayout() {
               </Carousel>
 
               <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-                {highlightServices.map(service => (
-                  <Card key={service.title} className="border-none bg-card/80 shadow-sm">
-                    <CardHeader className="flex flex-row items-center gap-3 pb-2">
-                      <div className="rounded-full bg-primary/10 p-3 text-primary">
-                        <service.icon className="h-5 w-5" />
-                      </div>
-                      <CardTitle className="text-base font-semibold">{service.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="pt-0 text-sm text-muted-foreground">{service.description}</CardContent>
-                  </Card>
-                ))}
+                {categorySpotlights.map(spotlight => {
+                  const Icon = categoryIcons[spotlight.category];
+                  return (
+                    <Card key={spotlight.title} className="border-none bg-card/80 shadow-sm">
+                      <CardHeader className="flex flex-row items-center gap-3 pb-2">
+                        <div className="rounded-full bg-primary/10 p-3 text-primary">
+                          {Icon && <Icon className="h-5 w-5" />}
+                        </div>
+                        <CardTitle className="text-base font-semibold">{spotlight.title}</CardTitle>
+                      </CardHeader>
+                      <CardContent className="pt-0 text-sm text-muted-foreground">
+                        <p>{spotlight.description}</p>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="mt-3 w-fit gap-1 px-0 text-primary hover:bg-transparent"
+                          onClick={() => handleCategorySelect(spotlight.category)}
+                        >
+                          {spotlight.cta}
+                          <ArrowRight className="h-4 w-4" />
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
               </div>
             </div>
 
@@ -366,26 +439,47 @@ export function StoreLayout() {
         </div>
       </section>
 
-      <section id="store-services" className="bg-card/40 py-14">
+      <section id="store-collections" className="bg-card/40 py-14">
         <div className="container mx-auto px-4 md:px-6">
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className="font-headline text-3xl font-bold md:text-4xl">In-Store Services & Departments</h2>
+            <h2 className="font-headline text-3xl font-bold md:text-4xl">Curated Ways to Shop</h2>
             <p className="mt-3 text-base text-muted-foreground">
-              Everything you can access when you walk through our doors — from retail counters to wholesale support and corporate servicing.
+              Pick a ready-to-go collection tailored to the moment and we&apos;ll line up the perfect mix of products for your cart.
             </p>
           </div>
           <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
-            {services.map(service => (
-              <Card key={service.title} className="h-full border-none bg-background/90 shadow-sm">
-                <CardHeader className="flex flex-col items-start gap-3">
-                  <div className="rounded-full bg-primary/10 p-3 text-primary">
-                    <service.icon className="h-6 w-6" />
-                  </div>
-                  <CardTitle className="text-lg font-semibold">{service.title}</CardTitle>
-                </CardHeader>
-                <CardContent className="pt-0 text-sm text-muted-foreground">{service.description}</CardContent>
-              </Card>
-            ))}
+            {shoppingCollections.map(collection => {
+              const Icon = categoryIcons[collection.category];
+              return (
+                <Card key={collection.title} className="flex h-full flex-col border-none bg-background/90 shadow-sm">
+                  <CardHeader className="flex flex-col items-start gap-3">
+                    <div className="rounded-full bg-primary/10 p-3 text-primary">
+                      {Icon && <Icon className="h-6 w-6" />}
+                    </div>
+                    <CardTitle className="text-lg font-semibold">{collection.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex flex-1 flex-col justify-between gap-4 pt-0 text-sm text-muted-foreground">
+                    <div className="space-y-3">
+                      <p>{collection.description}</p>
+                      <div className="flex flex-wrap gap-2">
+                        {collection.highlights.map(highlight => (
+                          <Badge key={highlight} variant="secondary" className="rounded-full">
+                            {highlight}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                    <Button
+                      onClick={() => handleCategorySelect(collection.category)}
+                      className="w-fit gap-2"
+                    >
+                      {collection.cta}
+                      <ArrowRight className="h-4 w-4" />
+                    </Button>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         </div>
       </section>
