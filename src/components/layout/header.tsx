@@ -10,6 +10,12 @@ import { navLinks } from "@/lib/nav-links";
 import type { NavLink as NavLinkConfig } from "@/lib/nav-links";
 import { Logo } from "../icons/logo";
 
+const toneClassMap: Record<NavLinkConfig["tone"], string> = {
+  primary: "text-primary",
+  accent: "text-accent",
+  muted: "text-muted-foreground",
+};
+
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -89,6 +95,7 @@ type NavigationLinkItemProps = {
 
 function NavigationLinkItem({ link, variant, onNavigate }: NavigationLinkItemProps) {
   const Icon = link.icon;
+  const toneClass = toneClassMap[link.tone];
 
   return (
     <Link
@@ -103,14 +110,14 @@ function NavigationLinkItem({ link, variant, onNavigate }: NavigationLinkItemPro
         aria-hidden="true"
         className={cn(
           variant === "desktop" ? "h-4 w-4" : "h-5 w-5",
-          "transition-colors group-hover:text-primary",
-          link.colorClass
+          toneClass,
+          "transition-colors group-hover:text-primary group-focus-visible:text-primary"
         )}
       />
       <span
         className={cn(
-          "transition-colors group-hover:text-primary",
-          link.colorClass
+          toneClass,
+          "transition-colors group-hover:text-primary group-focus-visible:text-primary"
         )}
       >
         {link.label}

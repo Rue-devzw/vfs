@@ -10,11 +10,13 @@ import {
   Sprout,
 } from "lucide-react";
 
+export type NavLinkTone = "primary" | "accent" | "muted";
+
 export type NavLink = {
   href: string;
   label: string;
   icon: LucideIcon;
-  colorClass: string;
+  tone: NavLinkTone;
 };
 
 export const navLinks: NavLink[] = [
@@ -22,48 +24,48 @@ export const navLinks: NavLink[] = [
     href: "/producers",
     label: "For Producers",
     icon: Sprout,
-    colorClass: "text-emerald-500",
+    tone: "primary",
   },
   {
     href: "/become-a-partner",
     label: "Partner With Us",
     icon: Handshake,
-    colorClass: "text-sky-500",
+    tone: "accent",
   },
   {
     href: "/#services",
     label: "Services",
     icon: Cog,
-    colorClass: "text-purple-500",
+    tone: "primary",
   },
   {
     href: "/#locations",
     label: "Branches",
     icon: MapPin,
-    colorClass: "text-rose-500",
+    tone: "accent",
   },
   {
     href: "/#gallery",
     label: "Gallery",
     icon: Images,
-    colorClass: "text-amber-500",
+    tone: "muted",
   },
   {
     href: "/#wholesale",
     label: "Wholesale",
     icon: Boxes,
-    colorClass: "text-lime-500",
+    tone: "primary",
   },
   {
     href: "/#contact",
     label: "Contact Us",
     icon: PhoneCall,
-    colorClass: "text-orange-500",
+    tone: "accent",
   },
   {
     href: "/store",
     label: "Online Store",
     icon: ShoppingCart,
-    colorClass: "text-blue-500",
+    tone: "primary",
   },
 ];
