@@ -1,33 +1,36 @@
 export const categories = [
   "Fruit & Veg",
+  "Pre-Packed & Prepared Veg",
   "Butchery",
-  "Grocery & Spices"
+  "Grocery & Spices",
+  "Bakery & Staples"
 ] as const;
 
 export type Category = typeof categories[number];
 
 export const subCategories = [
-    "None",
-    "Baby",
-    "Beverages",
-    "Cereals",
-    "Cleaning Products",
-    "Cosmetics",
-    "Dairy",
-    "Dried",
-    "Oils & Sauces",
-    "Other Items",
-    "Salad Dressing",
-    "Seasoning",
-    "Snack",
-    "Soups",
-    "Spices",
-    "Spreads",
-    "Starch",
-    "Stationery",
-    "Tea & Breakfast",
-    "Toiletries",
-    "Canned Foods"
+  "None",
+  "Baby",
+  "Beverages",
+  "Cereals",
+  "Cleaning Products",
+  "Cosmetics",
+  "Dairy",
+  "Dried",
+  "Oils & Sauces",
+  "Other Items",
+  "Prepared Veg",
+  "Salad Dressing",
+  "Seasoning",
+  "Snack",
+  "Soups",
+  "Spices",
+  "Spreads",
+  "Starch",
+  "Stationery",
+  "Tea & Breakfast",
+  "Toiletries",
+  "Canned Foods"
 ] as const;
 
 export type SubCategory = typeof subCategories[number];
@@ -132,4 +135,54 @@ export const products: Product[] = [
     onSpecial: true,
     oldPrice: 3.2,
   },
+  {
+    id: 10,
+    name: "Chopped Butternut Cubes",
+    price: 2.2,
+    unit: "/500g pack",
+    category: "Pre-Packed & Prepared Veg",
+    subcategory: "Prepared Veg",
+    image: "product-carrots",
+    onSpecial: false,
+  },
+  {
+    id: 11,
+    name: "Stir-Fry Vegetable Mix",
+    price: 2.9,
+    unit: "/500g pack",
+    category: "Pre-Packed & Prepared Veg",
+    subcategory: "Prepared Veg",
+    image: "product-broccoli",
+    onSpecial: true,
+    oldPrice: 3.5,
+  },
+  {
+    id: 12,
+    name: "Diced Onion & Pepper Blend",
+    price: 1.8,
+    unit: "/250g pack",
+    category: "Pre-Packed & Prepared Veg",
+    subcategory: "Prepared Veg",
+    image: "product-apples",
+    onSpecial: false,
+  },
+  {
+    id: 13,
+    name: "Freshly Baked Rolls",
+    price: 2.4,
+    unit: "/pack of 6",
+    category: "Bakery & Staples",
+    image: "product-bread",
+    onSpecial: true,
+    oldPrice: 2.9,
+  },
+  {
+    id: 14,
+    name: "Wholegrain Mealie Meal",
+    price: 4.5,
+    unit: "/10kg",
+    category: "Bakery & Staples",
+    image: "product-bread",
+    onSpecial: false,
+  }
 ];

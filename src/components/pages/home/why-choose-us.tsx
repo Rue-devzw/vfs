@@ -2,7 +2,7 @@ import { whyChooseUsFeatures } from "@/lib/data";
 
 export function WhyChooseUs() {
   return (
-    <section id="why-choose-us" className="py-16 md:py-24 bg-primary/5">
+    <section id="about" className="py-16 md:py-24 bg-primary/5">
       <div className="container mx-auto px-4 md:px-6">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="font-headline text-3xl font-bold md:text-4xl">Why Choose Valley Farm Secrets?</h2>

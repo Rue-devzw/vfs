@@ -7,8 +7,7 @@ import { navLinks } from "@/lib/nav-links";
 export function Footer() {
   return (
     <footer className="bg-primary/5 py-12">
-      <div className="container mx-auto grid grid-cols-1 gap-8 px-4 md:grid-cols-3 md:px-6">
-        {/* Column 1: Branding */}
+      <div className="container mx-auto grid grid-cols-1 gap-8 px-4 md:grid-cols-4 md:px-6">
         <div className="flex flex-col items-center text-center md:items-start md:text-left">
           <Link href="/" className="flex items-center gap-2" aria-label="Valley Farm Secrets Home">
             <Logo className="h-8 w-8 text-primary" />
@@ -24,9 +23,8 @@ export function Footer() {
           </p>
         </div>
 
-        {/* Column 2: Quick Links */}
         <div className="flex flex-col items-center text-center md:items-start md:text-left">
-          <h3 className="font-headline text-lg font-bold">Quick Links</h3>
+          <h3 className="font-headline text-lg font-bold">Shop &amp; Explore</h3>
           <nav className="mt-4 flex flex-col gap-2">
             {navLinks.map((link) => (
               <Link
@@ -40,16 +38,28 @@ export function Footer() {
           </nav>
         </div>
 
-        {/* Column 3: Contact & Socials */}
         <div className="flex flex-col items-center text-center md:items-start md:text-left">
-          <h3 className="font-headline text-lg font-bold">Get in Touch</h3>
-          <div className="mt-4 flex flex-col gap-2">
-            <a href="mailto:info@valleyfarmsecrets.com" className="text-sm text-muted-foreground transition-colors hover:text-primary">
-              Email: info@valleyfarmsecrets.com
-            </a>
-            <a href="tel:+263788679000" className="text-sm text-muted-foreground transition-colors hover:text-primary">
-              WhatsApp: +263 788 679 000
-            </a>
+          <h3 className="font-headline text-lg font-bold">Business Solutions</h3>
+          <nav className="mt-4 flex flex-col gap-2">
+            <Link href="/store#wholesale" className="text-sm text-muted-foreground transition-colors hover:text-primary">Wholesale Supply</Link>
+            <Link href="/store#shop-prepack" className="text-sm text-muted-foreground transition-colors hover:text-primary">Pre-Pack Solutions</Link>
+            <Link href="/store#sourcing" className="text-sm text-muted-foreground transition-colors hover:text-primary">Sourcing Services</Link>
+            <Link href="/store#corporate" className="text-sm text-muted-foreground transition-colors hover:text-primary">Corporate Accounts</Link>
+            <Link href="/store#digital" className="text-sm text-muted-foreground transition-colors hover:text-primary">Valley Farm Digital</Link>
+          </nav>
+        </div>
+
+        <div className="flex flex-col items-center text-center md:items-start md:text-left">
+          <h3 className="font-headline text-lg font-bold">Support &amp; Policies</h3>
+          <nav className="mt-4 flex flex-col gap-2">
+            <Link href="/store#account" className="text-sm text-muted-foreground transition-colors hover:text-primary">My Account</Link>
+            <Link href="/privacy-policy" className="text-sm text-muted-foreground transition-colors hover:text-primary">Privacy Policy</Link>
+            <Link href="/terms-of-service" className="text-sm text-muted-foreground transition-colors hover:text-primary">Terms of Service</Link>
+            <Link href="/store#contact" className="text-sm text-muted-foreground transition-colors hover:text-primary">Customer Support</Link>
+          </nav>
+          <div className="mt-6 flex flex-col gap-2 text-sm text-muted-foreground">
+            <a href="mailto:info@valleyfarmsecrets.com" className="transition-colors hover:text-primary">info@valleyfarmsecrets.com</a>
+            <a href="tel:+263788679000" className="transition-colors hover:text-primary">WhatsApp: +263 788 679 000</a>
           </div>
           <div className="mt-6 flex gap-4">
             <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-muted-foreground transition-colors hover:text-primary"><Facebook /></a>

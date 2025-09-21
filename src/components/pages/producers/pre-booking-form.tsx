@@ -89,7 +89,7 @@ export function PreBookingForm() {
       <CardHeader>
         <CardTitle className="font-headline text-2xl">Producer Pre-booking Form</CardTitle>
         <CardDescription>
-          Secure a spot for your harvest. Fill out the form below to let us know what you're bringing.
+          Secure a spot for your harvest. Fill out the form below to let us know what you’re bringing.
         </CardDescription>
       </CardHeader>
       <CardContent>

@@ -9,7 +9,7 @@ export function Contact() {
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="font-headline text-3xl font-bold md:text-4xl">Contact Us</h2>
           <p className="mt-4 text-lg text-muted-foreground">
-            Have questions? We're here to help. Reach out to us through any of the channels below.
+            Have questions? We’re here to help. Reach out to us through any of the channels below.
           </p>
         </div>
         <Card className="mx-auto mt-12 max-w-4xl">
