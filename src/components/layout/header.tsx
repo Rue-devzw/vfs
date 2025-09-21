@@ -31,23 +31,25 @@ export function Header() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 w-full transition-all duration-300",
+        "sticky top-0 z-50 w-full border-b border-border/40 transition-all duration-300",
         isScrolled
-          ? "bg-background/80 backdrop-blur-sm shadow-md"
-          : "bg-transparent"
+          ? "bg-background/95 shadow-lg backdrop-blur supports-[backdrop-filter]:bg-background/80"
+          : "bg-background/80"
       )}
     >
-      <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
+      <div className="mx-auto flex h-20 w-full max-w-6xl items-center justify-between px-4 md:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2" aria-label="Valley Farm Secrets Home">
           <Logo className="h-8 w-8 text-primary" />
           <span className="font-headline text-2xl font-bold text-primary">
             Valley Farm Secrets
           </span>
         </Link>
-        <nav className="hidden items-center gap-4 md:flex">
-          {navLinks.map((link) => (
-            <NavigationLinkItem key={link.href} link={link} variant="desktop" />
-          ))}
+        <nav className="hidden md:flex">
+          <div className="flex items-center gap-1 rounded-full border border-border/60 bg-background/80 px-2 py-1 shadow-sm backdrop-blur">
+            {navLinks.map((link) => (
+              <NavigationLinkItem key={link.href} link={link} variant="desktop" />
+            ))}
+          </div>
         </nav>
         <div className="md:hidden">
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
@@ -102,8 +104,10 @@ function NavigationLinkItem({ link, variant, onNavigate }: NavigationLinkItemPro
       href={link.href}
       onClick={onNavigate ? () => onNavigate() : undefined}
       className={cn(
-        "group items-center gap-2 rounded-md px-3 py-2 font-semibold transition-colors hover:bg-accent/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2",
-        variant === "desktop" ? "inline-flex text-sm" : "flex text-lg"
+        "group items-center gap-2 rounded-full px-4 py-2 font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+        variant === "desktop"
+          ? "inline-flex text-sm hover:bg-primary/5"
+          : "flex text-lg hover:bg-primary/10"
       )}
     >
       <Icon
