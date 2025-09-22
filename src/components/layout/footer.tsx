@@ -52,8 +52,24 @@ export function Footer() {
             </a>
           </div>
           <div className="mt-6 flex gap-4">
-            <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="text-muted-foreground transition-colors hover:text-primary"><Facebook /></a>
-            <a href="#" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-muted-foreground transition-colors hover:text-primary"><Instagram /></a>
+            <a
+              href="https://www.facebook.com/ValleyFarmSecret"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+              className="text-muted-foreground transition-colors hover:text-primary"
+            >
+              <Facebook />
+            </a>
+            <a
+              href="https://www.instagram.com/valleyfarmsecrets"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              className="text-muted-foreground transition-colors hover:text-primary"
+            >
+              <Instagram />
+            </a>
             <a href="https://wa.me/263788679000" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="text-muted-foreground transition-colors hover:text-primary"><WhatsAppIcon /></a>
           </div>
         </div>

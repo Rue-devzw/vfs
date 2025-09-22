@@ -87,7 +87,7 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
 
       toast({
         title: "Order Placed Successfully!",
-        description: "Thank you for your purchase. You'll receive a confirmation shortly.",
+        description: "Thank you for your purchase. You&rsquo;ll receive a confirmation shortly.",
       });
       dispatch({ type: 'CLEAR_CART' });
       onOpenChange(false);
@@ -124,10 +124,10 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
             {isDiasporaGift ? (
               <div className="space-y-4 p-4 border rounded-md animate-fade-in-up">
                 <FormField name="recipientName" control={form.control} render={({ field }) => (
-                    <FormItem><FormLabel>Recipient's Name</FormLabel><FormControl><Input placeholder="Jane Doe" {...field} /></FormControl><FormMessage /></FormItem>
+                    <FormItem><FormLabel>Recipient&rsquo;s Name</FormLabel><FormControl><Input placeholder="Jane Doe" {...field} /></FormControl><FormMessage /></FormItem>
                 )} />
                 <FormField name="recipientPhone" control={form.control} render={({ field }) => (
-                    <FormItem><FormLabel>Recipient's Phone</FormLabel><FormControl><Input placeholder="+263 7..." {...field} /></FormControl><FormMessage /></FormItem>
+                    <FormItem><FormLabel>Recipient&rsquo;s Phone</FormLabel><FormControl><Input placeholder="+263 7..." {...field} /></FormControl><FormMessage /></FormItem>
                 )} />
               </div>
             ) : (
