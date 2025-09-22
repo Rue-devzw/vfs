@@ -13,7 +13,7 @@ export function Hero() {
   const { images: heroImages, currentIndex } = useImageSlideshow(heroBackgroundPool);
 
   return (
-    <section className="relative h-[80svh] w-full overflow-hidden">
+    <section className="relative min-h-[80svh] w-full overflow-hidden pt-24 pb-12 md:pt-32 md:pb-16">
       <div className="absolute inset-0">
         {heroImages.length > 0 ? (
           heroImages.map((image, index) => (
