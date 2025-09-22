@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Lightbulb, Loader2 } from "lucide-react";
-import { generateFarmingTip } from '@/app/_actions/ai';
+import { requestFarmingTip } from '@/lib/ai-client';
 import { useToast } from '@/hooks/use-toast';
 import { Separator } from '@/components/ui/separator';
 
@@ -30,7 +30,7 @@ export function FarmersForum() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     setTip(null);
-    const result = await generateFarmingTip(values.topic);
+    const result = await requestFarmingTip(values.topic);
     if (result.error) {
         toast({
             title: "Error",

@@ -12,7 +12,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from '@/components/ui/button';
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { generateImageCaption } from '@/app/_actions/ai';
+import { requestImageCaption } from '@/lib/ai-client';
 import { Sparkles, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -32,7 +32,7 @@ export function Gallery() {
 
   const handleGenerateCaption = async (image: GalleryImage) => {
     setLoadingStates(prev => ({ ...prev, [image.id]: true }));
-    const result = await generateImageCaption(image.imageUrl);
+    const result = await requestImageCaption(image.imageUrl);
     if (result.error) {
         toast({
             title: "Error",
