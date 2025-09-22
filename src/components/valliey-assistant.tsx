@@ -969,7 +969,7 @@ export function VallieyAssistant() {
   return (
     <div className="fixed bottom-4 left-4 z-50 flex flex-col items-start gap-3 sm:bottom-6 sm:left-6">
       {isOpen ? (
-        <div className="flex w-[min(92vw,22rem)] flex-col overflow-hidden rounded-3xl border border-border/60 bg-background/95 shadow-2xl backdrop-blur transition-transform animate-in fade-in slide-in-from-bottom-4 supports-[backdrop-filter]:bg-background/75 sm:w-[22rem] md:w-[24rem]">
+        <div className="flex w-[min(88vw,18rem)] flex-col overflow-hidden rounded-3xl border border-border/60 bg-background/95 shadow-2xl backdrop-blur transition-transform animate-in fade-in slide-in-from-bottom-4 supports-[backdrop-filter]:bg-background/75 sm:w-[19rem] md:w-[20rem]">
           <div className="flex items-start justify-between gap-2 bg-gradient-to-r from-primary/15 via-primary/10 to-transparent px-4 py-3">
             <div className="space-y-0.5">
               <div className="flex items-center gap-2 text-sm font-semibold text-primary">
@@ -994,7 +994,7 @@ export function VallieyAssistant() {
           </div>
 
           <div
-            className="flex min-h-[12rem] max-h-[min(60vh,22rem)] flex-col gap-3 overflow-y-auto px-4 py-3 text-sm sm:max-h-[24rem]"
+            className="flex min-h-[10rem] max-h-[min(50vh,18rem)] flex-col gap-3 overflow-y-auto px-4 py-3 text-sm sm:max-h-[20rem]"
             role="log"
             aria-live="polite"
             aria-relevant="additions"
