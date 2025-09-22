@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { products, categories, Category } from "@/app/store/data";
+// Add PlaceHolderImages to this import line
+import { products, categories, Category, PlaceHolderImages } from "@/app/store/data";
 import ProductFilters from "./product-filters";
 import ProductGrid from "./product-grid";
 import { ShoppingCart } from "./shopping-cart";
