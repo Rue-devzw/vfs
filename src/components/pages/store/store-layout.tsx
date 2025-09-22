@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useMemo, useRef, useState, useCallback, useEffect } from "react";
+main
 import { products, categories, Category } from "@/app/store/data";
 import ProductFilters from "./product-filters";
 import ProductGrid from "./product-grid";
@@ -14,18 +14,14 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import ProductCard from "./product-card";
-import { PlaceHolderImages, type ImagePlaceholder } from "@/lib/placeholder-images";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  type LucideIcon,
-  ArrowRight,
+
+main
   Carrot,
   Beef,
   ShoppingBasket,
   Sparkle,
   Zap,
+main
 } from "lucide-react";
 
 export type SortOption = "name-asc" | "name-desc" | "price-asc" | "price-desc";
@@ -39,10 +35,7 @@ type HeroSlide = {
   cta: string;
 };
 
-type ResolvedHeroSlide = HeroSlide & {
-  image: ImagePlaceholder | null;
-};
-
+main
 type QuickTile = {
   title: string;
   description: string;
@@ -55,21 +48,7 @@ type QuickTile = {
   footer?: string;
 };
 
-type CategorySpotlight = {
-  title: string;
-  description: string;
-  category: Category;
-  cta: string;
-};
-
-type ShoppingCollection = {
-  title: string;
-  description: string;
-  category: Category;
-  highlights: string[];
-  cta: string;
-};
-
+main
 const categoryIcons: Record<Category, LucideIcon> = {
   "Fruit & Veg": Carrot,
   "Butchery": Beef,
@@ -85,7 +64,7 @@ export function StoreLayout() {
 
   const specialOffers = useMemo(() => products.filter(product => product.onSpecial), []);
 
-  const heroSlides = useMemo<ResolvedHeroSlide[]>(() => {
+ main
     const slides: HeroSlide[] = [
       {
         imageId: "hero-produce",
@@ -118,22 +97,7 @@ export function StoreLayout() {
       image: PlaceHolderImages.find(image => image.id === slide.imageId) ?? null,
     }));
   }, []);
-
-  const [activeHeroIndex, setActiveHeroIndex] = useState(0);
-
-  useEffect(() => {
-    if (heroSlides.length <= 1) {
-      return;
-    }
-
-    const rotation = window.setInterval(() => {
-      setActiveHeroIndex(prevIndex => (prevIndex + 1) % heroSlides.length);
-    }, 7000);
-
-    return () => window.clearInterval(rotation);
-  }, [heroSlides.length]);
-
-  const currentHeroSlide = heroSlides[activeHeroIndex] ?? heroSlides[0];
+ main
 
   const filteredAndSortedProducts = useMemo(() => {
     let filtered = [...products];
@@ -181,57 +145,8 @@ export function StoreLayout() {
     productSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, []);
 
-  const categorySpotlights: CategorySpotlight[] = [
-    {
-      title: "Meal Prep Veggie Boxes",
-      description: "Seasonal greens and fruit crates packed for weekly meal plans.",
-      category: "Fruit & Veg",
-      cta: "Shop fresh produce",
-    },
-    {
-      title: "Butcher's Signature Cuts",
-      description: "Premium steaks, sausages, and braai favourites ready for the grill.",
-      category: "Butchery",
-      cta: "Shop butchery deals",
-    },
-    {
-      title: "Pantry Power-Ups",
-      description: "Top up essentials, spices, and breakfast favourites in one go.",
-      category: "Grocery & Spices",
-      cta: "Restock the pantry",
-    },
-  ];
 
-  const shoppingCollections: ShoppingCollection[] = [
-    {
-      title: "Family Braai Night",
-      description: "Build a basket with rump steak, boerewors, and spicy condiments for the perfect weekend fire.",
-      category: "Butchery",
-      highlights: ["Premium cuts", "Bulk packs", "Marinades"],
-      cta: "Shop braai essentials",
-    },
-    {
-      title: "Fresh Market Staples",
-      description: "Fill your cart with leafy greens, crunchy veg, and sweet fruit for smoothies and salads.",
-      category: "Fruit & Veg",
-      highlights: ["Seasonal picks", "Ready-to-eat", "Juice-friendly"],
-      cta: "Explore produce crates",
-    },
-    {
-      title: "Pantry Restock",
-      description: "Grab breads, spices, and breakfast must-haves with multi-buy savings.",
-      category: "Grocery & Spices",
-      highlights: ["Everyday basics", "Bulk savings", "Breakfast wins"],
-      cta: "Fill the pantry",
-    },
-    {
-      title: "Quick Midweek Fix",
-      description: "Mix and match protein, veg, and sauces for fast dinners without the guesswork.",
-      category: "Butchery",
-      highlights: ["Ready in minutes", "Chef-curated", "Family friendly"],
-      cta: "Shop midweek combos",
-    },
-  ];
+main
 
   const quickTiles: QuickTile[] = [
     {
@@ -244,27 +159,12 @@ export function StoreLayout() {
       },
     },
     {
-      title: "Produce Bundles",
-      description: "Curated boxes of seasonal fruit and veg pre-packed for easy checkout.",
-      icon: Carrot,
-      action: {
-        label: "Shop fresh boxes",
-        onClick: () => handleCategorySelect("Fruit & Veg"),
-      },
-    },
-    {
-      title: "Pantry Restock",
-      description: "Top up breakfast, baking, and spice essentials with multi-buy offers.",
-      icon: ShoppingBasket,
-      action: {
-        label: "Fill the pantry",
-        onClick: () => handleCategorySelect("Grocery & Spices"),
-      },
+main
     },
   ];
 
   return (
-    <div className="bg-muted/10 pb-16">
+    <div Name="bg-muted/10 pb-16">
       <ShoppingCart />
 
       <section className="border-b bg-gradient-to-br from-primary/10 via-background to-background py-10 lg:py-14">
@@ -319,107 +219,8 @@ export function StoreLayout() {
                       </Button>
                     );
                   })}
-                </div>
-              </div>
 
-              <div className="relative h-[260px] overflow-hidden rounded-2xl bg-muted sm:h-[320px] lg:h-[360px]">
-                {heroSlides.map((slide, index) => {
-                  const isActive = index === activeHeroIndex;
-
-                  if (!slide.image) {
-                    return (
-                      <div
-                        key={slide.imageId}
-                        className={`${isActive ? "opacity-100" : "opacity-0"} absolute inset-0 bg-muted transition-opacity duration-700`}
-                        aria-hidden={!isActive}
-                      />
-                    );
-                  }
-
-                  return (
-                    <Image
-                      key={slide.imageId}
-                      src={slide.image.imageUrl}
-                      alt={slide.image.description}
-                      fill
-                      className={`${isActive ? "opacity-100" : "opacity-0"} absolute inset-0 h-full w-full object-cover transition-opacity duration-700`}
-                      priority={isActive}
-                      sizes="(min-width: 1280px) 960px, (min-width: 768px) 70vw, 90vw"
-                      data-ai-hint={slide.image.imageHint}
-                      aria-hidden={!isActive}
-                    />
-                  );
-                })}
-                <div className="absolute inset-0 bg-gradient-to-r from-background/75 via-background/40 to-transparent" />
-                <div className="relative z-10 flex h-full flex-col justify-center gap-4 px-7 py-8 sm:px-10">
-                  {currentHeroSlide && (
-                    <>
-                      <Badge className="w-fit bg-primary text-primary-foreground shadow">
-                        {currentHeroSlide.highlight}
-                      </Badge>
-                      <span className="text-xs uppercase tracking-wide text-muted-foreground">
-                        Now featuring {currentHeroSlide.category}
-                      </span>
-                      <h2 className="font-headline text-3xl font-bold text-foreground sm:text-4xl">
-                        {currentHeroSlide.title}
-                      </h2>
-                      <p className="max-w-xl text-sm text-muted-foreground sm:text-base">
-                        {currentHeroSlide.description}
-                      </p>
-                      <div className="flex flex-wrap items-center gap-3">
-                        <Button size="lg" onClick={() => handleCategorySelect(currentHeroSlide.category)}>
-                          {currentHeroSlide.cta}
-                        </Button>
-                        <Button variant="outline" size="lg" onClick={handleViewSpecials}>
-                          See specials
-                        </Button>
-                      </div>
-                    </>
-                  )}
-                </div>
-                <div className="absolute bottom-6 right-6 z-10 flex gap-2">
-                  {heroSlides.map((slide, index) => {
-                    const isActive = index === activeHeroIndex;
-                    return (
-                      <button
-                        key={slide.imageId}
-                        type="button"
-                        onClick={() => setActiveHeroIndex(index)}
-                        className={`${isActive ? "w-8 bg-primary" : "w-4 bg-white/60 hover:bg-white/80"} h-2.5 rounded-full transition-all`}
-                        aria-label={`Show ${slide.title}`}
-                        aria-pressed={isActive}
-                      />
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-                {categorySpotlights.map(spotlight => {
-                  const Icon = categoryIcons[spotlight.category];
-                  return (
-                    <Card key={spotlight.title} className="border-none bg-card/80 shadow-sm">
-                      <CardHeader className="flex flex-row items-center gap-3 pb-2">
-                        <div className="rounded-full bg-primary/10 p-3 text-primary">
-                          {Icon && <Icon className="h-5 w-5" />}
-                        </div>
-                        <CardTitle className="text-base font-semibold">{spotlight.title}</CardTitle>
-                      </CardHeader>
-                      <CardContent className="pt-0 text-sm text-muted-foreground">
-                        <p>{spotlight.description}</p>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="mt-3 w-fit gap-1 px-0 text-primary hover:bg-transparent"
-                          onClick={() => handleCategorySelect(spotlight.category)}
-                        >
-                          {spotlight.cta}
-                          <ArrowRight className="h-4 w-4" />
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  );
-                })}
+main
               </div>
             </div>
 
@@ -457,110 +258,7 @@ export function StoreLayout() {
             </div>
           </div>
         </div>
-      </section>
-
-      <section id="flash-deals" className="container mx-auto px-4 pb-12 pt-10 md:px-6">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <h2 className="font-headline text-2xl font-bold md:text-3xl">Flash Deals</h2>
-            <p className="text-muted-foreground">Catch the latest promotions before they sell out.</p>
-          </div>
-          <Button variant="ghost" onClick={handleViewSpecials}>
-            Shop all specials
-          </Button>
-        </div>
-        <div className="mt-6">
-          {specialOffers.length > 0 ? (
-            <Carousel opts={{ align: "start", loop: true }} className="w-full">
-              <CarouselContent>
-                {specialOffers.map(product => (
-                  <CarouselItem key={product.id} className="sm:basis-1/2 lg:basis-1/3 xl:basis-1/4">
-                    <div className="p-1">
-                      <ProductCard product={product} />
-                    </div>
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <CarouselPrevious className="left-4 top-1/2 hidden h-10 w-10 -translate-y-1/2 rounded-full bg-background/90 shadow md:flex" />
-              <CarouselNext className="right-4 top-1/2 hidden h-10 w-10 -translate-y-1/2 rounded-full bg-background/90 shadow md:flex" />
-            </Carousel>
-          ) : (
-            <p className="rounded-lg border bg-card/60 p-8 text-center text-muted-foreground">
-              New deals are loading — check back soon!
-            </p>
-          )}
-        </div>
-      </section>
-
-      <section id="store-collections" className="bg-card/40 py-14">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="mx-auto max-w-3xl text-center">
-            <h2 className="font-headline text-3xl font-bold md:text-4xl">Curated Ways to Shop</h2>
-            <p className="mt-3 text-base text-muted-foreground">
-              Pick a ready-to-go collection tailored to the moment and we&apos;ll line up the perfect mix of products for your cart.
-            </p>
-          </div>
-          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
-            {shoppingCollections.map(collection => {
-              const Icon = categoryIcons[collection.category];
-              return (
-                <Card key={collection.title} className="flex h-full flex-col border-none bg-background/90 shadow-sm">
-                  <CardHeader className="flex flex-col items-start gap-3">
-                    <div className="rounded-full bg-primary/10 p-3 text-primary">
-                      {Icon && <Icon className="h-6 w-6" />}
-                    </div>
-                    <CardTitle className="text-lg font-semibold">{collection.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="flex flex-1 flex-col justify-between gap-4 pt-0 text-sm text-muted-foreground">
-                    <div className="space-y-3">
-                      <p>{collection.description}</p>
-                      <div className="flex flex-wrap gap-2">
-                        {collection.highlights.map(highlight => (
-                          <Badge key={highlight} variant="secondary" className="rounded-full">
-                            {highlight}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                    <Button
-                      onClick={() => handleCategorySelect(collection.category)}
-                      className="w-fit gap-2"
-                    >
-                      {collection.cta}
-                      <ArrowRight className="h-4 w-4" />
-                    </Button>
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      <section ref={productSectionRef} id="store-products" className="container mx-auto px-4 pb-16 pt-12 md:px-6">
-        <div className="grid gap-8 lg:grid-cols-[280px_minmax(0,1fr)]">
-          <div className="order-2 space-y-6 lg:order-1">
-            <ProductFilters
-              searchTerm={searchTerm}
-              setSearchTerm={setSearchTerm}
-              showSpecialsOnly={showSpecialsOnly}
-              setShowSpecialsOnly={setShowSpecialsOnly}
-              selectedCategory={selectedCategory}
-              setSelectedCategory={setSelectedCategory}
-              categories={categories}
-            />
-          </div>
-
-          <div className="order-1 lg:order-2">
-            <ProductGrid
-              products={filteredAndSortedProducts}
-              sortOption={sortOption}
-              setSortOption={setSortOption}
-              hasActiveFilter={hasActiveFilter}
-              categories={categories}
-            />
-          </div>
-        </div>
+ main
       </section>
     </div>
   );
