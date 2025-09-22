@@ -1,14 +1,14 @@
 import { ImagePlaceholder, PlaceHolderImages } from "./placeholder-images";
 
 const HERO_BACKGROUND_IMAGE_IDS = [
-  "hero-produce",
-  "gallery-1",
-  "gallery-2",
-  "gallery-3",
-  "gallery-4",
-  "product-apples",
-  "product-carrots",
-  "product-broccoli",
+  "hero-1",
+  "hero-2",
+  "hero-3",
+  "hero-4",
+  "hero-5",
+  "hero-6",
+  "hero-7",
+  "hero-8",
   "product-steak",
   "product-sausages",
   "product-chicken",
