@@ -3,6 +3,14 @@ import { getFirestore } from 'firebase-admin/firestore';
 
 let db: FirebaseFirestore.Firestore | null = null;
 
+export function isFirebaseConfigured() {
+  return Boolean(
+    process.env.FIREBASE_PROJECT_ID &&
+      process.env.FIREBASE_CLIENT_EMAIL &&
+      process.env.FIREBASE_PRIVATE_KEY,
+  );
+}
+
 export function getDb() {
   if (db) return db;
 
