@@ -9,12 +9,6 @@ const HERO_BACKGROUND_IMAGE_IDS = [
   "hero-6",
   "hero-7",
   "hero-8",
-  "product-steak",
-  "product-sausages",
-  "product-chicken",
-  "product-bread",
-  "product-spices",
-  "product-eggs",
 ];
 
 export function getHeroBackgroundPool(): ImagePlaceholder[] {
