@@ -44,6 +44,25 @@ export type Product = {
   onSpecial: boolean;
 };
 
+// ⬇️ ADD THIS ENTIRE BLOCK ⬇️
+// This array defines the images that your other components need.
+export const PlaceHolderImages = [
+  { id: "hero-produce", src: "/images/hero-produce.jpg" },
+  { id: "gallery-2", src: "/images/gallery-2.jpg" },
+  { id: "gallery-4", src: "/images/gallery-4.jpg" },
+  { id: "product-apples", src: "/images/product-apples.jpg" },
+  { id: "product-carrots", src: "/images/product-carrots.jpg" },
+  { id: "product-broccoli", src: "/images/product-broccoli.jpg" },
+  { id: "product-steak", src: "/images/product-steak.jpg" },
+  { id: "product-sausages", src: "/images/product-sausages.jpg" },
+  { id: "product-chicken", src: "/images/product-chicken.jpg" },
+  { id: "product-bread", src: "/images/product-bread.jpg" },
+  { id: "product-spices", src: "/images/product-spices.jpg" },
+  { id: "product-eggs", src: "/images/product-eggs.jpg" },
+];
+// ⬆️ END OF BLOCK TO ADD ⬆️
+
+
 export const products: Product[] = [
   {
     id: 1,
