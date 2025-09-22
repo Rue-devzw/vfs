@@ -30,41 +30,57 @@ export const services = [
     icon: Carrot,
     title: "Fruit & Vegetables",
     description: "Retail & wholesale supply of all fruits and vegetables: cabbages, carrots, green beans, green pepper, tomatoes, watermelon, cucumber, and more.",
+    purchaseLink: "/store?category=Fruit%20%26%20Veg",
+    purchaseLabel: "Shop Fruit & Veg",
   },
   {
     icon: Beef,
     title: "Butchery",
     description: "Fresh beef, lamb, goat, rabbit, chicken, fish, mince, sausages, braai packs; cold-room managed for guaranteed freshness.",
+    purchaseLink: "/store?category=Butchery",
+    purchaseLabel: "Shop Butchery",
   },
   {
     icon: ShoppingBasket,
     title: "Grocery & Spices",
     description: "Essentials like bread, sugar, flour, milk, cooking oil, plus Valley Farm Secrets branded spice packs.",
+    purchaseLink: "/store?category=Grocery%20%26%20Spices",
+    purchaseLabel: "Shop Groceries & Spices",
   },
   {
     icon: Truck,
     title: "Wholesale Supply",
     description: "Scheduled deliveries & bulk orders for schools, colleges, churches, NGOs, and hospitality businesses.",
+    purchaseLink: "/#wholesale",
+    purchaseLabel: "Request Wholesale Supply",
   },
   {
     icon: Package,
     title: "Pre-Pack Solutions",
     description: "Graded, chopped, and portion-packed vegetables ready for kitchens.",
+    purchaseLink: "/#wholesale",
+    purchaseLabel: "Request Pre-Pack Solutions",
   },
   {
     icon: Search,
     title: "Sourcing Services",
     description: "We secure hard-to-find produce & volumes at competitive prices.",
+    purchaseLink: "/#contact",
+    purchaseLabel: "Talk to Our Team",
   },
   {
     icon: FileText,
     title: "Corporate Accounts & Invoicing",
     description: "Professional billing, VAT-compliant receipts, and Pastel accounting.",
+    purchaseLink: "/#contact",
+    purchaseLabel: "Set Up an Account",
   },
   {
     icon: Laptop,
     title: "Valley Farm Digital (Coming Soon)",
     description: "Kitchenware, Office ware, and Electronics under one roof.",
+    purchaseLink: "/store",
+    purchaseLabel: "Explore Our Store",
   }
 ];
 
