@@ -1,11 +1,18 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../models/models.dart';
 import '../store_api_client.dart';
 import '../store_repository.dart';
+import '../cart/cart_controller.dart';
+import '../orders/order_service.dart';
+import '../orders/order_payload.dart';
+
+const double _bikerDeliveryFee = 5.0;
+const String _currencySymbol = r'$';
 
 class StoreScreen extends StatefulWidget {
   const StoreScreen({super.key});
@@ -147,39 +154,43 @@ class _StoreScreenState extends State<StoreScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<StoreProductsResponse>(
-      stream: _productsStream,
-      builder: (context, productSnapshot) {
-        if (productSnapshot.hasError) {
-          return _StoreErrorState(
-            message:
-                'We were unable to load products. Please try again shortly.',
-            onRetry: () => _repository.refreshProducts(),
-          );
-        }
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: StreamBuilder<StoreProductsResponse>(
+            stream: _productsStream,
+            builder: (context, productSnapshot) {
+              if (productSnapshot.hasError) {
+                return _StoreErrorState(
+                  message:
+                      'We were unable to load products. Please try again shortly.',
+                  onRetry: () => _repository.refreshProducts(),
+                );
+              }
 
-        if (!productSnapshot.hasData) {
-          return const Center(child: CircularProgressIndicator());
-        }
+              if (!productSnapshot.hasData) {
+                return const Center(child: CircularProgressIndicator());
+              }
 
-        final products = productSnapshot.data!.data;
+              final products = productSnapshot.data!.data;
 
-        return StreamBuilder<CategorySummariesResponse>(
-          stream: _categoriesStream,
-          builder: (context, categorySnapshot) {
-            final categories = categorySnapshot.data?.data
-                    .map((summary) => summary.name)
-                    .toList(growable: false) ??
-                (products.map((product) => product.category).toSet().toList()
-                  ..sort());
+              return StreamBuilder<CategorySummariesResponse>(
+                stream: _categoriesStream,
+                builder: (context, categorySnapshot) {
+                  final categories = categorySnapshot.data?.data
+                          .map((summary) => summary.name)
+                          .toList(growable: false) ??
+                      (products.map((product) => product.category).toSet().toList()
+                        ..sort());
 
-            return Scrollbar(
-              controller: _scrollController,
-              child: SingleChildScrollView(
-                controller: _scrollController,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
+                  return Scrollbar(
+                    controller: _scrollController,
+                    child: SingleChildScrollView(
+                      controller: _scrollController,
+                      padding: const EdgeInsets.only(bottom: 160),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
                     _StoreHero(
                       controller: _heroController,
                       currentIndex: _currentHeroIndex,
@@ -228,8 +239,9 @@ class _StoreScreenState extends State<StoreScreen> {
               ),
             );
           },
-        );
-      },
+        ),
+        const _FloatingCartButton(),
+      ],
     );
   }
 }
@@ -930,6 +942,7 @@ class _StoreProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final cart = context.read<CartController>();
     final showOldPrice =
         product.oldPrice != null && product.oldPrice! > product.price;
 
@@ -1037,12 +1050,799 @@ class _StoreProductCard extends StatelessWidget {
                   ),
                 const SizedBox(height: 16),
                 FilledButton.tonal(
-                  onPressed: () {},
+                  onPressed: () {
+                    cart.addProduct(product);
+                    final messenger = ScaffoldMessenger.of(context);
+                    messenger.hideCurrentSnackBar();
+                    messenger.showSnackBar(
+                      SnackBar(
+                        content: Text('${product.name} added to cart'),
+                        behavior: SnackBarBehavior.floating,
+                        duration: const Duration(seconds: 2),
+                      ),
+                    );
+                  },
                   child: const Text('Add to cart'),
                 ),
               ],
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+String _formatCurrency(double value) => '$_currencySymbol${value.toStringAsFixed(2)}';
+
+class _FloatingCartButton extends StatelessWidget {
+  const _FloatingCartButton();
+
+  Future<void> _openCart(BuildContext context) async {
+    final bool? shouldOpenCheckout = await showModalBottomSheet<bool>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (context) => const _CartBottomSheet(),
+    );
+
+    if (!context.mounted) return;
+
+    if (shouldOpenCheckout == true) {
+      await showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        useSafeArea: true,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        ),
+        builder: (context) => const _CheckoutSheet(),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Positioned(
+      right: 24,
+      bottom: 24,
+      child: Consumer<CartController>(
+        builder: (context, cart, _) {
+          final int badgeCount = cart.totalQuantity;
+
+          return FloatingActionButton(
+            heroTag: 'cartFab',
+            backgroundColor: theme.colorScheme.primary,
+            foregroundColor: theme.colorScheme.onPrimary,
+            onPressed: () => _openCart(context),
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                const Align(
+                  alignment: Alignment.center,
+                  child: Icon(Icons.shopping_bag_outlined),
+                ),
+                if (badgeCount > 0)
+                  Positioned(
+                    right: -6,
+                    top: -6,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 6,
+                        vertical: 2,
+                      ),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.error,
+                        borderRadius: BorderRadius.circular(999),
+                      ),
+                      child: Text(
+                        badgeCount.toString(),
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: theme.colorScheme.onError,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _CartBottomSheet extends StatelessWidget {
+  const _CartBottomSheet();
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return FractionallySizedBox(
+      heightFactor: 0.85,
+      child: Padding(
+        padding: EdgeInsets.only(
+          left: 24,
+          right: 24,
+          top: 12,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 24,
+        ),
+        child: Consumer<CartController>(
+          builder: (context, cart, _) {
+            final items = cart.items;
+            final subtotal = cart.subtotal;
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Center(
+                  child: Container(
+                    width: 52,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.outlineVariant,
+                      borderRadius: BorderRadius.circular(999),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  'Your Cart',
+                  style: theme.textTheme.headlineSmall,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  'Line items and quick adjustments are listed below.',
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                if (items.isEmpty)
+                  Expanded(
+                    child: Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.shopping_bag_outlined,
+                            size: 64,
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                          const SizedBox(height: 12),
+                          Text(
+                            'Your cart is empty',
+                            style: theme.textTheme.titleMedium,
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Add fresh produce to get started.',
+                            textAlign: TextAlign.center,
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: theme.colorScheme.onSurfaceVariant,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                else
+                  Expanded(
+                    child: ListView.separated(
+                      itemBuilder: (context, index) => _CartLineItem(
+                        item: items[index],
+                      ),
+                      separatorBuilder: (context, index) => const Divider(),
+                      itemCount: items.length,
+                    ),
+                  ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Items',
+                      style: theme.textTheme.bodyMedium,
+                    ),
+                    Text(
+                      cart.totalQuantity.toString(),
+                      style: theme.textTheme.bodyMedium,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Subtotal',
+                      style: theme.textTheme.titleMedium,
+                    ),
+                    Text(
+                      _formatCurrency(subtotal),
+                      style: theme.textTheme.titleMedium,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                FilledButton(
+                  onPressed: items.isEmpty
+                      ? null
+                      : () {
+                          Navigator.of(context).pop(true);
+                        },
+                  child: const Text('Proceed to checkout'),
+                ),
+              ],
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class _CartLineItem extends StatelessWidget {
+  const _CartLineItem({required this.item});
+
+  final CartItem item;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cart = context.read<CartController>();
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Image.network(
+            item.product.image,
+            width: 72,
+            height: 72,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) => Container(
+              width: 72,
+              height: 72,
+              color: theme.colorScheme.surfaceVariant,
+              alignment: Alignment.center,
+              child: Icon(
+                Icons.image_not_supported_outlined,
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(width: 16),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                item.product.name,
+                style: theme.textTheme.titleMedium,
+              ),
+              const SizedBox(height: 4),
+              Text(
+                _formatCurrency(item.product.price),
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: [
+                  _QuantityButton(
+                    icon: Icons.remove,
+                    onPressed: () => cart.updateQuantity(
+                      item.product.id,
+                      item.quantity - 1,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Text(
+                      item.quantity.toString(),
+                      style: theme.textTheme.titleMedium,
+                    ),
+                  ),
+                  _QuantityButton(
+                    icon: Icons.add,
+                    onPressed: () => cart.updateQuantity(
+                      item.product.id,
+                      item.quantity + 1,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(
+              _formatCurrency(item.total),
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            IconButton(
+              icon: const Icon(Icons.delete_outline),
+              color: theme.colorScheme.error,
+              tooltip: 'Remove item',
+              onPressed: () => cart.removeProduct(item.product.id),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _QuantityButton extends StatelessWidget {
+  const _QuantityButton({
+    required this.icon,
+    required this.onPressed,
+  });
+
+  final IconData icon;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: onPressed,
+      icon: Icon(icon, size: 18),
+      visualDensity: VisualDensity.compact,
+      style: IconButton.styleFrom(
+        minimumSize: const Size(32, 32),
+        padding: EdgeInsets.zero,
+      ),
+    );
+  }
+}
+
+class _CheckoutSheet extends StatefulWidget {
+  const _CheckoutSheet();
+
+  @override
+  State<_CheckoutSheet> createState() => _CheckoutSheetState();
+}
+
+class _CheckoutSheetState extends State<_CheckoutSheet> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  late final OrderService _orderService;
+
+  final TextEditingController _recipientNameController = TextEditingController();
+  final TextEditingController _recipientPhoneController = TextEditingController();
+  final TextEditingController _customerNameController = TextEditingController();
+  final TextEditingController _customerPhoneController = TextEditingController();
+  final TextEditingController _customerAddressController = TextEditingController();
+
+  bool _isDiasporaGift = false;
+  String _deliveryMethod = 'collect';
+  String _paymentMethod = 'now';
+  bool _isSubmitting = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _orderService = OrderService();
+  }
+
+  @override
+  void dispose() {
+    _recipientNameController.dispose();
+    _recipientPhoneController.dispose();
+    _customerNameController.dispose();
+    _customerPhoneController.dispose();
+    _customerAddressController.dispose();
+    _orderService.dispose();
+    super.dispose();
+  }
+
+  double get _deliveryFee =>
+      !_isDiasporaGift && _deliveryMethod == 'delivery' ? _bikerDeliveryFee : 0.0;
+
+  void _toggleDiasporaGift(bool? value) {
+    if (value == null) return;
+    setState(() {
+      _isDiasporaGift = value;
+      if (value) {
+        _deliveryMethod = 'collect';
+        _paymentMethod = 'now';
+      }
+    });
+  }
+
+  void _updateDeliveryMethod(String? value) {
+    if (value == null) return;
+    setState(() {
+      _deliveryMethod = value;
+      if (_deliveryMethod != 'delivery' && _paymentMethod == 'on_delivery') {
+        _paymentMethod = 'now';
+      }
+    });
+  }
+
+  void _updatePaymentMethod(String? value) {
+    if (value == null) return;
+    setState(() {
+      _paymentMethod = value;
+    });
+  }
+
+  String? _validateRecipientName(String? value) {
+    if (!_isDiasporaGift) return null;
+    if (value == null || value.trim().isEmpty) {
+      return 'Recipient name is required.';
+    }
+    return null;
+  }
+
+  String? _validateRecipientPhone(String? value) {
+    if (!_isDiasporaGift) return null;
+    if (value == null || value.trim().isEmpty) {
+      return 'Recipient phone is required.';
+    }
+    return null;
+  }
+
+  String? _validateCustomerName(String? value) {
+    if (_isDiasporaGift || _deliveryMethod != 'delivery') return null;
+    if (value == null || value.trim().isEmpty) {
+      return 'Your name is required for delivery.';
+    }
+    return null;
+  }
+
+  String? _validateCustomerPhone(String? value) {
+    if (_isDiasporaGift || _deliveryMethod != 'delivery') return null;
+    if (value == null || value.trim().isEmpty) {
+      return 'Your phone is required for delivery.';
+    }
+    return null;
+  }
+
+  String? _validateCustomerAddress(String? value) {
+    if (_isDiasporaGift || _deliveryMethod != 'delivery') return null;
+    if (value == null || value.trim().isEmpty) {
+      return 'Delivery address is required.';
+    }
+    return null;
+  }
+
+  Future<void> _submit() async {
+    final form = _formKey.currentState;
+    if (form == null || !form.validate()) {
+      return;
+    }
+
+    final cart = context.read<CartController>();
+    if (!cart.hasItems) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Your cart is empty.')),
+      );
+      Navigator.of(context).pop();
+      return;
+    }
+
+    FocusScope.of(context).unfocus();
+
+    setState(() {
+      _isSubmitting = true;
+    });
+
+    final double subtotal = cart.subtotal;
+    final double deliveryFee = _deliveryFee;
+    final double total = subtotal + deliveryFee;
+
+    final OrderPayload payload = OrderPayload(
+      isDiasporaGift: _isDiasporaGift,
+      recipientName: _isDiasporaGift ? _recipientNameController.text.trim() : null,
+      recipientPhone: _isDiasporaGift ? _recipientPhoneController.text.trim() : null,
+      deliveryMethod: _deliveryMethod,
+      customerName: !_isDiasporaGift && _deliveryMethod == 'delivery'
+          ? _customerNameController.text.trim()
+          : null,
+      customerPhone: !_isDiasporaGift && _deliveryMethod == 'delivery'
+          ? _customerPhoneController.text.trim()
+          : null,
+      customerAddress: !_isDiasporaGift && _deliveryMethod == 'delivery'
+          ? _customerAddressController.text.trim()
+          : null,
+      paymentMethod: _isDiasporaGift ? 'now' : _paymentMethod,
+      items: cart.items,
+      subtotal: subtotal,
+      deliveryFee: deliveryFee,
+      total: total,
+      totalQuantity: cart.totalQuantity,
+    );
+
+    final OrderSubmissionResult result = await _orderService.submitOrder(payload);
+
+    if (!mounted) {
+      return;
+    }
+
+    if (result.isSuccess) {
+      context.read<CartController>().clear();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(result.message),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      setState(() {
+        _isSubmitting = false;
+      });
+      Navigator.of(context).pop();
+    } else {
+      setState(() {
+        _isSubmitting = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(result.message),
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final cart = context.watch<CartController>();
+    final double subtotal = cart.subtotal;
+    final double deliveryFee = _deliveryFee;
+    final double total = subtotal + deliveryFee;
+
+    return FractionallySizedBox(
+      heightFactor: 0.95,
+      child: Padding(
+        padding: EdgeInsets.only(
+          left: 24,
+          right: 24,
+          top: 12,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 24,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Center(
+              child: Container(
+                width: 52,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.outlineVariant,
+                  borderRadius: BorderRadius.circular(999),
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'Checkout',
+              style: theme.textTheme.headlineSmall,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              'Confirm your details to complete the order.',
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Expanded(
+              child: Form(
+                key: _formKey,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                child: ListView(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: theme.colorScheme.outlineVariant),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: CheckboxListTile(
+                        value: _isDiasporaGift,
+                        onChanged: _toggleDiasporaGift,
+                        title: const Text('This is a gift for someone in Zimbabwe'),
+                        subtitle: const Text('Defaults to remittance payment.'),
+                        controlAffinity: ListTileControlAffinity.leading,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 250),
+                      child: _isDiasporaGift
+                          ? Column(
+                              key: const ValueKey('diaspora'),
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                TextFormField(
+                                  controller: _recipientNameController,
+                                  decoration: const InputDecoration(
+                                    labelText: "Recipient's Name",
+                                    hintText: 'Jane Doe',
+                                  ),
+                                  textCapitalization: TextCapitalization.words,
+                                  validator: _validateRecipientName,
+                                ),
+                                const SizedBox(height: 12),
+                                TextFormField(
+                                  controller: _recipientPhoneController,
+                                  decoration: const InputDecoration(
+                                    labelText: "Recipient's Phone",
+                                    hintText: '+263 7...',
+                                  ),
+                                  keyboardType: TextInputType.phone,
+                                  validator: _validateRecipientPhone,
+                                ),
+                              ],
+                            )
+                          : Column(
+                              key: const ValueKey('local'),
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Text(
+                                  'Delivery or pickup',
+                                  style: theme.textTheme.titleMedium,
+                                ),
+                                const SizedBox(height: 8),
+                                RadioListTile<String>(
+                                  value: 'collect',
+                                  groupValue: _deliveryMethod,
+                                  onChanged: _updateDeliveryMethod,
+                                  title: const Text('In-person collection (Free)'),
+                                ),
+                                RadioListTile<String>(
+                                  value: 'delivery',
+                                  groupValue: _deliveryMethod,
+                                  onChanged: _updateDeliveryMethod,
+                                  title:
+                                      Text('Biker delivery (${_formatCurrency(_bikerDeliveryFee)})'),
+                                ),
+                                if (_deliveryMethod == 'delivery')
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    children: [
+                                      const SizedBox(height: 12),
+                                      TextFormField(
+                                        controller: _customerNameController,
+                                        decoration: const InputDecoration(
+                                          labelText: 'Your name',
+                                          hintText: 'John Doe',
+                                        ),
+                                        textCapitalization: TextCapitalization.words,
+                                        validator: _validateCustomerName,
+                                      ),
+                                      const SizedBox(height: 12),
+                                      TextFormField(
+                                        controller: _customerPhoneController,
+                                        decoration: const InputDecoration(
+                                          labelText: 'Your phone',
+                                          hintText: '+263 7...',
+                                        ),
+                                        keyboardType: TextInputType.phone,
+                                        validator: _validateCustomerPhone,
+                                      ),
+                                      const SizedBox(height: 12),
+                                      TextFormField(
+                                        controller: _customerAddressController,
+                                        decoration: const InputDecoration(
+                                          labelText: 'Delivery address',
+                                          hintText: '123 Main St, Harare',
+                                        ),
+                                        textCapitalization: TextCapitalization.sentences,
+                                        validator: _validateCustomerAddress,
+                                      ),
+                                    ],
+                                  ),
+                                const SizedBox(height: 16),
+                                Text(
+                                  'Payment',
+                                  style: theme.textTheme.titleMedium,
+                                ),
+                                const SizedBox(height: 8),
+                                RadioListTile<String>(
+                                  value: 'now',
+                                  groupValue: _paymentMethod,
+                                  onChanged: _updatePaymentMethod,
+                                  title: const Text('Pay full amount now'),
+                                ),
+                                if (_deliveryMethod == 'delivery')
+                                  RadioListTile<String>(
+                                    value: 'on_delivery',
+                                    groupValue: _paymentMethod,
+                                    onChanged: _updatePaymentMethod,
+                                    title: const Text('Pay biker on delivery'),
+                                  ),
+                              ],
+                            ),
+                    ),
+                    const SizedBox(height: 24),
+                    Text(
+                      'Order summary',
+                      style: theme.textTheme.titleMedium,
+                    ),
+                    const SizedBox(height: 8),
+                    _SummaryRow(label: 'Subtotal', value: _formatCurrency(subtotal)),
+                    if (deliveryFee > 0)
+                      _SummaryRow(label: 'Delivery fee', value: _formatCurrency(deliveryFee)),
+                    _SummaryRow(
+                      label: 'Total',
+                      value: _formatCurrency(total),
+                      isEmphasized: true,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            FilledButton(
+              onPressed: _isSubmitting ? null : _submit,
+              style: FilledButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+              ),
+              child: _isSubmitting
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
+                        SizedBox(width: 12),
+                        Text('Submitting...'),
+                      ],
+                    )
+                  : const Text('Place order'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SummaryRow extends StatelessWidget {
+  const _SummaryRow({
+    required this.label,
+    required this.value,
+    this.isEmphasized = false,
+  });
+
+  final String label;
+  final String value;
+  final bool isEmphasized;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final TextStyle? style = isEmphasized
+        ? theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700)
+        : theme.textTheme.bodyLarge;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(label, style: style),
+          Text(value, style: style),
         ],
       ),
     );
