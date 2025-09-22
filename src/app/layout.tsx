@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { VallieyAssistant } from "@/components/valliey-assistant";
+import { ValleyAIAssistant } from "@/components/valley-ai-assistant";
 import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
 
@@ -31,7 +31,7 @@ export default function RootLayout({
 </head>
       <body className={cn("font-body antialiased", "min-h-screen bg-background font-sans")}>
         {children}
-        <VallieyAssistant />
+        <ValleyAIAssistant />
         <Toaster />
       </body>
     </html>

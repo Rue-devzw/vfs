@@ -102,7 +102,7 @@ const quickPromptOptions = [
 const SUPPORT_EMAIL = "info@valleyfarmsecrets.com";
 const SUPPORT_WHATSAPP = "+263788679000";
 const PARTNERS_EMAIL = "partners@valleyfarmsecrets.com";
-const EMAIL_SUBJECT = encodeURIComponent("Support request from Valliey assistant");
+const EMAIL_SUBJECT = encodeURIComponent("Support request from Valley AI assistant");
 
 const storeKeywords = [
   "product",
@@ -691,7 +691,7 @@ const getFollowUpForTopic = (topic: KnowledgeTopic) => {
   }
 };
 
-export function VallieyAssistant() {
+export function ValleyAIAssistant() {
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -699,7 +699,7 @@ export function VallieyAssistant() {
       id: "intro",
       role: "assistant",
       content:
-        "Hi there! I’m Valliey, your AI assistant. I can help you compare products, plan deliveries, arrange wholesale supply, share horticulture tips, and prepare handovers to our team. How can I support you today?",
+        "Hi there! I’m Valley AI, your AI assistant. I can help you compare products, plan deliveries, arrange wholesale supply, share horticulture tips, and prepare handovers to our team. How can I support you today?",
     },
   ]);
   const [lastTopic, setLastTopic] = useState<KnowledgeTopic | null>(null);
@@ -768,7 +768,8 @@ export function VallieyAssistant() {
   }, [messages]);
 
   const escalationPrompt = useMemo(() => {
-    const base = "Hello Valliey team! Could you please help me with a detailed request?";
+    const base =
+      "Hello Valley Farm Secrets team! Valley AI could use a hand with a detailed request.";
     const body = lastUserQuestion
       ? `${base}\n\nCustomer shared: "${lastUserQuestion}"`
       : base;
@@ -780,7 +781,7 @@ export function VallieyAssistant() {
     const lines = [
       "Hi Valley Farm Secrets team,",
       "",
-      "Please assist with this enquiry from the Valliey assistant.",
+      "Please assist with this enquiry from the Valley AI assistant.",
     ];
 
     if (lastUserQuestion) {
@@ -907,7 +908,7 @@ export function VallieyAssistant() {
       if (includesAny(greetingKeywords)) {
         return {
           content:
-            "Hi! I’m Valliey. Ask me about Valley Farm Secrets products, deliveries, wholesale supply, farming support, or partnerships and I’ll share everything I know before looping in a teammate.",
+            "Hi! I’m Valley AI. Ask me about Valley Farm Secrets products, deliveries, wholesale supply, farming support, or partnerships and I’ll share everything I know before looping in a teammate.",
           topic: "greeting",
         };
       }
@@ -977,7 +978,7 @@ export function VallieyAssistant() {
                   className="h-4 w-4 text-primary motion-safe:animate-pulse"
                   aria-hidden="true"
                 />
-                <span>Valliey</span>
+                <span>Valley AI</span>
               </div>
               <p className="text-xs text-muted-foreground">
                 Flexible support for everything on Valley Farm Secrets
@@ -987,7 +988,7 @@ export function VallieyAssistant() {
               type="button"
               onClick={toggleAssistant}
               className="rounded-full p-1.5 text-muted-foreground transition hover:bg-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-              aria-label="Close Valliey assistant"
+              aria-label="Close Valley AI assistant"
             >
               <X className="h-4 w-4" aria-hidden="true" />
             </button>
@@ -1038,7 +1039,7 @@ export function VallieyAssistant() {
                       style={{ animationDelay: "300ms" }}
                     />
                   </span>
-                  Valliey is thinking…
+                  Valley AI is thinking…
                 </div>
               </div>
             ) : null}
@@ -1161,11 +1162,11 @@ export function VallieyAssistant() {
             onSubmit={handleSubmit}
             className="flex items-center gap-2 border-t border-border/60 bg-muted/20 px-4 py-3 backdrop-blur supports-[backdrop-filter]:bg-muted/30"
           >
-            <label htmlFor="valliey-message" className="sr-only">
-              Message Valliey
+            <label htmlFor="valley-ai-message" className="sr-only">
+              Message Valley AI
             </label>
             <Input
-              id="valliey-message"
+              id="valley-ai-message"
               ref={inputRef}
               value={inputValue}
               onChange={(event) => setInputValue(event.target.value)}
@@ -1192,13 +1193,13 @@ export function VallieyAssistant() {
           hasUnread && !isOpen ? "ring-2 ring-emerald-400/70" : "",
         )}
         aria-expanded={isOpen}
-        aria-label={isOpen ? "Hide Valliey assistant" : "Open Valliey assistant"}
+        aria-label={isOpen ? "Hide Valley AI assistant" : "Open Valley AI assistant"}
       >
         <MessageCircle className="h-5 w-5" aria-hidden="true" />
-        <span>{isOpen ? "Hide Valliey" : "Chat with Valliey"}</span>
+        <span>{isOpen ? "Hide Valley AI" : "Chat with Valley AI"}</span>
         {hasUnread && !isOpen ? (
           <>
-            <span className="sr-only">Valliey has a fresh update for you</span>
+            <span className="sr-only">Valley AI has a fresh update for you</span>
             <span
               className="absolute -right-1.5 -top-1.5 h-3 w-3 rounded-full bg-emerald-400"
               aria-hidden="true"
