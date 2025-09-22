@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'src/store/view/store_screen.dart';
+
 void main() {
   runApp(const EValleyStoreApp());
 }
@@ -288,20 +290,6 @@ class ContactScreen extends StatelessWidget {
       message:
           'Contact details, inquiry forms, and support options will be added '
           'here.',
-    );
-  }
-}
-
-class StoreScreen extends StatelessWidget {
-  const StoreScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const SectionPlaceholder(
-      title: 'Store',
-      message:
-          'The future online storefront and shopping tools will appear in this '
-          'space.',
     );
   }
 }
