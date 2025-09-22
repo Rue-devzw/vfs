@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
-import { Handshake, Sprout, Users, Heart, Globe, Building, User, Phone, Mail, FileText, CheckCircle } from "lucide-react";
+import { Handshake, Sprout, Users, Heart, Globe, Building, User, Phone, Mail, FileText, CheckCircle, Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -82,6 +82,7 @@ export default function BecomeAPartnerPage() {
       message: "",
     },
   });
+  const { isSubmitting } = form.formState;
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
@@ -91,19 +92,15 @@ export default function BecomeAPartnerPage() {
         body: JSON.stringify(values),
       });
 
-      if (response.ok) {
-        toast({
-          title: "✅ Thank you for submitting your partnership proposal to Valley Farm Secrets.",
-          description: "Our team will review it and get back to you within 5–7 working days. For urgent queries: +263 788 679 000 | +263 711 406 919.",
-        });
-        form.reset();
-      } else {
-        toast({
-          title: "Submission failed",
-          description: "Please try again later.",
-          variant: "destructive",
-        });
+      if (!response.ok) {
+        throw new Error("Failed to submit partnership proposal");
       }
+
+      toast({
+        title: "✅ Thank you for submitting your partnership proposal to Valley Farm Secrets.",
+        description: "Our team will review it and get back to you within 5–7 working days. For urgent queries: +263 788 679 000 | +263 711 406 919.",
+      });
+      form.reset();
     } catch (error) {
       toast({
         title: "Submission failed",
@@ -200,7 +197,25 @@ export default function BecomeAPartnerPage() {
                       <FormField control={form.control} name="message" render={({ field }) => (
                         <FormItem><FormLabel>Proposal or Message</FormLabel><FormControl><Textarea placeholder="Tell us about your proposal or how you'd like to partner with us..." rows={6} {...field} /></FormControl><FormMessage /></FormItem>
                       )} />
-                      <Button type="submit" size="lg" className="w-full" style={{ backgroundColor: '#4CAF50' }}>Submit Proposal</Button>
+                      <Button
+                        type="submit"
+                        size="lg"
+                        className="w-full"
+                        style={{ backgroundColor: '#4CAF50' }}
+                        disabled={isSubmitting}
+                      >
+                        {isSubmitting ? (
+                          <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Submitting...
+                          </>
+                        ) : (
+                          "Submit Proposal"
+                        )}
+                      </Button>
+                      <p aria-live="polite" className="sr-only" role="status">
+                        {isSubmitting ? "Submitting..." : ""}
+                      </p>
                     </form>
                   </Form>
                 </Card>

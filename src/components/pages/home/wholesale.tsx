@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, Loader2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
 const formSchema = z.object({
@@ -31,6 +31,7 @@ export function Wholesale() {
       message: "",
     },
   });
+  const { isSubmitting } = form.formState;
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
@@ -40,19 +41,15 @@ export function Wholesale() {
         body: JSON.stringify(values),
       });
 
-      if (response.ok) {
-        toast({
-          title: "Quote Request Sent!",
-          description: "Thank you! We will get back to you shortly.",
-        });
-        form.reset();
-      } else {
-        toast({
-          title: "Submission failed",
-          description: "Please try again later.",
-          variant: "destructive",
-        });
+      if (!response.ok) {
+        throw new Error("Failed to submit wholesale enquiry");
       }
+
+      toast({
+        title: "Quote Request Sent!",
+        description: "Thank you! We will get back to you shortly.",
+      });
+      form.reset();
     } catch (error) {
       toast({
         title: "Submission failed",
@@ -156,7 +153,23 @@ export function Wholesale() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">Request a Wholesale Quote</Button>
+                <Button
+                  type="submit"
+                  className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Submitting...
+                    </>
+                  ) : (
+                    "Request a Wholesale Quote"
+                  )}
+                </Button>
+                <p aria-live="polite" className="sr-only" role="status">
+                  {isSubmitting ? "Submitting..." : ""}
+                </p>
               </form>
             </Form>
           </Card>
