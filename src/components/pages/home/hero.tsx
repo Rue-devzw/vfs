@@ -2,30 +2,46 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useMemo } from "react";
 import { Button } from "@/components/ui/button";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { useImageSlideshow } from "@/hooks/use-image-slideshow";
+import { getHeroBackgroundPool } from "@/lib/hero-backgrounds";
 import { ShoppingCart, Truck } from "lucide-react";
 
 export function Hero() {
-  const heroImage = PlaceHolderImages.find(p => p.id === "hero-produce");
+  const heroBackgroundPool = useMemo(() => getHeroBackgroundPool(), []);
+  const { images: heroImages, currentIndex } = useImageSlideshow(heroBackgroundPool);
 
   return (
     <section className="relative h-[80svh] w-full overflow-hidden">
-      {heroImage ? (
-        <Image
-          src={heroImage.imageUrl}
-          alt={heroImage.description}
-          fill
-          className="object-cover"
-          priority
-          data-ai-hint={heroImage.imageHint}
-        />
-      ) : (
-        <div className="w-full h-full bg-secondary" />
-      )}
+      <div className="absolute inset-0">
+        {heroImages.length > 0 ? (
+          heroImages.map((image, index) => (
+            <div
+              key={image.id}
+              className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+                index === currentIndex ? "opacity-100" : "opacity-0"
+              }`}
+              aria-hidden={index !== currentIndex}
+            >
+              <Image
+                src={image.imageUrl}
+                alt={image.description}
+                fill
+                className="object-cover"
+                priority={index === currentIndex}
+                loading={index === currentIndex ? "eager" : "lazy"}
+                data-ai-hint={image.imageHint}
+              />
+            </div>
+          ))
+        ) : (
+          <div className="h-full w-full bg-secondary" />
+        )}
+      </div>
 
       <div className="absolute inset-0 bg-black/50" />
-      <div className="relative z-10 flex h-full flex-col items-center justify-center text-center text-white p-4">
+      <div className="relative z-10 flex h-full flex-col items-center justify-center p-4 text-center text-white">
         <h1 className="font-headline text-5xl font-bold md:text-7xl">
           Freshness. Quality. Convenience.
         </h1>
@@ -36,7 +52,7 @@ export function Hero() {
           <Button
             asChild
             size="lg"
-            className="bg-primary hover:bg-primary/90 text-primary-foreground transform transition-transform hover:scale-105 group"
+            className="bg-primary text-primary-foreground transform transition-transform hover:scale-105 hover:bg-primary/90 group"
           >
             <Link href="/store">
               <ShoppingCart className="h-5 w-5 transition-transform group-hover:scale-110" aria-hidden="true" />
@@ -47,7 +63,7 @@ export function Hero() {
             asChild
             size="lg"
             variant="secondary"
-            className="bg-accent hover:bg-accent/90 text-accent-foreground transform transition-transform hover:scale-105 group"
+            className="bg-accent text-accent-foreground transform transition-transform hover:scale-105 hover:bg-accent/90 group"
           >
             <Link href="#wholesale">
               <Truck className="h-5 w-5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
