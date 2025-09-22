@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-main
 import { products, categories, Category } from "@/app/store/data";
 import ProductFilters from "./product-filters";
 import ProductGrid from "./product-grid";
@@ -14,14 +13,12 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import ProductCard from "./product-card";
-
-main
+import {
   Carrot,
   Beef,
   ShoppingBasket,
   Sparkle,
   Zap,
-main
 } from "lucide-react";
 
 export type SortOption = "name-asc" | "name-desc" | "price-asc" | "price-desc";
@@ -35,7 +32,6 @@ type HeroSlide = {
   cta: string;
 };
 
-main
 type QuickTile = {
   title: string;
   description: string;
@@ -48,7 +44,6 @@ type QuickTile = {
   footer?: string;
 };
 
-main
 const categoryIcons: Record<Category, LucideIcon> = {
   "Fruit & Veg": Carrot,
   "Butchery": Beef,
@@ -64,7 +59,7 @@ export function StoreLayout() {
 
   const specialOffers = useMemo(() => products.filter(product => product.onSpecial), []);
 
- main
+  const heroSlides = useMemo(() => {
     const slides: HeroSlide[] = [
       {
         imageId: "hero-produce",
@@ -97,7 +92,6 @@ export function StoreLayout() {
       image: PlaceHolderImages.find(image => image.id === slide.imageId) ?? null,
     }));
   }, []);
- main
 
   const filteredAndSortedProducts = useMemo(() => {
     let filtered = [...products];
@@ -145,9 +139,6 @@ export function StoreLayout() {
     productSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, []);
 
-
-main
-
   const quickTiles: QuickTile[] = [
     {
       title: "Flash Deals",
@@ -159,12 +150,12 @@ main
       },
     },
     {
-main
+      // This object was incomplete in your provided code, you might need to fill it
     },
   ];
 
   return (
-    <div Name="bg-muted/10 pb-16">
+    <div className="bg-muted/10 pb-16">
       <ShoppingCart />
 
       <section className="border-b bg-gradient-to-br from-primary/10 via-background to-background py-10 lg:py-14">
@@ -219,8 +210,7 @@ main
                       </Button>
                     );
                   })}
-
-main
+                </div>
               </div>
             </div>
 
@@ -258,7 +248,6 @@ main
             </div>
           </div>
         </div>
- main
       </section>
     </div>
   );
