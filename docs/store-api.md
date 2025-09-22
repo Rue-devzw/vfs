@@ -105,6 +105,64 @@ The following endpoints already existed and continue to use Firestore for persis
 
 They expect JSON bodies that match the respective forms rendered in the web application.
 
+## AI helper endpoints
+
+Flutter now shares the same AI contract that powers the web experience. Both endpoints require
+`Content-Type: application/json` and, when `AI_API_TOKEN` (or `NEXT_PUBLIC_AI_API_TOKEN`) is set in
+the environment, an `Authorization: Bearer <token>` header. Each caller is limited to 10 requests per
+minute; exceeding the limit yields HTTP 429 with a `Retry-After` header.
+
+### `POST /api/ai/farming-tip`
+
+Request body:
+
+```json
+{
+  "topic": "How do I keep pests off my tomatoes?"
+}
+```
+
+Successful response:
+
+```json
+{
+  "tip": "Use a row cover to protect tomato plants and rotate crops to disrupt pest life cycles."
+}
+```
+
+Errors:
+
+| Status | Reason |
+| ------ | ------ |
+| 400 | Missing/invalid JSON body or the AI flow returned a validation error. |
+| 401 | `Authorization` header missing when a token is configured. |
+| 403 | Token present but incorrect. |
+| 415 | Incorrect `Content-Type`. |
+| 429 | Rate limit exceeded. |
+| 500 | Unexpected server failure when calling the AI flow. |
+
+### `POST /api/ai/image-caption`
+
+Request body:
+
+```json
+{
+  "imageUrl": "https://example.com/photos/strawberries.jpg"
+}
+```
+
+Successful response:
+
+```json
+{
+  "caption": "Freshly picked strawberries ready for the farmers' market."
+}
+```
+
+Errors mirror the farming-tip endpoint. In addition, the AI action enforces a 5&nbsp;MB limit and
+restricts remote images to JPEG, PNG, GIF, or WebP. When the upstream fetch rejects the content type
+or size, the handler responds with HTTP 400 and the descriptive error message from the action.
+
 ## Setting up Firestore
 
 1. **Create a Firebase project** (https://console.firebase.google.com) and enable the Firestore database in *Native* mode.
