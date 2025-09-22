@@ -245,7 +245,7 @@ export function StoreLayout() {
 
               <Carousel opts={{ loop: true }} className="overflow-hidden rounded-2xl">
                 <CarouselContent>
-                  {heroSlides.map(slide => (
+                  {heroSlides.map((slide, index) => (
                     <CarouselItem key={slide.imageId}>
                       <div className="relative h-[260px] overflow-hidden rounded-2xl bg-muted sm:h-[320px] lg:h-[360px]">
                         {slide.image && (
@@ -254,7 +254,8 @@ export function StoreLayout() {
                             alt={slide.image.description}
                             fill
                             className="object-cover"
-                            priority
+                            priority={index === 0}
+                            loading={index === 0 ? "eager" : "lazy"}
                             sizes="(min-width: 1280px) 960px, (min-width: 768px) 70vw, 90vw"
                             data-ai-hint={slide.image.imageHint}
                           />
