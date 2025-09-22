@@ -1,6 +1,54 @@
 {
   "placeholderImages": [
     {
+      "id": "hero-1",
+      "description": "Warm-toned hero background imagery for the Valley Farm Secrets homepage.",
+      "imageUrl": "/images/hero-1.webp",
+      "imageHint": "homepage hero background warm"
+    },
+    {
+      "id": "hero-2",
+      "description": "Rustic hero background with earthy textures for the Valley Farm Secrets hero carousel.",
+      "imageUrl": "/images/hero-2.webp",
+      "imageHint": "hero carousel rustic textures"
+    },
+    {
+      "id": "hero-3",
+      "description": "Neutral-toned hero background used within the Valley Farm Secrets hero slideshow.",
+      "imageUrl": "/images/hero-3.webp",
+      "imageHint": "hero slideshow neutral tones"
+    },
+    {
+      "id": "hero-4",
+      "description": "Green-focused hero background supporting the Valley Farm Secrets landing page.",
+      "imageUrl": "/images/hero-4.webp",
+      "imageHint": "hero background green"
+    },
+    {
+      "id": "hero-5",
+      "description": "Earthy retail scene captured for the Valley Farm Secrets hero rotation.",
+      "imageUrl": "/images/hero-5.webp",
+      "imageHint": "hero rotation earthy retail"
+    },
+    {
+      "id": "hero-6",
+      "description": "Light-toned marketplace background used in the hero banner slideshow.",
+      "imageUrl": "/images/hero-6.webp",
+      "imageHint": "hero banner light marketplace"
+    },
+    {
+      "id": "hero-7",
+      "description": "Bright market aisle scene for the Valley Farm Secrets hero banner.",
+      "imageUrl": "/images/hero-7.webp",
+      "imageHint": "hero banner market aisle"
+    },
+    {
+      "id": "hero-8",
+      "description": "Sunlit farm-to-table background for the Valley Farm Secrets hero imagery.",
+      "imageUrl": "/images/hero-8.webp",
+      "imageHint": "hero imagery sunlit farm"
+    },
+    {
       "id": "hero-produce",
       "description": "A vibrant assortment of fresh fruits and vegetables.",
       "imageUrl": "/images/hero-produce.webp",
