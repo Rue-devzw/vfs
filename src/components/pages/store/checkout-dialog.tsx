@@ -20,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { useCart } from './cart-context';
 import { useToast } from '@/hooks/use-toast';
 import { Separator } from '@/components/ui/separator';
+import { Loader2 } from "lucide-react";
 
 const BIKER_DELIVERY_FEE = 5.00;
 
@@ -63,6 +64,7 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
       paymentMethod: "now",
     },
   });
+  const { isSubmitting } = form.formState;
 
   const { watch, reset } = form;
   const isDiasporaGift = watch("isDiasporaGift");
@@ -79,21 +81,17 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
         body: JSON.stringify({ ...values, items: state.items, total }),
       });
 
-      if (response.ok) {
-        toast({
-          title: "Order Placed Successfully!",
-          description: "Thank you for your purchase. You'll receive a confirmation shortly.",
-        });
-        dispatch({ type: 'CLEAR_CART' });
-        onOpenChange(false);
-        reset();
-      } else {
-        toast({
-          title: "Order failed",
-          description: "Please try again later.",
-          variant: "destructive",
-        });
+      if (!response.ok) {
+        throw new Error("Failed to submit order");
       }
+
+      toast({
+        title: "Order Placed Successfully!",
+        description: "Thank you for your purchase. You'll receive a confirmation shortly.",
+      });
+      dispatch({ type: 'CLEAR_CART' });
+      onOpenChange(false);
+      reset();
     } catch (error) {
       toast({
         title: "Order failed",
@@ -169,8 +167,25 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
             </div>
             
             <DialogFooter>
-                <Button type="submit" size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">Place Order</Button>
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Submitting...
+                    </>
+                  ) : (
+                    "Place Order"
+                  )}
+                </Button>
             </DialogFooter>
+            <p aria-live="polite" className="sr-only" role="status">
+              {isSubmitting ? "Submitting..." : ""}
+            </p>
           </form>
         </Form>
       </DialogContent>

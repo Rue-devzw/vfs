@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { format } from "date-fns";
-import { CalendarIcon, CheckCircle } from "lucide-react";
+import { CalendarIcon, CheckCircle, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -51,6 +51,7 @@ export function PreBookingForm() {
       notes: "",
     },
   });
+  const { isSubmitting } = form.formState;
 
   const transportRequired = form.watch("transportRequired");
 
@@ -62,19 +63,15 @@ export function PreBookingForm() {
         body: JSON.stringify(values),
       });
 
-      if (response.ok) {
-        toast({
-          title: "Booking Submitted!",
-          description: "Thank you for pre-booking your harvest with us. We'll be in touch.",
-        });
-        form.reset();
-      } else {
-        toast({
-          title: "Submission failed",
-          description: "Please try again later.",
-          variant: "destructive",
-        });
+      if (!response.ok) {
+        throw new Error("Failed to submit pre-booking form");
       }
+
+      toast({
+        title: "Booking Submitted!",
+        description: "Thank you for pre-booking your harvest with us. We'll be in touch.",
+      });
+      form.reset();
     } catch (error) {
       toast({
         title: "Submission failed",
@@ -150,7 +147,23 @@ export function PreBookingForm() {
               <FormItem><FormLabel>Additional Notes</FormLabel><FormControl><Textarea placeholder="Any other details we should know?" {...field} /></FormControl><FormMessage /></FormItem>
             )} />
 
-            <Button type="submit" className="w-full bg-accent text-accent-foreground hover:bg-accent/90">Submit Pre-booking</Button>
+            <Button
+              type="submit"
+              className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Submitting...
+                </>
+              ) : (
+                "Submit Pre-booking"
+              )}
+            </Button>
+            <p aria-live="polite" className="sr-only" role="status">
+              {isSubmitting ? "Submitting..." : ""}
+            </p>
           </form>
         </Form>
       </CardContent>
