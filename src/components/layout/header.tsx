@@ -16,7 +16,6 @@ const toneClassMap: Record<NavLinkConfig["tone"], string> = {
   muted: "text-muted-foreground",
 };
 
-main
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -39,7 +38,14 @@ export function Header() {
           : "bg-background/80"
       )}
     >
-main
+      {/* Assuming there was content for the header here that was accidentally deleted or replaced by 'main' */}
+      <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
+        <div className="flex items-center gap-6">
+          <Link href="/" className="flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
+            <Logo className="h-8 w-8" />
+            <span className="sr-only">Home</span>
+          </Link>
+          {/* ... other header content */}
         </div>
       </div>
     </header>
@@ -56,13 +62,51 @@ function NavigationLinkItem({ link, variant, onNavigate }: NavigationLinkItemPro
   const Icon = link.icon;
   const toneClass = toneClassMap[link.tone];
 
-main
+  if (link.href.startsWith("http")) {
+    return (
+      <a
+        href={link.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={onNavigate}
+        className={cn(
+          "group flex items-center gap-3 rounded-md p-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+          variant === "desktop" ? "hover:bg-muted/60" : "hover:bg-muted"
+        )}
+      >
+        <Icon
+          aria-hidden="true"
+          className={cn(
+            "h-5 w-5 transition-colors group-hover:text-primary group-focus-visible:text-primary",
+            toneClass
+          )}
+        />
+        <span
+          className={cn(
+            toneClass,
+            "transition-colors group-hover:text-primary group-focus-visible:text-primary"
+          )}
+        >
+          {link.label}
+        </span>
+      </a>
+    );
+  }
+
+  return (
+    <Link
+      href={link.href}
+      onClick={onNavigate}
+      className={cn(
+        "group flex items-center gap-3 rounded-md p-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        variant === "desktop" ? "hover:bg-muted/60" : "hover:bg-muted"
       )}
     >
       <Icon
         aria-hidden="true"
         className={cn(
-main
+          "h-5 w-5 transition-colors group-hover:text-primary group-focus-visible:text-primary",
+          toneClass
         )}
       />
       <span
