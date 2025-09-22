@@ -20,6 +20,7 @@ import {
   Sparkle,
   Zap,
 } from "lucide-react";
+import { useState, useMemo, useCallback, useRef } from "react"; 
 
 export type SortOption = "name-asc" | "name-desc" | "price-asc" | "price-desc";
 
