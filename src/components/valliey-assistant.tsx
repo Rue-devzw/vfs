@@ -704,9 +704,12 @@ export function VallieyAssistant() {
   ]);
   const [lastTopic, setLastTopic] = useState<KnowledgeTopic | null>(null);
   const [isResponding, setIsResponding] = useState(false);
+  const [resourcesExpanded, setResourcesExpanded] = useState(false);
+  const [hasUnread, setHasUnread] = useState(false);
   const endRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const responseTimeoutRef = useRef<number | null>(null);
+  const messageCountRef = useRef(messages.length);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -727,9 +730,36 @@ export function VallieyAssistant() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!isOpen) {
+      setResourcesExpanded(false);
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen && messages.length > messageCountRef.current) {
+      const latest = messages[messages.length - 1];
+      if (latest?.role === "assistant") {
+        setHasUnread(true);
+      }
+    }
+
+    messageCountRef.current = messages.length;
+  }, [messages, isOpen]);
+
+  useEffect(() => {
+    if (isOpen && hasUnread) {
+      setHasUnread(false);
+    }
+  }, [isOpen, hasUnread]);
+
   const toggleAssistant = () => {
     setIsOpen((previous) => !previous);
   };
+
+  const toggleResources = useCallback(() => {
+    setResourcesExpanded((previous) => !previous);
+  }, []);
 
   const lastUserQuestion = useMemo(() => {
     const reversed = [...messages].reverse();
@@ -766,6 +796,13 @@ export function VallieyAssistant() {
     () => messages.some((message) => message.role === "user"),
     [messages],
   );
+
+  const primaryQuickActions = quickActions.slice(0, 2);
+  const extraQuickActions = quickActions.slice(2);
+  const visibleQuickActions = resourcesExpanded
+    ? quickActions
+    : primaryQuickActions;
+  const showSupportPanel = resourcesExpanded || hasUserMessages;
 
   const generateAssistantReply = useCallback(
     (userInput: string): AssistantReply => {
@@ -930,23 +967,26 @@ export function VallieyAssistant() {
   };
 
   return (
-    <div className="fixed bottom-3 left-3 z-50 flex flex-col items-start gap-3 sm:bottom-6 sm:left-6">
+    <div className="fixed bottom-4 left-4 z-50 flex flex-col items-start gap-3 sm:bottom-6 sm:left-6">
       {isOpen ? (
-        <div className="w-[min(90vw,24rem)] overflow-hidden rounded-2xl border border-border bg-background shadow-2xl sm:w-96">
-          <div className="flex items-start justify-between gap-2 bg-primary/10 px-4 py-3">
-            <div>
+        <div className="flex w-[min(92vw,22rem)] flex-col overflow-hidden rounded-3xl border border-border/60 bg-background/95 shadow-2xl backdrop-blur transition-transform animate-in fade-in slide-in-from-bottom-4 supports-[backdrop-filter]:bg-background/75 sm:w-[22rem] md:w-[24rem]">
+          <div className="flex items-start justify-between gap-2 bg-gradient-to-r from-primary/15 via-primary/10 to-transparent px-4 py-3">
+            <div className="space-y-0.5">
               <div className="flex items-center gap-2 text-sm font-semibold text-primary">
-                <Sparkles className="h-4 w-4" aria-hidden="true" />
+                <Sparkles
+                  className="h-4 w-4 text-primary motion-safe:animate-pulse"
+                  aria-hidden="true"
+                />
                 <span>Valliey</span>
               </div>
               <p className="text-xs text-muted-foreground">
-                Always-on support for Valley Farm Secrets
+                Flexible support for everything on Valley Farm Secrets
               </p>
             </div>
             <button
               type="button"
               onClick={toggleAssistant}
-              className="rounded-full p-1 text-muted-foreground transition hover:bg-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              className="rounded-full p-1.5 text-muted-foreground transition hover:bg-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               aria-label="Close Valliey assistant"
             >
               <X className="h-4 w-4" aria-hidden="true" />
@@ -954,7 +994,7 @@ export function VallieyAssistant() {
           </div>
 
           <div
-            className="flex max-h-64 flex-col gap-3 overflow-y-auto px-4 py-3 text-sm"
+            className="flex min-h-[12rem] max-h-[min(60vh,22rem)] flex-col gap-3 overflow-y-auto px-4 py-3 text-sm sm:max-h-[24rem]"
             role="log"
             aria-live="polite"
             aria-relevant="additions"
@@ -964,13 +1004,13 @@ export function VallieyAssistant() {
               <div
                 key={message.id}
                 className={cn(
-                  "flex",
+                  "flex animate-in fade-in slide-in-from-bottom-2",
                   message.role === "assistant" ? "justify-start" : "justify-end",
                 )}
               >
                 <div
                   className={cn(
-                    "max-w-[85%] whitespace-pre-wrap rounded-2xl px-3 py-2 leading-relaxed shadow-sm",
+                    "max-w-[85%] whitespace-pre-wrap rounded-2xl px-3 py-2 leading-relaxed shadow-sm transition-all duration-200",
                     message.role === "assistant"
                       ? "bg-primary/10 text-foreground"
                       : "bg-primary text-primary-foreground",
@@ -981,7 +1021,11 @@ export function VallieyAssistant() {
               </div>
             ))}
             {isResponding ? (
-              <div className="flex justify-start" role="status" aria-live="polite">
+              <div
+                className="flex justify-start animate-in fade-in slide-in-from-bottom-2"
+                role="status"
+                aria-live="polite"
+              >
                 <div className="flex items-center gap-2 rounded-2xl bg-primary/10 px-3 py-2 text-xs text-muted-foreground shadow-sm">
                   <span className="flex items-center gap-1">
                     <span className="h-2 w-2 animate-pulse rounded-full bg-primary" />
@@ -1001,19 +1045,19 @@ export function VallieyAssistant() {
             <div ref={endRef} />
           </div>
 
-          <div className="space-y-4 border-t border-dashed px-4 py-3 text-sm">
-            <div>
+          <div className="space-y-4 border-t border-dashed border-border/60 px-4 py-3 text-sm">
+            <div className="space-y-2">
               <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                Ask Valliey
+                Quick prompts
               </p>
-              <div className="mt-2 flex flex-wrap gap-2">
+              <div className="flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                 {quickPromptOptions.map((option) => (
                   <Button
                     key={option.prompt}
                     type="button"
                     variant="outline"
                     size="sm"
-                    className="h-auto rounded-full border-primary/30 bg-primary/5 px-3 py-1 text-xs font-medium text-primary hover:bg-primary/10"
+                    className="flex-shrink-0 rounded-full border-primary/30 bg-primary/5 px-3 py-1.5 text-xs font-medium text-primary transition hover:bg-primary/10"
                     onClick={() => sendMessage(option.prompt)}
                   >
                     {option.label}
@@ -1022,79 +1066,100 @@ export function VallieyAssistant() {
               </div>
             </div>
 
-            <div>
+            <div className="space-y-2">
               <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                Popular shortcuts
+                Guided resources
               </p>
-              <ul className="mt-2 grid grid-cols-1 gap-2">
-                {quickActions.map((action) => (
-                  <li key={action.href}>
+              <ul className="grid gap-2">
+                {visibleQuickActions.map((action) => (
+                  <li key={action.href} className="animate-in fade-in-up">
                     <Button
                       asChild
                       variant="outline"
                       size="sm"
-                      className="h-auto justify-start gap-2 py-2 text-left"
+                      className="group h-auto w-full justify-between gap-2 rounded-2xl border-border/70 bg-background/70 px-3 py-2 text-left shadow-sm transition hover:border-primary/40 hover:bg-primary/5"
                     >
                       <Link href={action.href}>
-                        <span className="block text-sm font-medium text-foreground">
-                          {action.label}
+                        <span className="flex flex-1 flex-col text-left">
+                          <span className="text-sm font-medium text-foreground">
+                            {action.label}
+                          </span>
+                          <span className="text-xs text-muted-foreground">
+                            {action.description}
+                          </span>
                         </span>
-                        <span className="block text-xs text-muted-foreground">
-                          {action.description}
-                        </span>
+                        <ArrowUpRight
+                          className="h-4 w-4 shrink-0 text-primary opacity-0 transition group-hover:translate-x-1 group-hover:opacity-100"
+                          aria-hidden="true"
+                        />
                       </Link>
                     </Button>
                   </li>
                 ))}
               </ul>
+              {extraQuickActions.length ? (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={toggleResources}
+                  className="h-auto self-start px-2 text-xs text-muted-foreground hover:text-foreground"
+                >
+                  {resourcesExpanded
+                    ? "Show fewer guides"
+                    : `More guides (${extraQuickActions.length})`}
+                </Button>
+              ) : null}
             </div>
 
-            <div className="rounded-xl bg-muted/40 p-3">
-              <p className="text-xs font-medium text-muted-foreground">
-                {hasUserMessages
-                  ? "Need hands-on assistance after our chat? I’m ready to loop in a teammate with the notes we’ve gathered."
-                  : "If you ever need a teammate, I can connect you with all the context from our conversation."}
-              </p>
-              <div className="mt-2 flex flex-col gap-2">
-                <Button
-                  asChild
-                  size="sm"
-                  className="justify-between"
-                  variant="secondary"
-                >
-                  <a
-                    href={`https://wa.me/${SUPPORT_WHATSAPP.replace("+", "")}?text=${escalationPrompt}`}
-                    target="_blank"
-                    rel="noreferrer"
+            {showSupportPanel ? (
+              <div className="rounded-2xl bg-muted/30 p-3 text-xs text-muted-foreground animate-in fade-in slide-in-from-bottom-2">
+                <p className="font-medium text-muted-foreground">
+                  {hasUserMessages
+                    ? "Need a teammate to take it from here? I can brief them with our chat history."
+                    : "Ready when you are to connect you to the team with a full context summary."}
+                </p>
+                <div className="mt-2 flex flex-col gap-2">
+                  <Button
+                    asChild
+                    size="sm"
+                    className="justify-between rounded-xl px-3 py-2 text-sm shadow-sm transition hover:shadow-md"
+                    variant="secondary"
                   >
-                    <span className="flex items-center gap-2">
-                      <PhoneCall className="h-4 w-4" aria-hidden="true" />
-                      WhatsApp support
-                    </span>
-                    <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-                  </a>
-                </Button>
-                <Button
-                  asChild
-                  size="sm"
-                  variant="ghost"
-                  className="justify-between"
-                >
-                  <a href={`mailto:${SUPPORT_EMAIL}?subject=${EMAIL_SUBJECT}&body=${emailBody}`}>
-                    <span className="flex items-center gap-2">
-                      <Mail className="h-4 w-4" aria-hidden="true" />
-                      Email support
-                    </span>
-                    <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
-                  </a>
-                </Button>
+                    <a
+                      href={`https://wa.me/${SUPPORT_WHATSAPP.replace("+", "")}?text=${escalationPrompt}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <span className="flex items-center gap-2">
+                        <PhoneCall className="h-4 w-4" aria-hidden="true" />
+                        WhatsApp support
+                      </span>
+                      <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                    </a>
+                  </Button>
+                  <Button
+                    asChild
+                    size="sm"
+                    variant="ghost"
+                    className="justify-between rounded-xl px-3 py-2 text-sm hover:bg-muted/60"
+                  >
+                    <a href={`mailto:${SUPPORT_EMAIL}?subject=${EMAIL_SUBJECT}&body=${emailBody}`}>
+                      <span className="flex items-center gap-2">
+                        <Mail className="h-4 w-4" aria-hidden="true" />
+                        Email support
+                      </span>
+                      <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+                    </a>
+                  </Button>
+                </div>
               </div>
-            </div>
+            ) : null}
           </div>
 
           <form
             onSubmit={handleSubmit}
-            className="flex items-center gap-2 border-t bg-muted/30 px-4 py-3"
+            className="flex items-center gap-2 border-t border-border/60 bg-muted/20 px-4 py-3 backdrop-blur supports-[backdrop-filter]:bg-muted/30"
           >
             <label htmlFor="valliey-message" className="sr-only">
               Message Valliey
@@ -1105,7 +1170,7 @@ export function VallieyAssistant() {
               value={inputValue}
               onChange={(event) => setInputValue(event.target.value)}
               placeholder="Ask about products, orders, or tips..."
-              className="h-9 flex-1 rounded-full text-sm"
+              className="h-9 flex-1 rounded-full border border-border/60 bg-background/80 text-sm transition focus-visible:border-primary/60 focus-visible:ring-0"
             />
             <Button
               type="submit"
@@ -1122,12 +1187,28 @@ export function VallieyAssistant() {
       <button
         type="button"
         onClick={toggleAssistant}
-        className="flex items-center gap-2 rounded-full bg-primary px-4 py-3 text-sm font-medium text-primary-foreground shadow-lg transition hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:ring-primary"
+        className={cn(
+          "relative flex items-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-lg transition-transform duration-200 hover:-translate-y-0.5 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+          hasUnread && !isOpen ? "ring-2 ring-emerald-400/70" : "",
+        )}
         aria-expanded={isOpen}
         aria-label={isOpen ? "Hide Valliey assistant" : "Open Valliey assistant"}
       >
         <MessageCircle className="h-5 w-5" aria-hidden="true" />
-        <span>Chat with Valliey</span>
+        <span>{isOpen ? "Hide Valliey" : "Chat with Valliey"}</span>
+        {hasUnread && !isOpen ? (
+          <>
+            <span className="sr-only">Valliey has a fresh update for you</span>
+            <span
+              className="absolute -right-1.5 -top-1.5 h-3 w-3 rounded-full bg-emerald-400"
+              aria-hidden="true"
+            />
+            <span
+              className="absolute -right-1.5 -top-1.5 h-3 w-3 animate-ping rounded-full bg-emerald-400/70"
+              aria-hidden="true"
+            />
+          </>
+        ) : null}
       </button>
     </div>
   );
