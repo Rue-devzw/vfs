@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/carousel";
 import ProductCard from "./product-card";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { useImageSlideshow } from "@/hooks/use-image-slideshow";
+import { getHeroBackgroundPool } from "@/lib/hero-backgrounds";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -65,6 +67,9 @@ export function StoreLayout() {
   const [selectedCategory, setSelectedCategory] = useState<Category | "All">("All");
   const [sortOption, setSortOption] = useState<SortOption>("name-asc");
   const productSectionRef = useRef<HTMLDivElement | null>(null);
+
+  const heroBackgroundPool = useMemo(() => getHeroBackgroundPool(), []);
+  const { images: heroBackgrounds, currentIndex: heroBackgroundIndex } = useImageSlideshow(heroBackgroundPool);
 
   const specialOffers = useMemo(() => products.filter(product => product.onSpecial), []);
 
@@ -188,9 +193,36 @@ export function StoreLayout() {
     <div className="bg-muted/10 pb-16">
       <ShoppingCart />
 
-      <section className="border-b bg-gradient-to-br from-primary/10 via-background to-background py-10 lg:py-14">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="grid gap-6 lg:grid-cols-[240px_minmax(0,1fr)_280px] xl:grid-cols-[260px_minmax(0,1fr)_320px]">
+      <section className="relative overflow-hidden border-b bg-gradient-to-br from-primary/10 via-background to-background py-10 lg:py-14">
+        <div className="absolute inset-0">
+          {heroBackgrounds.length > 0 ? (
+            heroBackgrounds.map((image, index) => (
+              <div
+                key={image.id}
+                className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+                  index === heroBackgroundIndex ? "opacity-100" : "opacity-0"
+                }`}
+                aria-hidden={index !== heroBackgroundIndex}
+              >
+                <Image
+                  src={image.imageUrl}
+                  alt={image.description}
+                  fill
+                  className="object-cover"
+                  priority={index === heroBackgroundIndex}
+                  loading={index === heroBackgroundIndex ? "eager" : "lazy"}
+                  data-ai-hint={image.imageHint}
+                />
+              </div>
+            ))
+          ) : (
+            <div className="h-full w-full bg-gradient-to-br from-primary/10 via-background to-background" />
+          )}
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-background/85 to-background/70" />
+        <div className="relative z-10">
+          <div className="container mx-auto px-4 md:px-6">
+            <div className="grid gap-6 lg:grid-cols-[240px_minmax(0,1fr)_280px] xl:grid-cols-[260px_minmax(0,1fr)_320px]">
             <aside className="hidden h-full rounded-2xl border bg-card/70 backdrop-blur lg:block">
               <div className="border-b px-6 py-5">
                 <h3 className="font-headline text-lg font-semibold">Shop by Department</h3>
@@ -330,6 +362,7 @@ export function StoreLayout() {
               ))}
             </div>
           </div>
+        </div>
         </div>
       </section>
 
