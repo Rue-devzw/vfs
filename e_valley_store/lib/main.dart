@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
+import 'src/store/cart/cart_controller.dart';
 import 'src/store/view/store_screen.dart';
 
 void main() {
-  runApp(const EValleyStoreApp());
+  runApp(
+    ChangeNotifierProvider<CartController>(
+      create: (_) => CartController(),
+      child: const EValleyStoreApp(),
+    ),
+  );
 }
 
 class EValleyStoreApp extends StatelessWidget {
