@@ -61,7 +61,7 @@ StoreApiSource _storeApiSourceFromJson(Object? value) {
         return StoreApiSource.staticCatalog;
     }
   }
-  throw ArgumentError('Unknown StoreApiSource value: \$value');
+  throw ArgumentError('Unknown StoreApiSource value: $value');
 }
 
 String _storeApiSourceToJson(StoreApiSource source) {
