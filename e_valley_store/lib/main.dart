@@ -57,11 +57,11 @@ class StoreHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       appBar: AppBar(
-        title: Text('E-Valley Store'),
+        title: const Text('E-Valley Store'),
       ),
-      body: StoreScreen(),
+      body: const StoreScreen(),
     );
   }
 }
