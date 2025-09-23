@@ -117,7 +117,7 @@ class _StoreScreenState extends State<StoreScreen> {
       _showSpecialsOnly || _selectedCategory != null || _searchTerm.isNotEmpty;
 
   List<StoreProduct> _applyFilters(List<StoreProduct> products) {
-    var filtered = products;
+    var filtered = List<StoreProduct>.from(products);
 
     if (_showSpecialsOnly) {
       filtered = filtered.where((product) => product.onSpecial).toList();
