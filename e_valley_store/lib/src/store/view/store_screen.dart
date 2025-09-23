@@ -336,78 +336,58 @@ class _StoreHero extends StatelessWidget {
                                 ),
                               ),
                             ),
-                        Container(
-                          padding: const EdgeInsets.all(32),
-                          alignment: Alignment.centerLeft,
-                          child: ConstrainedBox(
-                            constraints: const BoxConstraints(maxWidth: 520),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 6,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: theme.colorScheme.primary,
-                                    borderRadius: BorderRadius.circular(999),
-                                  ),
-                                  child: Text(
-                                    slide.highlight,
-                                    style: theme.textTheme.labelLarge?.copyWith(
-                                      color: theme.colorScheme.onPrimary,
+main
                                     ),
-                                  ),
-                                ),
-                                const SizedBox(height: 16),
-                                Text(
-                                  slide.title,
-                                  style: theme.textTheme.headlineMedium?.copyWith(
-                                    color: theme.colorScheme.onPrimary,
-                                    shadows: const [
-                                      Shadow(
-                                        offset: Offset(0, 2),
-                                        blurRadius: 12,
-                                        color: Colors.black54,
+                                    const SizedBox(height: 16),
+                                    Text(
+                                      slide.title,
+                                      style:
+                                          theme.textTheme.headlineMedium?.copyWith(
+                                        color: theme.colorScheme.onPrimary,
+                                        shadows: const [
+                                          Shadow(
+                                            offset: Offset(0, 2),
+                                            blurRadius: 12,
+                                            color: Colors.black54,
+                                          ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(height: 12),
-                                Text(
-                                  slide.description,
-                                  style: theme.textTheme.bodyLarge?.copyWith(
-                                    color: theme.textTheme.bodyLarge?.color
-                                            ?.withOpacity(0.92) ??
-                                        theme.colorScheme.onPrimary
-                                            .withOpacity(0.92),
-                                  ),
-                                ),
-                                const SizedBox(height: 20),
-                                Wrap(
-                                  spacing: 12,
-                                  runSpacing: 12,
-                                  children: [
-                                    FilledButton(
-                                      onPressed: () =>
-                                          onSelectCategory(slide.category),
-                                      child: Text(slide.cta),
                                     ),
-                                    OutlinedButton(
-                                      onPressed: onViewSpecials,
-                                      child: const Text('See specials'),
+                                    const SizedBox(height: 12),
+                                    Text(
+                                      slide.description,
+                                      style: theme.textTheme.bodyLarge?.copyWith(
+                                        color: theme.textTheme.bodyLarge?.color
+                                                ?.withOpacity(0.92) ??
+                                            theme.colorScheme.onPrimary
+                                                .withOpacity(0.92),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 20),
+                                    Wrap(
+                                      spacing: 12,
+                                      runSpacing: 12,
+                                      children: [
+                                        FilledButton(
+                                          onPressed: () =>
+                                              onSelectCategory(slide.category),
+                                          child: Text(slide.cta),
+                                        ),
+                                        OutlinedButton(
+                                          onPressed: onViewSpecials,
+                                          child: const Text('See specials'),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
-                              ],
+                              ),
                             ),
                           ),
                         ),
                       ],
                     ),
-                  ),
+                  );
                 );
               },
             ),
