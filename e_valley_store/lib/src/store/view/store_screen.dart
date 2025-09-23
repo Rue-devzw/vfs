@@ -406,11 +406,11 @@ class _StoreHero extends StatelessWidget {
                                 ),
                               ),
                             ),
-                          ),
+                          ],
                         ),
-                      ],
-                    ),
-                  );
+                      );
+                    },
+                  ),
                 );
               },
             ),
@@ -1849,14 +1849,15 @@ class _CheckoutSheetState extends State<_CheckoutSheet> {
               child: _isSubmitting
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        SizedBox(
+                      // FIX: Removed 'const' from the list as CircularProgressIndicator is not constant.
+                      children: [
+                        const SizedBox(
                           width: 18,
                           height: 18,
                           child: CircularProgressIndicator(strokeWidth: 2),
                         ),
-                        SizedBox(width: 12),
-                        Text('Submitting...'),
+                        const SizedBox(width: 12),
+                        const Text('Submitting...'),
                       ],
                     )
                   : const Text('Place order'),
@@ -2085,4 +2086,3 @@ Future<void> _launchUrl(String? url) async {
     await launchUrl(uri);
   }
 }
-
