@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 class StoreApiConfig {
   const StoreApiConfig({
     this.overrideBaseUrl,
-    this.localBaseUrl = 'http://localhost:9002',
+    this.localBaseUrl = 'https://valleyfarmsecrets.com',
     this.productionBaseUrl = 'https://valleyfarmsecrets.com',
   });
 
