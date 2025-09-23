@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
-import 'src/store/cart/cart_controller.dart';
-import 'src/store/view/store_screen.dart';
+const String _defaultStoreUrl = String.fromEnvironment(
+  'STORE_WEB_URL',
+  defaultValue: 'https://valleyfarmsecrets.com/store',
+);
 
 void main() {
-  runApp(
-    ChangeNotifierProvider<CartController>(
-      create: (_) => CartController(),
-      child: const EValleyStoreApp(),
-    ),
-  );
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const EValleyStoreApp());
 }
 
 class EValleyStoreApp extends StatelessWidget {
@@ -19,145 +16,104 @@ class EValleyStoreApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = _appColorScheme;
-    final TextTheme baseTextTheme =
-        ThemeData(brightness: Brightness.light, useMaterial3: true).textTheme;
-    final TextTheme textTheme = _buildTextTheme(baseTextTheme, colorScheme);
-
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'E-Valley Store',
       theme: ThemeData(
         useMaterial3: true,
-        colorScheme: colorScheme,
-        textTheme: textTheme,
-        scaffoldBackgroundColor: colorScheme.background,
-        appBarTheme: AppBarTheme(
-          backgroundColor: colorScheme.background,
-          foregroundColor: colorScheme.onBackground,
-          elevation: 0,
-          centerTitle: false,
-          titleTextStyle: textTheme.titleLarge,
-        ),
-        cardTheme: CardThemeData(
-          color: colorScheme.surface,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          elevation: 0,
-        ),
+        colorSchemeSeed: const Color(0xFF5A842A),
+        brightness: Brightness.light,
       ),
-      home: const StoreHomePage(),
+      home: const StoreWebViewPage(storeUrl: _defaultStoreUrl),
     );
   }
 }
 
-class StoreHomePage extends StatelessWidget {
-  const StoreHomePage({super.key});
+class StoreWebViewPage extends StatefulWidget {
+  const StoreWebViewPage({
+    super.key,
+    required this.storeUrl,
+  });
+
+  final String storeUrl;
+
+  @override
+  State<StoreWebViewPage> createState() => _StoreWebViewPageState();
+}
+
+class _StoreWebViewPageState extends State<StoreWebViewPage> {
+  late final WebViewController _controller;
+  int _loadingProgress = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(Colors.transparent)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageStarted: (_) {
+            setState(() {
+              _loadingProgress = 0;
+            });
+          },
+          onProgress: (progress) {
+            setState(() {
+              var boundedProgress = progress;
+              if (boundedProgress < 0) {
+                boundedProgress = 0;
+              } else if (boundedProgress > 100) {
+                boundedProgress = 100;
+              }
+              _loadingProgress = boundedProgress;
+            });
+          },
+          onPageFinished: (_) {
+            setState(() {
+              _loadingProgress = 100;
+            });
+          },
+        ),
+      )
+      ..loadRequest(Uri.parse(widget.storeUrl));
+  }
+
+  Future<bool> _handleWillPop() async {
+    if (await _controller.canGoBack()) {
+      await _controller.goBack();
+      return false;
+    }
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('E-Valley Store'),
+    return WillPopScope(
+      onWillPop: _handleWillPop,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('E-Valley Store'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.refresh),
+              onPressed: _controller.reload,
+              tooltip: 'Reload',
+            ),
+          ],
+        ),
+        body: Stack(
+          children: [
+            SafeArea(
+              child: WebViewWidget(controller: _controller),
+            ),
+            if (_loadingProgress < 100)
+              LinearProgressIndicator(
+                value: _loadingProgress == 0 ? null : _loadingProgress / 100,
+              ),
+          ],
+        ),
       ),
-      body: const StoreScreen(),
     );
   }
 }
-
-TextTheme _buildTextTheme(TextTheme base, ColorScheme colorScheme) {
-  final TextTheme poppinsBase = GoogleFonts.poppinsTextTheme(base);
-  final TextTheme alegreyaBase = GoogleFonts.alegreyaTextTheme(base);
-
-  return poppinsBase.copyWith(
-    displayLarge: alegreyaBase.displayLarge?.copyWith(
-      fontWeight: FontWeight.w700,
-      letterSpacing: 0,
-    ),
-    displayMedium: alegreyaBase.displayMedium?.copyWith(
-      fontWeight: FontWeight.w600,
-      letterSpacing: 0,
-    ),
-    displaySmall: alegreyaBase.displaySmall?.copyWith(
-      fontWeight: FontWeight.w600,
-      letterSpacing: 0,
-    ),
-    headlineLarge: alegreyaBase.headlineLarge?.copyWith(
-      fontWeight: FontWeight.w700,
-      letterSpacing: 0,
-    ),
-    headlineMedium: alegreyaBase.headlineMedium?.copyWith(
-      fontWeight: FontWeight.w600,
-      letterSpacing: 0,
-    ),
-    headlineSmall: alegreyaBase.headlineSmall?.copyWith(
-      fontWeight: FontWeight.w600,
-      letterSpacing: 0,
-    ),
-    titleLarge: alegreyaBase.titleLarge?.copyWith(
-      fontWeight: FontWeight.w600,
-    ),
-    titleMedium: poppinsBase.titleMedium?.copyWith(
-      fontWeight: FontWeight.w500,
-    ),
-    titleSmall: poppinsBase.titleSmall?.copyWith(
-      fontWeight: FontWeight.w500,
-    ),
-    bodyLarge: poppinsBase.bodyLarge?.copyWith(
-      fontWeight: FontWeight.w400,
-    ),
-    bodyMedium: poppinsBase.bodyMedium?.copyWith(
-      fontWeight: FontWeight.w400,
-    ),
-    bodySmall: poppinsBase.bodySmall?.copyWith(
-      fontWeight: FontWeight.w400,
-    ),
-    labelLarge: poppinsBase.labelLarge?.copyWith(
-      fontWeight: FontWeight.w500,
-    ),
-    labelMedium: poppinsBase.labelMedium?.copyWith(
-      fontWeight: FontWeight.w500,
-    ),
-    labelSmall: poppinsBase.labelSmall?.copyWith(
-      fontWeight: FontWeight.w500,
-    ),
-  ).apply(
-    bodyColor: colorScheme.onBackground,
-    displayColor: colorScheme.onBackground,
-  );
-}
-
-const ColorScheme _appColorScheme = ColorScheme(
-  brightness: Brightness.light,
-  primary: Color(0xFF5A842A),
-  onPrimary: Color(0xFFF3F6EE),
-  primaryContainer: Color(0xFF9CC36F),
-  onPrimaryContainer: Color(0xFF202F0F),
-  secondary: Color(0xFF98582A),
-  onSecondary: Color(0xFFF6F2EE),
-  secondaryContainer: Color(0xFFC29270),
-  onSecondaryContainer: Color(0xFF402512),
-  tertiary: Color(0xFFCE814B),
-  onTertiary: Color(0xFF2B1607),
-  tertiaryContainer: Color(0xFFF3B783),
-  onTertiaryContainer: Color(0xFF2F1500),
-  error: Color(0xFFBA1A1A),
-  onError: Color(0xFFFFFFFF),
-  errorContainer: Color(0xFFFFDAD6),
-  onErrorContainer: Color(0xFF410002),
-  background: Color(0xFFFCFAF8),
-  onBackground: Color(0xFF0C0A09),
-  surface: Color(0xFFF5F5DB),
-  onSurface: Color(0xFF0C0A09),
-  surfaceVariant: Color(0xFFE7E7E4),
-  onSurfaceVariant: Color(0xFF4F4B45),
-  outline: Color(0xFF8C8173),
-  outlineVariant: Color(0xFFCFC7B6),
-  shadow: Color(0xFF000000),
-  scrim: Color(0xFF000000),
-  inverseSurface: Color(0xFF2A281F),
-  onInverseSurface: Color(0xFFECE7DD),
-  inversePrimary: Color(0xFFCAE8A9),
-  surfaceTint: Color(0xFF5A842A),
-);
