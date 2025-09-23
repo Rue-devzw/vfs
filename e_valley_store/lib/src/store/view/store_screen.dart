@@ -16,6 +16,8 @@ const double _bikerDeliveryFee = 5.0;
 const String _currencySymbol = r'$';
 const double _productImageAspectRatio = 4 / 3;
 const double _gridSpacing = 16;
+const double _targetProductCardWidth = 320;
+const double _minProductCardWidth = 220;
 
 double _heroSectionHeight(double maxWidth) {
   if (!maxWidth.isFinite || maxWidth <= 0) {
@@ -1040,20 +1042,40 @@ class _ResponsiveGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        int crossAxisCount = 1;
-        if (constraints.maxWidth >= 1100) {
-          crossAxisCount = 3;
-        } else if (constraints.maxWidth >= 700) {
-          crossAxisCount = 2;
-        }
-
         final double maxWidth = constraints.maxWidth.isFinite
             ? constraints.maxWidth
             : MediaQuery.of(context).size.width;
+        final double availableWidth =
+            maxWidth > 0 ? maxWidth : _targetProductCardWidth;
+
+        int bestCrossAxisCount = 1;
+        double smallestDifference = double.infinity;
+
+        final int maxPossibleColumns = math.max(
+          1,
+          (availableWidth / _minProductCardWidth).floor(),
+        );
+
+        for (var candidate = 1; candidate <= maxPossibleColumns; candidate++) {
+          final double spacing = _gridSpacing * math.max(0, candidate - 1);
+          final double tileWidth = (availableWidth - spacing) / candidate;
+          if (tileWidth <= 0) {
+            break;
+          }
+
+          final double difference =
+              (tileWidth - _targetProductCardWidth).abs();
+          if (difference < smallestDifference) {
+            smallestDifference = difference;
+            bestCrossAxisCount = candidate;
+          }
+        }
+
         final double totalSpacing =
-            _gridSpacing * math.max(0, crossAxisCount - 1);
-        final double tileWidth =
-            crossAxisCount > 0 ? (maxWidth - totalSpacing) / crossAxisCount : maxWidth;
+            _gridSpacing * math.max(0, bestCrossAxisCount - 1);
+        final double tileWidth = bestCrossAxisCount > 0
+            ? (availableWidth - totalSpacing) / bestCrossAxisCount
+            : availableWidth;
         final double tileHeight =
             _productCardHeightForWidth(context, tileWidth);
 
@@ -1062,7 +1084,7 @@ class _ResponsiveGrid extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           itemCount: products.length,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: crossAxisCount,
+            crossAxisCount: bestCrossAxisCount,
             mainAxisSpacing: _gridSpacing,
             crossAxisSpacing: _gridSpacing,
             mainAxisExtent: tileHeight,
