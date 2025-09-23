@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +14,75 @@ import '../orders/order_payload.dart';
 
 const double _bikerDeliveryFee = 5.0;
 const String _currencySymbol = r'$';
+const double _productImageAspectRatio = 4 / 3;
+const double _gridSpacing = 16;
+
+double _heroSectionHeight(double maxWidth) {
+  if (!maxWidth.isFinite || maxWidth <= 0) {
+    return 320;
+  }
+  return math.min(420, math.max(220, maxWidth * 0.6));
+}
+
+double _textHeight(TextStyle? style, {int maxLines = 1}) {
+  final double fontSize = style?.fontSize ?? 14;
+  final double height = style?.height ?? 1.2;
+  return fontSize * height * maxLines;
+}
+
+double _productCardHeightForWidth(BuildContext context, double width) {
+  if (!width.isFinite || width <= 0) {
+    return 360;
+  }
+
+  final theme = Theme.of(context);
+  final double imageHeight = width / _productImageAspectRatio;
+
+  final double nameHeight = _textHeight(theme.textTheme.titleMedium, maxLines: 2);
+  final double priceHeight = _textHeight(theme.textTheme.titleLarge);
+  final double oldPriceHeight = _textHeight(theme.textTheme.bodySmall);
+
+  const double verticalPadding = 32; // 16 top + 16 bottom padding
+  const double badgeHeight = 28; // Chip height allowance
+  const double spacingAfterBadge = 12;
+  const double spacingAfterName = 8;
+  const double oldPricePaddingTop = 4;
+  const double spacingBeforeButton = 16;
+  const double buttonHeight = 48; // FilledButton min height allowance
+  const double extraAllowance = 12; // Additional breathing space for variations
+
+  final double contentHeight = verticalPadding +
+      badgeHeight +
+      spacingAfterBadge +
+      nameHeight +
+      spacingAfterName +
+      priceHeight +
+      oldPricePaddingTop +
+      oldPriceHeight +
+      spacingBeforeButton +
+      buttonHeight +
+      extraAllowance;
+
+  return imageHeight + contentHeight;
+}
+
+double _specialsCardWidth(double maxWidth) {
+  if (!maxWidth.isFinite || maxWidth <= 0) {
+    return 240;
+  }
+
+  double targetWidth;
+  if (maxWidth < 520) {
+    targetWidth = maxWidth * 0.82;
+  } else if (maxWidth < 900) {
+    targetWidth = maxWidth / 2.5;
+  } else {
+    targetWidth = 280;
+  }
+
+  targetWidth = math.max(220, math.min(320, targetWidth));
+  return targetWidth;
+}
 
 int? _cacheDimensionFor(double logicalPixels, double devicePixelRatio) {
   if (!logicalPixels.isFinite || logicalPixels <= 0) {
@@ -281,139 +351,166 @@ class _StoreHero extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            height: 320,
-            child: PageView.builder(
-              controller: controller,
-              onPageChanged: onChanged,
-              itemCount: _heroSlides.length,
-              itemBuilder: (context, index) {
-                final slide = _heroSlides[index];
-                return Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      final devicePixelRatio =
-                          MediaQuery.of(context).devicePixelRatio;
-                      final cacheWidth = _cacheDimensionFor(
-                        constraints.maxWidth,
-                        devicePixelRatio,
-                      );
-                      final cacheHeight = _cacheDimensionFor(
-                        constraints.maxHeight,
-                        devicePixelRatio,
-                      );
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final heroHeight = _heroSectionHeight(constraints.maxWidth);
+              return SizedBox(
+                height: heroHeight,
+                child: PageView.builder(
+                  controller: controller,
+                  onPageChanged: onChanged,
+                  itemCount: _heroSlides.length,
+                  itemBuilder: (context, index) {
+                    final slide = _heroSlides[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 24,
+                      ),
+                      child: LayoutBuilder(
+                        builder: (context, itemConstraints) {
+                          final devicePixelRatio =
+                              MediaQuery.of(context).devicePixelRatio;
+                          final cacheWidth = _cacheDimensionFor(
+                            itemConstraints.maxWidth,
+                            devicePixelRatio,
+                          );
+                          final cacheHeight = _cacheDimensionFor(
+                            itemConstraints.maxHeight,
+                            devicePixelRatio,
+                          );
 
-                      return ClipRRect(
-                        borderRadius: BorderRadius.circular(28),
-                        child: Stack(
-                          fit: StackFit.expand,
-                          children: [
-                            Image.network(
-                              slide.imageUrl,
-                              fit: BoxFit.cover,
-                              color: Colors.black.withOpacity(0.25),
-                              colorBlendMode: BlendMode.darken,
-                              cacheWidth: cacheWidth,
-                              cacheHeight: cacheHeight,
-                              loadingBuilder: (context, child, event) {
-                                if (event == null) return child;
-                                return Container(
-                                  color: theme.colorScheme.surfaceVariant,
-                                  alignment: Alignment.center,
-                                  child: const CircularProgressIndicator(),
-                                );
-                              },
-                              errorBuilder: (context, _, __) => Container(
-                                color: theme.colorScheme.surfaceVariant,
-                                alignment: Alignment.center,
-                                child: Icon(
-                                  Icons.photo,
-                                  color: theme.colorScheme.onSurface
-                                      .withOpacity(0.4),
-                                  size: 56,
+                          return ClipRRect(
+                            borderRadius: BorderRadius.circular(28),
+                            child: Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                Image.network(
+                                  slide.imageUrl,
+                                  fit: BoxFit.cover,
+                                  color: Colors.black.withOpacity(0.25),
+                                  colorBlendMode: BlendMode.darken,
+                                  cacheWidth: cacheWidth,
+                                  cacheHeight: cacheHeight,
+                                  loadingBuilder: (context, child, event) {
+                                    if (event == null) return child;
+                                    return Container(
+                                      color: theme.colorScheme.surfaceVariant,
+                                      alignment: Alignment.center,
+                                      child: const CircularProgressIndicator(),
+                                    );
+                                  },
+                                  errorBuilder: (context, _, __) => Container(
+                                    color: theme.colorScheme.surfaceVariant,
+                                    alignment: Alignment.center,
+                                    child: Icon(
+                                      Icons.photo,
+                                      color: theme.colorScheme.onSurface
+                                          .withOpacity(0.4),
+                                      size: 56,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                            Positioned.fill(
-                              child: Container(
-                                padding: const EdgeInsets.all(28),
-                                alignment: Alignment.centerLeft,
-                                child: ConstrainedBox(
-                                  constraints: const BoxConstraints(maxWidth: 360),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 12,
-                                          vertical: 6,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: theme.colorScheme.primary.withOpacity(0.2),
-                                          borderRadius: BorderRadius.circular(999),
-                                        ),
-                                        child: Text(
-                                          slide.highlight,
-                                          style: theme.textTheme.labelLarge?.copyWith(
-                                            color: theme.colorScheme.onPrimary,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(height: 16),
-                                      Text(
-                                        slide.title,
-                                        style: theme.textTheme.headlineMedium?.copyWith(
-                                          color: theme.colorScheme.onPrimary,
-                                          shadows: const [
-                                            Shadow(
-                                              offset: Offset(0, 2),
-                                              blurRadius: 12,
-                                              color: Colors.black54,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      const SizedBox(height: 12),
-                                      Text(
-                                        slide.description,
-                                        style: theme.textTheme.bodyLarge?.copyWith(
-                                          color: theme.textTheme.bodyLarge?.color?.withOpacity(0.92) ??
-                                              theme.colorScheme.onPrimary.withOpacity(0.92),
-                                        ),
-                                      ),
-                                      const SizedBox(height: 20),
-                                      Wrap(
-                                        spacing: 12,
-                                        runSpacing: 12,
+                                Positioned.fill(
+                                  child: Container(
+                                    padding: const EdgeInsets.all(28),
+                                    alignment: Alignment.centerLeft,
+                                    child: ConstrainedBox(
+                                      constraints:
+                                          const BoxConstraints(maxWidth: 360),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
-                                          FilledButton(
-                                            onPressed: () => onSelectCategory(slide.category),
-                                            child: Text(slide.cta),
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 12,
+                                              vertical: 6,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: theme.colorScheme.primary
+                                                  .withOpacity(0.2),
+                                              borderRadius:
+                                                  BorderRadius.circular(999),
+                                            ),
+                                            child: Text(
+                                              slide.highlight,
+                                              style: theme
+                                                  .textTheme.labelLarge
+                                                  ?.copyWith(
+                                                color:
+                                                    theme.colorScheme.onPrimary,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
                                           ),
-                                          OutlinedButton(
-                                            onPressed: onViewSpecials,
-                                            child: const Text('See specials'),
+                                          const SizedBox(height: 16),
+                                          Text(
+                                            slide.title,
+                                            style: theme
+                                                .textTheme.headlineMedium
+                                                ?.copyWith(
+                                              color:
+                                                  theme.colorScheme.onPrimary,
+                                              shadows: const [
+                                                Shadow(
+                                                  offset: Offset(0, 2),
+                                                  blurRadius: 12,
+                                                  color: Colors.black54,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          const SizedBox(height: 12),
+                                          Text(
+                                            slide.description,
+                                            style: theme
+                                                .textTheme.bodyLarge
+                                                ?.copyWith(
+                                              color: theme
+                                                      .textTheme
+                                                      .bodyLarge
+                                                      ?.color
+                                                      ?.withOpacity(0.92) ??
+                                                  theme.colorScheme.onPrimary
+                                                      .withOpacity(0.92),
+                                            ),
+                                          ),
+                                          const SizedBox(height: 20),
+                                          Wrap(
+                                            spacing: 12,
+                                            runSpacing: 12,
+                                            children: [
+                                              FilledButton(
+                                                onPressed: () =>
+                                                    onSelectCategory(
+                                                        slide.category),
+                                                child: Text(slide.cta),
+                                              ),
+                                              OutlinedButton(
+                                                onPressed: onViewSpecials,
+                                                child: const Text('See specials'),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
-                                    ],
+                                    ),
                                   ),
                                 ),
-                              ),
+                              ],
                             ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                );
-              },
-            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
           ),
           const SizedBox(height: 12),
           Center(
@@ -617,20 +714,28 @@ class _SpecialsCarousel extends StatelessWidget {
               );
             }
 
-            return SizedBox(
-              height: 280,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemCount: specials.length,
-                separatorBuilder: (_, __) => const SizedBox(width: 16),
-                itemBuilder: (context, index) {
-                  final product = specials[index];
-                  return SizedBox(
-                    width: 240,
-                    child: _StoreProductCard(product: product),
-                  );
-                },
-              ),
+            return LayoutBuilder(
+              builder: (context, constraints) {
+                final cardWidth = _specialsCardWidth(constraints.maxWidth);
+                final listHeight =
+                    _productCardHeightForWidth(context, cardWidth);
+
+                return SizedBox(
+                  height: listHeight,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: specials.length,
+                    separatorBuilder: (_, __) => const SizedBox(width: 16),
+                    itemBuilder: (context, index) {
+                      final product = specials[index];
+                      return SizedBox(
+                        width: cardWidth,
+                        child: _StoreProductCard(product: product),
+                      );
+                    },
+                  ),
+                );
+              },
             );
           },
         ),
@@ -942,15 +1047,25 @@ class _ResponsiveGrid extends StatelessWidget {
           crossAxisCount = 2;
         }
 
+        final double maxWidth = constraints.maxWidth.isFinite
+            ? constraints.maxWidth
+            : MediaQuery.of(context).size.width;
+        final double totalSpacing =
+            _gridSpacing * math.max(0, crossAxisCount - 1);
+        final double tileWidth =
+            crossAxisCount > 0 ? (maxWidth - totalSpacing) / crossAxisCount : maxWidth;
+        final double tileHeight =
+            _productCardHeightForWidth(context, tileWidth);
+
         return GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: products.length,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: crossAxisCount,
-            mainAxisSpacing: 16,
-            crossAxisSpacing: 16,
-            childAspectRatio: 0.78,
+            mainAxisSpacing: _gridSpacing,
+            crossAxisSpacing: _gridSpacing,
+            mainAxisExtent: tileHeight,
           ),
           itemBuilder: (context, index) {
             final product = products[index];
@@ -983,14 +1098,14 @@ class _StoreProductCard extends StatelessWidget {
             builder: (context, constraints) {
               final devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
               final imageWidth = constraints.maxWidth;
-              final imageHeight = imageWidth / (4 / 3);
+              final imageHeight = imageWidth / _productImageAspectRatio;
               final cacheWidth =
                   _cacheDimensionFor(imageWidth, devicePixelRatio);
               final cacheHeight =
                   _cacheDimensionFor(imageHeight, devicePixelRatio);
 
               return AspectRatio(
-                aspectRatio: 4 / 3,
+                aspectRatio: _productImageAspectRatio,
                 child: Image.network(
                   product.image,
                   fit: BoxFit.cover,
