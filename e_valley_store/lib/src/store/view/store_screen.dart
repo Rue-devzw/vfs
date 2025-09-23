@@ -14,6 +14,13 @@ import '../orders/order_payload.dart';
 const double _bikerDeliveryFee = 5.0;
 const String _currencySymbol = r'$';
 
+int? _cacheDimensionFor(double logicalPixels, double devicePixelRatio) {
+  if (!logicalPixels.isFinite || logicalPixels <= 0) {
+    return null;
+  }
+  return (logicalPixels * devicePixelRatio).round();
+}
+
 class StoreScreen extends StatefulWidget {
   const StoreScreen({super.key});
 
@@ -285,35 +292,50 @@ class _StoreHero extends StatelessWidget {
                 return Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(28),
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: [
-                        Image.network(
-                          slide.imageUrl,
-                          fit: BoxFit.cover,
-                          color: Colors.black.withOpacity(0.25),
-                          colorBlendMode: BlendMode.darken,
-                          loadingBuilder: (context, child, event) {
-                            if (event == null) return child;
-                            return Container(
-                              color: theme.colorScheme.surfaceVariant,
-                              alignment: Alignment.center,
-                              child: const CircularProgressIndicator(),
-                            );
-                          },
-                          errorBuilder: (context, _, __) => Container(
-                            color: theme.colorScheme.surfaceVariant,
-                            alignment: Alignment.center,
-                            child: Icon(
-                              Icons.photo,
-                              color: theme.colorScheme.onSurface
-                                  .withOpacity(0.4),
-                              size: 56,
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      final devicePixelRatio =
+                          MediaQuery.of(context).devicePixelRatio;
+                      final cacheWidth = _cacheDimensionFor(
+                        constraints.maxWidth,
+                        devicePixelRatio,
+                      );
+                      final cacheHeight = _cacheDimensionFor(
+                        constraints.maxHeight,
+                        devicePixelRatio,
+                      );
+
+                      return ClipRRect(
+                        borderRadius: BorderRadius.circular(28),
+                        child: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            Image.network(
+                              slide.imageUrl,
+                              fit: BoxFit.cover,
+                              color: Colors.black.withOpacity(0.25),
+                              colorBlendMode: BlendMode.darken,
+                              cacheWidth: cacheWidth,
+                              cacheHeight: cacheHeight,
+                              loadingBuilder: (context, child, event) {
+                                if (event == null) return child;
+                                return Container(
+                                  color: theme.colorScheme.surfaceVariant,
+                                  alignment: Alignment.center,
+                                  child: const CircularProgressIndicator(),
+                                );
+                              },
+                              errorBuilder: (context, _, __) => Container(
+                                color: theme.colorScheme.surfaceVariant,
+                                alignment: Alignment.center,
+                                child: Icon(
+                                  Icons.photo,
+                                  color: theme.colorScheme.onSurface
+                                      .withOpacity(0.4),
+                                  size: 56,
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
                         Container(
                           padding: const EdgeInsets.all(32),
                           alignment: Alignment.centerLeft,
@@ -954,20 +976,34 @@ class _StoreProductCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AspectRatio(
-            aspectRatio: 4 / 3,
-            child: Image.network(
-              product.image,
-              fit: BoxFit.cover,
-              errorBuilder: (context, _, __) => Container(
-                color: theme.colorScheme.surfaceVariant,
-                alignment: Alignment.center,
-                child: Icon(
-                  Icons.shopping_basket,
-                  color: theme.colorScheme.onSurface.withOpacity(0.4),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              final devicePixelRatio = MediaQuery.of(context).devicePixelRatio;
+              final imageWidth = constraints.maxWidth;
+              final imageHeight = imageWidth / (4 / 3);
+              final cacheWidth =
+                  _cacheDimensionFor(imageWidth, devicePixelRatio);
+              final cacheHeight =
+                  _cacheDimensionFor(imageHeight, devicePixelRatio);
+
+              return AspectRatio(
+                aspectRatio: 4 / 3,
+                child: Image.network(
+                  product.image,
+                  fit: BoxFit.cover,
+                  cacheWidth: cacheWidth,
+                  cacheHeight: cacheHeight,
+                  errorBuilder: (context, _, __) => Container(
+                    color: theme.colorScheme.surfaceVariant,
+                    alignment: Alignment.center,
+                    child: Icon(
+                      Icons.shopping_basket,
+                      color: theme.colorScheme.onSurface.withOpacity(0.4),
+                    ),
+                  ),
                 ),
-              ),
-            ),
+              );
+            },
           ),
           Padding(
             padding: const EdgeInsets.all(16),
@@ -1312,6 +1348,14 @@ class _CartLineItem extends StatelessWidget {
             width: 72,
             height: 72,
             fit: BoxFit.cover,
+            cacheWidth: _cacheDimensionFor(
+              72,
+              MediaQuery.of(context).devicePixelRatio,
+            ),
+            cacheHeight: _cacheDimensionFor(
+              72,
+              MediaQuery.of(context).devicePixelRatio,
+            ),
             errorBuilder: (context, error, stackTrace) => Container(
               width: 72,
               height: 72,
