@@ -469,7 +469,7 @@ const buildLocationsOverview = () => {
   return [
     "You can find us at:",
     locationDetails,
-    "Harare currently hosts our administration and order desk while the full retail branch is in progress—share your Harare needs and we’ll coordinate pickup or delivery for you.",
+    "Harare hosts our head office, main store, and order desk—share your Harare needs and we’ll coordinate pickup or delivery for you.",
   ].join("\n\n");
 };
 
@@ -479,7 +479,7 @@ const buildLocationsFollowUp = () =>
     formatBulletedList([
       "Open the Google Maps links in the Locations section of our site for step-by-step directions.",
       "For large wholesale pickups, call ahead so we can stage your order in cold storage.",
-      "Our Harare order desk can consolidate loads or schedule courier dispatches while the retail branch is finalised.",
+      "Our Harare head office order desk can consolidate loads or schedule courier dispatches for regional and out-of-town routes.",
     ]),
   ].join("\n\n");
 
