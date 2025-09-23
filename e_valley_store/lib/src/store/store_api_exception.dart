@@ -5,5 +5,6 @@ class StoreApiException implements Exception {
   final int? statusCode;
 
   @override
-  String toString() => 'StoreApiException(statusCode: ' '\$statusCode, message: ' '\$message)';
+  String toString() =>
+      'StoreApiException(statusCode: $statusCode, message: $message)';
 }
