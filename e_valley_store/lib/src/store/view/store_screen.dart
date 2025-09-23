@@ -191,54 +191,57 @@ class _StoreScreenState extends State<StoreScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                    _StoreHero(
-                      controller: _heroController,
-                      currentIndex: _currentHeroIndex,
-                      onChanged: (index) {
-                        _handleHeroChanged(index);
-                      },
-                      onSelectCategory: _selectCategory,
-                      onViewSpecials: _viewSpecials,
-                    ),
-                    _QuickTilesSection(onViewSpecials: _viewSpecials),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 24,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          _SpecialsCarousel(
-                            stream: _specialsStream,
+                          _StoreHero(
+                            controller: _heroController,
+                            currentIndex: _currentHeroIndex,
+                            onChanged: (index) {
+                              _handleHeroChanged(index);
+                            },
+                            onSelectCategory: _selectCategory,
                             onViewSpecials: _viewSpecials,
                           ),
-                          const SizedBox(height: 32),
-                          _ProductExplorer(
-                            key: _productSectionKey,
-                            products: products,
-                            categories: categories,
-                            showSpecialsOnly: _showSpecialsOnly,
-                            selectedCategory: _selectedCategory,
-                            sortOption: _sortOption,
-                            hasActiveFilter: _hasActiveFilter,
-                            onSelectCategory: _selectCategory,
-                            onToggleSpecials: (value) {
-                              setState(() => _showSpecialsOnly = value);
-                            },
-                            onSortChanged: _updateSort,
-                            searchController: _searchController,
-                            onSearchChanged: _updateSearch,
-                            filteredProducts: _applyFilters(products),
+                          _QuickTilesSection(onViewSpecials: _viewSpecials),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 24,
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _SpecialsCarousel(
+                                  stream: _specialsStream,
+                                  onViewSpecials: _viewSpecials,
+                                ),
+                                const SizedBox(height: 32),
+                                _ProductExplorer(
+                                  key: _productSectionKey,
+                                  products: products,
+                                  categories: categories,
+                                  showSpecialsOnly: _showSpecialsOnly,
+                                  selectedCategory: _selectedCategory,
+                                  sortOption: _sortOption,
+                                  hasActiveFilter: _hasActiveFilter,
+                                  onSelectCategory: _selectCategory,
+                                  onToggleSpecials: (value) {
+                                    setState(() => _showSpecialsOnly = value);
+                                  },
+                                  onSortChanged: _updateSort,
+                                  searchController: _searchController,
+                                  onSearchChanged: _updateSearch,
+                                  filteredProducts: _applyFilters(products),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-            );
-          },
+                  );
+                },
+              );
+            },
+          ),
         ),
         const _FloatingCartButton(),
       ],
