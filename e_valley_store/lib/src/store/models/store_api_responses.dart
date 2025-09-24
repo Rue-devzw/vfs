@@ -5,6 +5,8 @@ import 'store_api_source.dart';
 import 'store_pagination.dart';
 import 'store_product.dart';
 
+
+
 part 'store_api_responses.g.dart';
 
 @JsonSerializable()

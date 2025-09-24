@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 
+
 class StoreApiConfig {
   const StoreApiConfig({
     this.overrideBaseUrl,

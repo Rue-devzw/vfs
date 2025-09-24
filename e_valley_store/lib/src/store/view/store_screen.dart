@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +10,9 @@ import '../store_repository.dart';
 import '../cart/cart_controller.dart';
 import '../orders/order_service.dart';
 import '../orders/order_payload.dart';
+
+
+import 'dart:math' as math;
 
 const double _bikerDeliveryFee = 5.0;
 const String _currencySymbol = r'$';
@@ -397,13 +399,13 @@ class _StoreHero extends StatelessWidget {
                                   loadingBuilder: (context, child, event) {
                                     if (event == null) return child;
                                     return Container(
-                                      color: theme.colorScheme.surfaceVariant,
+                                      color: theme.colorScheme.surfaceContainerHighest,
                                       alignment: Alignment.center,
                                       child: const CircularProgressIndicator(),
                                     );
                                   },
                                   errorBuilder: (context, _, __) => Container(
-                                    color: theme.colorScheme.surfaceVariant,
+                                    color: theme.colorScheme.surfaceContainerHighest,
                                     alignment: Alignment.center,
                                     child: Icon(
                                       Icons.photo,
@@ -1134,7 +1136,7 @@ class _StoreProductCard extends StatelessWidget {
                   cacheWidth: cacheWidth,
                   cacheHeight: cacheHeight,
                   errorBuilder: (context, _, __) => Container(
-                    color: theme.colorScheme.surfaceVariant,
+                    color: theme.colorScheme.surfaceContainerHighest,
                     alignment: Alignment.center,
                     child: Icon(
                       Icons.shopping_basket,
@@ -1499,7 +1501,7 @@ class _CartLineItem extends StatelessWidget {
             errorBuilder: (context, error, stackTrace) => Container(
               width: 72,
               height: 72,
-              color: theme.colorScheme.surfaceVariant,
+              color: theme.colorScheme.surfaceContainerHighest,
               alignment: Alignment.center,
               child: Icon(
                 Icons.image_not_supported_outlined,

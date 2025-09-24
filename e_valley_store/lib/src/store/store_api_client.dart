@@ -1,10 +1,12 @@
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
 
 import 'models/models.dart';
 import 'store_api_config.dart';
 import 'store_api_exception.dart';
+
+
+import 'package:http/http.dart' as http;
 
 class StoreApiClient {
   StoreApiClient({

@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
+
 part 'store_pagination.g.dart';
 
 @JsonSerializable()

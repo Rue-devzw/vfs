@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 
 import '../models/store_product.dart';
 
+
+
 class CartItem {
   const CartItem({
     required this.product,
