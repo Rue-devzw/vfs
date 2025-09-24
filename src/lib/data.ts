@@ -86,6 +86,7 @@ export const services = [
     purchaseLink: "/store",
     purchaseLabel: "Explore Our Store",
     image: "/images/office-and-kitchenware.webp",
+main
   }
 ];
 
