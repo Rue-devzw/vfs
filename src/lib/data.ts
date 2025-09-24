@@ -2,9 +2,6 @@ import {
   Carrot,
   Beef,
   Truck,
-  Building2,
-  Apple,
-  Warehouse,
   Leaf,
   HeartHandshake,
   ThumbsUp,
@@ -32,6 +29,7 @@ export const services = [
     description: "Retail & wholesale supply of all fruits and vegetables: cabbages, carrots, green beans, green pepper, tomatoes, watermelon, cucumber, and more.",
     purchaseLink: "/store?category=Fruit%20%26%20Veg",
     purchaseLabel: "Shop Fruit & Veg",
+    image: "/images/hero-produce.webp",
   },
   {
     icon: Beef,
@@ -39,6 +37,7 @@ export const services = [
     description: "Fresh beef, lamb, goat, rabbit, chicken, fish, mince, sausages, braai packs; cold-room managed for guaranteed freshness.",
     purchaseLink: "/store?category=Butchery",
     purchaseLabel: "Shop Butchery",
+    image: "/images/product-steak.webp",
   },
   {
     icon: ShoppingBasket,
@@ -46,6 +45,7 @@ export const services = [
     description: "Essentials like bread, sugar, flour, milk, cooking oil, plus Valley Farm Secrets branded spice packs.",
     purchaseLink: "/store?category=Grocery%20%26%20Spices",
     purchaseLabel: "Shop Groceries & Spices",
+    image: "/images/product-spices.webp",
   },
   {
     icon: Truck,
@@ -53,6 +53,7 @@ export const services = [
     description: "Scheduled deliveries & bulk orders for schools, colleges, churches, NGOs, and hospitality businesses.",
     purchaseLink: "/#wholesale",
     purchaseLabel: "Request Wholesale Supply",
+    image: "/images/hero-5.webp",
   },
   {
     icon: Package,
@@ -60,6 +61,7 @@ export const services = [
     description: "Graded, chopped, and portion-packed vegetables ready for kitchens.",
     purchaseLink: "/#wholesale",
     purchaseLabel: "Request Pre-Pack Solutions",
+    image: "/images/product-broccoli.webp",
   },
   {
     icon: Search,
@@ -67,6 +69,7 @@ export const services = [
     description: "We secure hard-to-find produce & volumes at competitive prices.",
     purchaseLink: "/#contact",
     purchaseLabel: "Talk to Our Team",
+    image: "/images/hero-4.webp",
   },
   {
     icon: FileText,
@@ -74,6 +77,7 @@ export const services = [
     description: "Professional billing, VAT-compliant receipts, and Pastel accounting.",
     purchaseLink: "/#contact",
     purchaseLabel: "Set Up an Account",
+    image: "/images/hero-7.webp",
   },
   {
     icon: Laptop,
@@ -81,6 +85,7 @@ export const services = [
     description: "Kitchenware, Office ware, and Electronics under one roof.",
     purchaseLink: "/store",
     purchaseLabel: "Explore Our Store",
+    image: "/images/hero-8.webp",
   }
 ];
 

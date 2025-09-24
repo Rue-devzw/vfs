@@ -33,48 +33,59 @@ export function Services() {
               <Card
                 key={service.title}
                 className={cn(
-                  "overflow-hidden border border-primary/10 bg-card text-card-foreground transition-shadow",
+                  "group relative overflow-hidden border border-primary/10 text-white transition-shadow",
                   isActive ? "shadow-lg ring-2 ring-primary/20" : "hover:shadow-md"
                 )}
               >
-                <button
-                  type="button"
-                  onClick={() => toggleService(index)}
-                  className="group flex w-full flex-col items-center gap-4 p-8 text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-                  aria-expanded={isActive}
-                  aria-controls={`service-panel-${index}`}
-                >
-                  <div
-                    className={cn(
-                      "rounded-full border border-primary/20 bg-primary/10 p-4 text-primary transition-colors",
-                      isActive ? "bg-primary/15" : "group-hover:bg-primary/15"
-                    )}
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-105"
+                  style={{ backgroundImage: `url(${service.image})` }}
+                />
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/60 to-black/80"
+                />
+                <div className="relative flex h-full flex-col">
+                  <button
+                    type="button"
+                    onClick={() => toggleService(index)}
+                    className="flex w-full flex-col items-center gap-4 p-8 text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-0"
+                    aria-expanded={isActive}
+                    aria-controls={`service-panel-${index}`}
                   >
-                    <service.icon className="h-8 w-8" aria-hidden="true" />
-                  </div>
-                  <span className="font-headline text-lg font-semibold">{service.title}</span>
-                  <ChevronDown
-                    className={cn(
-                      "h-5 w-5 text-primary transition-transform duration-300",
-                      isActive ? "rotate-180" : "rotate-0"
-                    )}
-                    aria-hidden="true"
-                  />
-                  <span className="sr-only">{isActive ? "Hide service details" : "Show service details"}</span>
-                </button>
-                {isActive ? (
-                  <CardContent
-                    id={`service-panel-${index}`}
-                    className="space-y-4 border-t border-primary/10 bg-muted/30 p-6 text-center"
-                  >
-                    <p className="text-sm text-muted-foreground">{service.description}</p>
-                    {service.purchaseLink ? (
-                      <Button asChild size="sm">
-                        <Link href={service.purchaseLink}>{service.purchaseLabel ?? "Purchase this service"}</Link>
-                      </Button>
-                    ) : null}
-                  </CardContent>
-                ) : null}
+                    <div
+                      className={cn(
+                        "rounded-full border border-white/30 bg-black/40 p-4 text-white transition-colors backdrop-blur",
+                        isActive ? "bg-black/60" : "group-hover:bg-black/50"
+                      )}
+                    >
+                      <service.icon className="h-8 w-8" aria-hidden="true" />
+                    </div>
+                    <span className="font-headline text-lg font-semibold">{service.title}</span>
+                    <ChevronDown
+                      className={cn(
+                        "h-5 w-5 text-white transition-transform duration-300",
+                        isActive ? "rotate-180" : "rotate-0"
+                      )}
+                      aria-hidden="true"
+                    />
+                    <span className="sr-only">{isActive ? "Hide service details" : "Show service details"}</span>
+                  </button>
+                  {isActive ? (
+                    <CardContent
+                      id={`service-panel-${index}`}
+                      className="relative z-10 space-y-4 border-t border-white/20 bg-black/50 p-6 text-center text-sm text-white backdrop-blur"
+                    >
+                      <p>{service.description}</p>
+                      {service.purchaseLink ? (
+                        <Button asChild size="sm">
+                          <Link href={service.purchaseLink}>{service.purchaseLabel ?? "Purchase this service"}</Link>
+                        </Button>
+                      ) : null}
+                    </CardContent>
+                  ) : null}
+                </div>
               </Card>
             );
           })}
