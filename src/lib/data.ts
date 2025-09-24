@@ -53,7 +53,7 @@ export const services = [
     description: "Scheduled deliveries & bulk orders for schools, colleges, churches, NGOs, and hospitality businesses.",
     purchaseLink: "/#wholesale",
     purchaseLabel: "Request Wholesale Supply",
-    image: "/images/hero-7.webp",
+    image: "/images/hero-5.webp",
   },
   {
     icon: Package,
@@ -77,7 +77,7 @@ export const services = [
     description: "Professional billing, VAT-compliant receipts, and Pastel accounting.",
     purchaseLink: "/#contact",
     purchaseLabel: "Set Up an Account",
-    image: "/images/hero-5.webp",
+    image: "/images/hero-7.webp",
   },
   {
     icon: Laptop,
