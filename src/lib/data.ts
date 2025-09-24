@@ -85,7 +85,8 @@ export const services = [
     description: "Kitchenware, Office ware, and Electronics under one roof.",
     purchaseLink: "/store",
     purchaseLabel: "Explore Our Store",
-    image: "/images/hero-8.webp",
+    image: "/images/office-and-kitchenware.webp",
+main
   }
 ];
 
