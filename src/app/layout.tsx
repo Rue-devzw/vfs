@@ -3,6 +3,7 @@ import "./globals.css";
 import { ValleyAIAssistant } from "@/components/valley-ai-assistant";
 import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
+import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
   title: "Valley Farm Secrets",
@@ -19,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <head>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
@@ -30,9 +31,16 @@ export default function RootLayout({
   <link rel="icon" href="/images/logo.png" type="image/png" />
 </head>
       <body className={cn("font-body antialiased", "min-h-screen bg-background font-sans")}>
-        {children}
-        <ValleyAIAssistant />
-        <Toaster />
+        <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+        >
+          {children}
+          <ValleyAIAssistant />
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );

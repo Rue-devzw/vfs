@@ -1,19 +1,25 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import Link from "next/link";
-import { Menu } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
-import { cn } from "@/lib/utils";
-import { navLinks } from "@/lib/nav-links";
-import type { NavLink as NavLinkConfig } from "@/lib/nav-links";
-import { Logo } from "../icons/logo";
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { Menu } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetTitle,
+} from '@/components/ui/sheet';
+import { cn } from '@/lib/utils';
+import { navLinks } from '@/lib/nav-links';
+import type { NavLink as NavLinkConfig } from '@/lib/nav-links';
+import { Logo } from '../icons/logo';
+import { ModeToggle } from '../mode-toggle';
 
-const toneClassMap: Record<NavLinkConfig["tone"], string> = {
-  primary: "text-primary",
-  accent: "text-accent",
-  muted: "text-muted-foreground",
+const toneClassMap: Record<NavLinkConfig['tone'], string> = {
+  primary: 'text-primary',
+  accent: 'text-accent',
+  muted: 'text-muted-foreground',
 };
 
 export function Header() {
@@ -24,21 +30,25 @@ export function Header() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 w-full transition-all duration-300",
+        'sticky top-0 z-50 w-full transition-all duration-300',
         isScrolled
-          ? "bg-background/80 backdrop-blur-sm shadow-md"
-          : "bg-transparent"
+          ? 'bg-background/80 backdrop-blur-sm shadow-md'
+          : 'bg-transparent'
       )}
     >
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
-        <Link href="/" className="flex items-center gap-2" aria-label="Valley Farm Secrets Home">
+        <Link
+          href="/"
+          className="flex items-center gap-2"
+          aria-label="Valley Farm Secrets Home"
+        >
           <Logo className="h-8 w-8 text-primary" />
           <span className="font-headline text-2xl font-bold text-primary">
             Valley Farm Secrets
@@ -49,6 +59,10 @@ export function Header() {
             <NavigationLinkItem key={link.href} link={link} variant="desktop" />
           ))}
         </nav>
+        <div className="flex items-center gap-4">
+        <div className='hidden md:block'>
+        <ModeToggle />
+        </div>
         <div className="md:hidden">
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
@@ -57,16 +71,24 @@ export function Header() {
                 <span className="sr-only">Open menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-full max-w-sm bg-background p-0">
+            <SheetContent
+              side="right"
+              className="w-full max-w-sm bg-background p-0"
+            >
               <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
               <div className="flex h-full flex-col">
-                <div className="p-6">
-                  <Link href="/" className="flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
+                <div className="p-6 flex justify-between">
+                  <Link
+                    href="/"
+                    className="flex items-center gap-2"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
                     <Logo className="h-7 w-7 text-primary" />
                     <span className="font-headline text-xl font-bold text-primary">
                       Valley Farm Secrets
                     </span>
                   </Link>
+                  <ModeToggle />
                 </div>
                 <nav className="mt-4 flex flex-col gap-2 p-6 pt-0">
                   {navLinks.map((link) => (
@@ -82,6 +104,7 @@ export function Header() {
             </SheetContent>
           </Sheet>
         </div>
+        </div>
       </div>
     </header>
   );
@@ -89,11 +112,15 @@ export function Header() {
 
 type NavigationLinkItemProps = {
   link: NavLinkConfig;
-  variant: "desktop" | "mobile";
+  variant: 'desktop' | 'mobile';
   onNavigate?: () => void;
 };
 
-function NavigationLinkItem({ link, variant, onNavigate }: NavigationLinkItemProps) {
+function NavigationLinkItem({
+  link,
+  variant,
+  onNavigate,
+}: NavigationLinkItemProps) {
   const Icon = link.icon;
   const toneClass = toneClassMap[link.tone];
 
@@ -102,22 +129,22 @@ function NavigationLinkItem({ link, variant, onNavigate }: NavigationLinkItemPro
       href={link.href}
       onClick={onNavigate ? () => onNavigate() : undefined}
       className={cn(
-        "group items-center gap-2 rounded-md px-3 py-2 font-semibold transition-colors hover:bg-accent/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2",
-        variant === "desktop" ? "inline-flex text-sm" : "flex text-lg"
+        'group items-center gap-2 rounded-md px-3 py-2 font-semibold transition-colors hover:bg-accent/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2',
+        variant === 'desktop' ? 'inline-flex text-sm' : 'flex text-lg'
       )}
     >
       <Icon
         aria-hidden="true"
         className={cn(
-          variant === "desktop" ? "h-4 w-4" : "h-5 w-5",
+          variant === 'desktop' ? 'h-4 w-4' : 'h-5 w-5',
           toneClass,
-          "transition-colors group-hover:text-primary group-focus-visible:text-primary"
+          'transition-colors group-hover:text-primary group-focus-visible:text-primary'
         )}
       />
       <span
         className={cn(
           toneClass,
-          "transition-colors group-hover:text-primary group-focus-visible:text-primary"
+          'transition-colors group-hover:text-primary group-focus-visible:text-primary'
         )}
       >
         {link.label}
