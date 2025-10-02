@@ -23,10 +23,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { services } from "@/lib/data";
 import {
   type LucideIcon,
+  Baby,
   Carrot,
   Beef,
   ShoppingBasket,
+  ShowerHead,
   Sparkle,
+  Sparkles,
+  SprayCan,
   Zap,
   Truck,
   Clock,
@@ -59,6 +63,10 @@ const categoryIcons: Record<Category, LucideIcon> = {
   "Fruit & Veg": Carrot,
   "Butchery": Beef,
   "Grocery & Spices": ShoppingBasket,
+  "Baby": Baby,
+  "Cleaning Products": SprayCan,
+  "Cosmetics": Sparkles,
+  "Toiletries": ShowerHead,
 };
 
 export function StoreLayout() {
