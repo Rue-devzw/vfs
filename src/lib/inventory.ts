@@ -1,4 +1,3 @@
-
 export const inventory = `
 Category: 001 - BABY
 
@@ -24,7 +23,7 @@ PAMP: Pampers Masters Pack
 
 PAMPS: Pampers Masters Single
 
-PRED: Predo Wipes
+PRED: Predo  Wipes
 
 PURA: Purity Aqueous
 
@@ -58,7 +57,7 @@ BOMFC: Boom Force Cream 750ml
 
 BOMM: Boom 150g
 
-BMW: Boom - 1KG
+BOMW: Boom - 1KG
 
 BOO: BoomDish washer 750ml
 
@@ -100,15 +99,15 @@ KNOA: Knockout All Purpose Cleaner 500ml
 
 KNOC: Knock out Satchet
 
-KNOCT: Knockout Dishwasher 2L
+KNOCK: Knockout Dishwasher 2L
 
-KNOCK: Knockout Bleach
+KNOCT: Knockout Bleach
 
 KWI: Kiwi 100ml
 
 MAQ: Maq 1kg
 
-MEQFLR: Boom 2kg
+MEGFLR: Boom 2kg
 
 MQ: Maq 2kg
 
@@ -116,7 +115,7 @@ NUGET: Nugget - 100ml
 
 OMO: Omo Powder 2kg
 
-PINE: Pinegel 500ml
+PIN: Pinegel 500ml
 
 PNE: Pinegel 1L
 
@@ -148,7 +147,7 @@ BAB: Baby Crez 500ml
 
 BABL: Baby line 500ml
 
-BCS: Black Chick Small 125ml
+BCS: Black Chick  Small 125ml
 
 BEV: BeverlyHills Roll on
 
@@ -202,7 +201,7 @@ EWP: EasyWaves Pack
 
 EXCLA: Exclamation Perfume
 
-GML: Gentel Magic lotion
+GMG: Gentel Magic lotion
 
 GML: Gentle Magic Cream
 
@@ -228,13 +227,17 @@ ING: Ingrams men 450ml
 
 INGM: Ingrams Aloe 450ml
 
+INGMS: Ingrams tissue oi l450ml
+
 INGRO: Ingrams Original 450mls
 
-INR: Ingrams tissue oi l450ml
+INR: Igrams Roibos 450ml
 
 ISB: Inecto Super Black75g
 
 ISOP: Isoplus Edge Control
+
+ISP: Iso Plus Hair Spry 240ml
 
 LACE: Lace Lotion
 
@@ -252,7 +255,7 @@ OHS: Oh So Heavenly Lotion 720ml
 
 OHSHV: Oh So Heavenly - 2L
 
-OHSL: Oh So Heavenly Lotion 1L
+OHSL: Oh  So Heavenly Lotion 1L
 
 OHSO: Oh SO Heavenly Cream 450ml
 
@@ -294,7 +297,7 @@ VASL: Vaseline 50ml
 
 VASLN: Vaseline Cream
 
-VSNL: Vaseline Lotion
+VASLNL: Vaseline Lotion
 
 VESTGLC: Vestline Garlic - 200g
 
