@@ -1,18 +1,5 @@
 import { NextResponse } from 'next/server';
 import { initiateEcocashPayment } from '@/lib/payments/ecocash';
-import { isFirebaseConfigured } from '@/lib/firebase-admin';
-
-export async function POST(req: Request) {
-  try {
-    if (!isFirebaseConfigured()) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: 'EcoCash payments are temporarily unavailable. Please try again soon.',
-        },
-        { status: 503 },
-      );
-    }
 
     const body = await req.json();
     const amount = Number(body?.amount);
