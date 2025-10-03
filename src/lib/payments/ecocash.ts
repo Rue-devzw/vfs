@@ -1,5 +1,5 @@
 import { randomUUID } from 'crypto';
-import { getDb } from '@/lib/firebase-admin';
+main
 
 const DEFAULT_MERCHANT_CODE = '068951';
 
@@ -27,6 +27,7 @@ export async function initiateEcocashPayment({
 
   const reference = `ECO-${randomUUID().split('-')[0]}`.toUpperCase();
 
+main
   const db = getDb();
 
   const paymentRecord: Record<string, unknown> = {
