@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { initiateEcocashPayment } from '@/lib/payments/ecocash';
- main
+
+export async function POST(req: Request) {
+  try {
     const body = await req.json();
     const amount = Number(body?.amount);
     const phoneNumber: string | undefined = body?.phoneNumber;
@@ -33,7 +35,7 @@ import { initiateEcocashPayment } from '@/lib/payments/ecocash';
     return NextResponse.json({ success: true, ...payment });
   } catch (error) {
     console.error('Error initiating EcoCash payment:', error);
-main
+
     return NextResponse.json(
       { success: false, error: 'Failed to initiate EcoCash payment.' },
       { status: 500 },
