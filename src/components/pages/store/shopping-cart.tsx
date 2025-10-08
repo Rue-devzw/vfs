@@ -7,6 +7,7 @@ import { useCart, CartItem } from './cart-context';
 import { ShoppingBag, Trash2, Plus, Minus } from 'lucide-react';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { Separator } from '@/components/ui/separator';
 import { CheckoutDialog } from './checkout-dialog';
 
 export function ShoppingCart() {
@@ -16,10 +17,6 @@ export function ShoppingCart() {
 
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
   const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const cashSubtotal = items.reduce((sum, item) => {
-    const effectiveCashPrice = typeof item.cashPrice === 'number' ? item.cashPrice : item.price;
-    return sum + effectiveCashPrice * item.quantity;
-  }, 0);
 
   const updateQuantity = (id: number, quantity: number) => {
     dispatch({ type: 'UPDATE_QUANTITY', payload: { id, quantity } });
@@ -67,17 +64,9 @@ export function ShoppingCart() {
           )}
           <SheetFooter className="mt-auto border-t pt-6">
             <div className="w-full space-y-4">
-              <div className="space-y-1">
-                <div className="flex justify-between text-lg font-semibold">
-                  <span>Online subtotal</span>
-                  <span>${subtotal.toFixed(2)}</span>
-                </div>
-                {Math.abs(cashSubtotal - subtotal) > 0.009 && (
-                  <div className="flex justify-between text-sm text-muted-foreground">
-                    <span>Pay-in-store cash total</span>
-                    <span>${cashSubtotal.toFixed(2)}</span>
-                  </div>
-                )}
+              <div className="flex justify-between text-lg font-semibold">
+                <span>Subtotal</span>
+                <span>${subtotal.toFixed(2)}</span>
               </div>
               <Button size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90" disabled={items.length === 0} onClick={handleCheckout}>
                 Proceed to Checkout
@@ -98,10 +87,7 @@ function CartLineItem({ item, onUpdateQuantity }: { item: CartItem, onUpdateQuan
       {image && <Image src={image.imageUrl} alt={item.name} width={64} height={64} className="rounded-md object-cover" />}
       <div className="flex-grow">
         <p className="font-semibold">{item.name}</p>
-        <p className="text-sm text-muted-foreground">Online: ${item.price.toFixed(2)}</p>
-        {typeof item.cashPrice === 'number' && Math.abs(item.cashPrice - item.price) > 0.009 && (
-          <p className="text-xs text-muted-foreground">Cash: ${item.cashPrice.toFixed(2)}</p>
-        )}
+        <p className="text-sm text-muted-foreground">${item.price.toFixed(2)}</p>
         <div className="flex items-center gap-2 mt-2">
           <Button variant="outline" size="icon" className="h-6 w-6" onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}><Minus className="h-4 w-4" /></Button>
           <span>{item.quantity}</span>
