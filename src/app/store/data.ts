@@ -1,3 +1,5 @@
+import { inventoryByCode } from "@/lib/inventory";
+
 export const categories = [
   "Fruit & Veg",
   "Butchery",
@@ -47,6 +49,9 @@ export type Product = {
   image: string;
   onSpecial: boolean;
 };
+
+const onlinePrice = (code: string, fallback = 0): number =>
+  inventoryByCode[code]?.onlinePrice ?? fallback;
 
 // ⬇️ ADD THIS ENTIRE BLOCK ⬇️
 // This array defines the images that your other components need.
@@ -158,7 +163,7 @@ export const products: Product[] = [
   {
     id: 10,
     name: "Apples Assorted - Heads (FACP04)",
-    price: 0.0,
+    price: onlinePrice("FACP04"),
     unit: "/unit",
     category: "Fruit & Veg",
     image: "product-apples",
@@ -167,7 +172,7 @@ export const products: Product[] = [
   {
     id: 11,
     name: "Apples Econo - 1.5kg (FACE01)",
-    price: 0.0,
+    price: onlinePrice("FACE01"),
     unit: "/1.5kg",
     category: "Fruit & Veg",
     image: "product-apples",
@@ -176,7 +181,7 @@ export const products: Product[] = [
   {
     id: 12,
     name: "Apples Econo - Box (FACPI)",
-    price: 0.0,
+    price: onlinePrice("FACPI"),
     unit: "/box",
     category: "Fruit & Veg",
     image: "product-apples",
@@ -185,7 +190,7 @@ export const products: Product[] = [
   {
     id: 13,
     name: "Avocado - Heads (FAMT1)",
-    price: 0.0,
+    price: onlinePrice("FAMT1"),
     unit: "/unit",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -194,7 +199,7 @@ export const products: Product[] = [
   {
     id: 14,
     name: "Bananas - kg (BN102)",
-    price: 0.0,
+    price: onlinePrice("BN102"),
     unit: "/kg",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -203,7 +208,7 @@ export const products: Product[] = [
   {
     id: 15,
     name: "Bananas Misc - kg (BANMC)",
-    price: 0.0,
+    price: onlinePrice("BANMC"),
     unit: "/kg",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -212,7 +217,7 @@ export const products: Product[] = [
   {
     id: 16,
     name: "Baobab (Powdered) - 500g (BOB)",
-    price: 0.0,
+    price: onlinePrice("BOB"),
     unit: "/500g pack",
     category: "Grocery & Spices",
     subcategory: "Dried",
@@ -222,7 +227,7 @@ export const products: Product[] = [
   {
     id: 17,
     name: "Baobab - 500g (BOAB0001)",
-    price: 0.0,
+    price: onlinePrice("BOAB0001"),
     unit: "/500g pack",
     category: "Grocery & Spices",
     subcategory: "Dried",
@@ -232,7 +237,7 @@ export const products: Product[] = [
   {
     id: 18,
     name: "Beetroot - Bundle (VBER01)",
-    price: 0.0,
+    price: onlinePrice("VBER01"),
     unit: "/bundle",
     category: "Fruit & Veg",
     image: "product-carrots",
@@ -241,7 +246,7 @@ export const products: Product[] = [
   {
     id: 19,
     name: "Brinjals - kg (VBR06)",
-    price: 0.0,
+    price: onlinePrice("VBR06"),
     unit: "/kg",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -250,7 +255,7 @@ export const products: Product[] = [
   {
     id: 20,
     name: "Broccolli - kg (VBN09)",
-    price: 0.0,
+    price: onlinePrice("VBN09"),
     unit: "/kg",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -259,7 +264,7 @@ export const products: Product[] = [
   {
     id: 21,
     name: "Brown Rice - 1kg (BRWN)",
-    price: 0.0,
+    price: onlinePrice("BRWN"),
     unit: "/1kg",
     category: "Grocery & Spices",
     subcategory: "Starch",
@@ -269,7 +274,7 @@ export const products: Product[] = [
   {
     id: 22,
     name: "Brown Rice - 2kg (BROWN02)",
-    price: 0.0,
+    price: onlinePrice("BROWN02"),
     unit: "/2kg",
     category: "Grocery & Spices",
     subcategory: "Starch",
@@ -279,7 +284,7 @@ export const products: Product[] = [
   {
     id: 23,
     name: "Bulk - Mufushwa (Bucket) (MUFUSBULK)",
-    price: 0.0,
+    price: onlinePrice("MUFUSBULK"),
     unit: "/bucket",
     category: "Grocery & Spices",
     subcategory: "Dried",
@@ -289,7 +294,7 @@ export const products: Product[] = [
   {
     id: 24,
     name: "Bulk - Rapoko - Buckets (ROAST)",
-    price: 0.0,
+    price: onlinePrice("ROAST"),
     unit: "/bucket",
     category: "Grocery & Spices",
     subcategory: "Starch",
@@ -299,7 +304,7 @@ export const products: Product[] = [
   {
     id: 25,
     name: "Bulk - Sugar Beans (BLKSUGR01)",
-    price: 0.0,
+    price: onlinePrice("BLKSUGR01"),
     unit: "/bulk pack",
     category: "Grocery & Spices",
     subcategory: "Dried",
@@ -309,7 +314,7 @@ export const products: Product[] = [
   {
     id: 26,
     name: "Butternuts - kg (VBNO10)",
-    price: 0.0,
+    price: onlinePrice("VBNO10"),
     unit: "/kg",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -318,7 +323,7 @@ export const products: Product[] = [
   {
     id: 27,
     name: "Butternut - Punnet (VBUTT)",
-    price: 0.0,
+    price: onlinePrice("VBUTT"),
     unit: "/punnet",
     category: "Fruit & Veg",
     image: "product-carrots",
@@ -327,7 +332,7 @@ export const products: Product[] = [
   {
     id: 28,
     name: "Butternut - Pocket (BUTP)",
-    price: 0.0,
+    price: onlinePrice("BUTP"),
     unit: "/pocket",
     category: "Fruit & Veg",
     image: "product-carrots",
@@ -336,7 +341,7 @@ export const products: Product[] = [
   {
     id: 29,
     name: "Cabbage - Head (VCA11)",
-    price: 0.0,
+    price: onlinePrice("VCA11"),
     unit: "/head",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -345,7 +350,7 @@ export const products: Product[] = [
   {
     id: 30,
     name: "Cabbages Red (VCAM)",
-    price: 0.0,
+    price: onlinePrice("VCAM"),
     unit: "/unit",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -354,7 +359,7 @@ export const products: Product[] = [
   {
     id: 31,
     name: "Carrots - Punnet (VPCP23)",
-    price: 0.0,
+    price: onlinePrice("VPCP23"),
     unit: "/punnet",
     category: "Fruit & Veg",
     image: "product-carrots",
@@ -363,7 +368,7 @@ export const products: Product[] = [
   {
     id: 32,
     name: "Carrots - kg (VCP21)",
-    price: 0.0,
+    price: onlinePrice("VCP21"),
     unit: "/kg",
     category: "Fruit & Veg",
     image: "product-carrots",
@@ -372,7 +377,7 @@ export const products: Product[] = [
   {
     id: 33,
     name: "Cauliflower - kg (VCAU01)",
-    price: 0.0,
+    price: onlinePrice("VCAU01"),
     unit: "/kg",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -381,7 +386,7 @@ export const products: Product[] = [
   {
     id: 34,
     name: "Chimera (NCB02)",
-    price: 0.0,
+    price: onlinePrice("NCB02"),
     unit: "/unit",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -390,7 +395,7 @@ export const products: Product[] = [
   {
     id: 35,
     name: "Covo - Bunches (DCOO1)",
-    price: 0.0,
+    price: onlinePrice("DCOO1"),
     unit: "/bunch",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -399,7 +404,7 @@ export const products: Product[] = [
   {
     id: 36,
     name: "Cucumber - Big Pack (VCUC02)",
-    price: 0.0,
+    price: onlinePrice("VCUC02"),
     unit: "/pack",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -408,7 +413,7 @@ export const products: Product[] = [
   {
     id: 37,
     name: "Eggplant - kg (EG)",
-    price: 0.0,
+    price: onlinePrice("EG"),
     unit: "/kg",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -417,7 +422,7 @@ export const products: Product[] = [
   {
     id: 38,
     name: "Eggs - Each (MFS01)",
-    price: 0.0,
+    price: onlinePrice("MFS01"),
     unit: "/each",
     category: "Grocery & Spices",
     subcategory: "Dairy",
@@ -427,7 +432,7 @@ export const products: Product[] = [
   {
     id: 39,
     name: "Eggs - Trays (EGT)",
-    price: 0.0,
+    price: onlinePrice("EGT"),
     unit: "/tray",
     category: "Grocery & Spices",
     subcategory: "Dairy",
@@ -437,7 +442,7 @@ export const products: Product[] = [
   {
     id: 40,
     name: "English Cucumber (NFI01)",
-    price: 0.0,
+    price: onlinePrice("NFI01"),
     unit: "/unit",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -446,7 +451,7 @@ export const products: Product[] = [
   {
     id: 41,
     name: "garlic - kg (VGAR)",
-    price: 0.0,
+    price: onlinePrice("VGAR"),
     unit: "/kg",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -455,7 +460,7 @@ export const products: Product[] = [
   {
     id: 42,
     name: "gemsquash - kg (VGM01)",
-    price: 0.0,
+    price: onlinePrice("VGM01"),
     unit: "/kg",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -464,7 +469,7 @@ export const products: Product[] = [
   {
     id: 43,
     name: "ginger - kg (VGI130)",
-    price: 0.0,
+    price: onlinePrice("VGI130"),
     unit: "/kg",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -473,7 +478,7 @@ export const products: Product[] = [
   {
     id: 44,
     name: "grapes Black - Punnets (FGR02)",
-    price: 0.0,
+    price: onlinePrice("FGR02"),
     unit: "/punnet",
     category: "Fruit & Veg",
     image: "product-apples",
@@ -482,7 +487,7 @@ export const products: Product[] = [
   {
     id: 45,
     name: "green Beans - kg (VGB33)",
-    price: 0.0,
+    price: onlinePrice("VGB33"),
     unit: "/kg",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -491,7 +496,7 @@ export const products: Product[] = [
   {
     id: 46,
     name: "green Beans - Punnet (VGB34)",
-    price: 0.0,
+    price: onlinePrice("VGB34"),
     unit: "/punnet",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -500,7 +505,7 @@ export const products: Product[] = [
   {
     id: 47,
     name: "Honey - 500g (MHO1)",
-    price: 0.0,
+    price: onlinePrice("MHO1"),
     unit: "/500g pack",
     category: "Grocery & Spices",
     subcategory: "Spreads",
@@ -510,7 +515,7 @@ export const products: Product[] = [
   {
     id: 48,
     name: "Honey Pure - 500g (1st Grade) (HONP003)",
-    price: 0.0,
+    price: onlinePrice("HONP003"),
     unit: "/500g pack",
     category: "Grocery & Spices",
     subcategory: "Spreads",
@@ -520,7 +525,7 @@ export const products: Product[] = [
   {
     id: 49,
     name: "Kapenta - kg (MFK05)",
-    price: 0.0,
+    price: onlinePrice("MFK05"),
     unit: "/kg",
     category: "Grocery & Spices",
     subcategory: "Dried",
@@ -530,7 +535,7 @@ export const products: Product[] = [
   {
     id: 50,
     name: "Lemon - Punnet (VLEEKB)",
-    price: 0.0,
+    price: onlinePrice("VLEEKB"),
     unit: "/punnet",
     category: "Fruit & Veg",
     image: "product-apples",
@@ -539,7 +544,7 @@ export const products: Product[] = [
   {
     id: 51,
     name: "Lemons - kg (FLEM01)",
-    price: 0.0,
+    price: onlinePrice("FLEM01"),
     unit: "/kg",
     category: "Fruit & Veg",
     image: "product-apples",
@@ -548,7 +553,7 @@ export const products: Product[] = [
   {
     id: 52,
     name: "Lettuce - Head (VLET01)",
-    price: 0.0,
+    price: onlinePrice("VLET01"),
     unit: "/head",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -557,7 +562,7 @@ export const products: Product[] = [
   {
     id: 53,
     name: "Macadamia Nuts - kg (VPEP06)",
-    price: 0.0,
+    price: onlinePrice("VPEP06"),
     unit: "/kg",
     category: "Grocery & Spices",
     subcategory: "Snack",
@@ -567,7 +572,7 @@ export const products: Product[] = [
   {
     id: 54,
     name: "Macadamia Nuts - Punnet (VPEP07)",
-    price: 0.0,
+    price: onlinePrice("VPEP07"),
     unit: "/punnet",
     category: "Grocery & Spices",
     subcategory: "Snack",
@@ -577,7 +582,7 @@ export const products: Product[] = [
   {
     id: 55,
     name: "Madora - kg (MMDR01)",
-    price: 0.0,
+    price: onlinePrice("MMDR01"),
     unit: "/kg",
     category: "Grocery & Spices",
     subcategory: "Dried",
@@ -587,7 +592,7 @@ export const products: Product[] = [
   {
     id: 56,
     name: "Mango - kg (MAN)",
-    price: 0.0,
+    price: onlinePrice("MAN"),
     unit: "/kg",
     category: "Fruit & Veg",
     image: "product-apples",
@@ -596,7 +601,7 @@ export const products: Product[] = [
   {
     id: 57,
     name: "Mango - Packs (VMAN)",
-    price: 0.0,
+    price: onlinePrice("VMAN"),
     unit: "/pack",
     category: "Fruit & Veg",
     image: "product-apples",
@@ -605,7 +610,7 @@ export const products: Product[] = [
   {
     id: 58,
     name: "Mixed grain - 2kg (MMIXED)",
-    price: 0.0,
+    price: onlinePrice("MMIXED"),
     unit: "/2kg",
     category: "Grocery & Spices",
     subcategory: "Starch",
@@ -615,7 +620,7 @@ export const products: Product[] = [
   {
     id: 59,
     name: "Munyemba - 75g (MUNY002)",
-    price: 0.0,
+    price: onlinePrice("MUNY002"),
     unit: "/75g pack",
     category: "Grocery & Spices",
     subcategory: "Dried",
@@ -625,7 +630,7 @@ export const products: Product[] = [
   {
     id: 60,
     name: "Munyevhe - 50g (VOK44)",
-    price: 0.0,
+    price: onlinePrice("VOK44"),
     unit: "/50g pack",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -634,7 +639,7 @@ export const products: Product[] = [
   {
     id: 61,
     name: "Naartjies - Box (FNEC02)",
-    price: 0.0,
+    price: onlinePrice("FNEC02"),
     unit: "/box",
     category: "Fruit & Veg",
     image: "product-apples",
@@ -643,7 +648,7 @@ export const products: Product[] = [
   {
     id: 62,
     name: "Naartjies - Each (FNEC03)",
-    price: 0.0,
+    price: onlinePrice("FNEC03"),
     unit: "/each",
     category: "Fruit & Veg",
     image: "product-apples",
@@ -652,7 +657,7 @@ export const products: Product[] = [
   {
     id: 63,
     name: "Nyimo - 500g (NYOO2)",
-    price: 0.0,
+    price: onlinePrice("NYOO2"),
     unit: "/500g pack",
     category: "Grocery & Spices",
     subcategory: "Dried",
@@ -662,7 +667,7 @@ export const products: Product[] = [
   {
     id: 64,
     name: "Okra - Punnet (VOK41)",
-    price: 0.0,
+    price: onlinePrice("VOK41"),
     unit: "/punnet",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -680,7 +685,7 @@ export const products: Product[] = [
   {
     id: 66,
     name: "Onion King Bun (VEKIG)",
-    price: 0.0,
+    price: onlinePrice("VEKIG"),
     unit: "/bundle",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -689,7 +694,7 @@ export const products: Product[] = [
   {
     id: 67,
     name: "Onions - kg (VOIM53)",
-    price: 0.0,
+    price: onlinePrice("VOIM53"),
     unit: "/kg",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -698,7 +703,7 @@ export const products: Product[] = [
   {
     id: 68,
     name: "Onions - Pocket (VOIL04)",
-    price: 0.0,
+    price: onlinePrice("VOIL04"),
     unit: "/pocket",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -707,7 +712,7 @@ export const products: Product[] = [
   {
     id: 69,
     name: "Onions Misc - kg (VOIM03)",
-    price: 0.0,
+    price: onlinePrice("VOIM03"),
     unit: "/kg",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -716,7 +721,7 @@ export const products: Product[] = [
   {
     id: 70,
     name: "Onions Red - Bundle (VEGON)",
-    price: 0.0,
+    price: onlinePrice("VEGON"),
     unit: "/bundle",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -725,7 +730,7 @@ export const products: Product[] = [
   {
     id: 71,
     name: "Oranges - Pack (FORP01)",
-    price: 0.0,
+    price: onlinePrice("FORP01"),
     unit: "/pack",
     category: "Fruit & Veg",
     image: "product-apples",
@@ -734,7 +739,7 @@ export const products: Product[] = [
   {
     id: 72,
     name: "Oranges - Pocket (FORA43)",
-    price: 0.0,
+    price: onlinePrice("FORA43"),
     unit: "/pocket",
     category: "Fruit & Veg",
     image: "product-apples",
@@ -743,7 +748,7 @@ export const products: Product[] = [
   {
     id: 73,
     name: "Pecan Nuts - kg (VPEC02)",
-    price: 0.0,
+    price: onlinePrice("VPEC02"),
     unit: "/kg",
     category: "Grocery & Spices",
     subcategory: "Snack",
@@ -753,7 +758,7 @@ export const products: Product[] = [
   {
     id: 74,
     name: "Pecanuts - Pack (VPEN01)",
-    price: 0.0,
+    price: onlinePrice("VPEN01"),
     unit: "/pack",
     category: "Grocery & Spices",
     subcategory: "Snack",
@@ -763,7 +768,7 @@ export const products: Product[] = [
   {
     id: 75,
     name: "Peanut Butter - 300ml (PEANT06)",
-    price: 0.0,
+    price: onlinePrice("PEANT06"),
     unit: "/300ml",
     category: "Grocery & Spices",
     subcategory: "Spreads",
@@ -773,7 +778,7 @@ export const products: Product[] = [
   {
     id: 76,
     name: "Peanut Butter - 375ml (MPEN)",
-    price: 0.0,
+    price: onlinePrice("MPEN"),
     unit: "/375ml",
     category: "Grocery & Spices",
     subcategory: "Spreads",
@@ -783,7 +788,7 @@ export const products: Product[] = [
   {
     id: 77,
     name: "Peanuts (Unshelled) - 75g (PEANT001)",
-    price: 0.0,
+    price: onlinePrice("PEANT001"),
     unit: "/75g pack",
     category: "Grocery & Spices",
     subcategory: "Dried",
@@ -793,7 +798,7 @@ export const products: Product[] = [
   {
     id: 78,
     name: "Peanuts - kg (PEA)",
-    price: 0.0,
+    price: onlinePrice("PEA"),
     unit: "/kg",
     category: "Grocery & Spices",
     subcategory: "Dried",
@@ -803,7 +808,7 @@ export const products: Product[] = [
   {
     id: 79,
     name: "Peanuts - 500g (MSPN75)",
-    price: 0.0,
+    price: onlinePrice("MSPN75"),
     unit: "/500g pack",
     category: "Grocery & Spices",
     subcategory: "Dried",
@@ -813,7 +818,7 @@ export const products: Product[] = [
   {
     id: 80,
     name: "Pears Forelle - Each (FPF04)",
-    price: 0.0,
+    price: onlinePrice("FPF04"),
     unit: "/each",
     category: "Fruit & Veg",
     image: "product-apples",
@@ -822,7 +827,7 @@ export const products: Product[] = [
   {
     id: 81,
     name: "Peas Big - Punnet (VPE02)",
-    price: 0.0,
+    price: onlinePrice("VPE02"),
     unit: "/punnet",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -831,7 +836,7 @@ export const products: Product[] = [
   {
     id: 82,
     name: "Pepper (green) - Punnets (VPEP66)",
-    price: 0.0,
+    price: onlinePrice("VPEP66"),
     unit: "/punnet",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -840,7 +845,7 @@ export const products: Product[] = [
   {
     id: 83,
     name: "Pepper (green)- kg (VPE65)",
-    price: 0.0,
+    price: onlinePrice("VPE65"),
     unit: "/kg",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -849,7 +854,7 @@ export const products: Product[] = [
   {
     id: 84,
     name: "Pepper Red - kg (VPEPC03)",
-    price: 0.0,
+    price: onlinePrice("VPEPC03"),
     unit: "/kg",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -858,7 +863,7 @@ export const products: Product[] = [
   {
     id: 85,
     name: "Pepper Yellow (VPEPP)",
-    price: 0.0,
+    price: onlinePrice("VPEPP"),
     unit: "/unit",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -867,7 +872,7 @@ export const products: Product[] = [
   {
     id: 86,
     name: "Pine Apples - Each (FPIN02)",
-    price: 0.0,
+    price: onlinePrice("FPIN02"),
     unit: "/each",
     category: "Fruit & Veg",
     image: "product-apples",
@@ -876,7 +881,7 @@ export const products: Product[] = [
   {
     id: 87,
     name: "Potatoes - 5kg (VPTIM02)",
-    price: 0.0,
+    price: onlinePrice("VPTIM02"),
     unit: "/5kg",
     category: "Fruit & Veg",
     image: "product-carrots",
@@ -885,7 +890,7 @@ export const products: Product[] = [
   {
     id: 88,
     name: "Potatoes - 7.5kg (VP271)",
-    price: 0.0,
+    price: onlinePrice("VP271"),
     unit: "/7.5kg",
     category: "Fruit & Veg",
     image: "product-carrots",
@@ -894,7 +899,7 @@ export const products: Product[] = [
   {
     id: 89,
     name: "Potatoes - kg (VPOTL01)",
-    price: 0.0,
+    price: onlinePrice("VPOTL01"),
     unit: "/kg",
     category: "Fruit & Veg",
     image: "product-carrots",
@@ -903,7 +908,7 @@ export const products: Product[] = [
   {
     id: 90,
     name: "Potatoes - Large 15kg Pocket (VPL68)",
-    price: 0.0,
+    price: onlinePrice("VPL68"),
     unit: "/pocket",
     category: "Fruit & Veg",
     image: "product-carrots",
@@ -912,7 +917,7 @@ export const products: Product[] = [
   {
     id: 91,
     name: "Potatoes - 3kg Med Pack (VPOT04)",
-    price: 0.0,
+    price: onlinePrice("VPOT04"),
     unit: "/pack",
     category: "Fruit & Veg",
     image: "product-carrots",
@@ -921,7 +926,7 @@ export const products: Product[] = [
   {
     id: 92,
     name: "Raisins - Punnets (FDFRO2)",
-    price: 0.0,
+    price: onlinePrice("FDFRO2"),
     unit: "/punnet",
     category: "Grocery & Spices",
     subcategory: "Snack",
@@ -931,7 +936,7 @@ export const products: Product[] = [
   {
     id: 93,
     name: "Rapoko - 1kg (RAP)",
-    price: 0.0,
+    price: onlinePrice("RAP"),
     unit: "/1kg",
     category: "Grocery & Spices",
     subcategory: "Starch",
@@ -941,7 +946,7 @@ export const products: Product[] = [
   {
     id: 94,
     name: "Rapoko - 2kg (RPW06)",
-    price: 0.0,
+    price: onlinePrice("RPW06"),
     unit: "/2kg",
     category: "Grocery & Spices",
     subcategory: "Starch",
@@ -951,7 +956,7 @@ export const products: Product[] = [
   {
     id: 95,
     name: "Rapoko - 5kg (MGRO)",
-    price: 0.0,
+    price: onlinePrice("MGRO"),
     unit: "/5kg",
     category: "Grocery & Spices",
     subcategory: "Starch",
@@ -961,7 +966,7 @@ export const products: Product[] = [
   {
     id: 96,
     name: "Rapoko - kg (RAPKG)",
-    price: 0.0,
+    price: onlinePrice("RAPKG"),
     unit: "/kg",
     category: "Grocery & Spices",
     subcategory: "Starch",
@@ -971,7 +976,7 @@ export const products: Product[] = [
   {
     id: 97,
     name: "Rice (White) - 1kg (RPW10)",
-    price: 0.0,
+    price: onlinePrice("RPW10"),
     unit: "/1kg",
     category: "Grocery & Spices",
     subcategory: "Starch",
@@ -981,7 +986,7 @@ export const products: Product[] = [
   {
     id: 98,
     name: "Rice (White) - 2kg (RPW12)",
-    price: 0.0,
+    price: onlinePrice("RPW12"),
     unit: "/2kg",
     category: "Grocery & Spices",
     subcategory: "Starch",
@@ -991,7 +996,7 @@ export const products: Product[] = [
   {
     id: 99,
     name: "Roundnuts - kg (MGFG01)",
-    price: 0.0,
+    price: onlinePrice("MGFG01"),
     unit: "/kg",
     category: "Grocery & Spices",
     subcategory: "Dried",
@@ -1001,7 +1006,7 @@ export const products: Product[] = [
   {
     id: 100,
     name: "Samp - kg (SAMP001)",
-    price: 0.0,
+    price: onlinePrice("SAMP001"),
     unit: "/kg",
     category: "Grocery & Spices",
     subcategory: "Starch",
@@ -1011,7 +1016,7 @@ export const products: Product[] = [
   {
     id: 101,
     name: "Sauce - 1L (SCE03)",
-    price: 0.0,
+    price: onlinePrice("SCE03"),
     unit: "/1L",
     category: "Grocery & Spices",
     subcategory: "Oils & Sauces",
@@ -1021,7 +1026,7 @@ export const products: Product[] = [
   {
     id: 102,
     name: "Sauce - 330ml (SCE02)",
-    price: 0.0,
+    price: onlinePrice("SCE02"),
     unit: "/330ml",
     category: "Grocery & Spices",
     subcategory: "Oils & Sauces",
@@ -1031,7 +1036,7 @@ export const products: Product[] = [
   {
     id: 103,
     name: "Sauce - 375ml (SAUC004)",
-    price: 0.0,
+    price: onlinePrice("SAUC004"),
     unit: "/375ml",
     category: "Grocery & Spices",
     subcategory: "Oils & Sauces",
@@ -1041,7 +1046,7 @@ export const products: Product[] = [
   {
     id: 104,
     name: "Sauce BBQ - 2 Litres (SCE01)",
-    price: 0.0,
+    price: onlinePrice("SCE01"),
     unit: "/2L",
     category: "Grocery & Spices",
     subcategory: "Oils & Sauces",
@@ -1051,7 +1056,7 @@ export const products: Product[] = [
   {
     id: 105,
     name: "Sauce Daddies - 375ml (SAUCDIES)",
-    price: 0.0,
+    price: onlinePrice("SAUCDIES"),
     unit: "/375ml",
     category: "Grocery & Spices",
     subcategory: "Oils & Sauces",
@@ -1061,7 +1066,7 @@ export const products: Product[] = [
   {
     id: 106,
     name: "Seeds (SEDS)",
-    price: 0.0,
+    price: onlinePrice("SEDS"),
     unit: "/unit",
     category: "Grocery & Spices",
     subcategory: "Dried",
@@ -1071,7 +1076,7 @@ export const products: Product[] = [
   {
     id: 107,
     name: "Sorghum - 1kg (SORGA)",
-    price: 0.0,
+    price: onlinePrice("SORGA"),
     unit: "/1kg",
     category: "Grocery & Spices",
     subcategory: "Starch",
@@ -1081,7 +1086,7 @@ export const products: Product[] = [
   {
     id: 108,
     name: "Sorghum - kg (SORGBK)",
-    price: 0.0,
+    price: onlinePrice("SORGBK"),
     unit: "/kg",
     category: "Grocery & Spices",
     subcategory: "Starch",
@@ -1091,7 +1096,7 @@ export const products: Product[] = [
   {
     id: 109,
     name: "Spice - 200g (SPCE003)",
-    price: 0.0,
+    price: onlinePrice("SPCE003"),
     unit: "/200g pack",
     category: "Grocery & Spices",
     subcategory: "Spices",
@@ -1101,7 +1106,7 @@ export const products: Product[] = [
   {
     id: 110,
     name: "Spice BBQ - 500g (BLPER)",
-    price: 0.0,
+    price: onlinePrice("BLPER"),
     unit: "/500g pack",
     category: "Grocery & Spices",
     subcategory: "Spices",
@@ -1111,7 +1116,7 @@ export const products: Product[] = [
   {
     id: 111,
     name: "Spices - 100g (SPC004)",
-    price: 0.0,
+    price: onlinePrice("SPC004"),
     unit: "/100g pack",
     category: "Grocery & Spices",
     subcategory: "Spices",
@@ -1121,7 +1126,7 @@ export const products: Product[] = [
   {
     id: 112,
     name: "Spices - 60g Satchets (MSSP)",
-    price: 0.0,
+    price: onlinePrice("MSSP"),
     unit: "/60g pack",
     category: "Grocery & Spices",
     subcategory: "Spices",
@@ -1131,7 +1136,7 @@ export const products: Product[] = [
   {
     id: 113,
     name: "Sugar Beans - 1kg (MSB12)",
-    price: 0.0,
+    price: onlinePrice("MSB12"),
     unit: "/1kg",
     category: "Grocery & Spices",
     subcategory: "Dried",
@@ -1141,7 +1146,7 @@ export const products: Product[] = [
   {
     id: 114,
     name: "Sugar Beans -Misc - kg (MSB15)",
-    price: 0.0,
+    price: onlinePrice("MSB15"),
     unit: "/kg",
     category: "Grocery & Spices",
     subcategory: "Dried",
@@ -1151,7 +1156,7 @@ export const products: Product[] = [
   {
     id: 115,
     name: "Sugar Beans - 2kg (MSB14)",
-    price: 0.0,
+    price: onlinePrice("MSB14"),
     unit: "/2kg",
     category: "Grocery & Spices",
     subcategory: "Dried",
@@ -1161,7 +1166,7 @@ export const products: Product[] = [
   {
     id: 116,
     name: "Sugar Beans - kg (MSB16)",
-    price: 0.0,
+    price: onlinePrice("MSB16"),
     unit: "/kg",
     category: "Grocery & Spices",
     subcategory: "Dried",
@@ -1171,7 +1176,7 @@ export const products: Product[] = [
   {
     id: 117,
     name: "Sweet Potatoes - kg (VSP82)",
-    price: 0.0,
+    price: onlinePrice("VSP82"),
     unit: "/kg",
     category: "Fruit & Veg",
     image: "product-carrots",
@@ -1180,7 +1185,7 @@ export const products: Product[] = [
   {
     id: 118,
     name: "Tomatoes - kg (VTO83)",
-    price: 0.0,
+    price: onlinePrice("VTO83"),
     unit: "/kg",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -1189,7 +1194,7 @@ export const products: Product[] = [
   {
     id: 119,
     name: "Tomatoes Misc - kg (VTOMSC)",
-    price: 0.0,
+    price: onlinePrice("VTOMSC"),
     unit: "/kg",
     category: "Fruit & Veg",
     image: "product-broccoli",
@@ -1198,7 +1203,7 @@ export const products: Product[] = [
   {
     id: 120,
     name: "Vinegar - 750ml (VIGR750)",
-    price: 0.0,
+    price: onlinePrice("VIGR750"),
     unit: "/750ml",
     category: "Grocery & Spices",
     subcategory: "Oils & Sauces",
@@ -1208,7 +1213,7 @@ export const products: Product[] = [
   {
     id: 121,
     name: "Wheat - 2kg (WHT)",
-    price: 0.0,
+    price: onlinePrice("WHT"),
     unit: "/2kg",
     category: "Grocery & Spices",
     subcategory: "Starch",
@@ -1218,7 +1223,7 @@ export const products: Product[] = [
   {
     id: 122,
     name: "Wheat - Buckets (WHETBK)",
-    price: 0.0,
+    price: onlinePrice("WHETBK"),
     unit: "/bucket",
     category: "Grocery & Spices",
     subcategory: "Starch",
@@ -1229,7 +1234,7 @@ export const products: Product[] = [
   {
     id: 123,
     name: "Baby & Me Cream (BABC)",
-    price: 0.0,
+    price: onlinePrice("BABC"),
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
@@ -1239,7 +1244,7 @@ export const products: Product[] = [
   {
     id: 124,
     name: "Epimax Cream 400g (EPX)",
-    price: 0.0,
+    price: onlinePrice("EPX"),
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
@@ -1249,7 +1254,7 @@ export const products: Product[] = [
   {
     id: 125,
     name: "Huggies Diapers - Pack (HUGD)",
-    price: 0.0,
+    price: onlinePrice("HUGD"),
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
@@ -1259,7 +1264,7 @@ export const products: Product[] = [
   {
     id: 126,
     name: "Huggies Wipes (HUGW)",
-    price: 0.0,
+    price: onlinePrice("HUGW"),
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
@@ -1269,7 +1274,7 @@ export const products: Product[] = [
   {
     id: 127,
     name: "Johnson Jelly 325ml (JOH)",
-    price: 0.0,
+    price: onlinePrice("JOH"),
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
@@ -1279,7 +1284,7 @@ export const products: Product[] = [
   {
     id: 128,
     name: "Johnson Aqueous 350ml (JOHA)",
-    price: 0.0,
+    price: onlinePrice("JOHA"),
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
@@ -1289,7 +1294,7 @@ export const products: Product[] = [
   {
     id: 129,
     name: "Johnson Baby soap 175g (JOHN)",
-    price: 0.0,
+    price: onlinePrice("JOHN"),
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
@@ -1299,7 +1304,7 @@ export const products: Product[] = [
   {
     id: 130,
     name: "Masters Wipes (MASTW)",
-    price: 0.0,
+    price: onlinePrice("MASTW"),
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
@@ -1309,7 +1314,7 @@ export const products: Product[] = [
   {
     id: 131,
     name: "Nan 1;2;3&4 (NAN)",
-    price: 0.0,
+    price: onlinePrice("NAN"),
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
@@ -1319,7 +1324,7 @@ export const products: Product[] = [
   {
     id: 132,
     name: "Pampers Masters Pack (PAMP)",
-    price: 0.0,
+    price: onlinePrice("PAMP"),
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
@@ -1329,7 +1334,7 @@ export const products: Product[] = [
   {
     id: 133,
     name: "Pampers Masters Single (PAMPS)",
-    price: 0.0,
+    price: onlinePrice("PAMPS"),
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
@@ -1339,7 +1344,7 @@ export const products: Product[] = [
   {
     id: 134,
     name: "Predo  Wipes (PRED)",
-    price: 0.0,
+    price: onlinePrice("PRED"),
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
@@ -1349,7 +1354,7 @@ export const products: Product[] = [
   {
     id: 135,
     name: "Purity Aqueous (PURA)",
-    price: 0.0,
+    price: onlinePrice("PURA"),
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
@@ -1359,7 +1364,7 @@ export const products: Product[] = [
   {
     id: 136,
     name: "Soft Care Pampers (SOFT)",
-    price: 0.0,
+    price: onlinePrice("SOFT"),
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
@@ -1369,7 +1374,7 @@ export const products: Product[] = [
   {
     id: 137,
     name: "Sunlight soap (SUNS)",
-    price: 0.0,
+    price: onlinePrice("SUNS"),
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
@@ -1379,7 +1384,7 @@ export const products: Product[] = [
   {
     id: 138,
     name: "Superdry - Pamper (SUPRDY)",
-    price: 0.0,
+    price: onlinePrice("SUPRDY"),
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
@@ -1389,7 +1394,7 @@ export const products: Product[] = [
   {
     id: 139,
     name: "Wipes (WIP)",
-    price: 0.0,
+    price: onlinePrice("WIP"),
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
@@ -1399,7 +1404,7 @@ export const products: Product[] = [
   {
     id: 140,
     name: "Johnson Wipes (WIPJOHN)",
-    price: 0.0,
+    price: onlinePrice("WIPJOHN"),
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
@@ -1409,7 +1414,7 @@ export const products: Product[] = [
   {
     id: 141,
     name: "Aloha Washing Pwd 2kg (ALH)",
-    price: 0.0,
+    price: onlinePrice("ALH"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1419,7 +1424,7 @@ export const products: Product[] = [
   {
     id: 142,
     name: "Aloha Washing Pwd 1kg (ALO)",
-    price: 0.0,
+    price: onlinePrice("ALO"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1429,7 +1434,7 @@ export const products: Product[] = [
   {
     id: 143,
     name: "Aloha Dishwasher (ALOD)",
-    price: 0.0,
+    price: onlinePrice("ALOD"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1439,7 +1444,7 @@ export const products: Product[] = [
   {
     id: 144,
     name: "Aloha Washing Pwdr 500g (ALOH)",
-    price: 0.0,
+    price: onlinePrice("ALOH"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1449,7 +1454,7 @@ export const products: Product[] = [
   {
     id: 145,
     name: "Arpic Cleaner 750ml (ARP)",
-    price: 0.0,
+    price: onlinePrice("ARP"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1459,7 +1464,7 @@ export const products: Product[] = [
   {
     id: 146,
     name: "BigBen bar (BIG)",
-    price: 0.0,
+    price: onlinePrice("BIG"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1469,7 +1474,7 @@ export const products: Product[] = [
   {
     id: 147,
     name: "Boom Paste (BOM)",
-    price: 0.0,
+    price: onlinePrice("BOM"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1479,7 +1484,7 @@ export const products: Product[] = [
   {
     id: 148,
     name: "Boom Force Cream 750ml (BOMFC)",
-    price: 0.0,
+    price: onlinePrice("BOMFC"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1489,7 +1494,7 @@ export const products: Product[] = [
   {
     id: 149,
     name: "Boom 150g (BOMM)",
-    price: 0.0,
+    price: onlinePrice("BOMM"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1499,7 +1504,7 @@ export const products: Product[] = [
   {
     id: 150,
     name: "Boom - 1KG (BOMW)",
-    price: 0.0,
+    price: onlinePrice("BOMW"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1509,7 +1514,7 @@ export const products: Product[] = [
   {
     id: 151,
     name: "BoomDish washer 750ml (BOO)",
-    price: 0.0,
+    price: onlinePrice("BOO"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1519,7 +1524,7 @@ export const products: Product[] = [
   {
     id: 152,
     name: "Boom Bleach 750ml (BOOMB)",
-    price: 0.0,
+    price: onlinePrice("BOOMB"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1529,7 +1534,7 @@ export const products: Product[] = [
   {
     id: 153,
     name: "Boom Force Scouring (BOOMF)",
-    price: 0.0,
+    price: onlinePrice("BOOMF"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1539,7 +1544,7 @@ export const products: Product[] = [
   {
     id: 154,
     name: "Boom W/P 500g (BOOMM)",
-    price: 0.0,
+    price: onlinePrice("BOOMM"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1549,7 +1554,7 @@ export const products: Product[] = [
   {
     id: 155,
     name: "Cobra 350ml (COB)",
-    price: 0.0,
+    price: onlinePrice("COB"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1559,7 +1564,7 @@ export const products: Product[] = [
   {
     id: 156,
     name: "Comfort 1L (COM)",
-    price: 0.0,
+    price: onlinePrice("COM"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1569,7 +1574,7 @@ export const products: Product[] = [
   {
     id: 157,
     name: "Dishwasher Seawave (DISW)",
-    price: 0.0,
+    price: onlinePrice("DISW"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1579,7 +1584,7 @@ export const products: Product[] = [
   {
     id: 158,
     name: "Domestos local (DOMES)",
-    price: 0.0,
+    price: onlinePrice("DOMES"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1589,7 +1594,7 @@ export const products: Product[] = [
   {
     id: 159,
     name: "Domestos (DOMS)",
-    price: 0.0,
+    price: onlinePrice("DOMS"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1599,7 +1604,7 @@ export const products: Product[] = [
   {
     id: 160,
     name: "Gik 750ml (GK)",
-    price: 0.0,
+    price: onlinePrice("GK"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1609,7 +1614,7 @@ export const products: Product[] = [
   {
     id: 161,
     name: "Green Bar Perfection (GREE)",
-    price: 0.0,
+    price: onlinePrice("GREE"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1619,7 +1624,7 @@ export const products: Product[] = [
   {
     id: 162,
     name: "Green Bar (GRN)",
-    price: 0.0,
+    price: onlinePrice("GRN"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1629,7 +1634,7 @@ export const products: Product[] = [
   {
     id: 163,
     name: "Handy Andy (HAN)",
-    price: 0.0,
+    price: onlinePrice("HAN"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1639,7 +1644,7 @@ export const products: Product[] = [
   {
     id: 164,
     name: "Harpic (HARP)",
-    price: 0.0,
+    price: onlinePrice("HARP"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1649,7 +1654,7 @@ export const products: Product[] = [
   {
     id: 165,
     name: "Jik 750ml (JK)",
-    price: 0.0,
+    price: onlinePrice("JK"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1659,7 +1664,7 @@ export const products: Product[] = [
   {
     id: 166,
     name: "Kiwi Polish 50ml (KIW)",
-    price: 0.0,
+    price: onlinePrice("KIW"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1669,7 +1674,7 @@ export const products: Product[] = [
   {
     id: 167,
     name: "Knock Dishwasher 750ml (KNCK)",
-    price: 0.0,
+    price: onlinePrice("KNCK"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1679,7 +1684,7 @@ export const products: Product[] = [
   {
     id: 168,
     name: "Knockout Can (KNO)",
-    price: 0.0,
+    price: onlinePrice("KNO"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1689,7 +1694,7 @@ export const products: Product[] = [
   {
     id: 169,
     name: "Knockout All Purpose Cleaner 500ml (KNOA)",
-    price: 0.0,
+    price: onlinePrice("KNOA"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1699,7 +1704,7 @@ export const products: Product[] = [
   {
     id: 170,
     name: "Knock out Satchet (KNOC)",
-    price: 0.0,
+    price: onlinePrice("KNOC"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1709,7 +1714,7 @@ export const products: Product[] = [
   {
     id: 171,
     name: "Knockout Dishwasher 2L (KNOCK)",
-    price: 0.0,
+    price: onlinePrice("KNOCK"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1719,7 +1724,7 @@ export const products: Product[] = [
   {
     id: 172,
     name: "Knockout Bleach (KNOCT)",
-    price: 0.0,
+    price: onlinePrice("KNOCT"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1729,7 +1734,7 @@ export const products: Product[] = [
   {
     id: 173,
     name: "Kiwi 100ml (KWI)",
-    price: 0.0,
+    price: onlinePrice("KWI"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1739,7 +1744,7 @@ export const products: Product[] = [
   {
     id: 174,
     name: "Maq 1kg (MAQ)",
-    price: 0.0,
+    price: onlinePrice("MAQ"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1749,7 +1754,7 @@ export const products: Product[] = [
   {
     id: 175,
     name: "Boom 2kg (MEGFLR)",
-    price: 0.0,
+    price: onlinePrice("MEGFLR"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1759,7 +1764,7 @@ export const products: Product[] = [
   {
     id: 176,
     name: "Maq 2kg (MQ)",
-    price: 0.0,
+    price: onlinePrice("MQ"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1769,7 +1774,7 @@ export const products: Product[] = [
   {
     id: 177,
     name: "Nugget - 100ml (NUGET)",
-    price: 0.0,
+    price: onlinePrice("NUGET"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1779,7 +1784,7 @@ export const products: Product[] = [
   {
     id: 178,
     name: "Omo Powder 2kg (OMO)",
-    price: 0.0,
+    price: onlinePrice("OMO"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1789,7 +1794,7 @@ export const products: Product[] = [
   {
     id: 179,
     name: "Pinegel 500ml (PIN)",
-    price: 0.0,
+    price: onlinePrice("PIN"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1799,7 +1804,7 @@ export const products: Product[] = [
   {
     id: 180,
     name: "Pinegel 1L (PNE)",
-    price: 0.0,
+    price: onlinePrice("PNE"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1809,7 +1814,7 @@ export const products: Product[] = [
   {
     id: 181,
     name: "DishWasher Seawave 2L (SEAW)",
-    price: 0.0,
+    price: onlinePrice("SEAW"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1819,7 +1824,7 @@ export const products: Product[] = [
   {
     id: 182,
     name: "Sunlight Liquid (SNL)",
-    price: 0.0,
+    price: onlinePrice("SNL"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1829,7 +1834,7 @@ export const products: Product[] = [
   {
     id: 183,
     name: "Star Soft - 2litre (STASFT)",
-    price: 0.0,
+    price: onlinePrice("STASFT"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1839,7 +1844,7 @@ export const products: Product[] = [
   {
     id: 184,
     name: "StarSoft Refill mix (STS)",
-    price: 0.0,
+    price: onlinePrice("STS"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1849,7 +1854,7 @@ export const products: Product[] = [
   {
     id: 185,
     name: "Sunlight 1kg (SUNL)",
-    price: 0.0,
+    price: onlinePrice("SUNL"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1859,7 +1864,7 @@ export const products: Product[] = [
   {
     id: 186,
     name: "SunLight Pwd 2kg (SUNLT)",
-    price: 0.0,
+    price: onlinePrice("SUNLT"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1869,7 +1874,7 @@ export const products: Product[] = [
   {
     id: 187,
     name: "Xtra Vim (VIM)",
-    price: 0.0,
+    price: onlinePrice("VIM"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1879,7 +1884,7 @@ export const products: Product[] = [
   {
     id: 188,
     name: "Vim Can (VM)",
-    price: 0.0,
+    price: onlinePrice("VM"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1889,7 +1894,7 @@ export const products: Product[] = [
   {
     id: 189,
     name: "XTRA Washing Powder (XTRA)",
-    price: 0.0,
+    price: onlinePrice("XTRA"),
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
@@ -1899,7 +1904,7 @@ export const products: Product[] = [
   {
     id: 190,
     name: "Addidas Spray (ADDSPRY)",
-    price: 0.0,
+    price: onlinePrice("ADDSPRY"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -1909,7 +1914,7 @@ export const products: Product[] = [
   {
     id: 191,
     name: "Axe Perfumer (AXP)",
-    price: 0.0,
+    price: onlinePrice("AXP"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -1919,7 +1924,7 @@ export const products: Product[] = [
   {
     id: 192,
     name: "Baby Crez 500ml (BAB)",
-    price: 0.0,
+    price: onlinePrice("BAB"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -1929,7 +1934,7 @@ export const products: Product[] = [
   {
     id: 193,
     name: "Baby line 500ml (BABL)",
-    price: 0.0,
+    price: onlinePrice("BABL"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -1939,7 +1944,7 @@ export const products: Product[] = [
   {
     id: 194,
     name: "Black Chick  Small 125ml (BCS)",
-    price: 0.0,
+    price: onlinePrice("BCS"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -1949,7 +1954,7 @@ export const products: Product[] = [
   {
     id: 195,
     name: "BeverlyHills Roll on (BEV)",
-    price: 0.0,
+    price: onlinePrice("BEV"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -1959,7 +1964,7 @@ export const products: Product[] = [
   {
     id: 196,
     name: "Beverly Hills Perfume (BEVP)",
-    price: 0.0,
+    price: onlinePrice("BEVP"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -1969,7 +1974,7 @@ export const products: Product[] = [
   {
     id: 197,
     name: "BlackChic Big 250ml (BLC)",
-    price: 0.0,
+    price: onlinePrice("BLC"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -1979,7 +1984,7 @@ export const products: Product[] = [
   {
     id: 198,
     name: "Bodi doc (BOD)",
-    price: 0.0,
+    price: onlinePrice("BOD"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -1989,7 +1994,7 @@ export const products: Product[] = [
   {
     id: 199,
     name: "Bodi doc Tissue Oil (BODD)",
-    price: 0.0,
+    price: onlinePrice("BODD"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -1999,7 +2004,7 @@ export const products: Product[] = [
   {
     id: 200,
     name: "Boom Fabric Conditioner 2ltr (BOMO)",
-    price: 0.0,
+    price: onlinePrice("BOMO"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2009,7 +2014,7 @@ export const products: Product[] = [
   {
     id: 201,
     name: "Clere Beautiful Cream 400ml (CBL)",
-    price: 0.0,
+    price: onlinePrice("CBL"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2019,7 +2024,7 @@ export const products: Product[] = [
   {
     id: 202,
     name: "Clere For Men 450ml (CFM)",
-    price: 0.0,
+    price: onlinePrice("CFM"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2029,7 +2034,7 @@ export const products: Product[] = [
   {
     id: 203,
     name: "Clere Glycerine 100ml (CLG)",
-    price: 0.0,
+    price: onlinePrice("CLG"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2039,7 +2044,7 @@ export const products: Product[] = [
   {
     id: 204,
     name: "Clere Men lotion 400ml (CLM)",
-    price: 0.0,
+    price: onlinePrice("CLM"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2049,7 +2054,7 @@ export const products: Product[] = [
   {
     id: 205,
     name: "Clere Glyco Glycerine 100ml (CLR)",
-    price: 0.0,
+    price: onlinePrice("CLR"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2059,7 +2064,7 @@ export const products: Product[] = [
   {
     id: 206,
     name: "Clere Ladies Cream (CLRE)",
-    price: 0.0,
+    price: onlinePrice("CLRE"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2069,7 +2074,7 @@ export const products: Product[] = [
   {
     id: 207,
     name: "Cosmo Foam Bath (COSMO)",
-    price: 0.0,
+    price: onlinePrice("COSMO"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2079,7 +2084,7 @@ export const products: Product[] = [
   {
     id: 208,
     name: "Dark& Lovely (DAR)",
-    price: 0.0,
+    price: onlinePrice("DAR"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2089,7 +2094,7 @@ export const products: Product[] = [
   {
     id: 209,
     name: "Dawn (DAW)",
-    price: 0.0,
+    price: onlinePrice("DAW"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2099,7 +2104,7 @@ export const products: Product[] = [
   {
     id: 210,
     name: "Dawn Cream (DAWN)",
-    price: 0.0,
+    price: onlinePrice("DAWN"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2109,7 +2114,7 @@ export const products: Product[] = [
   {
     id: 211,
     name: "Dax 3 in 1 375mls (DAX31)",
-    price: 0.0,
+    price: onlinePrice("DAX31"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2119,7 +2124,7 @@ export const products: Product[] = [
   {
     id: 212,
     name: "Dax Hair Grower 250ml (DAXG)",
-    price: 0.0,
+    price: onlinePrice("DAXG"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2129,7 +2134,7 @@ export const products: Product[] = [
   {
     id: 213,
     name: "Dax Hair Grower 125mls (DAXH)",
-    price: 0.0,
+    price: onlinePrice("DAXH"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2139,7 +2144,7 @@ export const products: Product[] = [
   {
     id: 214,
     name: "Dax Freez Big 250ml (DAXI)",
-    price: 0.0,
+    price: onlinePrice("DAXI"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2149,7 +2154,7 @@ export const products: Product[] = [
   {
     id: 215,
     name: "Dove Lotion (DOVE)",
-    price: 0.0,
+    price: onlinePrice("DOVE"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2159,7 +2164,7 @@ export const products: Product[] = [
   {
     id: 216,
     name: "Dax Freez Small 100ml (DXA)",
-    price: 0.0,
+    price: onlinePrice("DXA"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2169,7 +2174,7 @@ export const products: Product[] = [
   {
     id: 217,
     name: "Dax Big 3 n 1 (DXB)",
-    price: 0.0,
+    price: onlinePrice("DXB"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2179,7 +2184,7 @@ export const products: Product[] = [
   {
     id: 218,
     name: "English Blazer (ENG)",
-    price: 0.0,
+    price: onlinePrice("ENG"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2189,7 +2194,7 @@ export const products: Product[] = [
   {
     id: 219,
     name: "EasyWaves Pack (EWP)",
-    price: 0.0,
+    price: onlinePrice("EWP"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2199,7 +2204,7 @@ export const products: Product[] = [
   {
     id: 220,
     name: "Exclamation Perfume (EXCLA)",
-    price: 0.0,
+    price: onlinePrice("EXCLA"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2209,7 +2214,7 @@ export const products: Product[] = [
   {
     id: 221,
     name: "Gentel Magic lotion (GMG)",
-    price: 0.0,
+    price: onlinePrice("GMG"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2219,7 +2224,7 @@ export const products: Product[] = [
   {
     id: 222,
     name: "Gentle Magic Cream (GML)",
-    price: 0.0,
+    price: onlinePrice("GML"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2229,7 +2234,7 @@ export const products: Product[] = [
   {
     id: 223,
     name: "Gentel Magic Serum (GMS)",
-    price: 0.0,
+    price: onlinePrice("GMS"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2239,7 +2244,7 @@ export const products: Product[] = [
   {
     id: 224,
     name: "Gentel Magic Soap (GNT)",
-    price: 0.0,
+    price: onlinePrice("GNT"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2249,7 +2254,7 @@ export const products: Product[] = [
   {
     id: 225,
     name: "Gentle Magic Oil 50ml (GNTO)",
-    price: 0.0,
+    price: onlinePrice("GNTO"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2259,7 +2264,7 @@ export const products: Product[] = [
   {
     id: 226,
     name: "Hair Remover Cosmo 40g (HAR)",
-    price: 0.0,
+    price: onlinePrice("HAR"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2269,7 +2274,7 @@ export const products: Product[] = [
   {
     id: 227,
     name: "Hoit Toity 90mls (HOIT)",
-    price: 0.0,
+    price: onlinePrice("HOIT"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2279,7 +2284,7 @@ export const products: Product[] = [
   {
     id: 228,
     name: "Hoity Toity Lotion (HOITY)",
-    price: 0.0,
+    price: onlinePrice("HOITY"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2289,7 +2294,7 @@ export const products: Product[] = [
   {
     id: 229,
     name: "Ingrams Herbal (IGM)",
-    price: 0.0,
+    price: onlinePrice("IGM"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2299,7 +2304,7 @@ export const products: Product[] = [
   {
     id: 230,
     name: "Ingrams Senstive 450ml (IGMS)",
-    price: 0.0,
+    price: onlinePrice("IGMS"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2309,7 +2314,7 @@ export const products: Product[] = [
   {
     id: 231,
     name: "Ingrams Moisture Plus 450ml (IMP)",
-    price: 0.0,
+    price: onlinePrice("IMP"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2319,7 +2324,7 @@ export const products: Product[] = [
   {
     id: 232,
     name: "Ingrams men 450ml (ING)",
-    price: 0.0,
+    price: onlinePrice("ING"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2329,7 +2334,7 @@ export const products: Product[] = [
   {
     id: 233,
     name: "Ingrams Aloe 450ml (INGM)",
-    price: 0.0,
+    price: onlinePrice("INGM"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2339,7 +2344,7 @@ export const products: Product[] = [
   {
     id: 234,
     name: "Ingrams tissue oi l450ml (INGMS)",
-    price: 0.0,
+    price: onlinePrice("INGMS"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2349,7 +2354,7 @@ export const products: Product[] = [
   {
     id: 235,
     name: "Ingrams Original 450mls (INGRO)",
-    price: 0.0,
+    price: onlinePrice("INGRO"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2359,7 +2364,7 @@ export const products: Product[] = [
   {
     id: 236,
     name: "Igrams Roibos 450ml (INR)",
-    price: 0.0,
+    price: onlinePrice("INR"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2369,7 +2374,7 @@ export const products: Product[] = [
   {
     id: 237,
     name: "Inecto Super Black75g (ISB)",
-    price: 0.0,
+    price: onlinePrice("ISB"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2379,7 +2384,7 @@ export const products: Product[] = [
   {
     id: 238,
     name: "Isoplus Edge Control (ISOP)",
-    price: 0.0,
+    price: onlinePrice("ISOP"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2389,7 +2394,7 @@ export const products: Product[] = [
   {
     id: 239,
     name: "Iso Plus Hair Spry 240ml (ISP)",
-    price: 0.0,
+    price: onlinePrice("ISP"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2399,7 +2404,7 @@ export const products: Product[] = [
   {
     id: 240,
     name: "Lace Lotion (LACE)",
-    price: 0.0,
+    price: onlinePrice("LACE"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2409,7 +2414,7 @@ export const products: Product[] = [
   {
     id: 241,
     name: "Mousse (MOUS)",
-    price: 0.0,
+    price: onlinePrice("MOUS"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2419,7 +2424,7 @@ export const products: Product[] = [
   {
     id: 242,
     name: "Nivea Cream/Lotion 400ml (NIV)",
-    price: 0.0,
+    price: onlinePrice("NIV"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2429,7 +2434,7 @@ export const products: Product[] = [
   {
     id: 243,
     name: "Nivea Radiant Cream 400ml (NIVA)",
-    price: 0.0,
+    price: onlinePrice("NIVA"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2439,7 +2444,7 @@ export const products: Product[] = [
   {
     id: 244,
     name: "Nivea Spray (NIVES)",
-    price: 0.0,
+    price: onlinePrice("NIVES"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2449,7 +2454,7 @@ export const products: Product[] = [
   {
     id: 245,
     name: "Nivea Q10 (NVIA)",
-    price: 0.0,
+    price: onlinePrice("NVIA"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2459,7 +2464,7 @@ export const products: Product[] = [
   {
     id: 246,
     name: "Oh So Heavenly Lotion 720ml (OHS)",
-    price: 0.0,
+    price: onlinePrice("OHS"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2469,7 +2474,7 @@ export const products: Product[] = [
   {
     id: 247,
     name: "Oh So Heavenly - 2L (OHSHV)",
-    price: 0.0,
+    price: onlinePrice("OHSHV"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2479,7 +2484,7 @@ export const products: Product[] = [
   {
     id: 248,
     name: "Oh  So Heavenly Lotion 1L (OHSL)",
-    price: 0.0,
+    price: onlinePrice("OHSL"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2489,7 +2494,7 @@ export const products: Product[] = [
   {
     id: 249,
     name: "Oh SO Heavenly Cream 450ml (OHSO)",
-    price: 0.0,
+    price: onlinePrice("OHSO"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2499,7 +2504,7 @@ export const products: Product[] = [
   {
     id: 250,
     name: "Oh So heavenly Q10 (OHSOQ)",
-    price: 0.0,
+    price: onlinePrice("OHSOQ"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2509,7 +2514,7 @@ export const products: Product[] = [
   {
     id: 251,
     name: "Olive Oil Spry 250ml (OLV)",
-    price: 0.0,
+    price: onlinePrice("OLV"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2519,7 +2524,7 @@ export const products: Product[] = [
   {
     id: 252,
     name: "PlayBoy Roll on (PLA)",
-    price: 0.0,
+    price: onlinePrice("PLA"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2529,7 +2534,7 @@ export const products: Product[] = [
   {
     id: 253,
     name: "PlayBoy Perfume (PLAY)",
-    price: 0.0,
+    price: onlinePrice("PLAY"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2539,7 +2544,7 @@ export const products: Product[] = [
   {
     id: 254,
     name: "Roll On Shield (RLS)",
-    price: 0.0,
+    price: onlinePrice("RLS"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2549,7 +2554,7 @@ export const products: Product[] = [
   {
     id: 255,
     name: "Roll On Addidas 50ml (ROLL)",
-    price: 0.0,
+    price: onlinePrice("ROLL"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2559,7 +2564,7 @@ export const products: Product[] = [
   {
     id: 256,
     name: "Roll on Nivea - 50ml (ROLNIV)",
-    price: 0.0,
+    price: onlinePrice("ROLNIV"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2569,7 +2574,7 @@ export const products: Product[] = [
   {
     id: 257,
     name: "Roll On Power House 50ml (ROP)",
-    price: 0.0,
+    price: onlinePrice("ROP"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2579,7 +2584,7 @@ export const products: Product[] = [
   {
     id: 258,
     name: "Shower To Shower (SHOW)",
-    price: 0.0,
+    price: onlinePrice("SHOW"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2589,7 +2594,7 @@ export const products: Product[] = [
   {
     id: 259,
     name: "Shower to Shower Perfume (SHWR)",
-    price: 0.0,
+    price: onlinePrice("SHWR"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2599,7 +2604,7 @@ export const products: Product[] = [
   {
     id: 260,
     name: "Skala 200g (SKA)",
-    price: 0.0,
+    price: onlinePrice("SKA"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2609,7 +2614,7 @@ export const products: Product[] = [
   {
     id: 261,
     name: "Skala hairFood (SKAL)",
-    price: 0.0,
+    price: onlinePrice("SKAL"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2619,7 +2624,7 @@ export const products: Product[] = [
   {
     id: 262,
     name: "Top Society (TOPS)",
-    price: 0.0,
+    price: onlinePrice("TOPS"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2629,7 +2634,7 @@ export const products: Product[] = [
   {
     id: 263,
     name: "Vaseline 450ml (VAS)",
-    price: 0.0,
+    price: onlinePrice("VAS"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2639,7 +2644,7 @@ export const products: Product[] = [
   {
     id: 264,
     name: "Vaseline 250ml (VASE)",
-    price: 0.0,
+    price: onlinePrice("VASE"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2649,7 +2654,7 @@ export const products: Product[] = [
   {
     id: 265,
     name: "v (VASEL)",
-    price: 0.0,
+    price: onlinePrice("VASEL"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2659,7 +2664,7 @@ export const products: Product[] = [
   {
     id: 266,
     name: "Vaseline lips (VASELN)",
-    price: 0.0,
+    price: onlinePrice("VASELN"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2669,7 +2674,7 @@ export const products: Product[] = [
   {
     id: 267,
     name: "Vaseline 50ml (VASL)",
-    price: 0.0,
+    price: onlinePrice("VASL"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2679,7 +2684,7 @@ export const products: Product[] = [
   {
     id: 268,
     name: "Vaseline Cream (VASLN)",
-    price: 0.0,
+    price: onlinePrice("VASLN"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2689,7 +2694,7 @@ export const products: Product[] = [
   {
     id: 269,
     name: "Vaseline Lotion (VASLNL)",
-    price: 0.0,
+    price: onlinePrice("VASLNL"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2699,7 +2704,7 @@ export const products: Product[] = [
   {
     id: 270,
     name: "Vestline Garlic - 200g (VESTGLC)",
-    price: 0.0,
+    price: onlinePrice("VESTGLC"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2709,7 +2714,7 @@ export const products: Product[] = [
   {
     id: 271,
     name: "Vaseline - 100ml (VSN)",
-    price: 0.0,
+    price: onlinePrice("VSN"),
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
@@ -2719,7 +2724,7 @@ export const products: Product[] = [
   {
     id: 272,
     name: "Angel Care Tissue (ANG)",
-    price: 0.0,
+    price: onlinePrice("ANG"),
     unit: "/item",
     category: "Toiletries",
     subcategory: "Toiletries",
@@ -2729,7 +2734,7 @@ export const products: Product[] = [
   {
     id: 273,
     name: "Aquafresh - 100ml (AQFRSH)",
-    price: 0.0,
+    price: onlinePrice("AQFRSH"),
     unit: "/item",
     category: "Toiletries",
     subcategory: "Toiletries",
@@ -2739,7 +2744,7 @@ export const products: Product[] = [
   {
     id: 274,
     name: "Baby Soft 18s (BABYS)",
-    price: 0.0,
+    price: onlinePrice("BABYS"),
     unit: "/item",
     category: "Toiletries",
     subcategory: "Toiletries",
@@ -2749,7 +2754,7 @@ export const products: Product[] = [
   {
     id: 275,
     name: "Close Up (CLO)",
-    price: 0.0,
+    price: onlinePrice("CLO"),
     unit: "/item",
     category: "Toiletries",
     subcategory: "Toiletries",
@@ -2759,7 +2764,7 @@ export const products: Product[] = [
   {
     id: 276,
     name: "Colgate 100ml (COL)",
-    price: 0.0,
+    price: onlinePrice("COL"),
     unit: "/item",
     category: "Toiletries",
     subcategory: "Toiletries",
@@ -2769,7 +2774,7 @@ export const products: Product[] = [
   {
     id: 277,
     name: "Utra Pads (DELLP)",
-    price: 0.0,
+    price: onlinePrice("DELLP"),
     unit: "/item",
     category: "Toiletries",
     subcategory: "Toiletries",
@@ -2779,7 +2784,7 @@ export const products: Product[] = [
   {
     id: 278,
     name: "Dettol Liquid (DETO)",
-    price: 0.0,
+    price: onlinePrice("DETO"),
     unit: "/item",
     category: "Toiletries",
     subcategory: "Toiletries",
@@ -2789,7 +2794,7 @@ export const products: Product[] = [
   {
     id: 279,
     name: "Dettol soap (DETT)",
-    price: 0.0,
+    price: onlinePrice("DETT"),
     unit: "/item",
     category: "Toiletries",
     subcategory: "Toiletries",
@@ -2799,7 +2804,7 @@ export const products: Product[] = [
   {
     id: 280,
     name: "Geisha (GEI)",
-    price: 0.0,
+    price: onlinePrice("GEI"),
     unit: "/item",
     category: "Toiletries",
     subcategory: "Toiletries",
@@ -2809,7 +2814,7 @@ export const products: Product[] = [
   {
     id: 281,
     name: "HiLife Soap (HIL)",
-    price: 0.0,
+    price: onlinePrice("HIL"),
     unit: "/item",
     category: "Toiletries",
     subcategory: "Toiletries",
@@ -2819,7 +2824,7 @@ export const products: Product[] = [
   {
     id: 282,
     name: "hygienix Soap 175g (HYG)",
-    price: 0.0,
+    price: onlinePrice("HYG"),
     unit: "/item",
     category: "Toiletries",
     subcategory: "Toiletries",
@@ -2829,7 +2834,7 @@ export const products: Product[] = [
   {
     id: 283,
     name: "Jade Soap (JAD)",
-    price: 0.0,
+    price: onlinePrice("JAD"),
     unit: "/item",
     category: "Toiletries",
     subcategory: "Toiletries",
@@ -2839,7 +2844,7 @@ export const products: Product[] = [
   {
     id: 284,
     name: "Kotex pads 10s (KOT)",
-    price: 0.0,
+    price: onlinePrice("KOT"),
     unit: "/item",
     category: "Toiletries",
     subcategory: "Toiletries",
@@ -2849,7 +2854,7 @@ export const products: Product[] = [
   {
     id: 285,
     name: "Lifebouy (LIFBY)",
-    price: 0.0,
+    price: onlinePrice("LIFBY"),
     unit: "/item",
     category: "Toiletries",
     subcategory: "Toiletries",
@@ -2859,7 +2864,7 @@ export const products: Product[] = [
   {
     id: 286,
     name: "Lux Soap (LUX)",
-    price: 0.0,
+    price: onlinePrice("LUX"),
     unit: "/item",
     category: "Toiletries",
     subcategory: "Toiletries",
@@ -2869,7 +2874,7 @@ export const products: Product[] = [
   {
     id: 287,
     name: "Oh So Heavenly Gel (OHSOH)",
-    price: 0.0,
+    price: onlinePrice("OHSOH"),
     unit: "/item",
     category: "Toiletries",
     subcategory: "Toiletries",
@@ -2879,7 +2884,7 @@ export const products: Product[] = [
   {
     id: 288,
     name: "Kotex Pant Liners (PANT)",
-    price: 0.0,
+    price: onlinePrice("PANT"),
     unit: "/item",
     category: "Toiletries",
     subcategory: "Toiletries",
@@ -2889,7 +2894,7 @@ export const products: Product[] = [
   {
     id: 289,
     name: "Pads Mix (PDS)",
-    price: 0.0,
+    price: onlinePrice("PDS"),
     unit: "/item",
     category: "Toiletries",
     subcategory: "Toiletries",
@@ -2899,7 +2904,7 @@ export const products: Product[] = [
   {
     id: 290,
     name: "Period pants (PERI)",
-    price: 0.0,
+    price: onlinePrice("PERI"),
     unit: "/item",
     category: "Toiletries",
     subcategory: "Toiletries",
@@ -2909,7 +2914,7 @@ export const products: Product[] = [
   {
     id: 291,
     name: "Protex Soap (PROT)",
-    price: 0.0,
+    price: onlinePrice("PROT"),
     unit: "/item",
     category: "Toiletries",
     subcategory: "Toiletries",
@@ -2919,7 +2924,7 @@ export const products: Product[] = [
   {
     id: 292,
     name: "Private Joy Tissue (PRVT)",
-    price: 0.0,
+    price: onlinePrice("PRVT"),
     unit: "/item",
     category: "Toiletries",
     subcategory: "Toiletries",
@@ -2929,7 +2934,7 @@ export const products: Product[] = [
   {
     id: 293,
     name: "Romance Soap 50g (ROM)",
-    price: 0.0,
+    price: onlinePrice("ROM"),
     unit: "/item",
     category: "Toiletries",
     subcategory: "Toiletries",
@@ -2939,7 +2944,7 @@ export const products: Product[] = [
   {
     id: 294,
     name: "Tissue Single (SAT)",
-    price: 0.0,
+    price: onlinePrice("SAT"),
     unit: "/item",
     category: "Toiletries",
     subcategory: "Toiletries",
@@ -2949,7 +2954,7 @@ export const products: Product[] = [
   {
     id: 295,
     name: "Satiskin 2L (SATI)",
-    price: 0.0,
+    price: onlinePrice("SATI"),
     unit: "/item",
     category: "Toiletries",
     subcategory: "Toiletries",
@@ -2959,7 +2964,7 @@ export const products: Product[] = [
   {
     id: 296,
     name: "Satiskin 1L (SATSK)",
-    price: 0.0,
+    price: onlinePrice("SATSK"),
     unit: "/item",
     category: "Toiletries",
     subcategory: "Toiletries",
@@ -2969,7 +2974,7 @@ export const products: Product[] = [
   {
     id: 297,
     name: "Sona (SON)",
-    price: 0.0,
+    price: onlinePrice("SON"),
     unit: "/item",
     category: "Toiletries",
     subcategory: "Toiletries",
@@ -2979,7 +2984,7 @@ export const products: Product[] = [
   {
     id: 298,
     name: "Tissue 4s (TISS)",
-    price: 0.0,
+    price: onlinePrice("TISS"),
     unit: "/item",
     category: "Toiletries",
     subcategory: "Toiletries",
@@ -2989,7 +2994,7 @@ export const products: Product[] = [
   {
     id: 299,
     name: "TwinSaver Tissue (TWIN)",
-    price: 0.0,
+    price: onlinePrice("TWIN"),
     unit: "/item",
     category: "Toiletries",
     subcategory: "Toiletries",
@@ -2999,7 +3004,7 @@ export const products: Product[] = [
   {
     id: 300,
     name: "TwinSaver 9s (TWINS)",
-    price: 0.0,
+    price: onlinePrice("TWINS"),
     unit: "/item",
     category: "Toiletries",
     subcategory: "Toiletries",
@@ -3009,7 +3014,7 @@ export const products: Product[] = [
   {
     id: 301,
     name: "Yebo Soap (YBO)",
-    price: 0.0,
+    price: onlinePrice("YBO"),
     unit: "/item",
     category: "Toiletries",
     subcategory: "Toiletries",
