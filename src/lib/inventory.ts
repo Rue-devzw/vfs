@@ -1,367 +1,241 @@
-export const inventory = `
-Category: 001 - BABY
-
-BABC: Baby & Me Cream
-
-EPX: Epimax Cream 400g
-
-HUGD: Huggies Diapers - Pack
-
-HUGW: Huggies Wipes
-
-JOH: Johnson Jelly 325ml
-
-JOHA: Johnson Aqueous 350ml
-
-JOHN: Johnson Baby soap 175g
-
-MASTW: Masters Wipes
-
-NAN: Nan 1;2;3&4
-
-PAMP: Pampers Masters Pack
-
-PAMPS: Pampers Masters Single
-
-PRED: Predo  Wipes
-
-PURA: Purity Aqueous
-
-SOFT: Soft Care Pampers
-
-SUNS: Sunlight soap
-
-SUPRDY: Superdry - Pamper
-
-WIP: Wipes
-
-WIPJOHN: Johnson Wipes
-
-Category: 004 - CLEANING PRODUCTS
-
-ALH: Aloha Washing Pwd 2kg
-
-ALO: Aloha Washing Pwd 1kg
-
-ALOD: Aloha Dishwasher
-
-ALOH: Aloha Washing Pwdr 500g
-
-ARP: Arpic Cleaner 750ml
-
-BIG: BigBen bar
-
-BOM: Boom Paste
-
-BOMFC: Boom Force Cream 750ml
-
-BOMM: Boom 150g
-
-BOMW: Boom - 1KG
-
-BOO: BoomDish washer 750ml
-
-BOOMB: Boom Bleach 750ml
-
-BOOMF: Boom Force Scouring
-
-BOOMM: Boom W/P 500g
-
-COB: Cobra 350ml
-
-COM: Comfort 1L
-
-DISW: Dishwasher Seawave
-
-DOMES: Domestos local
-
-DOMS: Domestos
-
-GK: Gik 750ml
-
-GREE: Green Bar Perfection
-
-GRN: Green Bar
-
-HAN: Handy Andy
-
-HARP: Harpic
-
-JK: Jik 750ml
-
-KIW: Kiwi Polish 50ml
-
-KNCK: Knock Dishwasher 750ml
-
-KNO: Knockout Can
-
-KNOA: Knockout All Purpose Cleaner 500ml
-
-KNOC: Knock out Satchet
-
-KNOCK: Knockout Dishwasher 2L
-
-KNOCT: Knockout Bleach
-
-KWI: Kiwi 100ml
-
-MAQ: Maq 1kg
-
-MEGFLR: Boom 2kg
-
-MQ: Maq 2kg
-
-NUGET: Nugget - 100ml
-
-OMO: Omo Powder 2kg
-
-PIN: Pinegel 500ml
-
-PNE: Pinegel 1L
-
-SEAW: DishWasher Seawave 2L
-
-SNL: Sunlight Liquid
-
-STASFT: Star Soft - 2litre
-
-STS: StarSoft Refill mix
-
-SUNL: Sunlight 1kg
-
-SUNLT: SunLight Pwd 2kg
-
-VIM: Xtra Vim
-
-VM: Vim Can
-
-XTRA: XTRA Washing Powder
-
-Category: 005 - COSMETICS
-
-ADDSPRY: Addidas Spray
-
-AXP: Axe Perfumer
-
-BAB: Baby Crez 500ml
-
-BABL: Baby line 500ml
-
-BCS: Black Chick  Small 125ml
-
-BEV: BeverlyHills Roll on
-
-BEVP: Beverly Hills Perfume
-
-BLC: BlackChic Big 250ml
-
-BOD: Bodi doc
-
-BODD: Bodi doc Tissue Oil
-
-BOMO: Boom Fabric Conditioner 2ltr
-
-CBL: Clere Beautiful Cream 400ml
-
-CFM: Clere For Men 450ml
-
-CLG: Clere Glycerine 100ml
-
-CLM: Clere Men lotion 400ml
-
-CLR: Clere Glyco Glycerine 100ml
-
-CLRE: Clere Ladies Cream
-
-COSMO: Cosmo Foam Bath
-
-DAR: Dark& Lovely
-
-DAW: Dawn
-
-DAWN: Dawn Cream
-
-DAX31: Dax 3 in 1 375mls
-
-DAXG: Dax Hair Grower 250ml
-
-DAXH: Dax Hair Grower 125mls
-
-DAXI: Dax Freez Big 250ml
-
-DOVE: Dove Lotion
-
-DXA: Dax Freez Small 100ml
-
-DXB: Dax Big 3 n 1
-
-ENG: English Blazer
-
-EWP: EasyWaves Pack
-
-EXCLA: Exclamation Perfume
-
-GMG: Gentel Magic lotion
-
-GML: Gentle Magic Cream
-
-GMS: Gentel Magic Serum
-
-GNT: Gentel Magic Soap
-
-GNTO: Gentle Magic Oil 50ml
-
-HAR: Hair Remover Cosmo 40g
-
-HOIT: Hoit Toity 90mls
-
-HOITY: Hoity Toity Lotion
-
-IGM: Ingrams Herbal
-
-IGMS: Ingrams Senstive 450ml
-
-IMP: Ingrams Moisture Plus 450ml
-
-ING: Ingrams men 450ml
-
-INGM: Ingrams Aloe 450ml
-
-INGMS: Ingrams tissue oi l450ml
-
-INGRO: Ingrams Original 450mls
-
-INR: Igrams Roibos 450ml
-
-ISB: Inecto Super Black75g
-
-ISOP: Isoplus Edge Control
-
-ISP: Iso Plus Hair Spry 240ml
-
-LACE: Lace Lotion
-
-MOUS: Mousse
-
-NIV: Nivea Cream/Lotion 400ml
-
-NIVA: Nivea Radiant Cream 400ml
-
-NIVES: Nivea Spray
-
-NVIA: Nivea Q10
-
-OHS: Oh So Heavenly Lotion 720ml
-
-OHSHV: Oh So Heavenly - 2L
-
-OHSL: Oh  So Heavenly Lotion 1L
-
-OHSO: Oh SO Heavenly Cream 450ml
-
-OHSOQ: Oh So heavenly Q10
-
-OLV: Olive Oil Spry 250ml
-
-PLA: PlayBoy Roll on
-
-PLAY: PlayBoy Perfume
-
-RLS: Roll On Shield
-
-ROLL: Roll On Addidas 50ml
-
-ROLNIV: Roll on Nivea - 50ml
-
-ROP: Roll On Power House 50ml
-
-SHOW: Shower To Shower
-
-SHWR: Shower to Shower Perfume
-
-SKA: Skala 200g
-
-SKAL: Skala hairFood
-
-TOPS: Top Society
-
-VAS: Vaseline 450ml
-
-VASE: Vaseline 250ml
-
-VASEL: v
-
-VASELN: Vaseline lips
-
-VASL: Vaseline 50ml
-
-VASLN: Vaseline Cream
-
-VASLNL: Vaseline Lotion
-
-VESTGLC: Vestline Garlic - 200g
-
-VSN: Vaseline - 100ml
-
-Category: 019 - TOILETRIES
-
-ANG: Angel Care Tissue
-
-AQFRSH: Aquafresh - 100ml
-
-BABYS: Baby Soft 18s
-
-CLO: Close Up
-
-COL: Colgate 100ml
-
-DELLP: Utra Pads
-
-DETO: Dettol Liquid
-
-DETT: Dettol soap
-
-GEI: Geisha
-
-HIL: HiLife Soap
-
-HYG: hygienix Soap 175g
-
-JAD: Jade Soap
-
-KOT: Kotex pads 10s
-
-LIFBY: Lifebouy
-
-LUX: Lux Soap
-
-OHSOH: Oh So Heavenly Gel
-
-PANT: Kotex Pant Liners
-
-PDS: Pads Mix
-
-PERI: Period pants
-
-PROT: Protex Soap
-
-PRVT: Private Joy Tissue
-
-ROM: Romance Soap 50g
-
-SAT: Tissue Single
-
-SATI: Satiskin 2L
-
-SATSK: Satiskin 1L
-
-SON: Sona
-
-TISS: Tissue 4s
-
-TWIN: TwinSaver Tissue
-
-TWINS: TwinSaver 9s
-
-YBO: Yebo Soap
-`;
+const price = (value: number) => (value > 0 ? value : null);
+
+export type InventoryItem = {
+  code: string;
+  description: string;
+  cashPrice: number | null;
+  onlinePrice: number | null;
+};
+
+export type InventoryCategory = {
+  id: string;
+  name: string;
+  items: InventoryItem[];
+};
+
+export const inventory: InventoryCategory[] = [
+  {
+    id: "001",
+    name: "Baby",
+    items: [
+      { code: "BABC", description: "Baby & Me Cream", cashPrice: price(1.0), onlinePrice: price(1.05) },
+      { code: "EPX", description: "Epimax Cream 400g", cashPrice: price(5.5), onlinePrice: price(5.78) },
+      { code: "HUGD", description: "Huggies Diapers - Pack", cashPrice: price(11.0), onlinePrice: price(11.55) },
+      { code: "HUGW", description: "Huggies Wipes", cashPrice: price(2.0), onlinePrice: price(2.1) },
+      { code: "JOH", description: "Johnson Jelly 325ml", cashPrice: price(2.5), onlinePrice: price(2.63) },
+      { code: "JOHA", description: "Johnson Aqueous 350ml", cashPrice: price(2.5), onlinePrice: price(2.63) },
+      { code: "JOHN", description: "Johnson Baby soap 175g", cashPrice: price(1.2), onlinePrice: price(1.26) },
+      { code: "MASTW", description: "Masters Wipes", cashPrice: price(0), onlinePrice: price(0) },
+      { code: "NAN", description: "Nan 1;2;3&4", cashPrice: price(5.5), onlinePrice: price(5.78) },
+      { code: "PAMP", description: "Pampers Masters Pack", cashPrice: price(12.0), onlinePrice: price(12.6) },
+      { code: "PAMPS", description: "Pampers Masters Single", cashPrice: price(0.12), onlinePrice: price(0.13) },
+      { code: "PRED", description: "Predo  Wipes", cashPrice: price(2.0), onlinePrice: price(2.1) },
+      { code: "PURA", description: "Purity Aqueous", cashPrice: price(2.3), onlinePrice: price(2.42) },
+      { code: "SOFT", description: "Soft Care Pampers", cashPrice: price(5.0), onlinePrice: price(5.25) },
+      { code: "SUNS", description: "Sunlight soap", cashPrice: price(0), onlinePrice: price(0) },
+      { code: "SUPRDY", description: "Superdry - Pamper", cashPrice: price(0), onlinePrice: price(0) },
+      { code: "WIP", description: "Wipes", cashPrice: price(0.7), onlinePrice: price(0.74) },
+      { code: "WIPJOHN", description: "Johnson Wipes", cashPrice: price(0), onlinePrice: price(0) },
+    ],
+  },
+  {
+    id: "004",
+    name: "Cleaning Products",
+    items: [
+      { code: "ALH", description: "Aloha Washing Pwd 2kg", cashPrice: price(4.0), onlinePrice: price(4.2) },
+      { code: "ALO", description: "Aloha Washing Pwd 1kg", cashPrice: price(2.0), onlinePrice: price(2.1) },
+      { code: "ALOD", description: "Aloha Dishwasher", cashPrice: price(1.5), onlinePrice: price(1.58) },
+      { code: "ALOH", description: "Aloha Washing Pwdr 500g", cashPrice: price(1.0), onlinePrice: price(1.05) },
+      { code: "ARP", description: "Arpic Cleaner 750ml", cashPrice: price(0), onlinePrice: price(0) },
+      { code: "BIG", description: "BigBen bar", cashPrice: price(1.5), onlinePrice: price(1.58) },
+      { code: "BOM", description: "Boom Paste", cashPrice: price(0.5), onlinePrice: price(0.53) },
+      { code: "BOMFC", description: "Boom Force Cream 750ml", cashPrice: price(1.5), onlinePrice: price(1.58) },
+      { code: "BOMM", description: "Boom 150g", cashPrice: price(0.5), onlinePrice: price(0.53) },
+      { code: "BOMW", description: "Boom - 1KG", cashPrice: price(2.0), onlinePrice: price(2.1) },
+      { code: "BOO", description: "BoomDish washer 750ml", cashPrice: price(2.0), onlinePrice: price(2.1) },
+      { code: "BOOMB", description: "Boom Bleach 750ml", cashPrice: price(1.8), onlinePrice: price(1.89) },
+      { code: "BOOMF", description: "Boom Force Scouring", cashPrice: price(1.0), onlinePrice: price(1.05) },
+      { code: "BOOMM", description: "Boom W/P 500g", cashPrice: price(1.0), onlinePrice: price(1.05) },
+      { code: "COB", description: "Cobra 350ml", cashPrice: price(2.5), onlinePrice: price(2.63) },
+      { code: "COM", description: "Comfort 1L", cashPrice: price(3.0), onlinePrice: price(3.15) },
+      { code: "DISW", description: "Dishwasher Seawave", cashPrice: price(1.0), onlinePrice: price(1.05) },
+      { code: "DOMES", description: "Domestos local", cashPrice: price(0), onlinePrice: price(0) },
+      { code: "DOMS", description: "Domestos", cashPrice: price(2.0), onlinePrice: price(2.1) },
+      { code: "GK", description: "Gik 750ml", cashPrice: price(0), onlinePrice: price(0) },
+      { code: "GREE", description: "Green Bar Perfection", cashPrice: price(1.3), onlinePrice: price(1.37) },
+      { code: "GRN", description: "Green Bar", cashPrice: price(0), onlinePrice: price(0) },
+      { code: "HAN", description: "Handy Andy", cashPrice: price(2.0), onlinePrice: price(2.1) },
+      { code: "HARP", description: "Harpic", cashPrice: price(2.0), onlinePrice: price(2.1) },
+      { code: "JK", description: "Jik 750ml", cashPrice: price(2.0), onlinePrice: price(2.1) },
+      { code: "KIW", description: "Kiwi Polish 50ml", cashPrice: price(1.0), onlinePrice: price(1.05) },
+      { code: "KNCK", description: "Knock Dishwasher 750ml", cashPrice: price(1.0), onlinePrice: price(1.05) },
+      { code: "KNO", description: "Knockout Can", cashPrice: price(1.0), onlinePrice: price(1.05) },
+      { code: "KNOA", description: "Knockout All Purpose Cleaner 500ml", cashPrice: price(1.0), onlinePrice: price(1.05) },
+      { code: "KNOC", description: "Knock out Satchet", cashPrice: price(0.5), onlinePrice: price(0.53) },
+      { code: "KNOCK", description: "Knockout Dishwasher 2L", cashPrice: price(2.0), onlinePrice: price(2.1) },
+      { code: "KNOCT", description: "Knockout Bleach", cashPrice: price(1.5), onlinePrice: price(1.58) },
+      { code: "KWI", description: "Kiwi 100ml", cashPrice: price(2.0), onlinePrice: price(2.1) },
+      { code: "MAQ", description: "Maq 1kg", cashPrice: price(0), onlinePrice: price(0) },
+      { code: "MEGFLR", description: "Boom 2kg", cashPrice: price(4.0), onlinePrice: price(4.2) },
+      { code: "MQ", description: "Maq 2kg", cashPrice: price(4.0), onlinePrice: price(4.2) },
+      { code: "NUGET", description: "Nugget - 100ml", cashPrice: price(0), onlinePrice: price(0) },
+      { code: "OMO", description: "Omo Powder 2kg", cashPrice: price(4.0), onlinePrice: price(4.2) },
+      { code: "PIN", description: "Pinegel 500ml", cashPrice: price(1.5), onlinePrice: price(1.58) },
+      { code: "PNE", description: "Pinegel 1L", cashPrice: price(3.0), onlinePrice: price(3.15) },
+      { code: "SEAW", description: "DishWasher Seawave 2L", cashPrice: price(2.0), onlinePrice: price(2.1) },
+      { code: "SNL", description: "Sunlight Liquid", cashPrice: price(2.0), onlinePrice: price(2.1) },
+      { code: "STASFT", description: "Star Soft - 2litre", cashPrice: price(3.5), onlinePrice: price(3.68) },
+      { code: "STS", description: "StarSoft Refill mix", cashPrice: price(2.0), onlinePrice: price(2.1) },
+      { code: "SUNL", description: "Sunlight 1kg", cashPrice: price(2.0), onlinePrice: price(2.1) },
+      { code: "SUNLT", description: "SunLight Pwd 2kg", cashPrice: price(4.0), onlinePrice: price(4.2) },
+      { code: "VIM", description: "Xtra Vim", cashPrice: price(0.8), onlinePrice: price(0.84) },
+      { code: "VM", description: "Vim Can", cashPrice: price(1.0), onlinePrice: price(1.05) },
+      { code: "XTRA", description: "XTRA Washing Powder", cashPrice: price(3.5), onlinePrice: price(3.68) },
+    ],
+  },
+  {
+    id: "005",
+    name: "Cosmetics",
+    items: [
+      { code: "ADDSPRY", description: "Addidas Spray", cashPrice: price(3.0), onlinePrice: price(3.15) },
+      { code: "AXP", description: "Axe Perfumer", cashPrice: price(2.0), onlinePrice: price(2.1) },
+      { code: "BAB", description: "Baby Crez 500ml", cashPrice: price(1.8), onlinePrice: price(1.89) },
+      { code: "BABL", description: "Baby line 500ml", cashPrice: price(0), onlinePrice: price(0) },
+      { code: "BCS", description: "Black Chick  Small 125ml", cashPrice: price(1.0), onlinePrice: price(1.05) },
+      { code: "BEV", description: "BeverlyHills Roll on", cashPrice: price(0), onlinePrice: price(0) },
+      { code: "BEVP", description: "Beverly Hills Perfume", cashPrice: price(2.5), onlinePrice: price(2.63) },
+      { code: "BLC", description: "BlackChic Big 250ml", cashPrice: price(0), onlinePrice: price(0) },
+      { code: "BOD", description: "Bodi doc", cashPrice: price(3.0), onlinePrice: price(3.15) },
+      { code: "BODD", description: "Bodi doc Tissue Oil", cashPrice: price(3.0), onlinePrice: price(3.15) },
+      { code: "BOMO", description: "Boom Fabric Conditioner 2ltr", cashPrice: price(0), onlinePrice: price(0) },
+      { code: "CBL", description: "Clere Beautiful Cream 400ml", cashPrice: price(2.0), onlinePrice: price(2.1) },
+      { code: "CFM", description: "Clere For Men 450ml", cashPrice: price(2.0), onlinePrice: price(2.1) },
+      { code: "CLG", description: "Clere Glycerine 100ml", cashPrice: price(1.0), onlinePrice: price(1.05) },
+      { code: "CLM", description: "Clere Men lotion 400ml", cashPrice: price(2.0), onlinePrice: price(2.1) },
+      { code: "CLR", description: "Clere Glyco Glycerine 100ml", cashPrice: price(1.2), onlinePrice: price(1.26) },
+      { code: "CLRE", description: "Clere Ladies Cream", cashPrice: price(2.0), onlinePrice: price(2.1) },
+      { code: "COSMO", description: "Cosmo Foam Bath", cashPrice: price(1.0), onlinePrice: price(1.05) },
+      { code: "DAR", description: "Dark& Lovely", cashPrice: price(5.5), onlinePrice: price(5.78) },
+      { code: "DAW", description: "Dawn", cashPrice: price(0), onlinePrice: price(0) },
+      { code: "DAWN", description: "Dawn Cream", cashPrice: price(0), onlinePrice: price(0) },
+      { code: "DAX31", description: "Dax 3 in 1 375mls", cashPrice: price(1.5), onlinePrice: price(1.58) },
+      { code: "DAXG", description: "Dax Hair Grower 250ml", cashPrice: price(3.0), onlinePrice: price(3.15) },
+      { code: "DAXH", description: "Dax Hair Grower 125mls", cashPrice: price(1.5), onlinePrice: price(1.58) },
+      { code: "DAXI", description: "Dax Freez Big 250ml", cashPrice: price(2.0), onlinePrice: price(2.1) },
+      { code: "DOVE", description: "Dove Lotion", cashPrice: price(5.5), onlinePrice: price(5.78) },
+      { code: "DXA", description: "Dax Freez Small 100ml", cashPrice: price(1.2), onlinePrice: price(1.26) },
+      { code: "DXB", description: "Dax Big 3 n 1", cashPrice: price(2.5), onlinePrice: price(2.63) },
+      { code: "ENG", description: "English Blazer", cashPrice: price(2.5), onlinePrice: price(2.63) },
+      { code: "EWP", description: "EasyWaves Pack", cashPrice: price(0), onlinePrice: price(0) },
+      { code: "EXCLA", description: "Exclamation Perfume", cashPrice: price(2.0), onlinePrice: price(2.1) },
+      { code: "GMG", description: "Gentel Magic lotion", cashPrice: price(1.0), onlinePrice: price(1.05) },
+      { code: "GML", description: "Gentle Magic Cream", cashPrice: price(1.0), onlinePrice: price(1.05) },
+      { code: "GMS", description: "Gentel Magic Serum", cashPrice: price(1.5), onlinePrice: price(1.58) },
+      { code: "GNT", description: "Gentel Magic Soap", cashPrice: price(1.0), onlinePrice: price(1.05) },
+      { code: "GNTO", description: "Gentle Magic Oil 50ml", cashPrice: price(2.5), onlinePrice: price(2.63) },
+      { code: "HAR", description: "Hair Remover Cosmo 40g", cashPrice: price(0.5), onlinePrice: price(0.53) },
+      { code: "HOIT", description: "Hoit Toity 90mls", cashPrice: price(2.0), onlinePrice: price(2.1) },
+      { code: "HOITY", description: "Hoity Toity Lotion", cashPrice: price(3.0), onlinePrice: price(3.15) },
+      { code: "IGM", description: "Ingrams Herbal", cashPrice: price(2.5), onlinePrice: price(2.63) },
+      { code: "IGMS", description: "Ingrams Senstive 450ml", cashPrice: price(0), onlinePrice: price(0) },
+      { code: "IMP", description: "Ingrams Moisture Plus 450ml", cashPrice: price(2.8), onlinePrice: price(2.94) },
+      { code: "ING", description: "Ingrams men 450ml", cashPrice: price(2.8), onlinePrice: price(2.94) },
+      { code: "INGM", description: "Ingrams Aloe 450ml", cashPrice: price(0), onlinePrice: price(0) },
+      { code: "INGMS", description: "Ingrams tissue oi l450ml", cashPrice: price(3.5), onlinePrice: price(3.68) },
+      { code: "INGRO", description: "Ingrams Original 450mls", cashPrice: price(2.8), onlinePrice: price(2.94) },
+      { code: "INR", description: "Igrams Roibos 450ml", cashPrice: price(0), onlinePrice: price(0) },
+      { code: "ISB", description: "Inecto Super Black75g", cashPrice: price(1.0), onlinePrice: price(1.05) },
+      { code: "ISOP", description: "Isoplus Edge Control", cashPrice: price(2.5), onlinePrice: price(2.63) },
+      { code: "ISP", description: "Iso Plus Hair Spry 240ml", cashPrice: price(1.8), onlinePrice: price(1.89) },
+      { code: "LACE", description: "Lace Lotion", cashPrice: price(3.0), onlinePrice: price(3.15) },
+      { code: "MOUS", description: "Mousse", cashPrice: price(0), onlinePrice: price(0) },
+      { code: "NIV", description: "Nivea Cream/Lotion 400ml", cashPrice: price(4.0), onlinePrice: price(4.2) },
+      { code: "NIVA", description: "Nivea Radiant Cream 400ml", cashPrice: price(0), onlinePrice: price(0) },
+      { code: "NIVES", description: "Nivea Spray", cashPrice: price(3.0), onlinePrice: price(3.15) },
+      { code: "NVIA", description: "Nivea Q10", cashPrice: price(7.5), onlinePrice: price(7.88) },
+      { code: "OHS", description: "Oh So Heavenly Lotion 720ml", cashPrice: price(5.0), onlinePrice: price(5.25) },
+      { code: "OHSHV", description: "Oh So Heavenly - 2L", cashPrice: price(5.5), onlinePrice: price(5.78) },
+      { code: "OHSL", description: "Oh  So Heavenly Lotion 1L", cashPrice: price(7.0), onlinePrice: price(7.35) },
+      { code: "OHSO", description: "Oh SO Heavenly Cream 450ml", cashPrice: price(4.0), onlinePrice: price(4.2) },
+      { code: "OHSOQ", description: "Oh So heavenly Q10", cashPrice: price(7.0), onlinePrice: price(7.35) },
+      { code: "OLV", description: "Olive Oil Spry 250ml", cashPrice: price(1.8), onlinePrice: price(1.89) },
+      { code: "PLA", description: "PlayBoy Roll on", cashPrice: price(0), onlinePrice: price(0) },
+      { code: "PLAY", description: "PlayBoy Perfume", cashPrice: price(0), onlinePrice: price(0) },
+      { code: "RLS", description: "Roll On Shield", cashPrice: price(0), onlinePrice: price(0) },
+      { code: "ROLL", description: "Roll On Addidas 50ml", cashPrice: price(0), onlinePrice: price(0) },
+      { code: "ROLNIV", description: "Roll on Nivea - 50ml", cashPrice: price(2.0), onlinePrice: price(2.1) },
+      { code: "ROP", description: "Roll On Power House 50ml", cashPrice: price(0), onlinePrice: price(0) },
+      { code: "SHOW", description: "Shower To Shower", cashPrice: price(1.0), onlinePrice: price(1.05) },
+      { code: "SHWR", description: "Shower to Shower Perfume", cashPrice: price(2.5), onlinePrice: price(2.63) },
+      { code: "SKA", description: "Skala 200g", cashPrice: price(0), onlinePrice: price(0) },
+      { code: "SKAL", description: "Skala hairFood", cashPrice: price(1.0), onlinePrice: price(1.05) },
+      { code: "TOPS", description: "Top Society", cashPrice: price(1.5), onlinePrice: price(1.58) },
+      { code: "VAS", description: "Vaseline 450ml", cashPrice: price(3.8), onlinePrice: price(3.99) },
+      { code: "VASE", description: "Vaseline 250ml", cashPrice: price(2.0), onlinePrice: price(2.1) },
+      { code: "VASEL", description: "v", cashPrice: price(0), onlinePrice: price(0) },
+      { code: "VASELN", description: "Vaseline lips", cashPrice: price(0.5), onlinePrice: price(0.53) },
+      { code: "VASL", description: "Vaseline 50ml", cashPrice: price(0.5), onlinePrice: price(0.53) },
+      { code: "VASLN", description: "Vaseline Cream", cashPrice: price(3.0), onlinePrice: price(3.15) },
+      { code: "VASLNL", description: "Vaseline Lotion", cashPrice: price(3.5), onlinePrice: price(3.68) },
+      { code: "VESTGLC", description: "Vestline Garlic - 200g", cashPrice: price(1.0), onlinePrice: price(1.05) },
+      { code: "VSN", description: "Vaseline - 100ml", cashPrice: price(1.0), onlinePrice: price(1.05) },
+    ],
+  },
+  {
+    id: "019",
+    name: "Toiletries",
+    items: [
+      { code: "ANG", description: "Angel Care Tissue", cashPrice: price(8.0), onlinePrice: price(8.4) },
+      { code: "AQFRSH", description: "Aquafresh - 100ml", cashPrice: price(1.0), onlinePrice: price(1.05) },
+      { code: "BABYS", description: "Baby Soft 18s", cashPrice: price(9.5), onlinePrice: price(9.98) },
+      { code: "CLO", description: "Close Up", cashPrice: price(1.0), onlinePrice: price(1.05) },
+      { code: "COL", description: "Colgate 100ml", cashPrice: price(1.0), onlinePrice: price(1.05) },
+      { code: "DELLP", description: "Utra Pads", cashPrice: price(0.6), onlinePrice: price(0.63) },
+      { code: "DETO", description: "Dettol Liquid", cashPrice: price(1.0), onlinePrice: price(1.05) },
+      { code: "DETT", description: "Dettol soap", cashPrice: price(1.0), onlinePrice: price(1.05) },
+      { code: "GEI", description: "Geisha", cashPrice: price(1.0), onlinePrice: price(1.05) },
+      { code: "HIL", description: "HiLife Soap", cashPrice: price(0.5), onlinePrice: price(0.53) },
+      { code: "HYG", description: "hygienix Soap 175g", cashPrice: price(0.5), onlinePrice: price(0.53) },
+      { code: "JAD", description: "Jade Soap", cashPrice: price(0.8), onlinePrice: price(0.84) },
+      { code: "KOT", description: "Kotex pads 10s", cashPrice: price(1.5), onlinePrice: price(1.58) },
+      { code: "LIFBY", description: "Lifebouy", cashPrice: price(0.8), onlinePrice: price(0.84) },
+      { code: "LUX", description: "Lux Soap", cashPrice: price(0.9), onlinePrice: price(0.95) },
+      { code: "OHSOH", description: "Oh So Heavenly Gel", cashPrice: price(0), onlinePrice: price(0) },
+      { code: "PANT", description: "Kotex Pant Liners", cashPrice: price(0), onlinePrice: price(0) },
+      { code: "PDS", description: "Pads Mix", cashPrice: price(1.0), onlinePrice: price(1.05) },
+      { code: "PERI", description: "Period pants", cashPrice: price(1.0), onlinePrice: price(1.05) },
+      { code: "PROT", description: "Protex Soap", cashPrice: price(1.0), onlinePrice: price(1.05) },
+      { code: "PRVT", description: "Private Joy Tissue", cashPrice: price(8.0), onlinePrice: price(8.4) },
+      { code: "ROM", description: "Romance Soap 50g", cashPrice: price(0.8), onlinePrice: price(0.84) },
+      { code: "SAT", description: "Tissue Single", cashPrice: price(0.5), onlinePrice: price(0.53) },
+      { code: "SATI", description: "Satiskin 2L", cashPrice: price(4.5), onlinePrice: price(4.73) },
+      { code: "SATSK", description: "Satiskin 1L", cashPrice: price(2.5), onlinePrice: price(2.63) },
+      { code: "SON", description: "Sona", cashPrice: price(0), onlinePrice: price(0) },
+      { code: "TISS", description: "Tissue 4s", cashPrice: price(1.0), onlinePrice: price(1.05) },
+      { code: "TWIN", description: "TwinSaver Tissue", cashPrice: price(9.0), onlinePrice: price(9.45) },
+      { code: "TWINS", description: "TwinSaver 9s", cashPrice: price(4.5), onlinePrice: price(4.73) },
+      { code: "YBO", description: "Yebo Soap", cashPrice: price(0.5), onlinePrice: price(0.53) },
+    ],
+  },
+];
+
+export type InventoryLookupEntry = InventoryItem & {
+  categoryId: string;
+  categoryName: string;
+};
+
+export const inventoryByCode: Record<string, InventoryLookupEntry> = inventory.reduce(
+  (acc, category) => {
+    category.items.forEach(item => {
+      acc[item.code] = {
+        ...item,
+        categoryId: category.id,
+        categoryName: category.name,
+      };
+    });
+    return acc;
+  },
+  {} as Record<string, InventoryLookupEntry>,
+);
+
+export const flatInventory: InventoryLookupEntry[] = Object.values(inventoryByCode);
