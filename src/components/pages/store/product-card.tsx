@@ -18,7 +18,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { toast } = useToast();
   const image = PlaceHolderImages.find(p => p.id === product.image) || PlaceHolderImages.find(p => p.id === 'product-apples');
 
+  const isOutOfStock = product.price <= 0;
+
   const handleAddToCart = () => {
+    if (isOutOfStock) {
+      return;
+    }
+
     dispatch({ type: 'ADD_ITEM', payload: product });
     toast({
         title: "Added to cart",
@@ -47,18 +53,28 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       </CardHeader>
       <CardContent className="p-4 flex-grow">
         <CardTitle className="font-headline text-lg mb-2">{product.name}</CardTitle>
-        <div className="flex items-baseline gap-2">
-          <p className="text-xl font-bold text-primary">${product.price.toFixed(2)}</p>
-          {product.onSpecial && product.oldPrice && (
-            <p className="text-sm text-muted-foreground line-through">${product.oldPrice.toFixed(2)}</p>
+        <div className="flex flex-col gap-1">
+          {isOutOfStock ? (
+            <p className="text-sm font-semibold text-destructive">Currently not in stock</p>
+          ) : (
+            <div className="flex items-baseline gap-2">
+              <p className="text-xl font-bold text-primary">${product.price.toFixed(2)}</p>
+              {product.onSpecial && product.oldPrice && (
+                <p className="text-sm text-muted-foreground line-through">${product.oldPrice.toFixed(2)}</p>
+              )}
+            </div>
           )}
           <p className="text-sm text-muted-foreground">{product.unit}</p>
         </div>
       </CardContent>
       <CardFooter className="p-4 pt-0">
-        <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90" onClick={handleAddToCart}>
+        <Button
+          className="w-full bg-accent text-accent-foreground hover:bg-accent/90 disabled:opacity-60 disabled:cursor-not-allowed"
+          onClick={handleAddToCart}
+          disabled={isOutOfStock}
+        >
           <ShoppingCart className="mr-2 h-4 w-4" />
-          Add to Cart
+          {isOutOfStock ? "Unavailable" : "Add to Cart"}
         </Button>
       </CardFooter>
     </Card>
