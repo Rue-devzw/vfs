@@ -15,6 +15,7 @@ interface StoreProduct {
   id: string;          // Firestore document id (or stringified static id)
   name: string;
   price: number;
+  cashPrice?: number;  // Optional in-store cash price when different from the online price
   oldPrice?: number;
   unit: string;
   category: string;

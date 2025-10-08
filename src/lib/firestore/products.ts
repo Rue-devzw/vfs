@@ -6,6 +6,7 @@ export type StoreProduct = {
   id: string;
   name: string;
   price: number;
+  cashPrice?: number;
   oldPrice?: number;
   unit: string;
   category: string;
@@ -45,6 +46,7 @@ export type ListCategoriesResult = {
 type FirestoreProductRecord = {
   name: string;
   price: number;
+  cashPrice?: number;
   oldPrice?: number;
   unit: string;
   category: string;
@@ -63,6 +65,7 @@ function normaliseFirestoreProduct(
     id,
     name: data.name,
     price: data.price,
+    cashPrice: typeof data.cashPrice === "number" ? data.cashPrice : undefined,
     oldPrice: typeof data.oldPrice === "number" ? data.oldPrice : undefined,
     unit: data.unit,
     category: data.category,
@@ -79,6 +82,7 @@ function fromStaticProduct(product: Product): StoreProduct {
     id: String(product.id),
     name: product.name,
     price: product.price,
+    cashPrice: typeof product.cashPrice === "number" ? product.cashPrice : undefined,
     oldPrice: product.oldPrice,
     unit: product.unit,
     category: product.category,
