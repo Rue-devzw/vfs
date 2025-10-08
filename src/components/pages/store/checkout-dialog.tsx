@@ -102,8 +102,12 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
           }),
         });
 
-main
+        if (!paymentResponse.ok) {
+          throw new Error("Failed to initiate EcoCash payment");
         }
+
+        const paymentData: { reference?: string; merchantCode?: string } =
+          await paymentResponse.json();
 
         paymentReference = paymentData.reference;
         paymentMerchantCode = paymentData.merchantCode;
@@ -147,7 +151,10 @@ main
       reset();
     } catch (error) {
       console.error('Checkout submission failed', error);
-main
+
+      const message =
+        error instanceof Error ? error.message : 'Something went wrong while placing your order.';
+
       toast({
         title: "Order failed",
         description: message,
