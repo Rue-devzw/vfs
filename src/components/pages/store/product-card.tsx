@@ -13,6 +13,26 @@ interface ProductCardProps {
   product: Product;
 }
 
+const formatUnit = (unit: string) => {
+  const trimmedUnit = unit.trim();
+
+  if (!trimmedUnit.startsWith("/")) {
+    return trimmedUnit;
+  }
+
+  const unitValue = trimmedUnit.slice(1).trim();
+
+  if (!unitValue) {
+    return "";
+  }
+
+  if (unitValue.toLowerCase() === "each") {
+    return "each";
+  }
+
+  return `per ${unitValue}`;
+};
+
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { dispatch } = useCart();
   const { toast } = useToast();
@@ -64,7 +84,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               )}
             </div>
           )}
-          <p className="text-sm text-muted-foreground">{product.unit}</p>
+          <p className="text-sm text-muted-foreground">{formatUnit(product.unit)}</p>
         </div>
       </CardContent>
       <CardFooter className="p-4 pt-0">
