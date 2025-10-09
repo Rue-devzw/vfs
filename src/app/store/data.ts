@@ -1238,7 +1238,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
-    image: "hero-7",
+    image: "product-baby-and-me-cream",
     onSpecial: false,
   },
   {
@@ -1248,7 +1248,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
-    image: "hero-7",
+    image: "product-epimax-cream-400g",
     onSpecial: false,
   },
   {
@@ -1258,7 +1258,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
-    image: "hero-7",
+    image: "product-huggies-diapers-pack",
     onSpecial: false,
   },
   {
@@ -1268,7 +1268,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
-    image: "hero-7",
+    image: "product-huggies-wipes",
     onSpecial: false,
   },
   {
@@ -1278,7 +1278,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
-    image: "hero-7",
+    image: "product-johnson-jelly-325ml",
     onSpecial: false,
   },
   {
@@ -1288,7 +1288,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
-    image: "hero-7",
+    image: "product-johnson-aqueous-350ml",
     onSpecial: false,
   },
   {
@@ -1298,7 +1298,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
-    image: "hero-7",
+    image: "product-johnson-baby-soap-175g",
     onSpecial: false,
   },
   {
@@ -1308,7 +1308,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
-    image: "hero-7",
+    image: "product-masters-wipes",
     onSpecial: false,
   },
   {
@@ -1318,7 +1318,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
-    image: "hero-7",
+    image: "product-nan-formula",
     onSpecial: false,
   },
   {
@@ -1328,7 +1328,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
-    image: "hero-7",
+    image: "product-pampers-masters-pack",
     onSpecial: false,
   },
   {
@@ -1338,7 +1338,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
-    image: "hero-7",
+    image: "product-pampers-masters-single",
     onSpecial: false,
   },
   {
@@ -1348,7 +1348,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
-    image: "hero-7",
+    image: "product-predo-wipes",
     onSpecial: false,
   },
   {
@@ -1358,7 +1358,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
-    image: "hero-7",
+    image: "product-purity-aqueous",
     onSpecial: false,
   },
   {
@@ -1368,7 +1368,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
-    image: "hero-7",
+    image: "product-pampers-masters-pack",
     onSpecial: false,
   },
   {
@@ -1378,7 +1378,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
-    image: "hero-7",
+    image: "product-johnson-baby-soap-175g",
     onSpecial: false,
   },
   {
@@ -1388,7 +1388,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
-    image: "hero-7",
+    image: "product-pampers-masters-single",
     onSpecial: false,
   },
   {
@@ -1398,7 +1398,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
-    image: "hero-7",
+    image: "product-masters-wipes",
     onSpecial: false,
   },
   {
@@ -1408,7 +1408,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Baby",
     subcategory: "Baby",
-    image: "hero-7",
+    image: "product-huggies-wipes",
     onSpecial: false,
   },
   {

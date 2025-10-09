@@ -85,6 +85,18 @@
       "imageHint": "red apples"
     },
     {
+      "id": "product-baby-and-me-cream",
+      "description": "A jar of Baby & Me cream.",
+      "imageUrl": "/images/product-baby-and-me-cream.webp",
+      "imageHint": "baby care cream jar"
+    },
+    {
+      "id": "product-epimax-cream-400g",
+      "description": "A 400g bottle of Epimax cream.",
+      "imageUrl": "/images/product-epimax-cream-400g.webp",
+      "imageHint": "epimax baby cream bottle"
+    },
+    {
       "id": "product-carrots",
       "description": "A bunch of fresh carrots.",
       "imageUrl": "/images/product-carrots.webp",
@@ -103,6 +115,18 @@
       "imageHint": "raw steak"
     },
     {
+      "id": "product-huggies-diapers-pack",
+      "description": "A pack of Huggies diapers.",
+      "imageUrl": "/images/product-huggies-diapers-pack.webp",
+      "imageHint": "huggies diapers pack"
+    },
+    {
+      "id": "product-huggies-wipes",
+      "description": "A pack of Huggies baby wipes.",
+      "imageUrl": "/images/product-huggies-wipes.webp",
+      "imageHint": "huggies baby wipes"
+    },
+    {
       "id": "product-sausages",
       "description": "Freshly made sausages.",
       "imageUrl": "/images/product-sausages.webp",
@@ -115,6 +139,24 @@
       "imageHint": "chicken fillets"
     },
     {
+      "id": "product-johnson-aqueous-350ml",
+      "description": "A 350ml bottle of Johnson's aqueous cream.",
+      "imageUrl": "/images/product-johnson-aqueous-350ml.webp",
+      "imageHint": "johnson aqueous cream bottle"
+    },
+    {
+      "id": "product-johnson-baby-soap-175g",
+      "description": "A 175g bar of Johnson's baby soap.",
+      "imageUrl": "/images/product-johnson-baby-soap-175g.webp",
+      "imageHint": "johnson baby soap bar"
+    },
+    {
+      "id": "product-johnson-jelly-325ml",
+      "description": "A 325ml jar of Johnson's jelly.",
+      "imageUrl": "/images/product-johnson-jelly-325ml.webp",
+      "imageHint": "johnson baby jelly jar"
+    },
+    {
       "id": "product-bread",
       "description": "A loaf of artisanal bread.",
       "imageUrl": "/images/product-bread.webp",
@@ -125,6 +167,42 @@
       "description": "A selection of exotic spices.",
       "imageUrl": "/images/product-spices.webp",
       "imageHint": "exotic spices"
+    },
+    {
+      "id": "product-masters-wipes",
+      "description": "A pack of Masters baby wipes.",
+      "imageUrl": "/images/product-masters-wipes.webp",
+      "imageHint": "masters baby wipes"
+    },
+    {
+      "id": "product-nan-formula",
+      "description": "Nestlé NAN baby formula tins.",
+      "imageUrl": "/images/product-nan-formula.webp",
+      "imageHint": "nan baby formula"
+    },
+    {
+      "id": "product-pampers-masters-pack",
+      "description": "A large pack of Pampers diapers.",
+      "imageUrl": "/images/product-pampers-masters-pack.webp",
+      "imageHint": "pampers diapers large pack"
+    },
+    {
+      "id": "product-pampers-masters-single",
+      "description": "A single pack of Pampers diapers.",
+      "imageUrl": "/images/product-pampers-masters-single.webp",
+      "imageHint": "pampers diapers single pack"
+    },
+    {
+      "id": "product-predo-wipes",
+      "description": "A pack of Predo baby wipes.",
+      "imageUrl": "/images/product-predo-wipes.webp",
+      "imageHint": "predo baby wipes"
+    },
+    {
+      "id": "product-purity-aqueous",
+      "description": "A bottle of Purity aqueous cream.",
+      "imageUrl": "/images/product-purity-aqueous.webp",
+      "imageHint": "purity aqueous cream bottle"
     },
     {
       "id": "product-eggs",
