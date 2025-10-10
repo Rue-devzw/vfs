@@ -209,6 +209,300 @@
       "description": "A dozen farm fresh eggs.",
       "imageUrl": "/images/product-eggs.webp",
       "imageHint": "fresh eggs"
+    },
+    {
+      "id": "aloha-washing-pwd-2kg",
+      "description": "A 2kg bag of Aloha washing powder.",
+      "imageUrl": "/images/Aloha%20Washing%20Pwd%202kg.webp",
+      "imageHint": "aloha washing powder 2kg bag"
+    },
+    {
+      "id": "aloha-washing-pwd-1kg",
+      "description": "A 1kg bag of Aloha washing powder.",
+      "imageUrl": "/images/Aloha%20Washing%20Pwd%201kg.webp",
+      "imageHint": "aloha washing powder 1kg bag"
+    },
+    {
+      "id": "aloha-dishwasher",
+      "description": "A bottle of Aloha dishwasher detergent.",
+      "imageUrl": "/images/Aloha%20Dishwasher.webp",
+      "imageHint": "aloha dishwasher detergent bottle"
+    },
+    {
+      "id": "aloha-washing-pwdr-500g",
+      "description": "A 500g bag of Aloha washing powder.",
+      "imageUrl": "/images/Aloha%20Washing%20Pwdr%20500g.webp",
+      "imageHint": "aloha washing powder 500g bag"
+    },
+    {
+      "id": "arpic-cleaner-750ml",
+      "description": "A 750ml bottle of Arpic toilet cleaner.",
+      "imageUrl": "/images/Arpic%20Cleaner%20750ml.webp",
+      "imageHint": "arpic toilet cleaner 750ml"
+    },
+    {
+      "id": "bigben-bar",
+      "description": "A bar of BigBen laundry soap.",
+      "imageUrl": "/images/BigBen%20bar.webp",
+      "imageHint": "bigben laundry soap bar"
+    },
+    {
+      "id": "boom-paste",
+      "description": "Boom multipurpose cleaning paste.",
+      "imageUrl": "/images/Boom%20Paste.webp",
+      "imageHint": "boom cleaning paste tub"
+    },
+    {
+      "id": "boom-force-cream-750ml",
+      "description": "A 750ml bottle of Boom Force cream cleaner.",
+      "imageUrl": "/images/Boom%20Force%20Cream%20750ml.webp",
+      "imageHint": "boom force cream cleaner 750ml"
+    },
+    {
+      "id": "boom-150g",
+      "description": "A 150g bar of Boom cleaning soap.",
+      "imageUrl": "/images/Boom%20150g.webp",
+      "imageHint": "boom soap bar 150g"
+    },
+    {
+      "id": "boom-1kg",
+      "description": "A 1kg bag of Boom washing powder.",
+      "imageUrl": "/images/Boom%20-%201KG.webp",
+      "imageHint": "boom washing powder 1kg"
+    },
+    {
+      "id": "boomdish-washer-750ml",
+      "description": "A 750ml bottle of Boom dishwashing liquid.",
+      "imageUrl": "/images/BoomDish%20washer%20750ml.webp",
+      "imageHint": "boom dishwashing liquid 750ml"
+    },
+    {
+      "id": "boom-bleach-750ml",
+      "description": "A 750ml bottle of Boom bleach.",
+      "imageUrl": "/images/Boom%20Bleach%20750ml.webp",
+      "imageHint": "boom bleach 750ml"
+    },
+    {
+      "id": "boom-force-scouring",
+      "description": "Boom Force scouring powder packaging.",
+      "imageUrl": "/images/Boom%20Force%20Scouring.webp",
+      "imageHint": "boom scouring powder"
+    },
+    {
+      "id": "boom-wp-500g",
+      "description": "A 500g bag of Boom washing powder.",
+      "imageUrl": "/images/Boom%20WP%20500g.webp",
+      "imageHint": "boom washing powder 500g"
+    },
+    {
+      "id": "boom-2kg",
+      "description": "A 2kg bag of Boom washing powder.",
+      "imageUrl": "/images/Boom%202kg.webp",
+      "imageHint": "boom washing powder 2kg"
+    },
+    {
+      "id": "cobra-350ml",
+      "description": "A 350ml bottle of Cobra floor polish.",
+      "imageUrl": "/images/Cobra%20350ml.webp",
+      "imageHint": "cobra floor polish 350ml"
+    },
+    {
+      "id": "comfort-1l",
+      "description": "A 1L bottle of Comfort fabric softener.",
+      "imageUrl": "/images/Comfort%201L.webp",
+      "imageHint": "comfort fabric softener 1l"
+    },
+    {
+      "id": "dishwasher-seawave",
+      "description": "A bottle of Seawave dishwasher liquid.",
+      "imageUrl": "/images/Dishwasher%20Seawave.webp",
+      "imageHint": "seawave dishwasher liquid"
+    },
+    {
+      "id": "dishwasher-seawave-2l",
+      "description": "A 2L bottle of Seawave dishwasher liquid.",
+      "imageUrl": "/images/DishWasher%20Seawave%202L.webp",
+      "imageHint": "seawave dishwasher liquid 2l"
+    },
+    {
+      "id": "domestos-local",
+      "description": "A bottle of locally branded Domestos bleach.",
+      "imageUrl": "/images/Domestos%20local.webp",
+      "imageHint": "domestos local bleach bottle"
+    },
+    {
+      "id": "domestos",
+      "description": "A bottle of Domestos bleach.",
+      "imageUrl": "/images/Domestos.webp",
+      "imageHint": "domestos bleach bottle"
+    },
+    {
+      "id": "gik-750ml",
+      "description": "A 750ml bottle of Gik cleaner.",
+      "imageUrl": "/images/Gik%20750ml.webp",
+      "imageHint": "gik cleaner 750ml"
+    },
+    {
+      "id": "green-bar-perfection",
+      "description": "Green Bar Perfection laundry soap packaging.",
+      "imageUrl": "/images/Green%20Bar%20Perfection.webp",
+      "imageHint": "green bar perfection soap"
+    },
+    {
+      "id": "green-bar",
+      "description": "A bar of Green Bar laundry soap.",
+      "imageUrl": "/images/Green%20Bar.webp",
+      "imageHint": "green bar laundry soap"
+    },
+    {
+      "id": "handy-andy",
+      "description": "A bottle of Handy Andy surface cleaner.",
+      "imageUrl": "/images/Handy%20Andy.webp",
+      "imageHint": "handy andy surface cleaner"
+    },
+    {
+      "id": "harpic",
+      "description": "A bottle of Harpic toilet cleaner.",
+      "imageUrl": "/images/Harpic.webp",
+      "imageHint": "harpic toilet cleaner bottle"
+    },
+    {
+      "id": "jik-750ml",
+      "description": "A 750ml bottle of Jik bleach.",
+      "imageUrl": "/images/Jik%20750ml.webp",
+      "imageHint": "jik bleach 750ml"
+    },
+    {
+      "id": "kiwi-polish-50ml",
+      "description": "A 50ml tin of Kiwi shoe polish.",
+      "imageUrl": "/images/Kiwi%20Polish%2050ml.webp",
+      "imageHint": "kiwi shoe polish 50ml"
+    },
+    {
+      "id": "kiwi-100ml",
+      "description": "A 100ml tin of Kiwi shoe polish.",
+      "imageUrl": "/images/Kiwi%20100ml.webp",
+      "imageHint": "kiwi shoe polish 100ml"
+    },
+    {
+      "id": "knock-dishwasher-750ml",
+      "description": "A 750ml bottle of Knock dishwashing liquid.",
+      "imageUrl": "/images/Knock%20Dishwasher%20750ml.webp",
+      "imageHint": "knock dishwashing liquid 750ml"
+    },
+    {
+      "id": "knock-out-satchet",
+      "description": "A satchet of Knock Out insecticide.",
+      "imageUrl": "/images/Knock%20out%20Satchet.webp",
+      "imageHint": "knock out insecticide satchet"
+    },
+    {
+      "id": "knockout-all-purpose-cleaner-500ml",
+      "description": "A 500ml bottle of Knockout all purpose cleaner.",
+      "imageUrl": "/images/Knockout%20All%20Purpose%20Cleaner%20500ml.webp",
+      "imageHint": "knockout all purpose cleaner 500ml"
+    },
+    {
+      "id": "knockout-bleach",
+      "description": "A bottle of Knockout bleach.",
+      "imageUrl": "/images/Knockout%20Bleach.webp",
+      "imageHint": "knockout bleach bottle"
+    },
+    {
+      "id": "knockout-can",
+      "description": "A Knockout insecticide aerosol can.",
+      "imageUrl": "/images/Knockout%20Can.webp",
+      "imageHint": "knockout insecticide can"
+    },
+    {
+      "id": "knockout-dishwasher-2l",
+      "description": "A 2L bottle of Knockout dishwasher liquid.",
+      "imageUrl": "/images/Knockout%20Dishwasher%202L.webp",
+      "imageHint": "knockout dishwashing liquid 2l"
+    },
+    {
+      "id": "maq-1kg",
+      "description": "A 1kg bag of Maq washing powder.",
+      "imageUrl": "/images/Maq%201kg.webp",
+      "imageHint": "maq washing powder 1kg"
+    },
+    {
+      "id": "maq-2kg",
+      "description": "A 2kg bag of Maq washing powder.",
+      "imageUrl": "/images/Maq%202kg.webp",
+      "imageHint": "maq washing powder 2kg"
+    },
+    {
+      "id": "nugget-100ml",
+      "description": "A 100ml bottle of Nugget liquid shoe polish.",
+      "imageUrl": "/images/Nugget%20-%20100ml.webp",
+      "imageHint": "nugget liquid shoe polish 100ml"
+    },
+    {
+      "id": "omo-powder-2kg",
+      "description": "A 2kg bag of Omo washing powder.",
+      "imageUrl": "/images/Omo%20Powder%202kg.webp",
+      "imageHint": "omo washing powder 2kg"
+    },
+    {
+      "id": "pinegel-500ml",
+      "description": "A 500ml tub of Pinegel cleaner.",
+      "imageUrl": "/images/Pinegel%20500ml.webp",
+      "imageHint": "pinegel cleaner 500ml"
+    },
+    {
+      "id": "pinegel-1l",
+      "description": "A 1L tub of Pinegel cleaner.",
+      "imageUrl": "/images/Pinegel%201L.webp",
+      "imageHint": "pinegel cleaner 1l"
+    },
+    {
+      "id": "star-soft-2litre",
+      "description": "A 2 litre bottle of Star Soft fabric softener.",
+      "imageUrl": "/images/Star%20Soft%20-%202litre.webp",
+      "imageHint": "star soft fabric softener 2l"
+    },
+    {
+      "id": "starsoft-refill-mix",
+      "description": "A StarSoft refill mix pouch.",
+      "imageUrl": "/images/StarSoft%20Refill%20mix.webp",
+      "imageHint": "starsoft refill pouch"
+    },
+    {
+      "id": "sunlight-liquid",
+      "description": "A bottle of Sunlight dishwashing liquid.",
+      "imageUrl": "/images/Sunlight%20Liquid.webp",
+      "imageHint": "sunlight dishwashing liquid"
+    },
+    {
+      "id": "sunlight-1kg",
+      "description": "A 1kg bag of Sunlight washing powder.",
+      "imageUrl": "/images/Sunlight%201kg.webp",
+      "imageHint": "sunlight washing powder 1kg"
+    },
+    {
+      "id": "sunlight-pwd-2kg",
+      "description": "A 2kg bag of Sunlight washing powder.",
+      "imageUrl": "/images/SunLight%20Pwd%202kg.webp",
+      "imageHint": "sunlight washing powder 2kg"
+    },
+    {
+      "id": "vim-can",
+      "description": "A Vim scouring powder can.",
+      "imageUrl": "/images/Vim%20Can.webp",
+      "imageHint": "vim scouring powder can"
+    },
+    {
+      "id": "xtra-vim",
+      "description": "A tub of Xtra Vim scouring powder.",
+      "imageUrl": "/images/Xtra%20Vim.webp",
+      "imageHint": "xtra vim scouring powder"
+    },
+    {
+      "id": "xtra-washing-powder",
+      "description": "A bag of XTRA washing powder.",
+      "imageUrl": "/images/XTRA%20Washing%20Powder.webp",
+      "imageHint": "xtra washing powder bag"
     }
   ]
 }
