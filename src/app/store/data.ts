@@ -56,18 +56,18 @@ const onlinePrice = (code: string, fallback = 0): number =>
 // ⬇️ ADD THIS ENTIRE BLOCK ⬇️
 // This array defines the images that your other components need.
 export const PlaceHolderImages = [
-  { id: "hero-produce", src: "/images/hero-produce.jpg" },
-  { id: "gallery-2", src: "/images/gallery-2.jpg" },
-  { id: "gallery-4", src: "/images/gallery-4.jpg" },
-  { id: "product-apples", src: "/images/product-apples.jpg" },
-  { id: "product-carrots", src: "/images/product-carrots.jpg" },
-  { id: "product-broccoli", src: "/images/product-broccoli.jpg" },
-  { id: "product-steak", src: "/images/product-steak.jpg" },
-  { id: "product-sausages", src: "/images/product-sausages.jpg" },
-  { id: "product-chicken", src: "/images/product-chicken.jpg" },
-  { id: "product-bread", src: "/images/product-bread.jpg" },
-  { id: "product-spices", src: "/images/product-spices.jpg" },
-  { id: "product-eggs", src: "/images/product-eggs.jpg" },
+  { id: "hero-produce", src: "/images/hero-produce.webp" },
+  { id: "gallery-2", src: "/images/gallery-2.webp" },
+  { id: "gallery-4", src: "/images/gallery-4.webp" },
+  { id: "product-apples", src: "/images/product-apples.webp" },
+  { id: "product-carrots", src: "/images/product-carrots.webp" },
+  { id: "product-broccoli", src: "/images/product-broccoli.webp" },
+  { id: "product-steak", src: "/images/product-steak.webp" },
+  { id: "product-sausages", src: "/images/product-sausages.webp" },
+  { id: "product-chicken", src: "/images/product-chicken.webp" },
+  { id: "product-bread", src: "/images/product-bread.webp" },
+  { id: "product-spices", src: "/images/product-spices.webp" },
+  { id: "product-eggs", src: "/images/product-eggs.webp" },
 ];
 // ⬆️ END OF BLOCK TO ADD ⬆️
 
@@ -1418,7 +1418,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "aloha-washing-pwd-2kg",
     onSpecial: false,
   },
   {
@@ -1428,7 +1428,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "aloha-washing-pwd-1kg",
     onSpecial: false,
   },
   {
@@ -1438,7 +1438,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "aloha-dishwasher",
     onSpecial: false,
   },
   {
@@ -1448,7 +1448,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "aloha-washing-pwdr-500g",
     onSpecial: false,
   },
   {
@@ -1458,7 +1458,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "arpic-cleaner-750ml",
     onSpecial: false,
   },
   {
@@ -1468,7 +1468,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "bigben-bar",
     onSpecial: false,
   },
   {
@@ -1478,7 +1478,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "boom-paste",
     onSpecial: false,
   },
   {
@@ -1488,7 +1488,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "boom-force-cream-750ml",
     onSpecial: false,
   },
   {
@@ -1498,7 +1498,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "boom-150g",
     onSpecial: false,
   },
   {
@@ -1508,7 +1508,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "boom-1kg",
     onSpecial: false,
   },
   {
@@ -1518,7 +1518,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "boomdish-washer-750ml",
     onSpecial: false,
   },
   {
@@ -1528,7 +1528,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "boom-bleach-750ml",
     onSpecial: false,
   },
   {
@@ -1538,7 +1538,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "boom-force-scouring",
     onSpecial: false,
   },
   {
@@ -1548,7 +1548,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "boom-wp-500g",
     onSpecial: false,
   },
   {
@@ -1558,7 +1558,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "cobra-350ml",
     onSpecial: false,
   },
   {
@@ -1568,7 +1568,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "comfort-1l",
     onSpecial: false,
   },
   {
@@ -1578,7 +1578,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "dishwasher-seawave",
     onSpecial: false,
   },
   {
@@ -1588,7 +1588,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "domestos-local",
     onSpecial: false,
   },
   {
@@ -1598,7 +1598,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "domestos",
     onSpecial: false,
   },
   {
@@ -1608,7 +1608,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "gik-750ml",
     onSpecial: false,
   },
   {
@@ -1618,7 +1618,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "green-bar-perfection",
     onSpecial: false,
   },
   {
@@ -1628,7 +1628,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "green-bar",
     onSpecial: false,
   },
   {
@@ -1638,7 +1638,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "handy-andy",
     onSpecial: false,
   },
   {
@@ -1648,7 +1648,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "harpic",
     onSpecial: false,
   },
   {
@@ -1658,7 +1658,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "jik-750ml",
     onSpecial: false,
   },
   {
@@ -1668,7 +1668,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "kiwi-polish-50ml",
     onSpecial: false,
   },
   {
@@ -1678,7 +1678,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "knock-dishwasher-750ml",
     onSpecial: false,
   },
   {
@@ -1688,7 +1688,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "knockout-can",
     onSpecial: false,
   },
   {
@@ -1698,7 +1698,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "knockout-all-purpose-cleaner-500ml",
     onSpecial: false,
   },
   {
@@ -1708,7 +1708,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "knock-out-satchet",
     onSpecial: false,
   },
   {
@@ -1718,7 +1718,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "knockout-dishwasher-2l",
     onSpecial: false,
   },
   {
@@ -1728,7 +1728,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "knockout-bleach",
     onSpecial: false,
   },
   {
@@ -1738,7 +1738,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "kiwi-100ml",
     onSpecial: false,
   },
   {
@@ -1748,7 +1748,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "maq-1kg",
     onSpecial: false,
   },
   {
@@ -1758,7 +1758,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "boom-2kg",
     onSpecial: false,
   },
   {
@@ -1768,7 +1768,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "maq-2kg",
     onSpecial: false,
   },
   {
@@ -1778,7 +1778,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "nugget-100ml",
     onSpecial: false,
   },
   {
@@ -1788,7 +1788,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "omo-powder-2kg",
     onSpecial: false,
   },
   {
@@ -1798,7 +1798,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "pinegel-500ml",
     onSpecial: false,
   },
   {
@@ -1808,7 +1808,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "pinegel-1l",
     onSpecial: false,
   },
   {
@@ -1818,7 +1818,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "dishwasher-seawave-2l",
     onSpecial: false,
   },
   {
@@ -1828,7 +1828,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "sunlight-liquid",
     onSpecial: false,
   },
   {
@@ -1838,7 +1838,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "star-soft-2litre",
     onSpecial: false,
   },
   {
@@ -1848,7 +1848,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "starsoft-refill-mix",
     onSpecial: false,
   },
   {
@@ -1858,7 +1858,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "sunlight-1kg",
     onSpecial: false,
   },
   {
@@ -1868,7 +1868,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "sunlight-pwd-2kg",
     onSpecial: false,
   },
   {
@@ -1878,7 +1878,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "xtra-vim",
     onSpecial: false,
   },
   {
@@ -1888,7 +1888,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "vim-can",
     onSpecial: false,
   },
   {
@@ -1898,7 +1898,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cleaning Products",
     subcategory: "Cleaning Products",
-    image: "hero-5",
+    image: "xtra-washing-powder",
     onSpecial: false,
   },
   {
