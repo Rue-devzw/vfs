@@ -6,8 +6,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter, SheetTrigger
 import { useCart, CartItem } from './cart-context';
 import { ShoppingBag, Trash2, Plus, Minus } from 'lucide-react';
 import Image from 'next/image';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Separator } from '@/components/ui/separator';
+import { findProductImagePlaceholder } from '@/lib/placeholder-images';
 import { CheckoutDialog } from './checkout-dialog';
 
 export function ShoppingCart() {
@@ -81,7 +80,7 @@ export function ShoppingCart() {
 }
 
 function CartLineItem({ item, onUpdateQuantity }: { item: CartItem, onUpdateQuantity: (id: number, q: number) => void }) {
-  const image = PlaceHolderImages.find(p => p.id === item.image) || PlaceHolderImages.find(p => p.id === 'product-apples');
+  const image = findProductImagePlaceholder(item.image, item.name);
   return (
     <div className="flex items-center gap-4 py-4">
       {image && <Image src={image.imageUrl} alt={item.name} width={64} height={64} className="rounded-md object-cover" />}

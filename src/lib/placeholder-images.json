@@ -1,508 +1,1000 @@
 {
   "placeholderImages": [
     {
-      "id": "hero-1",
-      "description": "Warm-toned hero background imagery for the Valley Farm Secrets homepage.",
-      "imageUrl": "/images/hero-1.webp",
-      "imageHint": "homepage hero background warm"
-    },
-    {
-      "id": "hero-2",
-      "description": "Rustic hero background with earthy textures for the Valley Farm Secrets hero carousel.",
-      "imageUrl": "/images/hero-2.webp",
-      "imageHint": "hero carousel rustic textures"
-    },
-    {
-      "id": "hero-3",
-      "description": "Neutral-toned hero background used within the Valley Farm Secrets hero slideshow.",
-      "imageUrl": "/images/hero-3.webp",
-      "imageHint": "hero slideshow neutral tones"
-    },
-    {
-      "id": "hero-4",
-      "description": "Green-focused hero background supporting the Valley Farm Secrets landing page.",
-      "imageUrl": "/images/hero-4.webp",
-      "imageHint": "hero background green"
-    },
-    {
-      "id": "hero-5",
-      "description": "Earthy retail scene captured for the Valley Farm Secrets hero rotation.",
-      "imageUrl": "/images/hero-5.webp",
-      "imageHint": "hero rotation earthy retail"
-    },
-    {
-      "id": "hero-6",
-      "description": "Light-toned marketplace background used in the hero banner slideshow.",
-      "imageUrl": "/images/hero-6.webp",
-      "imageHint": "hero banner light marketplace"
-    },
-    {
-      "id": "hero-7",
-      "description": "Bright market aisle scene for the Valley Farm Secrets hero banner.",
-      "imageUrl": "/images/hero-7.webp",
-      "imageHint": "hero banner market aisle"
-    },
-    {
-      "id": "hero-8",
-      "description": "Sunlit farm-to-table background for the Valley Farm Secrets hero imagery.",
-      "imageUrl": "/images/hero-8.webp",
-      "imageHint": "hero imagery sunlit farm"
-    },
-    {
-      "id": "hero-produce",
-      "description": "A vibrant assortment of fresh fruits and vegetables.",
-      "imageUrl": "/images/hero-produce.webp",
-      "imageHint": "fresh produce"
-    },
-    {
-      "id": "gallery-1",
-      "description": "Close-up of ripe, red tomatoes on the vine.",
-      "imageUrl": "/images/gallery-1.webp",
-      "imageHint": "tomatoes vine"
-    },
-    {
-      "id": "gallery-2",
-      "description": "A butcher skillfully preparing a cut of meat.",
-      "imageUrl": "/images/gallery-2.webp",
-      "imageHint": "butcher meat"
-    },
-    {
-      "id": "gallery-3",
-      "description": "Rows of green lettuce growing in a field.",
-      "imageUrl": "/images/gallery-3.webp",
-      "imageHint": "lettuce field"
-    },
-    {
-      "id": "gallery-4",
-      "description": "A modern and clean interior of the Valley Farm Secrets store.",
-      "imageUrl": "/images/gallery-4.webp",
-      "imageHint": "farm store"
-    },
-    {
-      "id": "product-apples",
-      "description": "Fresh red apples.",
-      "imageUrl": "/images/product-apples.webp",
-      "imageHint": "red apples"
-    },
-    {
-      "id": "product-baby-and-me-cream",
-      "description": "A jar of Baby & Me cream.",
-      "imageUrl": "/images/product-baby-and-me-cream.webp",
-      "imageHint": "baby care cream jar"
-    },
-    {
-      "id": "product-epimax-cream-400g",
-      "description": "A 400g bottle of Epimax cream.",
-      "imageUrl": "/images/product-epimax-cream-400g.webp",
-      "imageHint": "epimax baby cream bottle"
-    },
-    {
-      "id": "product-carrots",
-      "description": "A bunch of fresh carrots.",
-      "imageUrl": "/images/product-carrots.webp",
-      "imageHint": "fresh carrots"
-    },
-    {
-      "id": "product-broccoli",
-      "description": "A head of broccoli.",
-      "imageUrl": "/images/product-broccoli.webp",
-      "imageHint": "fresh broccoli"
-    },
-    {
-      "id": "product-steak",
-      "description": "A prime cut of steak.",
-      "imageUrl": "/images/product-steak.webp",
-      "imageHint": "raw steak"
-    },
-    {
-      "id": "product-huggies-diapers-pack",
-      "description": "A pack of Huggies diapers.",
-      "imageUrl": "/images/product-huggies-diapers-pack.webp",
-      "imageHint": "huggies diapers pack"
-    },
-    {
-      "id": "product-huggies-wipes",
-      "description": "A pack of Huggies baby wipes.",
-      "imageUrl": "/images/product-huggies-wipes.webp",
-      "imageHint": "huggies baby wipes"
-    },
-    {
-      "id": "product-sausages",
-      "description": "Freshly made sausages.",
-      "imageUrl": "/images/product-sausages.webp",
-      "imageHint": "raw sausages"
-    },
-    {
-      "id": "product-chicken",
-      "description": "Fresh chicken fillets.",
-      "imageUrl": "/images/product-chicken.webp",
-      "imageHint": "chicken fillets"
-    },
-    {
-      "id": "product-johnson-aqueous-350ml",
-      "description": "A 350ml bottle of Johnson's aqueous cream.",
-      "imageUrl": "/images/product-johnson-aqueous-350ml.webp",
-      "imageHint": "johnson aqueous cream bottle"
-    },
-    {
-      "id": "product-johnson-baby-soap-175g",
-      "description": "A 175g bar of Johnson's baby soap.",
-      "imageUrl": "/images/product-johnson-baby-soap-175g.webp",
-      "imageHint": "johnson baby soap bar"
-    },
-    {
-      "id": "product-johnson-jelly-325ml",
-      "description": "A 325ml jar of Johnson's jelly.",
-      "imageUrl": "/images/product-johnson-jelly-325ml.webp",
-      "imageHint": "johnson baby jelly jar"
-    },
-    {
-      "id": "product-bread",
-      "description": "A loaf of artisanal bread.",
-      "imageUrl": "/images/product-bread.webp",
-      "imageHint": "artisanal bread"
-    },
-    {
-      "id": "product-spices",
-      "description": "A selection of exotic spices.",
-      "imageUrl": "/images/product-spices.webp",
-      "imageHint": "exotic spices"
-    },
-    {
-      "id": "product-masters-wipes",
-      "description": "A pack of Masters baby wipes.",
-      "imageUrl": "/images/product-masters-wipes.webp",
-      "imageHint": "masters baby wipes"
-    },
-    {
-      "id": "product-nan-formula",
-      "description": "Nestlé NAN baby formula tins.",
-      "imageUrl": "/images/product-nan-formula.webp",
-      "imageHint": "nan baby formula"
-    },
-    {
-      "id": "product-pampers-masters-pack",
-      "description": "A large pack of Pampers diapers.",
-      "imageUrl": "/images/product-pampers-masters-pack.webp",
-      "imageHint": "pampers diapers large pack"
-    },
-    {
-      "id": "product-pampers-masters-single",
-      "description": "A single pack of Pampers diapers.",
-      "imageUrl": "/images/product-pampers-masters-single.webp",
-      "imageHint": "pampers diapers single pack"
-    },
-    {
-      "id": "product-predo-wipes",
-      "description": "A pack of Predo baby wipes.",
-      "imageUrl": "/images/product-predo-wipes.webp",
-      "imageHint": "predo baby wipes"
-    },
-    {
-      "id": "product-purity-aqueous",
-      "description": "A bottle of Purity aqueous cream.",
-      "imageUrl": "/images/product-purity-aqueous.webp",
-      "imageHint": "purity aqueous cream bottle"
-    },
-    {
-      "id": "product-eggs",
-      "description": "A dozen farm fresh eggs.",
-      "imageUrl": "/images/product-eggs.webp",
-      "imageHint": "fresh eggs"
-    },
-    {
-      "id": "aloha-washing-pwd-2kg",
-      "description": "A 2kg bag of Aloha washing powder.",
-      "imageUrl": "/images/Aloha%20Washing%20Pwd%202kg.webp",
-      "imageHint": "aloha washing powder 2kg bag"
-    },
-    {
-      "id": "aloha-washing-pwd-1kg",
-      "description": "A 1kg bag of Aloha washing powder.",
-      "imageUrl": "/images/Aloha%20Washing%20Pwd%201kg.webp",
-      "imageHint": "aloha washing powder 1kg bag"
+      "id": "addidas-spray",
+      "description": "Image for Addidas Spray",
+      "imageUrl": "/images/Addidas%20Spray.webp",
+      "imageHint": "Addidas Spray"
     },
     {
       "id": "aloha-dishwasher",
-      "description": "A bottle of Aloha dishwasher detergent.",
+      "description": "Image for Aloha Dishwasher",
       "imageUrl": "/images/Aloha%20Dishwasher.webp",
-      "imageHint": "aloha dishwasher detergent bottle"
+      "imageHint": "Aloha Dishwasher"
+    },
+    {
+      "id": "aloha-washing-pwd-1kg",
+      "description": "Image for Aloha Washing Pwd 1kg",
+      "imageUrl": "/images/Aloha%20Washing%20Pwd%201kg.webp",
+      "imageHint": "Aloha Washing Pwd 1kg"
+    },
+    {
+      "id": "aloha-washing-pwd-2kg",
+      "description": "Image for Aloha Washing Pwd 2kg",
+      "imageUrl": "/images/Aloha%20Washing%20Pwd%202kg.webp",
+      "imageHint": "Aloha Washing Pwd 2kg"
     },
     {
       "id": "aloha-washing-pwdr-500g",
-      "description": "A 500g bag of Aloha washing powder.",
+      "description": "Image for Aloha Washing Pwdr 500g",
       "imageUrl": "/images/Aloha%20Washing%20Pwdr%20500g.webp",
-      "imageHint": "aloha washing powder 500g bag"
+      "imageHint": "Aloha Washing Pwdr 500g"
     },
     {
       "id": "arpic-cleaner-750ml",
-      "description": "A 750ml bottle of Arpic toilet cleaner.",
+      "description": "Image for Arpic Cleaner 750ml",
       "imageUrl": "/images/Arpic%20Cleaner%20750ml.webp",
-      "imageHint": "arpic toilet cleaner 750ml"
+      "imageHint": "Arpic Cleaner 750ml"
+    },
+    {
+      "id": "axe-perfume",
+      "description": "Image for Axe Perfume",
+      "imageUrl": "/images/Axe%20Perfume.webp",
+      "imageHint": "Axe Perfume"
+    },
+    {
+      "id": "baby-crez-500ml",
+      "description": "Image for Baby Crez 500ml",
+      "imageUrl": "/images/Baby%20Crez%20500ml.webp",
+      "imageHint": "Baby Crez 500ml"
+    },
+    {
+      "id": "baby-line-500ml",
+      "description": "Image for Baby line 500ml",
+      "imageUrl": "/images/Baby%20line%20500ml.webp",
+      "imageHint": "Baby line 500ml"
+    },
+    {
+      "id": "beverly-hills-perfume",
+      "description": "Image for Beverly Hills Perfume",
+      "imageUrl": "/images/Beverly%20Hills%20Perfume.webp",
+      "imageHint": "Beverly Hills Perfume"
+    },
+    {
+      "id": "beverlyhills-roll-on",
+      "description": "Image for BeverlyHills Roll on",
+      "imageUrl": "/images/BeverlyHills%20Roll%20on.webp",
+      "imageHint": "BeverlyHills Roll on"
     },
     {
       "id": "bigben-bar",
-      "description": "A bar of BigBen laundry soap.",
+      "description": "Image for BigBen bar",
       "imageUrl": "/images/BigBen%20bar.webp",
-      "imageHint": "bigben laundry soap bar"
+      "imageHint": "BigBen bar"
     },
     {
-      "id": "boom-paste",
-      "description": "Boom multipurpose cleaning paste.",
-      "imageUrl": "/images/Boom%20Paste.webp",
-      "imageHint": "boom cleaning paste tub"
+      "id": "black-chick-small-125ml",
+      "description": "Image for Black Chick Small 125ml",
+      "imageUrl": "/images/Black%20Chick%20Small%20125ml.webp",
+      "imageHint": "Black Chick Small 125ml"
     },
     {
-      "id": "boom-force-cream-750ml",
-      "description": "A 750ml bottle of Boom Force cream cleaner.",
-      "imageUrl": "/images/Boom%20Force%20Cream%20750ml.webp",
-      "imageHint": "boom force cream cleaner 750ml"
+      "id": "blackchic-big-250ml",
+      "description": "Image for BlackChic Big 250ml",
+      "imageUrl": "/images/BlackChic%20Big%20250ml.webp",
+      "imageHint": "BlackChic Big 250ml"
     },
     {
-      "id": "boom-150g",
-      "description": "A 150g bar of Boom cleaning soap.",
-      "imageUrl": "/images/Boom%20150g.webp",
-      "imageHint": "boom soap bar 150g"
+      "id": "bodi-doc-tissue-oil",
+      "description": "Image for Bodi doc Tissue Oil",
+      "imageUrl": "/images/Bodi%20doc%20Tissue%20Oil.webp",
+      "imageHint": "Bodi doc Tissue Oil"
+    },
+    {
+      "id": "bodi-doc",
+      "description": "Image for Bodi doc",
+      "imageUrl": "/images/Bodi%20doc.webp",
+      "imageHint": "Bodi doc"
     },
     {
       "id": "boom-1kg",
-      "description": "A 1kg bag of Boom washing powder.",
+      "description": "Image for Boom 1KG",
       "imageUrl": "/images/Boom%20-%201KG.webp",
-      "imageHint": "boom washing powder 1kg"
+      "imageHint": "Boom 1KG"
     },
     {
-      "id": "boomdish-washer-750ml",
-      "description": "A 750ml bottle of Boom dishwashing liquid.",
-      "imageUrl": "/images/BoomDish%20washer%20750ml.webp",
-      "imageHint": "boom dishwashing liquid 750ml"
-    },
-    {
-      "id": "boom-bleach-750ml",
-      "description": "A 750ml bottle of Boom bleach.",
-      "imageUrl": "/images/Boom%20Bleach%20750ml.webp",
-      "imageHint": "boom bleach 750ml"
-    },
-    {
-      "id": "boom-force-scouring",
-      "description": "Boom Force scouring powder packaging.",
-      "imageUrl": "/images/Boom%20Force%20Scouring.webp",
-      "imageHint": "boom scouring powder"
-    },
-    {
-      "id": "boom-wp-500g",
-      "description": "A 500g bag of Boom washing powder.",
-      "imageUrl": "/images/Boom%20WP%20500g.webp",
-      "imageHint": "boom washing powder 500g"
+      "id": "boom-150g",
+      "description": "Image for Boom 150g",
+      "imageUrl": "/images/Boom%20150g.webp",
+      "imageHint": "Boom 150g"
     },
     {
       "id": "boom-2kg",
-      "description": "A 2kg bag of Boom washing powder.",
+      "description": "Image for Boom 2kg",
       "imageUrl": "/images/Boom%202kg.webp",
-      "imageHint": "boom washing powder 2kg"
+      "imageHint": "Boom 2kg"
+    },
+    {
+      "id": "boom-bleach-750ml",
+      "description": "Image for Boom Bleach 750ml",
+      "imageUrl": "/images/Boom%20Bleach%20750ml.webp",
+      "imageHint": "Boom Bleach 750ml"
+    },
+    {
+      "id": "boom-fabric-conditioner-2ltr",
+      "description": "Image for Boom Fabric Conditioner 2ltr",
+      "imageUrl": "/images/Boom%20Fabric%20Conditioner%202ltr.webp",
+      "imageHint": "Boom Fabric Conditioner 2ltr"
+    },
+    {
+      "id": "boom-force-cream-750ml",
+      "description": "Image for Boom Force Cream 750ml",
+      "imageUrl": "/images/Boom%20Force%20Cream%20750ml.webp",
+      "imageHint": "Boom Force Cream 750ml"
+    },
+    {
+      "id": "boom-force-scouring",
+      "description": "Image for Boom Force Scouring",
+      "imageUrl": "/images/Boom%20Force%20Scouring.webp",
+      "imageHint": "Boom Force Scouring"
+    },
+    {
+      "id": "boom-paste",
+      "description": "Image for Boom Paste",
+      "imageUrl": "/images/Boom%20Paste.webp",
+      "imageHint": "Boom Paste"
+    },
+    {
+      "id": "boom-wp-500g",
+      "description": "Image for Boom WP 500g",
+      "imageUrl": "/images/Boom%20WP%20500g.webp",
+      "imageHint": "Boom WP 500g"
+    },
+    {
+      "id": "boomdish-washer-750ml",
+      "description": "Image for BoomDish washer 750ml",
+      "imageUrl": "/images/BoomDish%20washer%20750ml.webp",
+      "imageHint": "BoomDish washer 750ml"
+    },
+    {
+      "id": "clere-beautiful-cream-400ml",
+      "description": "Image for Clere Beautiful Cream 400ml",
+      "imageUrl": "/images/Clere%20Beautiful%20Cream%20400ml.webp",
+      "imageHint": "Clere Beautiful Cream 400ml"
+    },
+    {
+      "id": "clere-for-men-450ml",
+      "description": "Image for Clere For Men 450ml",
+      "imageUrl": "/images/Clere%20For%20Men%20450ml.webp",
+      "imageHint": "Clere For Men 450ml"
+    },
+    {
+      "id": "clere-glycerine-100ml",
+      "description": "Image for Clere Glycerine 100ml",
+      "imageUrl": "/images/Clere%20Glycerine%20100ml.webp",
+      "imageHint": "Clere Glycerine 100ml"
+    },
+    {
+      "id": "clere-glyco-glycerine-100ml",
+      "description": "Image for Clere Glyco Glycerine 100ml",
+      "imageUrl": "/images/Clere%20Glyco%20Glycerine%20100ml.webp",
+      "imageHint": "Clere Glyco Glycerine 100ml"
+    },
+    {
+      "id": "clere-ladies-cream",
+      "description": "Image for Clere Ladies Cream",
+      "imageUrl": "/images/Clere%20Ladies%20Cream.webp",
+      "imageHint": "Clere Ladies Cream"
+    },
+    {
+      "id": "clere-men-lotion-400ml",
+      "description": "Image for Clere Men lotion 400ml",
+      "imageUrl": "/images/Clere%20Men%20lotion%20400ml.webp",
+      "imageHint": "Clere Men lotion 400ml"
     },
     {
       "id": "cobra-350ml",
-      "description": "A 350ml bottle of Cobra floor polish.",
+      "description": "Image for Cobra 350ml",
       "imageUrl": "/images/Cobra%20350ml.webp",
-      "imageHint": "cobra floor polish 350ml"
+      "imageHint": "Cobra 350ml"
     },
     {
       "id": "comfort-1l",
-      "description": "A 1L bottle of Comfort fabric softener.",
+      "description": "Image for Comfort 1L",
       "imageUrl": "/images/Comfort%201L.webp",
-      "imageHint": "comfort fabric softener 1l"
+      "imageHint": "Comfort 1L"
     },
     {
-      "id": "dishwasher-seawave",
-      "description": "A bottle of Seawave dishwasher liquid.",
-      "imageUrl": "/images/Dishwasher%20Seawave.webp",
-      "imageHint": "seawave dishwasher liquid"
+      "id": "cosmo-foam-bath",
+      "description": "Image for Cosmo Foam Bath",
+      "imageUrl": "/images/Cosmo%20Foam%20Bath.webp",
+      "imageHint": "Cosmo Foam Bath"
+    },
+    {
+      "id": "dark-and-lovely",
+      "description": "Image for Dark& Lovely",
+      "imageUrl": "/images/Dark%26%20Lovely.webp",
+      "imageHint": "Dark& Lovely"
+    },
+    {
+      "id": "dawn-cream",
+      "description": "Image for Dawn Cream",
+      "imageUrl": "/images/Dawn%20Cream.webp",
+      "imageHint": "Dawn Cream"
+    },
+    {
+      "id": "dawn",
+      "description": "Image for Dawn",
+      "imageUrl": "/images/Dawn.webp",
+      "imageHint": "Dawn"
+    },
+    {
+      "id": "dax-3-in-1-375mls",
+      "description": "Image for Dax 3 in 1 375mls",
+      "imageUrl": "/images/Dax%203%20in%201%20375mls.webp",
+      "imageHint": "Dax 3 in 1 375mls"
+    },
+    {
+      "id": "dax-big-3-n-1",
+      "description": "Image for Dax Big 3 n 1",
+      "imageUrl": "/images/Dax%20Big%203%20n%201.webp",
+      "imageHint": "Dax Big 3 n 1"
+    },
+    {
+      "id": "dax-freez-big-250ml",
+      "description": "Image for Dax Freez Big 250ml",
+      "imageUrl": "/images/Dax%20Freez%20Big%20250ml.webp",
+      "imageHint": "Dax Freez Big 250ml"
+    },
+    {
+      "id": "dax-freez-small-100ml",
+      "description": "Image for Dax Freez Small 100ml",
+      "imageUrl": "/images/Dax%20Freez%20Small%20100ml.webp",
+      "imageHint": "Dax Freez Small 100ml"
+    },
+    {
+      "id": "dax-hair-grower-250ml",
+      "description": "Image for Dax Hair Grower 250ml",
+      "imageUrl": "/images/Dax%20Hair%20Grower%20250ml.webp",
+      "imageHint": "Dax Hair Grower 250ml"
     },
     {
       "id": "dishwasher-seawave-2l",
-      "description": "A 2L bottle of Seawave dishwasher liquid.",
+      "description": "Image for DishWasher Seawave 2L",
       "imageUrl": "/images/DishWasher%20Seawave%202L.webp",
-      "imageHint": "seawave dishwasher liquid 2l"
+      "imageHint": "DishWasher Seawave 2L"
+    },
+    {
+      "id": "dishwasher-seawave",
+      "description": "Image for Dishwasher Seawave",
+      "imageUrl": "/images/Dishwasher%20Seawave.webp",
+      "imageHint": "Dishwasher Seawave"
     },
     {
       "id": "domestos-local",
-      "description": "A bottle of locally branded Domestos bleach.",
+      "description": "Image for Domestos local",
       "imageUrl": "/images/Domestos%20local.webp",
-      "imageHint": "domestos local bleach bottle"
+      "imageHint": "Domestos local"
     },
     {
       "id": "domestos",
-      "description": "A bottle of Domestos bleach.",
+      "description": "Image for Domestos",
       "imageUrl": "/images/Domestos.webp",
-      "imageHint": "domestos bleach bottle"
+      "imageHint": "Domestos"
+    },
+    {
+      "id": "dove-lotion",
+      "description": "Image for Dove Lotion",
+      "imageUrl": "/images/Dove%20Lotion.webp",
+      "imageHint": "Dove Lotion"
+    },
+    {
+      "id": "easywaves-pack",
+      "description": "Image for EasyWaves Pack",
+      "imageUrl": "/images/EasyWaves%20Pack.webp",
+      "imageHint": "EasyWaves Pack"
+    },
+    {
+      "id": "english-blazer",
+      "description": "Image for English Blazer",
+      "imageUrl": "/images/English%20Blazer.webp",
+      "imageHint": "English Blazer"
+    },
+    {
+      "id": "exclamation-perfume",
+      "description": "Image for Exclamation Perfume",
+      "imageUrl": "/images/Exclamation%20Perfume.webp",
+      "imageHint": "Exclamation Perfume"
+    },
+    {
+      "id": "gallery-1",
+      "description": "Image for gallery 1",
+      "imageUrl": "/images/gallery-1.webp",
+      "imageHint": "gallery 1"
+    },
+    {
+      "id": "gallery-2",
+      "description": "Image for gallery 2",
+      "imageUrl": "/images/gallery-2.webp",
+      "imageHint": "gallery 2"
+    },
+    {
+      "id": "gallery-3",
+      "description": "Image for gallery 3",
+      "imageUrl": "/images/gallery-3.webp",
+      "imageHint": "gallery 3"
+    },
+    {
+      "id": "gallery-4",
+      "description": "Image for gallery 4",
+      "imageUrl": "/images/gallery-4.webp",
+      "imageHint": "gallery 4"
+    },
+    {
+      "id": "gentel-magic-lotion",
+      "description": "Image for Gentel Magic lotion",
+      "imageUrl": "/images/Gentel%20Magic%20lotion.webp",
+      "imageHint": "Gentel Magic lotion"
+    },
+    {
+      "id": "gentel-magic-serum",
+      "description": "Image for Gentel Magic Serum",
+      "imageUrl": "/images/Gentel%20Magic%20Serum.webp",
+      "imageHint": "Gentel Magic Serum"
+    },
+    {
+      "id": "gentel-magic-soap",
+      "description": "Image for Gentel Magic Soap",
+      "imageUrl": "/images/Gentel%20Magic%20Soap.webp",
+      "imageHint": "Gentel Magic Soap"
+    },
+    {
+      "id": "gentle-magic-cream",
+      "description": "Image for Gentle Magic Cream",
+      "imageUrl": "/images/Gentle%20Magic%20Cream.webp",
+      "imageHint": "Gentle Magic Cream"
+    },
+    {
+      "id": "gentle-magic-oil-50ml",
+      "description": "Image for Gentle Magic Oil 50ml",
+      "imageUrl": "/images/Gentle%20Magic%20Oil%2050ml.webp",
+      "imageHint": "Gentle Magic Oil 50ml"
     },
     {
       "id": "gik-750ml",
-      "description": "A 750ml bottle of Gik cleaner.",
+      "description": "Image for Gik 750ml",
       "imageUrl": "/images/Gik%20750ml.webp",
-      "imageHint": "gik cleaner 750ml"
+      "imageHint": "Gik 750ml"
     },
     {
       "id": "green-bar-perfection",
-      "description": "Green Bar Perfection laundry soap packaging.",
+      "description": "Image for Green Bar Perfection",
       "imageUrl": "/images/Green%20Bar%20Perfection.webp",
-      "imageHint": "green bar perfection soap"
+      "imageHint": "Green Bar Perfection"
     },
     {
       "id": "green-bar",
-      "description": "A bar of Green Bar laundry soap.",
+      "description": "Image for Green Bar",
       "imageUrl": "/images/Green%20Bar.webp",
-      "imageHint": "green bar laundry soap"
+      "imageHint": "Green Bar"
+    },
+    {
+      "id": "hair-remover-cosmo-40g",
+      "description": "Image for Hair Remover Cosmo 40g",
+      "imageUrl": "/images/Hair%20Remover%20Cosmo%2040g.webp",
+      "imageHint": "Hair Remover Cosmo 40g"
     },
     {
       "id": "handy-andy",
-      "description": "A bottle of Handy Andy surface cleaner.",
+      "description": "Image for Handy Andy",
       "imageUrl": "/images/Handy%20Andy.webp",
-      "imageHint": "handy andy surface cleaner"
+      "imageHint": "Handy Andy"
     },
     {
       "id": "harpic",
-      "description": "A bottle of Harpic toilet cleaner.",
+      "description": "Image for Harpic",
       "imageUrl": "/images/Harpic.webp",
-      "imageHint": "harpic toilet cleaner bottle"
+      "imageHint": "Harpic"
+    },
+    {
+      "id": "hero-1",
+      "description": "Image for hero 1",
+      "imageUrl": "/images/hero-1.webp",
+      "imageHint": "hero 1"
+    },
+    {
+      "id": "hero-2",
+      "description": "Image for hero 2",
+      "imageUrl": "/images/hero-2.webp",
+      "imageHint": "hero 2"
+    },
+    {
+      "id": "hero-3",
+      "description": "Image for hero 3",
+      "imageUrl": "/images/hero-3.webp",
+      "imageHint": "hero 3"
+    },
+    {
+      "id": "hero-4",
+      "description": "Image for hero 4",
+      "imageUrl": "/images/hero-4.webp",
+      "imageHint": "hero 4"
+    },
+    {
+      "id": "hero-5",
+      "description": "Image for hero 5",
+      "imageUrl": "/images/hero-5.webp",
+      "imageHint": "hero 5"
+    },
+    {
+      "id": "hero-6",
+      "description": "Image for hero 6",
+      "imageUrl": "/images/hero-6.webp",
+      "imageHint": "hero 6"
+    },
+    {
+      "id": "hero-7",
+      "description": "Image for hero 7",
+      "imageUrl": "/images/hero-7.webp",
+      "imageHint": "hero 7"
+    },
+    {
+      "id": "hero-8",
+      "description": "Image for hero 8",
+      "imageUrl": "/images/hero-8.webp",
+      "imageHint": "hero 8"
+    },
+    {
+      "id": "hero-produce",
+      "description": "Image for hero produce",
+      "imageUrl": "/images/hero-produce.webp",
+      "imageHint": "hero produce"
+    },
+    {
+      "id": "hero",
+      "description": "Image for Hero",
+      "imageUrl": "/images/Hero.webp",
+      "imageHint": "Hero"
+    },
+    {
+      "id": "hoit-toity-90mls",
+      "description": "Image for Hoit Toity 90mls",
+      "imageUrl": "/images/Hoit%20Toity%2090mls.webp",
+      "imageHint": "Hoit Toity 90mls"
+    },
+    {
+      "id": "hoity-toity-lotion",
+      "description": "Image for Hoity Toity Lotion",
+      "imageUrl": "/images/Hoity%20Toity%20Lotion.webp",
+      "imageHint": "Hoity Toity Lotion"
+    },
+    {
+      "id": "igrams-roibos-450ml",
+      "description": "Image for Igrams Roibos 450ml",
+      "imageUrl": "/images/Igrams%20Roibos%20450ml.webp",
+      "imageHint": "Igrams Roibos 450ml"
+    },
+    {
+      "id": "inecto-super-black75g",
+      "description": "Image for Inecto Super Black75g",
+      "imageUrl": "/images/Inecto%20Super%20Black75g.webp",
+      "imageHint": "Inecto Super Black75g"
+    },
+    {
+      "id": "ingrams-aloe-450ml",
+      "description": "Image for Ingrams Aloe 450ml",
+      "imageUrl": "/images/Ingrams%20Aloe%20450ml.webp",
+      "imageHint": "Ingrams Aloe 450ml"
+    },
+    {
+      "id": "ingrams-herbal",
+      "description": "Image for Ingrams Herbal",
+      "imageUrl": "/images/Ingrams%20Herbal.webp",
+      "imageHint": "Ingrams Herbal"
+    },
+    {
+      "id": "ingrams-men-450ml",
+      "description": "Image for Ingrams men 450ml",
+      "imageUrl": "/images/Ingrams%20men%20450ml.webp",
+      "imageHint": "Ingrams men 450ml"
+    },
+    {
+      "id": "ingrams-moisture-plus-450ml",
+      "description": "Image for Ingrams Moisture Plus 450ml",
+      "imageUrl": "/images/Ingrams%20Moisture%20Plus%20450ml.webp",
+      "imageHint": "Ingrams Moisture Plus 450ml"
+    },
+    {
+      "id": "ingrams-original-450mls",
+      "description": "Image for Ingrams Original 450mls",
+      "imageUrl": "/images/Ingrams%20Original%20450mls.webp",
+      "imageHint": "Ingrams Original 450mls"
+    },
+    {
+      "id": "ingrams-senstive-450ml",
+      "description": "Image for Ingrams Senstive 450ml",
+      "imageUrl": "/images/Ingrams%20Senstive%20450ml.webp",
+      "imageHint": "Ingrams Senstive 450ml"
+    },
+    {
+      "id": "ingrams-tissue-oi-l450ml",
+      "description": "Image for Ingrams tissue oi l450ml",
+      "imageUrl": "/images/Ingrams%20tissue%20oi%20l450ml.webp",
+      "imageHint": "Ingrams tissue oi l450ml"
+    },
+    {
+      "id": "iso-plus-hair-spry-240ml",
+      "description": "Image for Iso Plus Hair Spry 240ml",
+      "imageUrl": "/images/Iso%20Plus%20Hair%20Spry%20240ml.webp",
+      "imageHint": "Iso Plus Hair Spry 240ml"
+    },
+    {
+      "id": "isoplus-edge-control",
+      "description": "Image for Isoplus Edge Control",
+      "imageUrl": "/images/Isoplus%20Edge%20Control.webp",
+      "imageHint": "Isoplus Edge Control"
     },
     {
       "id": "jik-750ml",
-      "description": "A 750ml bottle of Jik bleach.",
+      "description": "Image for Jik 750ml",
       "imageUrl": "/images/Jik%20750ml.webp",
-      "imageHint": "jik bleach 750ml"
-    },
-    {
-      "id": "kiwi-polish-50ml",
-      "description": "A 50ml tin of Kiwi shoe polish.",
-      "imageUrl": "/images/Kiwi%20Polish%2050ml.webp",
-      "imageHint": "kiwi shoe polish 50ml"
+      "imageHint": "Jik 750ml"
     },
     {
       "id": "kiwi-100ml",
-      "description": "A 100ml tin of Kiwi shoe polish.",
+      "description": "Image for Kiwi 100ml",
       "imageUrl": "/images/Kiwi%20100ml.webp",
-      "imageHint": "kiwi shoe polish 100ml"
+      "imageHint": "Kiwi 100ml"
+    },
+    {
+      "id": "kiwi-polish-50ml",
+      "description": "Image for Kiwi Polish 50ml",
+      "imageUrl": "/images/Kiwi%20Polish%2050ml.webp",
+      "imageHint": "Kiwi Polish 50ml"
     },
     {
       "id": "knock-dishwasher-750ml",
-      "description": "A 750ml bottle of Knock dishwashing liquid.",
+      "description": "Image for Knock Dishwasher 750ml",
       "imageUrl": "/images/Knock%20Dishwasher%20750ml.webp",
-      "imageHint": "knock dishwashing liquid 750ml"
+      "imageHint": "Knock Dishwasher 750ml"
     },
     {
       "id": "knock-out-satchet",
-      "description": "A satchet of Knock Out insecticide.",
+      "description": "Image for Knock out Satchet",
       "imageUrl": "/images/Knock%20out%20Satchet.webp",
-      "imageHint": "knock out insecticide satchet"
+      "imageHint": "Knock out Satchet"
     },
     {
       "id": "knockout-all-purpose-cleaner-500ml",
-      "description": "A 500ml bottle of Knockout all purpose cleaner.",
+      "description": "Image for Knockout All Purpose Cleaner 500ml",
       "imageUrl": "/images/Knockout%20All%20Purpose%20Cleaner%20500ml.webp",
-      "imageHint": "knockout all purpose cleaner 500ml"
+      "imageHint": "Knockout All Purpose Cleaner 500ml"
     },
     {
       "id": "knockout-bleach",
-      "description": "A bottle of Knockout bleach.",
+      "description": "Image for Knockout Bleach",
       "imageUrl": "/images/Knockout%20Bleach.webp",
-      "imageHint": "knockout bleach bottle"
+      "imageHint": "Knockout Bleach"
     },
     {
       "id": "knockout-can",
-      "description": "A Knockout insecticide aerosol can.",
+      "description": "Image for Knockout Can",
       "imageUrl": "/images/Knockout%20Can.webp",
-      "imageHint": "knockout insecticide can"
+      "imageHint": "Knockout Can"
     },
     {
       "id": "knockout-dishwasher-2l",
-      "description": "A 2L bottle of Knockout dishwasher liquid.",
+      "description": "Image for Knockout Dishwasher 2L",
       "imageUrl": "/images/Knockout%20Dishwasher%202L.webp",
-      "imageHint": "knockout dishwashing liquid 2l"
+      "imageHint": "Knockout Dishwasher 2L"
+    },
+    {
+      "id": "lace-lotion",
+      "description": "Image for Lace Lotion",
+      "imageUrl": "/images/Lace%20Lotion.webp",
+      "imageHint": "Lace Lotion"
+    },
+    {
+      "id": "logo",
+      "description": "Image for logo",
+      "imageUrl": "/images/logo.webp",
+      "imageHint": "logo"
     },
     {
       "id": "maq-1kg",
-      "description": "A 1kg bag of Maq washing powder.",
+      "description": "Image for Maq 1kg",
       "imageUrl": "/images/Maq%201kg.webp",
-      "imageHint": "maq washing powder 1kg"
+      "imageHint": "Maq 1kg"
     },
     {
       "id": "maq-2kg",
-      "description": "A 2kg bag of Maq washing powder.",
+      "description": "Image for Maq 2kg",
       "imageUrl": "/images/Maq%202kg.webp",
-      "imageHint": "maq washing powder 2kg"
+      "imageHint": "Maq 2kg"
+    },
+    {
+      "id": "mousse",
+      "description": "Image for Mousse",
+      "imageUrl": "/images/Mousse.webp",
+      "imageHint": "Mousse"
+    },
+    {
+      "id": "nivea-cream-lotion-400ml",
+      "description": "Image for Nivea Cream Lotion 400ml",
+      "imageUrl": "/images/Nivea%20Cream-Lotion%20400ml.webp",
+      "imageHint": "Nivea Cream Lotion 400ml"
+    },
+    {
+      "id": "nivea-q10",
+      "description": "Image for Nivea Q10",
+      "imageUrl": "/images/Nivea%20Q10.webp",
+      "imageHint": "Nivea Q10"
+    },
+    {
+      "id": "nivea-radiant-cream-400ml",
+      "description": "Image for Nivea Radiant Cream 400ml",
+      "imageUrl": "/images/Nivea%20Radiant%20Cream%20400ml.webp",
+      "imageHint": "Nivea Radiant Cream 400ml"
+    },
+    {
+      "id": "nivea-spray",
+      "description": "Image for Nivea Spray",
+      "imageUrl": "/images/Nivea%20Spray.webp",
+      "imageHint": "Nivea Spray"
     },
     {
       "id": "nugget-100ml",
-      "description": "A 100ml bottle of Nugget liquid shoe polish.",
+      "description": "Image for Nugget 100ml",
       "imageUrl": "/images/Nugget%20-%20100ml.webp",
-      "imageHint": "nugget liquid shoe polish 100ml"
+      "imageHint": "Nugget 100ml"
+    },
+    {
+      "id": "oh-so-heavenly-2l",
+      "description": "Image for Oh So Heavenly 2L",
+      "imageUrl": "/images/Oh%20So%20Heavenly%20-%202L.webp",
+      "imageHint": "Oh So Heavenly 2L"
+    },
+    {
+      "id": "oh-so-heavenly-cream-450ml",
+      "description": "Image for Oh SO Heavenly Cream 450ml",
+      "imageUrl": "/images/Oh%20SO%20Heavenly%20Cream%20450ml.webp",
+      "imageHint": "Oh SO Heavenly Cream 450ml"
+    },
+    {
+      "id": "oh-so-heavenly-lotion-1l",
+      "description": "Image for Oh So Heavenly Lotion 1L",
+      "imageUrl": "/images/Oh%20So%20Heavenly%20Lotion%201L.webp",
+      "imageHint": "Oh So Heavenly Lotion 1L"
+    },
+    {
+      "id": "oh-so-heavenly-lotion-720ml",
+      "description": "Image for Oh So Heavenly Lotion 720ml",
+      "imageUrl": "/images/Oh%20So%20Heavenly%20Lotion%20720ml.webp",
+      "imageHint": "Oh So Heavenly Lotion 720ml"
+    },
+    {
+      "id": "oh-so-heavenly-q10",
+      "description": "Image for Oh So heavenly Q10",
+      "imageUrl": "/images/Oh%20So%20heavenly%20Q10.webp",
+      "imageHint": "Oh So heavenly Q10"
+    },
+    {
+      "id": "olive-oil-spry-250ml",
+      "description": "Image for Olive Oil Spry 250ml",
+      "imageUrl": "/images/Olive%20Oil%20Spry%20250ml.webp",
+      "imageHint": "Olive Oil Spry 250ml"
     },
     {
       "id": "omo-powder-2kg",
-      "description": "A 2kg bag of Omo washing powder.",
+      "description": "Image for Omo Powder 2kg",
       "imageUrl": "/images/Omo%20Powder%202kg.webp",
-      "imageHint": "omo washing powder 2kg"
-    },
-    {
-      "id": "pinegel-500ml",
-      "description": "A 500ml tub of Pinegel cleaner.",
-      "imageUrl": "/images/Pinegel%20500ml.webp",
-      "imageHint": "pinegel cleaner 500ml"
+      "imageHint": "Omo Powder 2kg"
     },
     {
       "id": "pinegel-1l",
-      "description": "A 1L tub of Pinegel cleaner.",
+      "description": "Image for Pinegel 1L",
       "imageUrl": "/images/Pinegel%201L.webp",
-      "imageHint": "pinegel cleaner 1l"
+      "imageHint": "Pinegel 1L"
+    },
+    {
+      "id": "pinegel-500ml",
+      "description": "Image for Pinegel 500ml",
+      "imageUrl": "/images/Pinegel%20500ml.webp",
+      "imageHint": "Pinegel 500ml"
+    },
+    {
+      "id": "playboy-perfume",
+      "description": "Image for PlayBoy Perfume",
+      "imageUrl": "/images/PlayBoy%20Perfume.webp",
+      "imageHint": "PlayBoy Perfume"
+    },
+    {
+      "id": "playboy-roll-on",
+      "description": "Image for PlayBoy Roll on",
+      "imageUrl": "/images/PlayBoy%20Roll%20on.webp",
+      "imageHint": "PlayBoy Roll on"
+    },
+    {
+      "id": "product-apples",
+      "description": "Image for product apples",
+      "imageUrl": "/images/product-apples.webp",
+      "imageHint": "product apples"
+    },
+    {
+      "id": "product-baby-and-me-cream",
+      "description": "Image for product baby and me cream",
+      "imageUrl": "/images/product-baby-and-me-cream.webp",
+      "imageHint": "product baby and me cream"
+    },
+    {
+      "id": "product-bread",
+      "description": "Image for product bread",
+      "imageUrl": "/images/product-bread.webp",
+      "imageHint": "product bread"
+    },
+    {
+      "id": "product-broccoli",
+      "description": "Image for product broccoli",
+      "imageUrl": "/images/product-broccoli.webp",
+      "imageHint": "product broccoli"
+    },
+    {
+      "id": "product-carrots",
+      "description": "Image for product carrots",
+      "imageUrl": "/images/product-carrots.webp",
+      "imageHint": "product carrots"
+    },
+    {
+      "id": "product-chicken",
+      "description": "Image for product chicken",
+      "imageUrl": "/images/product-chicken.webp",
+      "imageHint": "product chicken"
+    },
+    {
+      "id": "product-eggs",
+      "description": "Image for product eggs",
+      "imageUrl": "/images/product-eggs.webp",
+      "imageHint": "product eggs"
+    },
+    {
+      "id": "product-epimax-cream-400g",
+      "description": "Image for product epimax cream 400g",
+      "imageUrl": "/images/product-epimax-cream-400g.webp",
+      "imageHint": "product epimax cream 400g"
+    },
+    {
+      "id": "product-huggies-diapers-pack",
+      "description": "Image for product huggies diapers pack",
+      "imageUrl": "/images/product-huggies-diapers-pack.webp",
+      "imageHint": "product huggies diapers pack"
+    },
+    {
+      "id": "product-huggies-wipes",
+      "description": "Image for product huggies wipes",
+      "imageUrl": "/images/product-huggies-wipes.webp",
+      "imageHint": "product huggies wipes"
+    },
+    {
+      "id": "product-johnson-aqueous-350ml",
+      "description": "Image for product johnson aqueous 350ml",
+      "imageUrl": "/images/product-johnson-aqueous-350ml.webp",
+      "imageHint": "product johnson aqueous 350ml"
+    },
+    {
+      "id": "product-johnson-baby-soap-175g",
+      "description": "Image for product johnson baby soap 175g",
+      "imageUrl": "/images/product-johnson-baby-soap-175g.webp",
+      "imageHint": "product johnson baby soap 175g"
+    },
+    {
+      "id": "product-johnson-jelly-325ml",
+      "description": "Image for product johnson jelly 325ml",
+      "imageUrl": "/images/product-johnson-jelly-325ml.webp",
+      "imageHint": "product johnson jelly 325ml"
+    },
+    {
+      "id": "product-masters-wipes",
+      "description": "Image for product masters wipes",
+      "imageUrl": "/images/product-masters-wipes.webp",
+      "imageHint": "product masters wipes"
+    },
+    {
+      "id": "product-nan-formula",
+      "description": "Image for product nan formula",
+      "imageUrl": "/images/product-nan-formula.webp",
+      "imageHint": "product nan formula"
+    },
+    {
+      "id": "product-pampers-masters-pack",
+      "description": "Image for product pampers masters pack",
+      "imageUrl": "/images/product-pampers-masters-pack.webp",
+      "imageHint": "product pampers masters pack"
+    },
+    {
+      "id": "product-pampers-masters-single",
+      "description": "Image for product pampers masters single",
+      "imageUrl": "/images/product-pampers-masters-single.webp",
+      "imageHint": "product pampers masters single"
+    },
+    {
+      "id": "product-predo-wipes",
+      "description": "Image for product predo wipes",
+      "imageUrl": "/images/product-predo-wipes.webp",
+      "imageHint": "product predo wipes"
+    },
+    {
+      "id": "product-purity-aqueous",
+      "description": "Image for product purity aqueous",
+      "imageUrl": "/images/product-purity-aqueous.webp",
+      "imageHint": "product purity aqueous"
+    },
+    {
+      "id": "product-sausages",
+      "description": "Image for product sausages",
+      "imageUrl": "/images/product-sausages.webp",
+      "imageHint": "product sausages"
+    },
+    {
+      "id": "product-spices",
+      "description": "Image for product spices",
+      "imageUrl": "/images/product-spices.webp",
+      "imageHint": "product spices"
+    },
+    {
+      "id": "product-steak",
+      "description": "Image for product steak",
+      "imageUrl": "/images/product-steak.webp",
+      "imageHint": "product steak"
+    },
+    {
+      "id": "roll-on-addidas-50ml",
+      "description": "Image for Roll On Addidas 50ml",
+      "imageUrl": "/images/Roll%20On%20Addidas%2050ml.webp",
+      "imageHint": "Roll On Addidas 50ml"
+    },
+    {
+      "id": "roll-on-nivea-50ml",
+      "description": "Image for Roll on Nivea 50ml",
+      "imageUrl": "/images/Roll%20on%20Nivea%20-%2050ml.webp",
+      "imageHint": "Roll on Nivea 50ml"
+    },
+    {
+      "id": "roll-on-power-house-50ml",
+      "description": "Image for Roll On Power House 50ml",
+      "imageUrl": "/images/Roll%20On%20Power%20House%2050ml.webp",
+      "imageHint": "Roll On Power House 50ml"
+    },
+    {
+      "id": "roll-on-shield",
+      "description": "Image for Roll On Shield",
+      "imageUrl": "/images/Roll%20On%20Shield.webp",
+      "imageHint": "Roll On Shield"
+    },
+    {
+      "id": "shower-to-shower-perfume",
+      "description": "Image for Shower to Shower Perfume",
+      "imageUrl": "/images/Shower%20to%20Shower%20Perfume.webp",
+      "imageHint": "Shower to Shower Perfume"
+    },
+    {
+      "id": "shower-to-shower",
+      "description": "Image for Shower To Shower",
+      "imageUrl": "/images/Shower%20To%20Shower.webp",
+      "imageHint": "Shower To Shower"
+    },
+    {
+      "id": "skala-200g",
+      "description": "Image for Skala 200g",
+      "imageUrl": "/images/Skala%20200g.webp",
+      "imageHint": "Skala 200g"
+    },
+    {
+      "id": "skala-hairfood",
+      "description": "Image for Skala hairFood",
+      "imageUrl": "/images/Skala%20hairFood.webp",
+      "imageHint": "Skala hairFood"
     },
     {
       "id": "star-soft-2litre",
-      "description": "A 2 litre bottle of Star Soft fabric softener.",
+      "description": "Image for Star Soft 2litre",
       "imageUrl": "/images/Star%20Soft%20-%202litre.webp",
-      "imageHint": "star soft fabric softener 2l"
+      "imageHint": "Star Soft 2litre"
     },
     {
       "id": "starsoft-refill-mix",
-      "description": "A StarSoft refill mix pouch.",
+      "description": "Image for StarSoft Refill mix",
       "imageUrl": "/images/StarSoft%20Refill%20mix.webp",
-      "imageHint": "starsoft refill pouch"
-    },
-    {
-      "id": "sunlight-liquid",
-      "description": "A bottle of Sunlight dishwashing liquid.",
-      "imageUrl": "/images/Sunlight%20Liquid.webp",
-      "imageHint": "sunlight dishwashing liquid"
+      "imageHint": "StarSoft Refill mix"
     },
     {
       "id": "sunlight-1kg",
-      "description": "A 1kg bag of Sunlight washing powder.",
+      "description": "Image for Sunlight 1kg",
       "imageUrl": "/images/Sunlight%201kg.webp",
-      "imageHint": "sunlight washing powder 1kg"
+      "imageHint": "Sunlight 1kg"
+    },
+    {
+      "id": "sunlight-liquid",
+      "description": "Image for Sunlight Liquid",
+      "imageUrl": "/images/Sunlight%20Liquid.webp",
+      "imageHint": "Sunlight Liquid"
     },
     {
       "id": "sunlight-pwd-2kg",
-      "description": "A 2kg bag of Sunlight washing powder.",
+      "description": "Image for SunLight Pwd 2kg",
       "imageUrl": "/images/SunLight%20Pwd%202kg.webp",
-      "imageHint": "sunlight washing powder 2kg"
+      "imageHint": "SunLight Pwd 2kg"
+    },
+    {
+      "id": "top-society",
+      "description": "Image for Top Society",
+      "imageUrl": "/images/Top%20Society.webp",
+      "imageHint": "Top Society"
+    },
+    {
+      "id": "vaseline-100ml",
+      "description": "Image for Vaseline 100ml",
+      "imageUrl": "/images/Vaseline%20-%20100ml.webp",
+      "imageHint": "Vaseline 100ml"
+    },
+    {
+      "id": "vaseline-250ml",
+      "description": "Image for Vaseline 250ml",
+      "imageUrl": "/images/Vaseline%20250ml.webp",
+      "imageHint": "Vaseline 250ml"
+    },
+    {
+      "id": "vaseline-450ml",
+      "description": "Image for Vaseline 450ml",
+      "imageUrl": "/images/Vaseline%20450ml.webp",
+      "imageHint": "Vaseline 450ml"
+    },
+    {
+      "id": "vaseline-50ml",
+      "description": "Image for Vaseline 50ml",
+      "imageUrl": "/images/Vaseline%2050ml.webp",
+      "imageHint": "Vaseline 50ml"
+    },
+    {
+      "id": "vaseline-cream",
+      "description": "Image for Vaseline Cream",
+      "imageUrl": "/images/Vaseline%20Cream.webp",
+      "imageHint": "Vaseline Cream"
+    },
+    {
+      "id": "vaseline-lips",
+      "description": "Image for Vaseline lips",
+      "imageUrl": "/images/Vaseline%20lips.webp",
+      "imageHint": "Vaseline lips"
+    },
+    {
+      "id": "vaseline-lotion",
+      "description": "Image for Vaseline Lotion",
+      "imageUrl": "/images/Vaseline%20Lotion.webp",
+      "imageHint": "Vaseline Lotion"
+    },
+    {
+      "id": "vestline-garlic-200g",
+      "description": "Image for Vestline Garlic 200g",
+      "imageUrl": "/images/Vestline%20Garlic%20-%20200g.webp",
+      "imageHint": "Vestline Garlic 200g"
     },
     {
       "id": "vim-can",
-      "description": "A Vim scouring powder can.",
+      "description": "Image for Vim Can",
       "imageUrl": "/images/Vim%20Can.webp",
-      "imageHint": "vim scouring powder can"
+      "imageHint": "Vim Can"
     },
     {
       "id": "xtra-vim",
-      "description": "A tub of Xtra Vim scouring powder.",
+      "description": "Image for Xtra Vim",
       "imageUrl": "/images/Xtra%20Vim.webp",
-      "imageHint": "xtra vim scouring powder"
+      "imageHint": "Xtra Vim"
     },
     {
       "id": "xtra-washing-powder",
-      "description": "A bag of XTRA washing powder.",
+      "description": "Image for XTRA Washing Powder",
       "imageUrl": "/images/XTRA%20Washing%20Powder.webp",
-      "imageHint": "xtra washing powder bag"
+      "imageHint": "XTRA Washing Powder"
     }
   ]
 }
