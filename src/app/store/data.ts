@@ -1,4 +1,10 @@
 import { inventoryByCode } from "@/lib/inventory";
+import {
+  PlaceHolderImages as PlaceholderCatalog,
+  DEFAULT_PRODUCT_IMAGE_ID,
+  isGenericImageId,
+  slugifyImageId,
+} from "@/lib/placeholder-images";
 
 export const categories = [
   "Fruit & Veg",
@@ -55,23 +61,6 @@ const onlinePrice = (code: string, fallback = 0): number =>
 
 // ⬇️ ADD THIS ENTIRE BLOCK ⬇️
 // This array defines the images that your other components need.
-export const PlaceHolderImages = [
-  { id: "hero-produce", src: "/images/hero-produce.webp" },
-  { id: "gallery-2", src: "/images/gallery-2.webp" },
-  { id: "gallery-4", src: "/images/gallery-4.webp" },
-  { id: "product-apples", src: "/images/product-apples.webp" },
-  { id: "product-carrots", src: "/images/product-carrots.webp" },
-  { id: "product-broccoli", src: "/images/product-broccoli.webp" },
-  { id: "product-steak", src: "/images/product-steak.webp" },
-  { id: "product-sausages", src: "/images/product-sausages.webp" },
-  { id: "product-chicken", src: "/images/product-chicken.webp" },
-  { id: "product-bread", src: "/images/product-bread.webp" },
-  { id: "product-spices", src: "/images/product-spices.webp" },
-  { id: "product-eggs", src: "/images/product-eggs.webp" },
-];
-// ⬆️ END OF BLOCK TO ADD ⬆️
-
-
 export const products: Product[] = [
   {
     id: 1,
@@ -3022,3 +3011,38 @@ export const products: Product[] = [
     onSpecial: false,
   },
 ];
+
+const FALLBACK_IMAGE_ID = DEFAULT_PRODUCT_IMAGE_ID;
+const IMAGE_OVERRIDES_BY_ID: Record<number, string> = {
+  191: "axe-perfume",
+};
+
+const placeholderIds = new Set(PlaceholderCatalog.map(image => image.id));
+
+const resolveImageId = (product: Product): string => {
+  const explicit = product.image?.trim();
+
+  const override = IMAGE_OVERRIDES_BY_ID[product.id];
+  if (override && placeholderIds.has(override)) {
+    return override;
+  }
+
+  if (explicit && !isGenericImageId(explicit) && placeholderIds.has(explicit)) {
+    return explicit;
+  }
+
+  const slug = slugifyImageId(product.name);
+  if (slug && placeholderIds.has(slug)) {
+    return slug;
+  }
+
+  if (explicit && placeholderIds.has(explicit)) {
+    return explicit;
+  }
+
+  return FALLBACK_IMAGE_ID;
+};
+
+for (const product of products) {
+  product.image = resolveImageId(product);
+}

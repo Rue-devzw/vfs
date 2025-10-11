@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Product } from '@/app/store/data';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { findProductImagePlaceholder } from '@/lib/placeholder-images';
 import { useCart } from './cart-context';
 import { ShoppingCart } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -36,7 +36,7 @@ const formatUnit = (unit: string) => {
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { dispatch } = useCart();
   const { toast } = useToast();
-  const image = PlaceHolderImages.find(p => p.id === product.image) || PlaceHolderImages.find(p => p.id === 'product-apples');
+  const image = findProductImagePlaceholder(product.image, product.name);
 
   const isOutOfStock = product.price <= 0;
 
