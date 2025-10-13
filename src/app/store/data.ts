@@ -1897,7 +1897,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "addidas-spray",
     onSpecial: false,
   },
   {
@@ -1907,7 +1907,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "axe-perfume",
     onSpecial: false,
   },
   {
@@ -1917,7 +1917,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "baby-crez-500ml",
     onSpecial: false,
   },
   {
@@ -1927,7 +1927,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "baby-line-500ml",
     onSpecial: false,
   },
   {
@@ -1937,7 +1937,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "black-chick-small-125ml",
     onSpecial: false,
   },
   {
@@ -1947,7 +1947,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "beverlyhills-roll-on",
     onSpecial: false,
   },
   {
@@ -1957,7 +1957,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "beverly-hills-perfume",
     onSpecial: false,
   },
   {
@@ -1967,7 +1967,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "blackchic-big-250ml",
     onSpecial: false,
   },
   {
@@ -1977,7 +1977,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "bodi-doc",
     onSpecial: false,
   },
   {
@@ -1987,7 +1987,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "bodi-doc-tissue-oil",
     onSpecial: false,
   },
   {
@@ -1997,7 +1997,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "boom-fabric-conditioner-2ltr",
     onSpecial: false,
   },
   {
@@ -2007,7 +2007,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "clere-beautiful-cream-400ml",
     onSpecial: false,
   },
   {
@@ -2017,7 +2017,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "clere-for-men-450ml",
     onSpecial: false,
   },
   {
@@ -2027,7 +2027,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "clere-glycerine-100ml",
     onSpecial: false,
   },
   {
@@ -2037,7 +2037,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "clere-men-lotion-400ml",
     onSpecial: false,
   },
   {
@@ -2047,7 +2047,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "clere-glyco-glycerine-100ml",
     onSpecial: false,
   },
   {
@@ -2057,7 +2057,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "clere-ladies-cream",
     onSpecial: false,
   },
   {
@@ -2067,7 +2067,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "cosmo-foam-bath",
     onSpecial: false,
   },
   {
@@ -2077,7 +2077,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "dark-and-lovely",
     onSpecial: false,
   },
   {
@@ -2087,7 +2087,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "dawn",
     onSpecial: false,
   },
   {
@@ -2097,7 +2097,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "dawn-cream",
     onSpecial: false,
   },
   {
@@ -2107,7 +2107,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "dax-3-in-1-375mls",
     onSpecial: false,
   },
   {
@@ -2117,7 +2117,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "dax-hair-grower-250ml",
     onSpecial: false,
   },
   {
@@ -2137,7 +2137,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "dax-freez-big-250ml",
     onSpecial: false,
   },
   {
@@ -2147,7 +2147,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "dove-lotion",
     onSpecial: false,
   },
   {
@@ -2157,7 +2157,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "dax-freez-small-100ml",
     onSpecial: false,
   },
   {
@@ -2167,7 +2167,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "dax-big-3-n-1",
     onSpecial: false,
   },
   {
@@ -2177,7 +2177,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "english-blazer",
     onSpecial: false,
   },
   {
@@ -2187,7 +2187,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "easywaves-pack",
     onSpecial: false,
   },
   {
@@ -2197,7 +2197,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "exclamation-perfume",
     onSpecial: false,
   },
   {
@@ -2207,7 +2207,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "gentel-magic-lotion",
     onSpecial: false,
   },
   {
@@ -2217,7 +2217,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "gentle-magic-cream",
     onSpecial: false,
   },
   {
@@ -2227,7 +2227,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "gentel-magic-serum",
     onSpecial: false,
   },
   {
@@ -2237,7 +2237,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "gentel-magic-soap",
     onSpecial: false,
   },
   {
@@ -2247,7 +2247,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "gentle-magic-oil-50ml",
     onSpecial: false,
   },
   {
@@ -2257,7 +2257,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "hair-remover-cosmo-40g",
     onSpecial: false,
   },
   {
@@ -2267,7 +2267,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "hoit-toity-90mls",
     onSpecial: false,
   },
   {
@@ -2277,7 +2277,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "hoity-toity-lotion",
     onSpecial: false,
   },
   {
@@ -2287,7 +2287,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "ingrams-herbal",
     onSpecial: false,
   },
   {
@@ -2297,7 +2297,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "ingrams-senstive-450ml",
     onSpecial: false,
   },
   {
@@ -2307,7 +2307,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "ingrams-moisture-plus-450ml",
     onSpecial: false,
   },
   {
@@ -2317,7 +2317,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "ingrams-men-450ml",
     onSpecial: false,
   },
   {
@@ -2327,7 +2327,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "ingrams-aloe-450ml",
     onSpecial: false,
   },
   {
@@ -2337,7 +2337,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "ingrams-tissue-oi-l450ml",
     onSpecial: false,
   },
   {
@@ -2347,7 +2347,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "ingrams-original-450mls",
     onSpecial: false,
   },
   {
@@ -2357,7 +2357,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "igrams-roibos-450ml",
     onSpecial: false,
   },
   {
@@ -2367,7 +2367,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "inecto-super-black75g",
     onSpecial: false,
   },
   {
@@ -2377,7 +2377,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "isoplus-edge-control",
     onSpecial: false,
   },
   {
@@ -2387,7 +2387,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "iso-plus-hair-spry-240ml",
     onSpecial: false,
   },
   {
@@ -2397,7 +2397,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "lace-lotion",
     onSpecial: false,
   },
   {
@@ -2407,7 +2407,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "mousse",
     onSpecial: false,
   },
   {
@@ -2417,7 +2417,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "nivea-cream-lotion-400ml",
     onSpecial: false,
   },
   {
@@ -2427,7 +2427,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "nivea-radiant-cream-400ml",
     onSpecial: false,
   },
   {
@@ -2437,7 +2437,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "nivea-spray",
     onSpecial: false,
   },
   {
@@ -2447,7 +2447,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "nivea-q10",
     onSpecial: false,
   },
   {
@@ -2457,7 +2457,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "oh-so-heavenly-lotion-720ml",
     onSpecial: false,
   },
   {
@@ -2467,7 +2467,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "oh-so-heavenly-2l",
     onSpecial: false,
   },
   {
@@ -2477,7 +2477,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "oh-so-heavenly-lotion-1l",
     onSpecial: false,
   },
   {
@@ -2487,7 +2487,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "oh-so-heavenly-cream-450ml",
     onSpecial: false,
   },
   {
@@ -2497,7 +2497,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "oh-so-heavenly-q10",
     onSpecial: false,
   },
   {
@@ -2507,7 +2507,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "olive-oil-spry-250ml",
     onSpecial: false,
   },
   {
@@ -2517,7 +2517,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "playboy-roll-on",
     onSpecial: false,
   },
   {
@@ -2527,7 +2527,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "playboy-perfume",
     onSpecial: false,
   },
   {
@@ -2537,7 +2537,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "roll-on-shield",
     onSpecial: false,
   },
   {
@@ -2547,7 +2547,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "roll-on-addidas-50ml",
     onSpecial: false,
   },
   {
@@ -2557,7 +2557,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "roll-on-nivea-50ml",
     onSpecial: false,
   },
   {
@@ -2567,7 +2567,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "roll-on-power-house-50ml",
     onSpecial: false,
   },
   {
@@ -2577,7 +2577,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "shower-to-shower",
     onSpecial: false,
   },
   {
@@ -2587,7 +2587,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "shower-to-shower-perfume",
     onSpecial: false,
   },
   {
@@ -2597,7 +2597,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "skala-200g",
     onSpecial: false,
   },
   {
@@ -2607,7 +2607,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "skala-hairfood",
     onSpecial: false,
   },
   {
@@ -2617,7 +2617,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "top-society",
     onSpecial: false,
   },
   {
@@ -2627,7 +2627,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "vaseline-450ml",
     onSpecial: false,
   },
   {
@@ -2637,7 +2637,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "vaseline-250ml",
     onSpecial: false,
   },
   {
@@ -2657,7 +2657,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "vaseline-lips",
     onSpecial: false,
   },
   {
@@ -2667,7 +2667,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "vaseline-50ml",
     onSpecial: false,
   },
   {
@@ -2677,7 +2677,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "vaseline-cream",
     onSpecial: false,
   },
   {
@@ -2687,7 +2687,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "vaseline-lotion",
     onSpecial: false,
   },
   {
@@ -2697,7 +2697,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "vestline-garlic-200g",
     onSpecial: false,
   },
   {
@@ -2707,7 +2707,7 @@ export const products: Product[] = [
     unit: "/item",
     category: "Cosmetics",
     subcategory: "Cosmetics",
-    image: "hero-4",
+    image: "vaseline-100ml",
     onSpecial: false,
   },
   {
@@ -3013,9 +3013,7 @@ export const products: Product[] = [
 ];
 
 const FALLBACK_IMAGE_ID = DEFAULT_PRODUCT_IMAGE_ID;
-const IMAGE_OVERRIDES_BY_ID: Record<number, string> = {
-  191: "axe-perfume",
-};
+const IMAGE_OVERRIDES_BY_ID: Record<number, string> = {};
 
 const placeholderIds = new Set(PlaceholderCatalog.map(image => image.id));
 
