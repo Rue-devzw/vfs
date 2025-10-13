@@ -31,10 +31,34 @@
       "imageHint": "Aloha Washing Pwdr 500g"
     },
     {
+      "id": "apples-assorted-heads",
+      "description": "Image for Apples Assorted Heads",
+      "imageUrl": "/images/Apples%20Assorted%20-%20Heads.webp",
+      "imageHint": "Apples Assorted Heads"
+    },
+    {
+      "id": "apples-econo-1-5kg",
+      "description": "Image for Apples Econo 1.5kg",
+      "imageUrl": "/images/Apples%20Econo%20-%201.5kg.webp",
+      "imageHint": "Apples Econo 1.5kg"
+    },
+    {
+      "id": "apples-econo-box",
+      "description": "Image for Apples Econo Box",
+      "imageUrl": "/images/Apples%20Econo%20-%20Box.webp",
+      "imageHint": "Apples Econo Box"
+    },
+    {
       "id": "arpic-cleaner-750ml",
       "description": "Image for Arpic Cleaner 750ml",
       "imageUrl": "/images/Arpic%20Cleaner%20750ml.webp",
       "imageHint": "Arpic Cleaner 750ml"
+    },
+    {
+      "id": "avocado-heads",
+      "description": "Image for Avocado Heads",
+      "imageUrl": "/images/Avocado%20-%20Heads.webp",
+      "imageHint": "Avocado Heads"
     },
     {
       "id": "axe-perfume",
@@ -53,6 +77,36 @@
       "description": "Image for Baby line 500ml",
       "imageUrl": "/images/Baby%20line%20500ml.webp",
       "imageHint": "Baby line 500ml"
+    },
+    {
+      "id": "bananas-kg",
+      "description": "Image for Bananas kg",
+      "imageUrl": "/images/Bananas%20-%20kg.webp",
+      "imageHint": "Bananas kg"
+    },
+    {
+      "id": "bananas-misc-kg",
+      "description": "Image for Bananas Misc kg",
+      "imageUrl": "/images/Bananas%20Misc%20-%20kg.webp",
+      "imageHint": "Bananas Misc kg"
+    },
+    {
+      "id": "baobab-500g",
+      "description": "Image for Baobab 500g",
+      "imageUrl": "/images/Baobab%20-%20500g.webp",
+      "imageHint": "Baobab 500g"
+    },
+    {
+      "id": "baobab-powdered-500g",
+      "description": "Image for Baobab Powdered 500g",
+      "imageUrl": "/images/Baobab%20(Powdered)%20-%20500g.webp",
+      "imageHint": "Baobab Powdered 500g"
+    },
+    {
+      "id": "beetroot-bundle",
+      "description": "Image for Beetroot Bundle",
+      "imageUrl": "/images/Beetroot%20-%20Bundle.webp",
+      "imageHint": "Beetroot Bundle"
     },
     {
       "id": "beverly-hills-perfume",
@@ -157,6 +211,102 @@
       "imageHint": "BoomDish washer 750ml"
     },
     {
+      "id": "brinjals-kg",
+      "description": "Image for Brinjals kg",
+      "imageUrl": "/images/Brinjals%20-%20kg.webp",
+      "imageHint": "Brinjals kg"
+    },
+    {
+      "id": "broccolli-kg",
+      "description": "Image for Broccolli kg",
+      "imageUrl": "/images/Broccolli%20-%20kg.webp",
+      "imageHint": "Broccolli kg"
+    },
+    {
+      "id": "brown-rice-1kg",
+      "description": "Image for Brown Rice 1kg",
+      "imageUrl": "/images/Brown%20Rice%20-%201kg.webp",
+      "imageHint": "Brown Rice 1kg"
+    },
+    {
+      "id": "brown-rice-2kg",
+      "description": "Image for Brown Rice 2kg",
+      "imageUrl": "/images/Brown%20Rice%20-%202kg.webp",
+      "imageHint": "Brown Rice 2kg"
+    },
+    {
+      "id": "bulk-mufushwa-bucket",
+      "description": "Image for Bulk Mufushwa Bucket",
+      "imageUrl": "/images/Bulk%20-%20Mufushwa%20(Bucket).webp",
+      "imageHint": "Bulk Mufushwa Bucket"
+    },
+    {
+      "id": "bulk-rapoko-buckets",
+      "description": "Image for Bulk Rapoko Buckets",
+      "imageUrl": "/images/Bulk%20-%20Rapoko%20-%20Buckets.webp",
+      "imageHint": "Bulk Rapoko Buckets"
+    },
+    {
+      "id": "bulk-sugar-beans",
+      "description": "Image for Bulk Sugar Beans",
+      "imageUrl": "/images/Bulk%20-%20Sugar%20Beans.webp",
+      "imageHint": "Bulk Sugar Beans"
+    },
+    {
+      "id": "butternut-pocket",
+      "description": "Image for Butternut Pocket",
+      "imageUrl": "/images/Butternut%20-%20Pocket.webp",
+      "imageHint": "Butternut Pocket"
+    },
+    {
+      "id": "butternut-punnet",
+      "description": "Image for Butternut Punnet",
+      "imageUrl": "/images/Butternut%20-%20Punnet.webp",
+      "imageHint": "Butternut Punnet"
+    },
+    {
+      "id": "butternuts-kg",
+      "description": "Image for Butternuts kg",
+      "imageUrl": "/images/Butternuts%20-%20kg.webp",
+      "imageHint": "Butternuts kg"
+    },
+    {
+      "id": "cabbage-head",
+      "description": "Image for Cabbage Head",
+      "imageUrl": "/images/Cabbage%20-%20Head.webp",
+      "imageHint": "Cabbage Head"
+    },
+    {
+      "id": "cabbages-red",
+      "description": "Image for Cabbages Red",
+      "imageUrl": "/images/Cabbages%20Red.webp",
+      "imageHint": "Cabbages Red"
+    },
+    {
+      "id": "carrots-kg",
+      "description": "Image for Carrots kg",
+      "imageUrl": "/images/Carrots%20-%20kg.webp",
+      "imageHint": "Carrots kg"
+    },
+    {
+      "id": "carrots-punnet",
+      "description": "Image for Carrots Punnet",
+      "imageUrl": "/images/Carrots%20-%20Punnet.webp",
+      "imageHint": "Carrots Punnet"
+    },
+    {
+      "id": "cauliflower-kg",
+      "description": "Image for Cauliflower kg",
+      "imageUrl": "/images/Cauliflower%20-%20kg.webp",
+      "imageHint": "Cauliflower kg"
+    },
+    {
+      "id": "chimera",
+      "description": "Image for Chimera",
+      "imageUrl": "/images/Chimera.webp",
+      "imageHint": "Chimera"
+    },
+    {
       "id": "clere-beautiful-cream-400ml",
       "description": "Image for Clere Beautiful Cream 400ml",
       "imageUrl": "/images/Clere%20Beautiful%20Cream%20400ml.webp",
@@ -209,6 +359,18 @@
       "description": "Image for Cosmo Foam Bath",
       "imageUrl": "/images/Cosmo%20Foam%20Bath.webp",
       "imageHint": "Cosmo Foam Bath"
+    },
+    {
+      "id": "covo-bunches",
+      "description": "Image for Covo Bunches",
+      "imageUrl": "/images/Covo%20-%20Bunches.webp",
+      "imageHint": "Covo Bunches"
+    },
+    {
+      "id": "cucumber-big-pack",
+      "description": "Image for Cucumber Big Pack",
+      "imageUrl": "/images/Cucumber%20-%20Big%20Pack.webp",
+      "imageHint": "Cucumber Big Pack"
     },
     {
       "id": "dark-and-lovely",
@@ -295,10 +457,34 @@
       "imageHint": "EasyWaves Pack"
     },
     {
+      "id": "eggplant-kg",
+      "description": "Image for Eggplant kg",
+      "imageUrl": "/images/Eggplant%20-%20kg.webp",
+      "imageHint": "Eggplant kg"
+    },
+    {
+      "id": "eggs-each",
+      "description": "Image for Eggs Each",
+      "imageUrl": "/images/Eggs%20-%20Each.webp",
+      "imageHint": "Eggs Each"
+    },
+    {
+      "id": "eggs-trays",
+      "description": "Image for Eggs Trays",
+      "imageUrl": "/images/Eggs%20-%20Trays.webp",
+      "imageHint": "Eggs Trays"
+    },
+    {
       "id": "english-blazer",
       "description": "Image for English Blazer",
       "imageUrl": "/images/English%20Blazer.webp",
       "imageHint": "English Blazer"
+    },
+    {
+      "id": "english-cucumber",
+      "description": "Image for English Cucumber",
+      "imageUrl": "/images/English%20Cucumber.webp",
+      "imageHint": "English Cucumber"
     },
     {
       "id": "exclamation-perfume",
@@ -329,6 +515,18 @@
       "description": "Image for gallery 4",
       "imageUrl": "/images/gallery-4.webp",
       "imageHint": "gallery 4"
+    },
+    {
+      "id": "garlic-kg",
+      "description": "Image for garlic kg",
+      "imageUrl": "/images/garlic%20-%20kg.webp",
+      "imageHint": "garlic kg"
+    },
+    {
+      "id": "gemsquash-kg",
+      "description": "Image for gemsquash kg",
+      "imageUrl": "/images/gemsquash%20-%20kg.webp",
+      "imageHint": "gemsquash kg"
     },
     {
       "id": "gentel-magic-lotion",
@@ -367,6 +565,18 @@
       "imageHint": "Gik 750ml"
     },
     {
+      "id": "ginger-kg",
+      "description": "Image for ginger kg",
+      "imageUrl": "/images/ginger%20-%20kg.webp",
+      "imageHint": "ginger kg"
+    },
+    {
+      "id": "grapes-black-punnets",
+      "description": "Image for grapes Black Punnets",
+      "imageUrl": "/images/grapes%20Black%20-%20Punnets.webp",
+      "imageHint": "grapes Black Punnets"
+    },
+    {
       "id": "green-bar-perfection",
       "description": "Image for Green Bar Perfection",
       "imageUrl": "/images/Green%20Bar%20Perfection.webp",
@@ -377,6 +587,18 @@
       "description": "Image for Green Bar",
       "imageUrl": "/images/Green%20Bar.webp",
       "imageHint": "Green Bar"
+    },
+    {
+      "id": "green-beans-kg",
+      "description": "Image for green Beans kg",
+      "imageUrl": "/images/green%20Beans%20-%20kg.webp",
+      "imageHint": "green Beans kg"
+    },
+    {
+      "id": "green-beans-punnet",
+      "description": "Image for green Beans Punnet",
+      "imageUrl": "/images/green%20Beans%20-%20Punnet.webp",
+      "imageHint": "green Beans Punnet"
     },
     {
       "id": "hair-remover-cosmo-40g",
@@ -469,6 +691,18 @@
       "imageHint": "Hoity Toity Lotion"
     },
     {
+      "id": "honey-500g",
+      "description": "Image for Honey 500g",
+      "imageUrl": "/images/Honey%20-%20500g.webp",
+      "imageHint": "Honey 500g"
+    },
+    {
+      "id": "honey-pure-500g",
+      "description": "Image for Honey Pure 500g",
+      "imageUrl": "/images/Honey%20Pure%20-%20500g.webp",
+      "imageHint": "Honey Pure 500g"
+    },
+    {
       "id": "igrams-roibos-450ml",
       "description": "Image for Igrams Roibos 450ml",
       "imageUrl": "/images/Igrams%20Roibos%20450ml.webp",
@@ -541,6 +775,12 @@
       "imageHint": "Jik 750ml"
     },
     {
+      "id": "kapenta-kg",
+      "description": "Image for Kapenta kg",
+      "imageUrl": "/images/Kapenta%20-%20kg.webp",
+      "imageHint": "Kapenta kg"
+    },
+    {
       "id": "kiwi-100ml",
       "description": "Image for Kiwi 100ml",
       "imageUrl": "/images/Kiwi%20100ml.webp",
@@ -595,10 +835,58 @@
       "imageHint": "Lace Lotion"
     },
     {
+      "id": "lemon-punnet",
+      "description": "Image for Lemon Punnet",
+      "imageUrl": "/images/Lemon%20-%20Punnet.webp",
+      "imageHint": "Lemon Punnet"
+    },
+    {
+      "id": "lemons-kg",
+      "description": "Image for Lemons kg",
+      "imageUrl": "/images/Lemons%20-%20kg.webp",
+      "imageHint": "Lemons kg"
+    },
+    {
+      "id": "lettuce-head",
+      "description": "Image for Lettuce Head",
+      "imageUrl": "/images/Lettuce%20-%20Head.webp",
+      "imageHint": "Lettuce Head"
+    },
+    {
       "id": "logo",
       "description": "Image for logo",
       "imageUrl": "/images/logo.webp",
       "imageHint": "logo"
+    },
+    {
+      "id": "macadamia-nuts-kg",
+      "description": "Image for Macadamia Nuts kg",
+      "imageUrl": "/images/Macadamia%20Nuts%20-%20kg.webp",
+      "imageHint": "Macadamia Nuts kg"
+    },
+    {
+      "id": "macadamia-nuts-punnet",
+      "description": "Image for Macadamia Nuts Punnet",
+      "imageUrl": "/images/Macadamia%20Nuts%20-%20Punnet.webp",
+      "imageHint": "Macadamia Nuts Punnet"
+    },
+    {
+      "id": "madora-kg",
+      "description": "Image for Madora kg",
+      "imageUrl": "/images/Madora%20-%20kg.webp",
+      "imageHint": "Madora kg"
+    },
+    {
+      "id": "mango-kg",
+      "description": "Image for Mango kg",
+      "imageUrl": "/images/Mango%20-%20kg.webp",
+      "imageHint": "Mango kg"
+    },
+    {
+      "id": "mango-packs",
+      "description": "Image for Mango Packs",
+      "imageUrl": "/images/Mango%20-%20Packs.webp",
+      "imageHint": "Mango Packs"
     },
     {
       "id": "maq-1kg",
@@ -613,10 +901,40 @@
       "imageHint": "Maq 2kg"
     },
     {
+      "id": "mixed-grain-2kg",
+      "description": "Image for Mixed grain 2kg",
+      "imageUrl": "/images/Mixed%20grain%20-%202kg.webp",
+      "imageHint": "Mixed grain 2kg"
+    },
+    {
       "id": "mousse",
       "description": "Image for Mousse",
       "imageUrl": "/images/Mousse.webp",
       "imageHint": "Mousse"
+    },
+    {
+      "id": "munyemba-75g",
+      "description": "Image for Munyemba 75g",
+      "imageUrl": "/images/Munyemba%20-%2075g.webp",
+      "imageHint": "Munyemba 75g"
+    },
+    {
+      "id": "munyevhe-50g",
+      "description": "Image for Munyevhe 50g",
+      "imageUrl": "/images/Munyevhe%20-%2050g.webp",
+      "imageHint": "Munyevhe 50g"
+    },
+    {
+      "id": "naartjies-box",
+      "description": "Image for Naartjies Box",
+      "imageUrl": "/images/Naartjies%20-%20Box.webp",
+      "imageHint": "Naartjies Box"
+    },
+    {
+      "id": "naartjies-each",
+      "description": "Image for Naartjies Each",
+      "imageUrl": "/images/Naartjies%20-%20Each.webp",
+      "imageHint": "Naartjies Each"
     },
     {
       "id": "nivea-cream-lotion-400ml",
@@ -649,6 +967,12 @@
       "imageHint": "Nugget 100ml"
     },
     {
+      "id": "nyimo-500g",
+      "description": "Image for Nyimo 500g",
+      "imageUrl": "/images/Nyimo%20-%20500g.webp",
+      "imageHint": "Nyimo 500g"
+    },
+    {
       "id": "oh-so-heavenly-2l",
       "description": "Image for Oh So Heavenly 2L",
       "imageUrl": "/images/Oh%20So%20Heavenly%20-%202L.webp",
@@ -679,6 +1003,12 @@
       "imageHint": "Oh So heavenly Q10"
     },
     {
+      "id": "okra-punnet",
+      "description": "Image for Okra Punnet",
+      "imageUrl": "/images/Okra%20-%20Punnet.webp",
+      "imageHint": "Okra Punnet"
+    },
+    {
       "id": "olive-oil-spry-250ml",
       "description": "Image for Olive Oil Spry 250ml",
       "imageUrl": "/images/Olive%20Oil%20Spry%20250ml.webp",
@@ -689,6 +1019,138 @@
       "description": "Image for Omo Powder 2kg",
       "imageUrl": "/images/Omo%20Powder%202kg.webp",
       "imageHint": "Omo Powder 2kg"
+    },
+    {
+      "id": "onion-king-bun",
+      "description": "Image for Onion King Bun",
+      "imageUrl": "/images/Onion%20King%20Bun.webp",
+      "imageHint": "Onion King Bun"
+    },
+    {
+      "id": "onion-red-kgs",
+      "description": "Image for Onion Red kgs",
+      "imageUrl": "/images/Onion%20Red%20(kgs).webp",
+      "imageHint": "Onion Red kgs"
+    },
+    {
+      "id": "onions-kg",
+      "description": "Image for Onions kg",
+      "imageUrl": "/images/Onions%20-%20kg.webp",
+      "imageHint": "Onions kg"
+    },
+    {
+      "id": "onions-pocket",
+      "description": "Image for Onions Pocket",
+      "imageUrl": "/images/Onions%20-%20Pocket.webp",
+      "imageHint": "Onions Pocket"
+    },
+    {
+      "id": "onions-misc-kg",
+      "description": "Image for Onions Misc kg",
+      "imageUrl": "/images/Onions%20Misc%20-%20kg.webp",
+      "imageHint": "Onions Misc kg"
+    },
+    {
+      "id": "onions-red-bundle",
+      "description": "Image for Onions Red Bundle",
+      "imageUrl": "/images/Onions%20Red%20-%20Bundle.webp",
+      "imageHint": "Onions Red Bundle"
+    },
+    {
+      "id": "oranges-pack",
+      "description": "Image for Oranges Pack",
+      "imageUrl": "/images/Oranges%20-%20Pack.webp",
+      "imageHint": "Oranges Pack"
+    },
+    {
+      "id": "oranges-pocket",
+      "description": "Image for Oranges Pocket",
+      "imageUrl": "/images/Oranges%20-%20Pocket.webp",
+      "imageHint": "Oranges Pocket"
+    },
+    {
+      "id": "peanut-butter-300ml",
+      "description": "Image for Peanut Butter 300ml",
+      "imageUrl": "/images/Peanut%20Butter%20-%20300ml.webp",
+      "imageHint": "Peanut Butter 300ml"
+    },
+    {
+      "id": "peanut-butter-375ml",
+      "description": "Image for Peanut Butter 375ml",
+      "imageUrl": "/images/Peanut%20Butter%20-%20375ml.webp",
+      "imageHint": "Peanut Butter 375ml"
+    },
+    {
+      "id": "peanuts-500g",
+      "description": "Image for Peanuts 500g",
+      "imageUrl": "/images/Peanuts%20-%20500g.webp",
+      "imageHint": "Peanuts 500g"
+    },
+    {
+      "id": "peanuts-kg",
+      "description": "Image for Peanuts kg",
+      "imageUrl": "/images/Peanuts%20-%20kg.webp",
+      "imageHint": "Peanuts kg"
+    },
+    {
+      "id": "peanuts-unshelled-75g",
+      "description": "Image for Peanuts Unshelled 75g",
+      "imageUrl": "/images/Peanuts%20(Unshelled)%20-%2075g.webp",
+      "imageHint": "Peanuts Unshelled 75g"
+    },
+    {
+      "id": "pears-forelle-each",
+      "description": "Image for Pears Forelle Each",
+      "imageUrl": "/images/Pears%20Forelle%20-%20Each.webp",
+      "imageHint": "Pears Forelle Each"
+    },
+    {
+      "id": "peas-big-punnet",
+      "description": "Image for Peas Big Punnet",
+      "imageUrl": "/images/Peas%20Big%20-%20Punnet.webp",
+      "imageHint": "Peas Big Punnet"
+    },
+    {
+      "id": "pecan-nuts-kg",
+      "description": "Image for Pecan Nuts kg",
+      "imageUrl": "/images/Pecan%20Nuts%20-%20kg.webp",
+      "imageHint": "Pecan Nuts kg"
+    },
+    {
+      "id": "pecanuts-pack",
+      "description": "Image for Pecanuts Pack",
+      "imageUrl": "/images/Pecanuts%20-%20Pack.webp",
+      "imageHint": "Pecanuts Pack"
+    },
+    {
+      "id": "pepper-green-punnets",
+      "description": "Image for Pepper green Punnets",
+      "imageUrl": "/images/Pepper%20(green)%20-%20Punnets.webp",
+      "imageHint": "Pepper green Punnets"
+    },
+    {
+      "id": "pepper-green-kg",
+      "description": "Image for Pepper green kg",
+      "imageUrl": "/images/Pepper%20(green)-%20kg.webp",
+      "imageHint": "Pepper green kg"
+    },
+    {
+      "id": "pepper-red-kg",
+      "description": "Image for Pepper Red kg",
+      "imageUrl": "/images/Pepper%20Red%20-%20kg.webp",
+      "imageHint": "Pepper Red kg"
+    },
+    {
+      "id": "pepper-yellow",
+      "description": "Image for Pepper Yellow",
+      "imageUrl": "/images/Pepper%20Yellow.webp",
+      "imageHint": "Pepper Yellow"
+    },
+    {
+      "id": "pine-apples-each",
+      "description": "Image for Pine Apples Each",
+      "imageUrl": "/images/Pine%20Apples%20-%20Each.webp",
+      "imageHint": "Pine Apples Each"
     },
     {
       "id": "pinegel-1l",
@@ -713,6 +1175,36 @@
       "description": "Image for PlayBoy Roll on",
       "imageUrl": "/images/PlayBoy%20Roll%20on.webp",
       "imageHint": "PlayBoy Roll on"
+    },
+    {
+      "id": "potatoes-3kg-med-pack",
+      "description": "Image for Potatoes 3kg Med Pack",
+      "imageUrl": "/images/Potatoes%20-%203kg%20Med%20Pack.webp",
+      "imageHint": "Potatoes 3kg Med Pack"
+    },
+    {
+      "id": "potatoes-5kg",
+      "description": "Image for Potatoes 5kg",
+      "imageUrl": "/images/Potatoes%20-%205kg.webp",
+      "imageHint": "Potatoes 5kg"
+    },
+    {
+      "id": "potatoes-7-5kg",
+      "description": "Image for Potatoes 7.5kg",
+      "imageUrl": "/images/Potatoes%20-%207.5kg.webp",
+      "imageHint": "Potatoes 7.5kg"
+    },
+    {
+      "id": "potatoes-kg",
+      "description": "Image for Potatoes kg",
+      "imageUrl": "/images/Potatoes%20-%20kg.webp",
+      "imageHint": "Potatoes kg"
+    },
+    {
+      "id": "potatoes-large-15kg-pocket",
+      "description": "Image for Potatoes Large 15kg Pocket",
+      "imageUrl": "/images/Potatoes%20-%20Large%2015kg%20Pocket.webp",
+      "imageHint": "Potatoes Large 15kg Pocket"
     },
     {
       "id": "product-apples",
@@ -847,6 +1339,48 @@
       "imageHint": "product steak"
     },
     {
+      "id": "raisins-punnets",
+      "description": "Image for Raisins Punnets",
+      "imageUrl": "/images/Raisins%20-%20Punnets.webp",
+      "imageHint": "Raisins Punnets"
+    },
+    {
+      "id": "rapoko-1kg",
+      "description": "Image for Rapoko 1kg",
+      "imageUrl": "/images/Rapoko%20-%201kg.webp",
+      "imageHint": "Rapoko 1kg"
+    },
+    {
+      "id": "rapoko-2kg",
+      "description": "Image for Rapoko 2kg",
+      "imageUrl": "/images/Rapoko%20-%202kg.webp",
+      "imageHint": "Rapoko 2kg"
+    },
+    {
+      "id": "rapoko-5kg",
+      "description": "Image for Rapoko 5kg",
+      "imageUrl": "/images/Rapoko%20-%205kg.webp",
+      "imageHint": "Rapoko 5kg"
+    },
+    {
+      "id": "rapoko-kg",
+      "description": "Image for Rapoko kg",
+      "imageUrl": "/images/Rapoko%20-%20kg.webp",
+      "imageHint": "Rapoko kg"
+    },
+    {
+      "id": "rice-white-1kg",
+      "description": "Image for Rice White 1kg",
+      "imageUrl": "/images/Rice%20(White)%20-%201kg.webp",
+      "imageHint": "Rice White 1kg"
+    },
+    {
+      "id": "rice-white-2kg",
+      "description": "Image for Rice White 2kg",
+      "imageUrl": "/images/Rice%20(White)%20-%202kg.webp",
+      "imageHint": "Rice White 2kg"
+    },
+    {
       "id": "roll-on-addidas-50ml",
       "description": "Image for Roll On Addidas 50ml",
       "imageUrl": "/images/Roll%20On%20Addidas%2050ml.webp",
@@ -869,6 +1403,54 @@
       "description": "Image for Roll On Shield",
       "imageUrl": "/images/Roll%20On%20Shield.webp",
       "imageHint": "Roll On Shield"
+    },
+    {
+      "id": "roundnuts-kg",
+      "description": "Image for Roundnuts kg",
+      "imageUrl": "/images/Roundnuts%20-%20kg.webp",
+      "imageHint": "Roundnuts kg"
+    },
+    {
+      "id": "samp-kg",
+      "description": "Image for Samp kg",
+      "imageUrl": "/images/Samp%20-%20kg.webp",
+      "imageHint": "Samp kg"
+    },
+    {
+      "id": "sauce-1l",
+      "description": "Image for Sauce 1L",
+      "imageUrl": "/images/Sauce%20-%201L.webp",
+      "imageHint": "Sauce 1L"
+    },
+    {
+      "id": "sauce-330ml",
+      "description": "Image for Sauce 330ml",
+      "imageUrl": "/images/Sauce%20-%20330ml.webp",
+      "imageHint": "Sauce 330ml"
+    },
+    {
+      "id": "sauce-375ml",
+      "description": "Image for Sauce 375ml",
+      "imageUrl": "/images/Sauce%20-%20375ml.webp",
+      "imageHint": "Sauce 375ml"
+    },
+    {
+      "id": "sauce-bbq-2-litres",
+      "description": "Image for Sauce BBQ 2 Litres",
+      "imageUrl": "/images/Sauce%20BBQ%20-%202%20Litres.webp",
+      "imageHint": "Sauce BBQ 2 Litres"
+    },
+    {
+      "id": "sauce-daddies-375ml",
+      "description": "Image for Sauce Daddies 375ml",
+      "imageUrl": "/images/Sauce%20Daddies%20-%20375ml.webp",
+      "imageHint": "Sauce Daddies 375ml"
+    },
+    {
+      "id": "seeds",
+      "description": "Image for Seeds",
+      "imageUrl": "/images/Seeds.webp",
+      "imageHint": "Seeds"
     },
     {
       "id": "shower-to-shower-perfume",
@@ -895,6 +1477,42 @@
       "imageHint": "Skala hairFood"
     },
     {
+      "id": "sorghum-1kg",
+      "description": "Image for Sorghum 1kg",
+      "imageUrl": "/images/Sorghum%20-%201kg.webp",
+      "imageHint": "Sorghum 1kg"
+    },
+    {
+      "id": "sorghum-kg",
+      "description": "Image for Sorghum kg",
+      "imageUrl": "/images/Sorghum%20-%20kg.webp",
+      "imageHint": "Sorghum kg"
+    },
+    {
+      "id": "spice-200g",
+      "description": "Image for Spice 200g",
+      "imageUrl": "/images/Spice%20-%20200g.webp",
+      "imageHint": "Spice 200g"
+    },
+    {
+      "id": "spice-bbq-500g",
+      "description": "Image for Spice BBQ 500g",
+      "imageUrl": "/images/Spice%20BBQ%20-%20500g.webp",
+      "imageHint": "Spice BBQ 500g"
+    },
+    {
+      "id": "spices-100g",
+      "description": "Image for Spices 100g",
+      "imageUrl": "/images/Spices%20-%20100g.webp",
+      "imageHint": "Spices 100g"
+    },
+    {
+      "id": "spices-60g-satchets",
+      "description": "Image for Spices 60g Satchets",
+      "imageUrl": "/images/Spices%20-%2060g%20Satchets.webp",
+      "imageHint": "Spices 60g Satchets"
+    },
+    {
       "id": "star-soft-2litre",
       "description": "Image for Star Soft 2litre",
       "imageUrl": "/images/Star%20Soft%20-%202litre.webp",
@@ -905,6 +1523,30 @@
       "description": "Image for StarSoft Refill mix",
       "imageUrl": "/images/StarSoft%20Refill%20mix.webp",
       "imageHint": "StarSoft Refill mix"
+    },
+    {
+      "id": "sugar-beans-1kg",
+      "description": "Image for Sugar Beans 1kg",
+      "imageUrl": "/images/Sugar%20Beans%20-%201kg.webp",
+      "imageHint": "Sugar Beans 1kg"
+    },
+    {
+      "id": "sugar-beans-2kg",
+      "description": "Image for Sugar Beans 2kg",
+      "imageUrl": "/images/Sugar%20Beans%20-%202kg.webp",
+      "imageHint": "Sugar Beans 2kg"
+    },
+    {
+      "id": "sugar-beans-kg",
+      "description": "Image for Sugar Beans kg",
+      "imageUrl": "/images/Sugar%20Beans%20-%20kg.webp",
+      "imageHint": "Sugar Beans kg"
+    },
+    {
+      "id": "sugar-beans-misc-kg",
+      "description": "Image for Sugar Beans Misc kg",
+      "imageUrl": "/images/Sugar%20Beans%20-Misc%20-%20kg.webp",
+      "imageHint": "Sugar Beans Misc kg"
     },
     {
       "id": "sunlight-1kg",
@@ -923,6 +1565,24 @@
       "description": "Image for SunLight Pwd 2kg",
       "imageUrl": "/images/SunLight%20Pwd%202kg.webp",
       "imageHint": "SunLight Pwd 2kg"
+    },
+    {
+      "id": "sweet-potatoes-kg",
+      "description": "Image for Sweet Potatoes kg",
+      "imageUrl": "/images/Sweet%20Potatoes%20-%20kg.webp",
+      "imageHint": "Sweet Potatoes kg"
+    },
+    {
+      "id": "tomatoes-kg",
+      "description": "Image for Tomatoes kg",
+      "imageUrl": "/images/Tomatoes%20-%20kg.webp",
+      "imageHint": "Tomatoes kg"
+    },
+    {
+      "id": "tomatoes-misc-kg",
+      "description": "Image for Tomatoes Misc kg",
+      "imageUrl": "/images/Tomatoes%20Misc%20-%20kg.webp",
+      "imageHint": "Tomatoes Misc kg"
     },
     {
       "id": "top-society",
@@ -983,6 +1643,18 @@
       "description": "Image for Vim Can",
       "imageUrl": "/images/Vim%20Can.webp",
       "imageHint": "Vim Can"
+    },
+    {
+      "id": "vinegar-750ml",
+      "description": "Image for Vinegar 750ml",
+      "imageUrl": "/images/Vinegar%20-%20750ml.webp",
+      "imageHint": "Vinegar 750ml"
+    },
+    {
+      "id": "wheat-2kg",
+      "description": "Image for Wheat 2kg",
+      "imageUrl": "/images/Wheat%20-%202kg.webp",
+      "imageHint": "Wheat 2kg"
     },
     {
       "id": "xtra-vim",
