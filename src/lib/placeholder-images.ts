@@ -12,10 +12,20 @@ export const PlaceHolderImages: ImagePlaceholder[] = data.placeholderImages;
 export const DEFAULT_PRODUCT_IMAGE_ID = "product-apples";
 const GENERIC_IMAGE_PREFIXES = ["hero-", "product-"];
 
+const normalizeParentheses = (value: string): string =>
+  value.replace(/\(([^)]+)\)/g, (_, content) => {
+    const trimmed = content.trim();
+
+    if (!trimmed) {
+      return " ";
+    }
+
+    return /^[A-Z0-9\s-]+$/.test(trimmed) ? " " : ` ${trimmed} `;
+  });
+
 export const slugifyImageId = (value: string): string =>
-  value
+  normalizeParentheses(value)
     .normalize("NFKD")
-    .replace(/\(.*?\)/g, "")
     .replace(/&/g, " and ")
     .replace(/[^a-zA-Z0-9]+/g, "-")
     .replace(/-{2,}/g, "-")
