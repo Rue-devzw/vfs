@@ -32,8 +32,6 @@ const formSchema = z.object({
   customerName: z.string().optional(),
   customerPhone: z.string().optional(),
   customerAddress: z.string().optional(),
-  paymentMethod: z.enum(["now", "on_delivery"]).default("now"),
-  paymentPhone: z.string().optional(),
 }).superRefine((data, ctx) => {
     if (data.isDiasporaGift) {
         if (!data.recipientName) ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Recipient name is required.", path: ["recipientName"] });
@@ -44,14 +42,6 @@ const formSchema = z.object({
             if (!data.customerPhone) ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Your phone is required for delivery.", path: ["customerPhone"] });
             if (!data.customerAddress) ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Your address is required for delivery.", path: ["customerAddress"] });
         }
-    }
-
-    if (data.paymentMethod === 'now' && (!data.paymentPhone || !data.paymentPhone.trim())) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: "An EcoCash phone number is required to pay now.",
-        path: ["paymentPhone"],
-      });
     }
 });
 
@@ -70,7 +60,6 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
     defaultValues: {
       isDiasporaGift: false,
       deliveryMethod: "collect",
-      paymentMethod: "now",
     },
   });
   const { isSubmitting } = form.formState;
@@ -78,77 +67,31 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
   const { watch, reset } = form;
   const isDiasporaGift = watch("isDiasporaGift");
   const deliveryMethod = watch("deliveryMethod");
-  const paymentMethod = watch("paymentMethod");
 
   const subtotal = state.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const total = subtotal + (deliveryMethod === 'delivery' ? BIKER_DELIVERY_FEE : 0);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      let paymentReference: string | undefined;
-      let paymentMerchantCode: string | undefined;
-
-      if (values.paymentMethod === "now") {
-        const paymentResponse = await fetch("/api/payments/ecocash", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            amount: total,
-            phoneNumber: values.paymentPhone?.trim(),
-            metadata: {
-              isDiasporaGift: values.isDiasporaGift,
-              deliveryMethod: values.deliveryMethod,
-            },
-          }),
-        });
-
-        if (!paymentResponse.ok) {
-          throw new Error("Failed to initiate EcoCash payment");
-        }
-
-        const paymentData: { reference?: string; merchantCode?: string } =
-          await paymentResponse.json();
-
-        paymentReference = paymentData.reference;
-        paymentMerchantCode = paymentData.merchantCode;
-      }
-
-      const { paymentPhone, ...orderValues } = values;
-
-      const response = await fetch("/api/orders", {
+      const response = await fetch("/api/paynow/initiate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          ...orderValues,
-          items: state.items,
-          total,
-          payment: {
-            method: values.paymentMethod,
-            status: values.paymentMethod === "now" ? "pending" : "pending_collection",
-            reference: paymentReference ?? null,
-            merchantCode: paymentMerchantCode ?? null,
-            phoneNumber: paymentPhone ?? null,
-          },
+          reference: `order_${Date.now()}`,
+          items: state.items.map(item => ({ name: item.name, price: item.price })),
+          email: 'test@example.com' //TODO: get customer email
         }),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to submit order");
+      if (response.redirected) {
+        window.location.href = response.url;
+      } else {
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.error || "Failed to initiate Paynow payment");
+        }
       }
 
-      const referenceNote = paymentReference ? ` (Ref: ${paymentReference})` : "";
-      const merchantNote = paymentMerchantCode ?? "068951";
-
-      toast({
-        title: "Order Placed Successfully!",
-        description:
-          values.paymentMethod === "now"
-            ? `An EcoCash request${referenceNote} has been raised for merchant ${merchantNote}. Please authorise the payment on your phone to confirm your order.`
-            : "Thank you for your purchase. You&rsquo;ll receive a confirmation shortly.",
-      });
-      dispatch({ type: 'CLEAR_CART' });
-      onOpenChange(false);
-      reset();
     } catch (error) {
       console.error('Checkout submission failed', error);
 
@@ -209,42 +152,6 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
                     <FormField name="customerAddress" control={form.control} render={({ field }) => (<FormItem><FormLabel>Delivery Address</FormLabel><FormControl><Input placeholder="123 Main St, Harare" {...field} /></FormControl><FormMessage /></FormItem>)} />
                   </div>
                 )}
-                 <FormField name="paymentMethod" control={form.control} render={({ field }) => (
-                  <FormItem><FormLabel>Payment</FormLabel>
-                    <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex gap-4 pt-2">
-                      <FormItem className="flex items-center space-x-2"><FormControl><RadioGroupItem value="now" /></FormControl><FormLabel className="font-normal">Pay Full Amount Now</FormLabel></FormItem>
-                      {deliveryMethod === 'delivery' && <FormItem className="flex items-center space-x-2"><FormControl><RadioGroupItem value="on_delivery" /></FormControl><FormLabel className="font-normal">Pay Biker on Delivery</FormLabel></FormItem>}
-                    </RadioGroup><FormMessage />
-                  </FormItem>
-                )} />
-              </div>
-            )}
-
-            {paymentMethod === "now" && (
-              <div className="space-y-3 rounded-md border bg-muted/40 p-4 animate-fade-in-up">
-                <div className="space-y-1">
-                  <h3 className="font-semibold">EcoCash payment</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Enter the EcoCash phone number we should bill. We&rsquo;ll raise a request against merchant
-                    <span className="font-medium"> 068951</span> once you submit the order.
-                  </p>
-                </div>
-                <FormField
-                  name="paymentPhone"
-                  control={form.control}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>EcoCash Phone Number</FormLabel>
-                      <FormControl>
-                        <Input placeholder="e.g. +263 77 123 4567" {...field} />
-                      </FormControl>
-                      <FormDescription>
-                        Use the number registered with EcoCash so you can authorise the prompt immediately.
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
               </div>
             )}
 
@@ -269,7 +176,7 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
                       Submitting...
                     </>
                   ) : (
-                    "Place Order"
+                    "Pay with Paynow"
                   )}
                 </Button>
             </DialogFooter>
