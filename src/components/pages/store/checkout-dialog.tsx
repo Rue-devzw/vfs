@@ -32,6 +32,7 @@ const formSchema = z.object({
   customerName: z.string().optional(),
   customerPhone: z.string().optional(),
   customerAddress: z.string().optional(),
+  customerEmail: z.string().email().optional(),
 }).superRefine((data, ctx) => {
     if (data.isDiasporaGift) {
         if (!data.recipientName) ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Recipient name is required.", path: ["recipientName"] });
@@ -79,7 +80,7 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
         body: JSON.stringify({
           reference: `order_${Date.now()}`,
           items: state.items.map(item => ({ name: item.name, price: item.price })),
-          email: 'test@example.com' //TODO: get customer email
+          email: values.customerEmail
         }),
       });
 
@@ -150,6 +151,7 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
                     <FormField name="customerName" control={form.control} render={({ field }) => (<FormItem><FormLabel>Your Name</FormLabel><FormControl><Input placeholder="John Doe" {...field} /></FormControl><FormMessage /></FormItem>)} />
                     <FormField name="customerPhone" control={form.control} render={({ field }) => (<FormItem><FormLabel>Your Phone</FormLabel><FormControl><Input placeholder="+263 7..." {...field} /></FormControl><FormMessage /></FormItem>)} />
                     <FormField name="customerAddress" control={form.control} render={({ field }) => (<FormItem><FormLabel>Delivery Address</FormLabel><FormControl><Input placeholder="123 Main St, Harare" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField name="customerEmail" control={form.control} render={({ field }) => (<FormItem><FormLabel>Your Email</FormLabel><FormControl><Input placeholder="me@example.com" {...field} /></FormControl><FormMessage /></FormItem>)} />
                   </div>
                 )}
               </div>

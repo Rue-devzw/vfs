@@ -21,7 +21,11 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: validation.error.errors }, { status: 400 });
     }
 
-    const { reference, email, items } = validation.data;
+    let { reference, email, items } = validation.data;
+
+    if (process.env.NODE_ENV === 'development') {
+      email = process.env.PAYNOW_MERCHANT_EMAIL;
+    }
 
     const payment = paynow.createPayment(reference, email);
 
