@@ -37,7 +37,7 @@ export async function POST(req: Request) {
 
     if (response.success) {
       await savePollUrl(reference, response.pollUrl);
-      return NextResponse.redirect(response.redirectUrl, { status: 302 });
+      return NextResponse.json({ success: true, redirectUrl: response.redirectUrl });
     } else {
       return NextResponse.json({ success: false, error: response.error }, { status: 400 });
     }

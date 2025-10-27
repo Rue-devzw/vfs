@@ -84,13 +84,16 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
         }),
       });
 
-      if (response.redirected) {
-        window.location.href = response.url;
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to initiate Paynow payment");
+      }
+
+      if (data.redirectUrl) {
+        window.location.href = data.redirectUrl;
       } else {
-        const data = await response.json();
-        if (!response.ok) {
-          throw new Error(data.error || "Failed to initiate Paynow payment");
-        }
+        throw new Error("No redirect URL received from server.");
       }
 
     } catch (error) {
