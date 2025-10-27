@@ -74,6 +74,7 @@ export function StoreLayout() {
   const [showSpecialsOnly, setShowSpecialsOnly] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<Category | "All">("All");
   const [sortOption, setSortOption] = useState<SortOption>("name-asc");
+  const [isServicesExpanded, setIsServicesExpanded] = useState(false);
   const productSectionRef = useRef<HTMLDivElement | null>(null);
 
   const heroBackgroundPool = useMemo(() => getHeroBackgroundPool(), []);
@@ -322,19 +323,7 @@ export function StoreLayout() {
                 <CarouselNext className="right-4 top-1/2 hidden h-10 w-10 -translate-y-1/2 rounded-full bg-background/90 shadow lg:flex" />
               </Carousel>
 
-              <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-                {highlightServices.map(service => (
-                  <Card key={service.title} className="border-none bg-card/80 shadow-sm">
-                    <CardHeader className="flex flex-row items-center gap-3 pb-2">
-                      <div className="rounded-full bg-primary/10 p-3 text-primary">
-                        <service.icon className="h-5 w-5" />
-                      </div>
-                      <CardTitle className="text-base font-semibold">{service.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="pt-0 text-sm text-muted-foreground">{service.description}</CardContent>
-                  </Card>
-                ))}
-              </div>
+
             </div>
 
             <div className="hidden flex-col gap-4 lg:flex">
@@ -414,20 +403,25 @@ export function StoreLayout() {
             <p className="mt-3 text-base text-muted-foreground">
               Everything you can access when you walk through our doors — from retail counters to wholesale support and corporate servicing.
             </p>
+            <Button onClick={() => setIsServicesExpanded(!isServicesExpanded)} variant="outline" className="mt-4">
+              {isServicesExpanded ? 'Hide Services' : 'Show Services'}
+            </Button>
           </div>
-          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
-            {services.map(service => (
-              <Card key={service.title} className="h-full border-none bg-background/90 shadow-sm">
-                <CardHeader className="flex flex-col items-start gap-3">
-                  <div className="rounded-full bg-primary/10 p-3 text-primary">
-                    <service.icon className="h-6 w-6" />
-                  </div>
-                  <CardTitle className="text-lg font-semibold">{service.title}</CardTitle>
-                </CardHeader>
-                <CardContent className="pt-0 text-sm text-muted-foreground">{service.description}</CardContent>
-              </Card>
-            ))}
-          </div>
+          {isServicesExpanded && (
+            <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
+              {services.map(service => (
+                <Card key={service.title} className="h-full border-none bg-background/90 shadow-sm">
+                  <CardHeader className="flex flex-col items-start gap-3">
+                    <div className="rounded-full bg-primary/10 p-3 text-primary">
+                      <service.icon className="h-6 w-6" />
+                    </div>
+                    <CardTitle className="text-lg font-semibold">{service.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-0 text-sm text-muted-foreground">{service.description}</CardContent>
+                </Card>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

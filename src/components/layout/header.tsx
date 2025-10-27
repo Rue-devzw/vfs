@@ -124,19 +124,48 @@ function NavigationLinkItem({
   const Icon = link.icon;
   const toneClass = toneClassMap[link.tone];
 
+  if (variant === 'desktop') {
+    return (
+      <Link
+        href={link.href}
+        onClick={onNavigate ? () => onNavigate() : undefined}
+        className={cn(
+          'group flex flex-col items-center gap-1 rounded-md px-3 py-2 text-xs font-semibold transition-colors hover:bg-accent/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2'
+        )}
+      >
+        <Icon
+          aria-hidden="true"
+          className={cn(
+            'h-6 w-6',
+            toneClass,
+            'transition-colors group-hover:text-primary group-focus-visible:text-primary'
+          )}
+        />
+        <span
+          className={cn(
+            toneClass,
+            'transition-colors group-hover:text-primary group-focus-visible:text-primary'
+          )}
+        >
+          {link.label}
+        </span>
+      </Link>
+    );
+  }
+
+  // Mobile variant remains the same
   return (
     <Link
       href={link.href}
       onClick={onNavigate ? () => onNavigate() : undefined}
       className={cn(
-        'group items-center gap-2 rounded-md px-3 py-2 font-semibold transition-colors hover:bg-accent/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2',
-        variant === 'desktop' ? 'inline-flex text-sm' : 'flex text-lg'
+        'group flex items-center gap-2 rounded-md px-3 py-2 text-lg font-semibold transition-colors hover:bg-accent/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2'
       )}
     >
       <Icon
         aria-hidden="true"
         className={cn(
-          variant === 'desktop' ? 'h-4 w-4' : 'h-5 w-5',
+          'h-5 w-5',
           toneClass,
           'transition-colors group-hover:text-primary group-focus-visible:text-primary'
         )}

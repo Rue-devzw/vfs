@@ -38,7 +38,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({
       </div>
 
       {hasActiveFilter ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
           {products.length > 0 ? (
             products.map(product => <ProductCard key={product.id} product={product} />)
           ) : (
@@ -53,7 +53,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({
             return (
               <section key={category}>
                 <h3 className="font-headline text-2xl font-bold mb-4 border-b pb-2">{category}</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                   {categoryProducts.map(product => (
                     <ProductCard key={product.id} product={product} />
                   ))}
