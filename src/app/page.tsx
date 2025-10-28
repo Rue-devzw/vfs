@@ -3,9 +3,7 @@ import { Footer } from "@/components/layout/footer";
 import { Hero } from "@/components/pages/home/hero";
 import { Services } from "@/components/pages/home/services";
 import { WhyChooseUs } from "@/components/pages/home/why-choose-us";
-import { Locations } from "@/components/pages/home/locations";
-import { Gallery } from "@/components/pages/home/gallery";
-import { Wholesale } from "@/components/pages/home/wholesale";
+
 import { Contact } from "@/components/pages/home/contact";
 import { PartnerCTA } from "@/components/pages/home/partner-cta";
 
@@ -18,10 +16,7 @@ export default function Home() {
         <Services />
         <WhyChooseUs />
         <PartnerCTA />
-        <Locations />
-        <Gallery />
-        <Wholesale />
-        <Contact />
+                <Contact />
       </main>
       <Footer />
     </div>

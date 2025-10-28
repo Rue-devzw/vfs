@@ -8,7 +8,10 @@ const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
 
 async function imageUrlToDataUri(url: string): Promise<string> {
     const controller = new AbortController();
-    const response = await fetch(url, { signal: controller.signal });
+    const absoluteUrl = url.startsWith('/')
+        ? `${process.env.NEXT_PUBLIC_BASE_URL}${url}`
+        : url;
+    const response = await fetch(absoluteUrl, { signal: controller.signal });
     if (!response.ok) {
         throw new Error(`Failed to fetch image: ${response.statusText}`);
     }

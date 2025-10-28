@@ -2,7 +2,7 @@ import {
   Boxes,
   Cog,
   Handshake,
-  Images,
+
   LucideIcon,
   MapPin,
   PhoneCall,
@@ -43,14 +43,7 @@ export const navLinks: NavLink[] = [
     label: "Branches",
     icon: MapPin,
     tone: "accent",
-  },
-  {
-    href: "/#gallery",
-    label: "Gallery",
-    icon: Images,
-    tone: "muted",
-  },
-  {
+
     href: "/#wholesale",
     label: "Wholesale",
     icon: Boxes,
