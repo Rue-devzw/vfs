@@ -24,16 +24,24 @@ import { services } from "@/lib/data";
 import {
   type LucideIcon,
   Baby,
-  Carrot,
   Beef,
+  Carrot,
+  ChefHat,
+  Clock,
+  CupSoda,
+  Droplets,
+  Leaf,
+  Milk,
+  PackageOpen,
+  Salad,
   ShoppingBasket,
   ShowerHead,
   Sparkle,
   Sparkles,
   SprayCan,
-  Zap,
   Truck,
-  Clock,
+  Wheat,
+  Zap,
 } from "lucide-react";
 
 export type SortOption = "name-asc" | "name-desc" | "price-asc" | "price-desc";
@@ -67,6 +75,14 @@ const categoryIcons: Record<Category, LucideIcon> = {
   "Cleaning Products": SprayCan,
   "Cosmetics": Sparkles,
   "Toiletries": ShowerHead,
+  "Beverages": CupSoda,
+  "Cereals": Wheat,
+  "Dairy": Milk,
+  "Dried": Leaf,
+  "Oils & Sauces": Droplets,
+  "Other Items": PackageOpen,
+  "Salad Dressing": Salad,
+  "Seasoning": ChefHat,
 };
 
 export function StoreLayout() {
