@@ -187,46 +187,20 @@ export function StoreLayout() {
     ].includes(service.title),
   );
 
-  const quickTiles: QuickTile[] = [
-    {
-      title: "Flash Deals",
-      description: "Limited-time savings refreshed weekly across all departments.",
-      icon: Zap,
-      action: {
-        label: "View specials",
-        onClick: handleViewSpecials,
-      },
-    },
-    {
-      title: "Wholesale Desk",
-      description: "Bulk pricing, deliveries, and standing orders for institutions & restaurants.",
-      icon: Truck,
-      action: {
-        label: "Call +263 788 679 000",
-        href: "tel:+263788679000",
-      },
-    },
-    {
-      title: "Store Hours",
-      description: "Mon-Sat: 8:00 AM - 7:00 PM",
-      icon: Clock,
-      footer: "Visit us at 75 Main Street, Gweru.",
-    },
-  ];
+
 
   return (
     <div className="bg-muted/10 pb-16">
       <ShoppingCart />
 
-      <section className="relative overflow-hidden border-b bg-gradient-to-br from-primary/10 via-background to-background py-10 lg:py-14">
+      <section className="relative overflow-hidden border-b bg-gradient-to-br from-primary/10 via-background to-background pb-10 lg:pb-14">
         <div className="absolute inset-0">
           {heroBackgrounds.length > 0 ? (
             heroBackgrounds.map((image, index) => (
               <div
                 key={image.id}
-                className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
-                  index === heroBackgroundIndex ? "opacity-100" : "opacity-0"
-                }`}
+                className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === heroBackgroundIndex ? "opacity-100" : "opacity-0"
+                  }`}
                 aria-hidden={index !== heroBackgroundIndex}
               >
                 <Image
@@ -247,135 +221,105 @@ export function StoreLayout() {
         <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-background/85 to-background/70" />
         <div className="relative z-10">
           <div className="container mx-auto px-4 md:px-6">
-            <div className="grid gap-6 lg:grid-cols-[240px_minmax(0,1fr)_280px] xl:grid-cols-[260px_minmax(0,1fr)_320px]">
-            <aside className="hidden h-full rounded-2xl border bg-card/70 backdrop-blur lg:block">
-              <div className="border-b px-6 py-5">
-                <h3 className="font-headline text-lg font-semibold">Shop by Department</h3>
-                <p className="mt-1 text-sm text-muted-foreground">Browse categories just like the store aisles.</p>
-              </div>
-              <nav className="flex flex-col divide-y">
-                <button
-                  type="button"
-                  onClick={() => handleCategorySelect("All")}
-                  className={`flex items-center gap-3 px-6 py-3 text-left text-sm font-medium transition-colors hover:bg-muted/60 ${selectedCategory === "All" ? "bg-primary text-primary-foreground" : "text-foreground"}`}
-                >
-                  <Sparkle className="h-4 w-4" />
-                  View everything
-                </button>
-                {categories.map(category => {
-                  const Icon = categoryIcons[category];
-                  const isActive = selectedCategory === category;
-                  return (
-                    <button
-                      key={category}
-                      type="button"
-                      onClick={() => handleCategorySelect(category)}
-                      className={`flex items-center gap-3 px-6 py-3 text-left text-sm font-medium transition-colors hover:bg-muted/60 ${isActive ? "bg-primary text-primary-foreground" : "text-foreground"}`}
-                    >
-                      {Icon && <Icon className="h-4 w-4" />}
-                      {category}
-                    </button>
-                  );
-                })}
-              </nav>
-            </aside>
-
-            <div className="space-y-5">
-              <div className="lg:hidden">
-                <div className="flex gap-3 overflow-x-auto pb-2">
-                  {["All", ...categories].map(category => {
+            <div className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)] xl:grid-cols-[300px_minmax(0,1fr)]">
+              <aside className="hidden h-full rounded-2xl border bg-card/70 backdrop-blur lg:block">
+                <div className="border-b px-6 py-5">
+                  <h3 className="font-headline text-lg font-semibold">Shop by Department</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">Browse categories just like the store aisles.</p>
+                </div>
+                <nav className="flex flex-col divide-y">
+                  <button
+                    type="button"
+                    onClick={() => handleCategorySelect("All")}
+                    className={`flex items-center gap-3 px-6 py-3 text-left text-sm font-medium transition-colors hover:bg-muted/60 ${selectedCategory === "All" ? "bg-primary text-primary-foreground" : "text-foreground"}`}
+                  >
+                    <Sparkle className="h-4 w-4" />
+                    View everything
+                  </button>
+                  {categories.map(category => {
+                    const Icon = categoryIcons[category];
                     const isActive = selectedCategory === category;
                     return (
-                      <Button
+                      <button
                         key={category}
-                        size="sm"
-                        variant={isActive ? "default" : "outline"}
-                        className="whitespace-nowrap"
-                        onClick={() => handleCategorySelect(category as Category | "All")}
+                        type="button"
+                        onClick={() => handleCategorySelect(category)}
+                        className={`flex items-center gap-3 px-6 py-3 text-left text-sm font-medium transition-colors hover:bg-muted/60 ${isActive ? "bg-primary text-primary-foreground" : "text-foreground"}`}
                       >
+                        {Icon && <Icon className="h-4 w-4" />}
                         {category}
-                      </Button>
+                      </button>
                     );
                   })}
-                </div>
-              </div>
+                </nav>
 
-              <Carousel opts={{ loop: true }} className="overflow-hidden rounded-2xl">
-                <CarouselContent>
-                  {heroSlides.map((slide, index) => (
-                    <CarouselItem key={slide.imageId}>
-                      <div className="relative h-[260px] overflow-hidden rounded-2xl bg-muted sm:h-[320px] lg:h-[360px]">
-                        {slide.image && (
-                          <Image
-                            src={slide.image.imageUrl}
-                            alt={slide.image.description}
-                            fill
-                            className="object-cover"
-                            priority={index === 0}
-                            loading={index === 0 ? "eager" : "lazy"}
-                            sizes="(min-width: 1280px) 960px, (min-width: 768px) 70vw, 90vw"
-                            data-ai-hint={slide.image.imageHint}
-                          />
-                        )}
-                        <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/70 to-background/10" />
-                        <div className="relative z-10 flex h-full flex-col justify-center gap-4 px-7 py-8 sm:px-10">
-                          <Badge className="w-fit bg-primary text-primary-foreground shadow">{slide.highlight}</Badge>
-                          <h2 className="font-headline text-3xl font-bold text-foreground sm:text-4xl">{slide.title}</h2>
-                          <p className="max-w-xl text-sm text-muted-foreground sm:text-base">{slide.description}</p>
-                          <div className="flex flex-wrap items-center gap-3">
-                            <Button size="lg" onClick={() => handleCategorySelect(slide.category)}>
-                              {slide.cta}
-                            </Button>
-                            <Button variant="outline" size="lg" onClick={handleViewSpecials}>
-                              See specials
-                            </Button>
+              </aside>
+
+              <div className="space-y-5">
+                <div className="lg:hidden">
+                  <div className="flex gap-3 overflow-x-auto pb-2">
+                    {["All", ...categories].map(category => {
+                      const isActive = selectedCategory === category;
+                      return (
+                        <Button
+                          key={category}
+                          size="sm"
+                          variant={isActive ? "default" : "outline"}
+                          className="whitespace-nowrap"
+                          onClick={() => handleCategorySelect(category as Category | "All")}
+                        >
+                          {category}
+                        </Button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <Carousel opts={{ loop: true }} className="overflow-hidden rounded-2xl">
+                  <CarouselContent>
+                    {heroSlides.map((slide, index) => (
+                      <CarouselItem key={slide.imageId}>
+                        <div className="relative h-[260px] overflow-hidden rounded-2xl bg-muted sm:h-[320px] lg:h-[400px]">
+                          {slide.image && (
+                            <Image
+                              src={slide.image.imageUrl}
+                              alt={slide.image.description}
+                              fill
+                              className="object-cover"
+                              priority={index === 0}
+                              loading={index === 0 ? "eager" : "lazy"}
+                              sizes="(min-width: 1280px) 960px, (min-width: 768px) 70vw, 90vw"
+                              data-ai-hint={slide.image.imageHint}
+                            />
+                          )}
+                          <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/70 to-background/10" />
+                          <div className="relative z-10 flex h-full flex-col justify-center gap-4 px-7 py-8 sm:px-10">
+                            <Badge className="w-fit bg-primary text-primary-foreground shadow">{slide.highlight}</Badge>
+                            <h2 className="font-headline text-3xl font-bold text-foreground sm:text-4xl">{slide.title}</h2>
+                            <p className="max-w-xl text-sm text-muted-foreground sm:text-base">{slide.description}</p>
+                            <div className="flex flex-wrap items-center gap-3">
+                              <Button size="lg" onClick={() => handleCategorySelect(slide.category)}>
+                                {slide.cta}
+                              </Button>
+                              <Button variant="outline" size="lg" onClick={handleViewSpecials}>
+                                See specials
+                              </Button>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious className="left-4 top-1/2 hidden h-10 w-10 -translate-y-1/2 rounded-full bg-background/90 shadow lg:flex" />
-                <CarouselNext className="right-4 top-1/2 hidden h-10 w-10 -translate-y-1/2 rounded-full bg-background/90 shadow lg:flex" />
-              </Carousel>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious className="left-4 top-1/2 hidden h-10 w-10 -translate-y-1/2 rounded-full bg-background/90 shadow lg:flex" />
+                  <CarouselNext className="right-4 top-1/2 hidden h-10 w-10 -translate-y-1/2 rounded-full bg-background/90 shadow lg:flex" />
+                </Carousel>
 
 
-            </div>
+              </div>
 
-            <div className="hidden flex-col gap-4 lg:flex">
-              {quickTiles.map(tile => (
-                <Card key={tile.title} className="h-full border border-border/60 bg-card/80 shadow-sm">
-                  <CardHeader className="flex flex-row items-center gap-3 pb-3">
-                    <div className="rounded-full bg-primary/10 p-3 text-primary">
-                      <tile.icon className="h-5 w-5" />
-                    </div>
-                    <CardTitle className="text-base font-semibold">{tile.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="flex flex-col gap-4 text-sm text-muted-foreground">
-                    <p>{tile.description}</p>
-                    {tile.action ? (
-                      tile.action.href ? (
-                        <Button size="sm" variant="outline" asChild>
-                          <a href={tile.action.href} onClick={tile.action.onClick}>
-                            {tile.action.label}
-                          </a>
-                        </Button>
-                      ) : tile.action.onClick ? (
-                        <Button size="sm" onClick={tile.action.onClick}>
-                          {tile.action.label}
-                        </Button>
-                      ) : (
-                        <p className="text-sm font-medium text-primary">{tile.action.label}</p>
-                      )
-                    ) : tile.footer ? (
-                      <p className="text-sm font-medium text-primary">{tile.footer}</p>
-                    ) : null}
-                  </CardContent>
-                </Card>
-              ))}
+
             </div>
           </div>
-        </div>
         </div>
       </section>
 
@@ -412,7 +356,7 @@ export function StoreLayout() {
         </div>
       </section>
 
-      <section className="bg-card/40 py-14">
+      <section className="bg-card/40 py-8">
         <div className="container mx-auto px-4 md:px-6">
           <div className="mx-auto max-w-3xl text-center">
             <h2 className="font-headline text-3xl font-bold md:text-4xl">In-Store Services & Departments</h2>
@@ -441,7 +385,7 @@ export function StoreLayout() {
         </div>
       </section>
 
-      <section ref={productSectionRef} id="store-products" className="container mx-auto px-4 pb-16 pt-12 md:px-6">
+      <section ref={productSectionRef} id="store-products" className="container mx-auto px-4 pb-16 pt-8 md:px-6">
         <div className="grid gap-8 lg:grid-cols-[280px_minmax(0,1fr)]">
           <div className="order-2 space-y-6 lg:order-1">
             <ProductFilters
