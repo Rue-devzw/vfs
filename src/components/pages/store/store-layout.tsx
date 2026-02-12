@@ -27,7 +27,6 @@ import {
   Beef,
   Carrot,
   ChefHat,
-  Clock,
   CupSoda,
   Droplets,
   Leaf,
@@ -39,9 +38,7 @@ import {
   Sparkle,
   Sparkles,
   SprayCan,
-  Truck,
   Wheat,
-  Zap,
 } from "lucide-react";
 
 export type SortOption = "name-asc" | "name-desc" | "price-asc" | "price-desc";
@@ -55,17 +52,7 @@ type HeroSlide = {
   cta: string;
 };
 
-type QuickTile = {
-  title: string;
-  description: string;
-  icon: LucideIcon;
-  action?: {
-    label: string;
-    onClick?: () => void;
-    href?: string;
-  };
-  footer?: string;
-};
+
 
 const categoryIcons: Record<Category, LucideIcon> = {
   "Fruit & Veg": Carrot,
@@ -178,14 +165,7 @@ export function StoreLayout() {
     productSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }, []);
 
-  const highlightServices = services.filter(service =>
-    [
-      "Fruit & Vegetables",
-      "Butchery",
-      "Grocery & Spices",
-      "Wholesale Supply",
-    ].includes(service.title),
-  );
+
 
 
 

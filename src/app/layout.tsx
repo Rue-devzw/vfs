@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { ValleyAIAssistant } from "@/components/valley-ai-assistant";
+import { ValleyAIAssistant } from "@/features/ai-assistant/components/ValleyAIAssistant";
 import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -14,6 +14,22 @@ export const metadata: Metadata = {
   },
 };
 
+import { Poppins, Alegreya } from "next/font/google";
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-body",
+  display: "swap",
+});
+
+const alegreya = Alegreya({
+  subsets: ["latin"],
+  weight: ["700"],
+  variable: "--font-headline",
+  display: "swap",
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -21,21 +37,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
-      <head>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Alegreya:wght@700&family=Poppins:wght@400;600&display=swap"
-    rel="stylesheet"
-  />
-  <link rel="icon" href="/images/logo.png" type="image/png" />
-</head>
-      <body className={cn("font-body antialiased", "min-h-screen bg-background font-sans")}>
+      <body
+        className={cn(
+          "min-h-screen bg-background font-sans antialiased",
+          poppins.variable,
+          alegreya.variable,
+        )}
+      >
         <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
         >
           {children}
           <ValleyAIAssistant />

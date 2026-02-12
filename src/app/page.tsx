@@ -6,6 +6,7 @@ import { WhyChooseUs } from "@/components/pages/home/why-choose-us";
 
 import { Contact } from "@/components/pages/home/contact";
 import { PartnerCTA } from "@/components/pages/home/partner-cta";
+import { SectionReveal } from "@/components/ui/section-reveal";
 
 export default function Home() {
   return (
@@ -13,10 +14,18 @@ export default function Home() {
       <Header />
       <main className="flex-grow">
         <Hero />
-        <Services />
-        <WhyChooseUs />
-        <PartnerCTA />
-                <Contact />
+        <SectionReveal delay={0.1}>
+          <Services />
+        </SectionReveal>
+        <SectionReveal delay={0.2}>
+          <WhyChooseUs />
+        </SectionReveal>
+        <SectionReveal delay={0.3}>
+          <PartnerCTA />
+        </SectionReveal>
+        <SectionReveal delay={0.4}>
+          <Contact />
+        </SectionReveal>
       </main>
       <Footer />
     </div>
