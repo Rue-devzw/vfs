@@ -39,6 +39,7 @@ import {
   Sparkles,
   SprayCan,
   Wheat,
+  Zap,
 } from "lucide-react";
 
 export type SortOption = "name-asc" | "name-desc" | "price-asc" | "price-desc";
@@ -231,6 +232,20 @@ export function StoreLayout() {
                       </button>
                     );
                   })}
+                </nav>
+
+                <div className="border-b border-t px-6 py-5">
+                  <h3 className="font-headline text-lg font-semibold">Utilities & Services</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">Pay bills and buy tokens.</p>
+                </div>
+                <nav className="flex flex-col divide-y">
+                  <a
+                    href="/store/zesa-tokens"
+                    className="flex items-center gap-3 px-6 py-3 text-left text-sm font-medium transition-colors hover:bg-muted/60 text-foreground"
+                  >
+                    <Zap className="h-4 w-4" />
+                    ZESA Token Purchase
+                  </a>
                 </nav>
 
               </aside>
