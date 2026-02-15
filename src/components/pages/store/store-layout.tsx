@@ -13,6 +13,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { useRouter } from "next/navigation";
 import ProductCard from "./product-card";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { useImageSlideshow } from "@/hooks/use-image-slideshow";
@@ -51,6 +52,7 @@ type HeroSlide = {
   highlight: string;
   category: Category;
   cta: string;
+  href?: string;
 };
 
 
@@ -74,6 +76,7 @@ const categoryIcons: Record<Category, LucideIcon> = {
 };
 
 export function StoreLayout() {
+  const router = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
   const [showSpecialsOnly, setShowSpecialsOnly] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<Category | "All">("All");
@@ -88,6 +91,15 @@ export function StoreLayout() {
 
   const heroSlides = useMemo(() => {
     const slides: HeroSlide[] = [
+      {
+        imageId: "hero-6",
+        title: "Buy ZESA Tokens Instantly",
+        description: "Top up your electricity meter in seconds. Safe, secure, and reliable.",
+        highlight: "Powered by ZB Bank",
+        category: "Other Items",
+        cta: "Buy Token",
+        href: "/store/zesa-tokens",
+      },
       {
         imageId: "hero-produce",
         title: "Fresh Market Arrivals",
@@ -293,7 +305,16 @@ export function StoreLayout() {
                             <h2 className="font-headline text-3xl font-bold text-foreground sm:text-4xl">{slide.title}</h2>
                             <p className="max-w-xl text-sm text-muted-foreground sm:text-base">{slide.description}</p>
                             <div className="flex flex-wrap items-center gap-3">
-                              <Button size="lg" onClick={() => handleCategorySelect(slide.category)}>
+                              <Button
+                                size="lg"
+                                onClick={() => {
+                                  if (slide.href) {
+                                    router.push(slide.href);
+                                  } else {
+                                    handleCategorySelect(slide.category);
+                                  }
+                                }}
+                              >
                                 {slide.cta}
                               </Button>
                               <Button variant="outline" size="lg" onClick={handleViewSpecials}>
