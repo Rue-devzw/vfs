@@ -7,6 +7,7 @@ import { StepMeterEntry } from "./StepMeterEntry";
 import { StepVerification } from "./StepVerification";
 import { StepPayment } from "./StepPayment";
 import { StepReceipt } from "./StepReceipt";
+import { ZesaSkeleton } from "./ZesaSkeleton";
 import { useToast } from "@/hooks/use-toast";
 import { Card } from "@/components/ui/card";
 
@@ -80,25 +81,31 @@ export function ZesaFlow() {
     return (
         <Card className="w-full max-w-md bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 shadow-xl border-border/50">
             <div className="p-6">
-                {step === "METER" && (
-                    <StepMeterEntry onNext={handleMeterSubmit} isLoading={isLoading} />
-                )}
-                {step === "VERIFICATION" && customer && (
-                    <StepVerification
-                        customer={customer}
-                        onConfirm={handleVerificationConfirm}
-                        onCancel={handleVerificationCancel}
-                    />
-                )}
-                {step === "PAYMENT" && (
-                    <StepPayment
-                        onPay={handlePayment}
-                        onBack={() => setStep("VERIFICATION")}
-                        isLoading={isLoading}
-                    />
-                )}
-                {step === "RECEIPT" && receipt && (
-                    <StepReceipt receipt={receipt} onDone={handleDone} />
+                {isLoading ? (
+                    <ZesaSkeleton />
+                ) : (
+                    <>
+                        {step === "METER" && (
+                            <StepMeterEntry onNext={handleMeterSubmit} isLoading={isLoading} />
+                        )}
+                        {step === "VERIFICATION" && customer && (
+                            <StepVerification
+                                customer={customer}
+                                onConfirm={handleVerificationConfirm}
+                                onCancel={handleVerificationCancel}
+                            />
+                        )}
+                        {step === "PAYMENT" && (
+                            <StepPayment
+                                onPay={handlePayment}
+                                onBack={() => setStep("VERIFICATION")}
+                                isLoading={isLoading}
+                            />
+                        )}
+                        {step === "RECEIPT" && receipt && (
+                            <StepReceipt receipt={receipt} onDone={handleDone} />
+                        )}
+                    </>
                 )}
             </div>
         </Card>

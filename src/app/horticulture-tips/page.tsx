@@ -3,6 +3,12 @@ import { Footer } from "@/components/layout/footer";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { horticultureTips } from "@/lib/data";
 import { BookMarked } from "lucide-react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Horticulture Tips | Valley Farm Secrets",
+  description: "Explore our knowledge base for farmers and producers. Curated tips for successful farming, soil prep, and pest control.",
+};
 
 export default function HorticultureTipsPage() {
   return (
@@ -12,7 +18,7 @@ export default function HorticultureTipsPage() {
         <div className="container mx-auto px-4 md:px-6 py-12 md:py-20">
           <div className="text-center">
             <div className="inline-flex rounded-full bg-primary/10 p-4">
-                <BookMarked className="h-10 w-10 text-primary" />
+              <BookMarked className="h-10 w-10 text-primary" />
             </div>
             <h1 className="mt-4 font-headline text-4xl font-bold md:text-5xl">
               Horticulture Tips

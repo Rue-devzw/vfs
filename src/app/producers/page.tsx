@@ -2,6 +2,12 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Handshake, Mail } from "lucide-react";
 import Link from 'next/link';
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Producer's Portal | Valley Farm Secrets",
+  description: "A reliable market for your produce. Fair prices, commitment to growth, and the Farmers' Forum knowledge base.",
+};
 import { Card, CardContent } from "@/components/ui/card";
 import { FarmersForum } from "@/components/pages/producers/farmers-forum";
 import { PreBookingForm } from "@/components/pages/producers/pre-booking-form";
@@ -28,22 +34,22 @@ export default function ProducersPage() {
             </div>
 
             {/* Contact for Producers */}
-             <div className="mt-12 text-center">
-                <Card className="mx-auto inline-block">
-                    <CardContent className="p-6">
-                        <div className="flex items-center gap-4">
-                            <div className="flex-shrink-0 text-primary">
-                                <Mail className="h-6 w-6" />
-                            </div>
-                            <div>
-                                <h3 className="font-semibold">Producer Enquiries</h3>
-                                <Link href="mailto:producers@valleyfarmsecrets.com" className="text-muted-foreground hover:text-primary transition-colors">
-                                    producers@valleyfarmsecrets.com
-                                </Link>
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
+            <div className="mt-12 text-center">
+              <Card className="mx-auto inline-block">
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-4">
+                    <div className="flex-shrink-0 text-primary">
+                      <Mail className="h-6 w-6" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold">Producer Enquiries</h3>
+                      <Link href="mailto:producers@valleyfarmsecrets.com" className="text-muted-foreground hover:text-primary transition-colors">
+                        producers@valleyfarmsecrets.com
+                      </Link>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
 
             {/* Main Content Grid */}

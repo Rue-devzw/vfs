@@ -1667,6 +1667,12 @@
       "description": "Image for XTRA Washing Powder",
       "imageUrl": "/images/XTRA%20Washing%20Powder.webp",
       "imageHint": "XTRA Washing Powder"
+    },
+    {
+      "id": "zesa",
+      "description": "ZESA Electricity Token",
+      "imageUrl": "/images/Zesa.webp",
+      "imageHint": "ZESA Token"
     }
   ]
 }

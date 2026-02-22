@@ -1,0 +1,3251 @@
+[
+  {
+    "id": "001",
+    "name": "Baby",
+    "items": [
+      {
+        "code": "BABC",
+        "description": "Baby & Me Cream",
+        "cashPrice": 1,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "EPX",
+        "description": "Epimax Cream 400g",
+        "cashPrice": 5.5,
+        "onlinePrice": 5.78
+      },
+      {
+        "code": "HUGD",
+        "description": "Huggies Diapers - Pack",
+        "cashPrice": 11,
+        "onlinePrice": 11.55
+      },
+      {
+        "code": "HUGW",
+        "description": "Huggies Wipes",
+        "cashPrice": 2,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "JOH",
+        "description": "Johnson Jelly 325ml",
+        "cashPrice": 2.5,
+        "onlinePrice": 2.63
+      },
+      {
+        "code": "JOHA",
+        "description": "Johnson Aqueous 350ml",
+        "cashPrice": 2.5,
+        "onlinePrice": 2.63
+      },
+      {
+        "code": "JOHN",
+        "description": "Johnson Baby soap 175g",
+        "cashPrice": 1.2,
+        "onlinePrice": 1.26
+      },
+      {
+        "code": "MASTW",
+        "description": "Masters Wipes",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "NAN",
+        "description": "Nan 1;2;3&4",
+        "cashPrice": 5.5,
+        "onlinePrice": 5.78
+      },
+      {
+        "code": "PAMP",
+        "description": "Pampers Masters Pack",
+        "cashPrice": 12,
+        "onlinePrice": 12.6
+      },
+      {
+        "code": "PAMPS",
+        "description": "Pampers Masters Single",
+        "cashPrice": 0.12,
+        "onlinePrice": 0.13
+      },
+      {
+        "code": "PRED",
+        "description": "Predo  Wipes",
+        "cashPrice": 2,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "PURA",
+        "description": "Purity Aqueous",
+        "cashPrice": 2.3,
+        "onlinePrice": 2.42
+      },
+      {
+        "code": "SOFT",
+        "description": "Soft Care Pampers",
+        "cashPrice": 5,
+        "onlinePrice": 5.25
+      },
+      {
+        "code": "SUNS",
+        "description": "Sunlight soap",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "SUPRDY",
+        "description": "Superdry - Pamper",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "WIP",
+        "description": "Wipes",
+        "cashPrice": 0.7,
+        "onlinePrice": 0.74
+      },
+      {
+        "code": "WIPJOHN",
+        "description": "Johnson Wipes",
+        "cashPrice": null,
+        "onlinePrice": null
+      }
+    ]
+  },
+  {
+    "id": "006",
+    "name": "Dairy",
+    "items": [
+      {
+        "code": "MFS01",
+        "description": "Eggs - Each",
+        "cashPrice": null,
+        "onlinePrice": 0.16
+      },
+      {
+        "code": "EGT",
+        "description": "Eggs - Trays",
+        "cashPrice": null,
+        "onlinePrice": 5.25
+      }
+    ]
+  },
+  {
+    "id": "007",
+    "name": "Drieds",
+    "items": [
+      {
+        "code": "BOB",
+        "description": "Baobab (Powdered) - 500g",
+        "cashPrice": null,
+        "onlinePrice": 3.15
+      },
+      {
+        "code": "BOAB0001",
+        "description": "Baobab - 500g",
+        "cashPrice": null,
+        "onlinePrice": 2.63
+      },
+      {
+        "code": "MUFUSBULK",
+        "description": "Bulk - Mufushwa (Bucket)",
+        "cashPrice": null,
+        "onlinePrice": 6.3
+      },
+      {
+        "code": "BLKSUGR01",
+        "description": "Bulk - Sugar Beans",
+        "cashPrice": null,
+        "onlinePrice": 9.45
+      },
+      {
+        "code": "MFK05",
+        "description": "Kapenta - kg",
+        "cashPrice": null,
+        "onlinePrice": 5.25
+      },
+      {
+        "code": "MMDR01",
+        "description": "Madora - kg",
+        "cashPrice": null,
+        "onlinePrice": 4.2
+      },
+      {
+        "code": "MUNY002",
+        "description": "Munyemba - 75g",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "NYOO2",
+        "description": "Nyimo - 500g",
+        "cashPrice": null,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "PEANT001",
+        "description": "Peanuts (Unshelled) - 75g",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "PEA",
+        "description": "Peanuts - kg",
+        "cashPrice": null,
+        "onlinePrice": 3.68
+      },
+      {
+        "code": "MSPN75",
+        "description": "Peanuts - 500g",
+        "cashPrice": null,
+        "onlinePrice": 1.89
+      },
+      {
+        "code": "MGFG01",
+        "description": "Roundnuts - kg",
+        "cashPrice": null,
+        "onlinePrice": 3.15
+      },
+      {
+        "code": "SEDS",
+        "description": "Seeds",
+        "cashPrice": null,
+        "onlinePrice": 0.84
+      },
+      {
+        "code": "MSB12",
+        "description": "Sugar Beans - 1kg",
+        "cashPrice": null,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "MSB15",
+        "description": "Sugar Beans -Misc - kg",
+        "cashPrice": null,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "MSB14",
+        "description": "Sugar Beans - 2kg",
+        "cashPrice": null,
+        "onlinePrice": 4.2
+      },
+      {
+        "code": "MSB16",
+        "description": "Sugar Beans - kg",
+        "cashPrice": null,
+        "onlinePrice": 2.1
+      }
+    ]
+  },
+  {
+    "id": "008",
+    "name": "Oils & Sauces",
+    "items": [
+      {
+        "code": "SCE03",
+        "description": "Sauce - 1L",
+        "cashPrice": null,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "SCE02",
+        "description": "Sauce - 330ml",
+        "cashPrice": null,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "SAUC004",
+        "description": "Sauce - 375ml",
+        "cashPrice": null,
+        "onlinePrice": 1.26
+      },
+      {
+        "code": "SCE01",
+        "description": "Sauce BBQ - 2 Litres",
+        "cashPrice": null,
+        "onlinePrice": 3.15
+      },
+      {
+        "code": "SAUCDIES",
+        "description": "Sauce Daddies - 375ml",
+        "cashPrice": null,
+        "onlinePrice": 1.58
+      },
+      {
+        "code": "VIGR750",
+        "description": "Vinegar - 750ml",
+        "cashPrice": null,
+        "onlinePrice": 1.05
+      }
+    ]
+  },
+  {
+    "id": "009",
+    "name": "Other Items",
+    "items": []
+  },
+  {
+    "id": "010",
+    "name": "Salad Dressing",
+    "items": []
+  },
+  {
+    "id": "011",
+    "name": "Seasoning",
+    "items": []
+  },
+  {
+    "id": "002",
+    "name": "Beverages",
+    "items": [
+      {
+        "code": "ADE",
+        "description": "Shumba",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "AMAS",
+        "description": "AmaSip",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "AQA",
+        "description": "Aquaclear case",
+        "cashPrice": null,
+        "onlinePrice": 4.2
+      },
+      {
+        "code": "AQU",
+        "description": "Aquaclear 500ml",
+        "cashPrice": null,
+        "onlinePrice": 0.35
+      },
+      {
+        "code": "AQUA",
+        "description": "Aquaclear 750ml",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "BAL",
+        "description": "Ballyhouse lime/crush 2L",
+        "cashPrice": null,
+        "onlinePrice": 2.63
+      },
+      {
+        "code": "BALY",
+        "description": "Ballyhouse Ras/Blkbery",
+        "cashPrice": null,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "BAOJ01",
+        "description": "Baobab Juice -500ml",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "BON",
+        "description": "Bonaqua",
+        "cashPrice": null,
+        "onlinePrice": 0.35
+      },
+      {
+        "code": "BONA",
+        "description": "Bonaqua Case",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "BROTH",
+        "description": "Brothers Juice",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "CAS",
+        "description": "Cascade 500ml",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "CASC",
+        "description": "Cascade 1L",
+        "cashPrice": null,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "CERES",
+        "description": "Ceres 1L",
+        "cashPrice": null,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "CIT",
+        "description": "Citro Juice 1L",
+        "cashPrice": null,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "DEL",
+        "description": "Delta 1L",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "DELTA",
+        "description": "Delta 440ml",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "DETA",
+        "description": "DELTA 2L",
+        "cashPrice": null,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "DETM",
+        "description": "Delta 300ml",
+        "cashPrice": null,
+        "onlinePrice": 0.35
+      },
+      {
+        "code": "DRA",
+        "description": "Dragon",
+        "cashPrice": null,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "FIZ",
+        "description": "Fizzi 500ml",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "FIZZ",
+        "description": "Fizzi 2L",
+        "cashPrice": null,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "FRMIX",
+        "description": "Fresh-Up - 400ml",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "FRT",
+        "description": "Flava Burst 5L",
+        "cashPrice": null,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "FRU",
+        "description": "Fruitade",
+        "cashPrice": null,
+        "onlinePrice": 1.58
+      },
+      {
+        "code": "FRUG",
+        "description": "Frugo 300mls",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "FRUI",
+        "description": "Frutesca 430mls",
+        "cashPrice": null,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "FRUT",
+        "description": "Fruitade Guava",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "FRUTC",
+        "description": "Fruitcana",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "FUN",
+        "description": "Fun 'n Fresh",
+        "cashPrice": null,
+        "onlinePrice": 1.37
+      },
+      {
+        "code": "GINZNG",
+        "description": "Ginger Zinga",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "HNY",
+        "description": "HoneyPot",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "HNYPOT",
+        "description": "Honey Pot - Mahewu",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "JICP",
+        "description": "JuicyPlus Crush 5L",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "JUC",
+        "description": "Juice it 250ml",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "JUIPC",
+        "description": "Juicyplus 5L",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "KAMB",
+        "description": "Kambucha No.3",
+        "cashPrice": null,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "KAMBU",
+        "description": "Kambucha",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "KEF",
+        "description": "Kefalos Dairy/Juice 200ml",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "KEFALOS",
+        "description": "Milkit/ Juice Box",
+        "cashPrice": null,
+        "onlinePrice": 12.6
+      },
+      {
+        "code": "LIQ",
+        "description": "Liqui/Ceres Fruit Juice",
+        "cashPrice": null,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "MAM",
+        "description": "Mammoth Energy Drink",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "MAZ",
+        "description": "Mazoe Orange 2L",
+        "cashPrice": null,
+        "onlinePrice": 4.2
+      },
+      {
+        "code": "MAZB",
+        "description": "Mazoe Blackberry 2L",
+        "cashPrice": null,
+        "onlinePrice": 3.68
+      },
+      {
+        "code": "MAZW",
+        "description": "Mazoe Mix",
+        "cashPrice": null,
+        "onlinePrice": 3.15
+      },
+      {
+        "code": "MIK",
+        "description": "Milkit Milkshake 100ml",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "MILKB01",
+        "description": "Milkit - Big",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "MIN",
+        "description": "Minute Maid Original 400ml",
+        "cashPrice": null,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "MINU",
+        "description": "Minute Maid Refresh",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "MONTY",
+        "description": "Baked Beand Montys",
+        "cashPrice": null,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "MOY",
+        "description": "Mooyo Maheu",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "NATU",
+        "description": "Natural Joy - 1litre",
+        "cashPrice": null,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "ORAN",
+        "description": "Oran Crush 5L",
+        "cashPrice": null,
+        "onlinePrice": 3.99
+      },
+      {
+        "code": "PEAR",
+        "description": "Pearlenta Porridge 1kg",
+        "cashPrice": null,
+        "onlinePrice": 1.58
+      },
+      {
+        "code": "PEP",
+        "description": "Peps Case",
+        "cashPrice": null,
+        "onlinePrice": 9.45
+      },
+      {
+        "code": "PEPM",
+        "description": "PEPS 1L",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "PEPS",
+        "description": "Peps 500ml",
+        "cashPrice": null,
+        "onlinePrice": 0.35
+      },
+      {
+        "code": "PFK",
+        "description": "Pfuko Traditional 500ml",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "PFKBT",
+        "description": "Pfuko Buttermilk - 500ml",
+        "cashPrice": null,
+        "onlinePrice": 0.63
+      },
+      {
+        "code": "PFKO",
+        "description": "Pfuko case",
+        "cashPrice": null,
+        "onlinePrice": 6.3
+      },
+      {
+        "code": "PUREJ",
+        "description": "PureJoy Juice",
+        "cashPrice": null,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "PWR",
+        "description": "PowerPlus",
+        "cashPrice": null,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "QUEN",
+        "description": "Quench",
+        "cashPrice": null,
+        "onlinePrice": 3.68
+      },
+      {
+        "code": "RED",
+        "description": "RedBull",
+        "cashPrice": null,
+        "onlinePrice": 1.26
+      },
+      {
+        "code": "REV",
+        "description": "Revive juice 500ml",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "REVI",
+        "description": "Revive Maheu 500ml",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "REVJ",
+        "description": "Revive Juice 1L",
+        "cashPrice": null,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "REVM",
+        "description": "Revive Maheu 1L",
+        "cashPrice": null,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "RHD",
+        "description": "Rhodes Juice",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "SQU",
+        "description": "Squish Squash Crush 2L",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "SQUI",
+        "description": "Squish Squash Appl/Ras",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "STG",
+        "description": "Sting 500ml",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "SUP",
+        "description": "SuperSip 500ml",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "SUPD",
+        "description": "SuperDay 5L",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "SWT",
+        "description": "Switch",
+        "cashPrice": null,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "UFRS",
+        "description": "Ufresh Maheu",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "UFSH",
+        "description": "Ufresh Drink",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "VIC",
+        "description": "Victoria Juice",
+        "cashPrice": null,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "WILDC01",
+        "description": "Wild Cat - 500ml",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      }
+    ]
+  },
+  {
+    "id": "003",
+    "name": "Cereals",
+    "items": [
+      {
+        "code": "BOKO",
+        "description": "Bokomo CornFlakes",
+        "cashPrice": null,
+        "onlinePrice": 3.68
+      },
+      {
+        "code": "CER",
+        "description": "Cerelac 250g",
+        "cashPrice": null,
+        "onlinePrice": 2.63
+      },
+      {
+        "code": "CERE",
+        "description": "Cerelac 500ml",
+        "cashPrice": null,
+        "onlinePrice": 5.25
+      },
+      {
+        "code": "CEREV",
+        "description": "Cerevita 500g",
+        "cashPrice": null,
+        "onlinePrice": 3.15
+      },
+      {
+        "code": "CEREVM",
+        "description": "Cerevita Milk 500G",
+        "cashPrice": null,
+        "onlinePrice": 4.2
+      },
+      {
+        "code": "CERV",
+        "description": "Cerevita Sour",
+        "cashPrice": null,
+        "onlinePrice": 2.63
+      },
+      {
+        "code": "CON",
+        "description": "Cornflakes Kellogs 500g",
+        "cashPrice": null,
+        "onlinePrice": 3.15
+      },
+      {
+        "code": "COR",
+        "description": "CornFlakes Mamas",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "CORN",
+        "description": "CornFLakes Willards",
+        "cashPrice": null,
+        "onlinePrice": 2.31
+      },
+      {
+        "code": "CORNBG",
+        "description": "Cornflakes Bigtree - 1kg",
+        "cashPrice": null,
+        "onlinePrice": 4.2
+      },
+      {
+        "code": "CORNBG02",
+        "description": "Cornflakes Bigtree - 500g",
+        "cashPrice": null,
+        "onlinePrice": 2.42
+      },
+      {
+        "code": "CORNFBG",
+        "description": "Cornflakes Bigtree - 750g",
+        "cashPrice": null,
+        "onlinePrice": 3.36
+      },
+      {
+        "code": "GRW",
+        "description": "Grown ups",
+        "cashPrice": null,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "KELCORNF",
+        "description": "Cornflakes Kellogs - 1kg",
+        "cashPrice": null,
+        "onlinePrice": 4.73
+      },
+      {
+        "code": "MUE",
+        "description": "Muesli",
+        "cashPrice": null,
+        "onlinePrice": 3.68
+      },
+      {
+        "code": "OAT",
+        "description": "Oats",
+        "cashPrice": null,
+        "onlinePrice": 3.15
+      },
+      {
+        "code": "SUN",
+        "description": "Sunny Porridge",
+        "cashPrice": null,
+        "onlinePrice": 1.58
+      },
+      {
+        "code": "WETBX",
+        "description": "Weetbix - 450g",
+        "cashPrice": null,
+        "onlinePrice": 2.31
+      }
+    ]
+  },
+  {
+    "id": "004",
+    "name": "Cleaning Products",
+    "items": [
+      {
+        "code": "ALH",
+        "description": "Aloha Washing Pwd 2kg",
+        "cashPrice": 4,
+        "onlinePrice": 4.2
+      },
+      {
+        "code": "ALO",
+        "description": "Aloha Washing Pwd 1kg",
+        "cashPrice": 2,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "ALOD",
+        "description": "Aloha Dishwasher",
+        "cashPrice": 1.5,
+        "onlinePrice": 1.58
+      },
+      {
+        "code": "ALOH",
+        "description": "Aloha Washing Pwdr 500g",
+        "cashPrice": 1,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "ARP",
+        "description": "Arpic Cleaner 750ml",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "BIG",
+        "description": "BigBen bar",
+        "cashPrice": 1.5,
+        "onlinePrice": 1.58
+      },
+      {
+        "code": "BOM",
+        "description": "Boom Paste",
+        "cashPrice": 0.5,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "BOMFC",
+        "description": "Boom Force Cream 750ml",
+        "cashPrice": 1.5,
+        "onlinePrice": 1.58
+      },
+      {
+        "code": "BOMM",
+        "description": "Boom 150g",
+        "cashPrice": 0.5,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "BOMW",
+        "description": "Boom - 1KG",
+        "cashPrice": 2,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "BOO",
+        "description": "BoomDish washer 750ml",
+        "cashPrice": 2,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "BOOMB",
+        "description": "Boom Bleach 750ml",
+        "cashPrice": 1.8,
+        "onlinePrice": 1.89
+      },
+      {
+        "code": "BOOMF",
+        "description": "Boom Force Scouring",
+        "cashPrice": 1,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "BOOMM",
+        "description": "Boom W/P 500g",
+        "cashPrice": 1,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "COB",
+        "description": "Cobra 350ml",
+        "cashPrice": 2.5,
+        "onlinePrice": 2.63
+      },
+      {
+        "code": "COM",
+        "description": "Comfort 1L",
+        "cashPrice": 3,
+        "onlinePrice": 3.15
+      },
+      {
+        "code": "DISW",
+        "description": "Dishwasher Seawave",
+        "cashPrice": 1,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "DOMES",
+        "description": "Domestos local",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "DOMS",
+        "description": "Domestos",
+        "cashPrice": 2,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "GK",
+        "description": "Gik 750ml",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "GREE",
+        "description": "Green Bar Perfection",
+        "cashPrice": 1.3,
+        "onlinePrice": 1.37
+      },
+      {
+        "code": "GRN",
+        "description": "Green Bar",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "HAN",
+        "description": "Handy Andy",
+        "cashPrice": 2,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "HARP",
+        "description": "Harpic",
+        "cashPrice": 2,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "JK",
+        "description": "Jik 750ml",
+        "cashPrice": 2,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "KIW",
+        "description": "Kiwi Polish 50ml",
+        "cashPrice": 1,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "KNCK",
+        "description": "Knock Dishwasher 750ml",
+        "cashPrice": 1,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "KNO",
+        "description": "Knockout Can",
+        "cashPrice": 1,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "KNOA",
+        "description": "Knockout All Purpose Cleaner 500ml",
+        "cashPrice": 1,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "KNOC",
+        "description": "Knock out Satchet",
+        "cashPrice": 0.5,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "KNOCK",
+        "description": "Knockout Dishwasher 2L",
+        "cashPrice": 2,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "KNOCT",
+        "description": "Knockout Bleach",
+        "cashPrice": 1.5,
+        "onlinePrice": 1.58
+      },
+      {
+        "code": "KWI",
+        "description": "Kiwi 100ml",
+        "cashPrice": 2,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "MAQ",
+        "description": "Maq 1kg",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "MEGFLR",
+        "description": "Boom 2kg",
+        "cashPrice": 4,
+        "onlinePrice": 4.2
+      },
+      {
+        "code": "MQ",
+        "description": "Maq 2kg",
+        "cashPrice": 4,
+        "onlinePrice": 4.2
+      },
+      {
+        "code": "NUGET",
+        "description": "Nugget - 100ml",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "OMO",
+        "description": "Omo Powder 2kg",
+        "cashPrice": 4,
+        "onlinePrice": 4.2
+      },
+      {
+        "code": "PIN",
+        "description": "Pinegel 500ml",
+        "cashPrice": 1.5,
+        "onlinePrice": 1.58
+      },
+      {
+        "code": "PNE",
+        "description": "Pinegel 1L",
+        "cashPrice": 3,
+        "onlinePrice": 3.15
+      },
+      {
+        "code": "SEAW",
+        "description": "DishWasher Seawave 2L",
+        "cashPrice": 2,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "SNL",
+        "description": "Sunlight Liquid",
+        "cashPrice": 2,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "STASFT",
+        "description": "Star Soft - 2litre",
+        "cashPrice": 3.5,
+        "onlinePrice": 3.68
+      },
+      {
+        "code": "STS",
+        "description": "StarSoft Refill mix",
+        "cashPrice": 2,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "SUNL",
+        "description": "Sunlight 1kg",
+        "cashPrice": 2,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "SUNLT",
+        "description": "SunLight Pwd 2kg",
+        "cashPrice": 4,
+        "onlinePrice": 4.2
+      },
+      {
+        "code": "VIM",
+        "description": "Xtra Vim",
+        "cashPrice": 0.8,
+        "onlinePrice": 0.84
+      },
+      {
+        "code": "VM",
+        "description": "Vim Can",
+        "cashPrice": 1,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "XTRA",
+        "description": "XTRA Washing Powder",
+        "cashPrice": 3.5,
+        "onlinePrice": 3.68
+      }
+    ]
+  },
+  {
+    "id": "005",
+    "name": "Cosmetics",
+    "items": [
+      {
+        "code": "ADDSPRY",
+        "description": "Addidas Spray",
+        "cashPrice": 3,
+        "onlinePrice": 3.15
+      },
+      {
+        "code": "AXP",
+        "description": "Axe Perfumer",
+        "cashPrice": 2,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "BAB",
+        "description": "Baby Crez 500ml",
+        "cashPrice": 1.8,
+        "onlinePrice": 1.89
+      },
+      {
+        "code": "BABL",
+        "description": "Baby line 500ml",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "BCS",
+        "description": "Black Chick  Small 125ml",
+        "cashPrice": 1,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "BEV",
+        "description": "BeverlyHills Roll on",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "BEVP",
+        "description": "Beverly Hills Perfume",
+        "cashPrice": 2.5,
+        "onlinePrice": 2.63
+      },
+      {
+        "code": "BLC",
+        "description": "BlackChic Big 250ml",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "BOD",
+        "description": "Bodi doc",
+        "cashPrice": 3,
+        "onlinePrice": 3.15
+      },
+      {
+        "code": "BODD",
+        "description": "Bodi doc Tissue Oil",
+        "cashPrice": 3,
+        "onlinePrice": 3.15
+      },
+      {
+        "code": "BOMO",
+        "description": "Boom Fabric Conditioner 2ltr",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "CBL",
+        "description": "Clere Beautiful Cream 400ml",
+        "cashPrice": 2,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "CFM",
+        "description": "Clere For Men 450ml",
+        "cashPrice": 2,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "CLG",
+        "description": "Clere Glycerine 100ml",
+        "cashPrice": 1,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "CLM",
+        "description": "Clere Men lotion 400ml",
+        "cashPrice": 2,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "CLR",
+        "description": "Clere Glyco Glycerine 100ml",
+        "cashPrice": 1.2,
+        "onlinePrice": 1.26
+      },
+      {
+        "code": "CLRE",
+        "description": "Clere Ladies Cream",
+        "cashPrice": 2,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "COSMO",
+        "description": "Cosmo Foam Bath",
+        "cashPrice": 1,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "DAR",
+        "description": "Dark& Lovely",
+        "cashPrice": 5.5,
+        "onlinePrice": 5.78
+      },
+      {
+        "code": "DAW",
+        "description": "Dawn",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "DAWN",
+        "description": "Dawn Cream",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "DAX31",
+        "description": "Dax 3 in 1 375mls",
+        "cashPrice": 1.5,
+        "onlinePrice": 1.58
+      },
+      {
+        "code": "DAXG",
+        "description": "Dax Hair Grower 250ml",
+        "cashPrice": 3,
+        "onlinePrice": 3.15
+      },
+      {
+        "code": "DAXH",
+        "description": "Dax Hair Grower 125mls",
+        "cashPrice": 1.5,
+        "onlinePrice": 1.58
+      },
+      {
+        "code": "DAXI",
+        "description": "Dax Freez Big 250ml",
+        "cashPrice": 2,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "DOVE",
+        "description": "Dove Lotion",
+        "cashPrice": 5.5,
+        "onlinePrice": 5.78
+      },
+      {
+        "code": "DXA",
+        "description": "Dax Freez Small 100ml",
+        "cashPrice": 1.2,
+        "onlinePrice": 1.26
+      },
+      {
+        "code": "DXB",
+        "description": "Dax Big 3 n 1",
+        "cashPrice": 2.5,
+        "onlinePrice": 2.63
+      },
+      {
+        "code": "ENG",
+        "description": "English Blazer",
+        "cashPrice": 2.5,
+        "onlinePrice": 2.63
+      },
+      {
+        "code": "EWP",
+        "description": "EasyWaves Pack",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "EXCLA",
+        "description": "Exclamation Perfume",
+        "cashPrice": 2,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "GMG",
+        "description": "Gentel Magic lotion",
+        "cashPrice": 1,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "GML",
+        "description": "Gentle Magic Cream",
+        "cashPrice": 1,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "GMS",
+        "description": "Gentel Magic Serum",
+        "cashPrice": 1.5,
+        "onlinePrice": 1.58
+      },
+      {
+        "code": "GNT",
+        "description": "Gentel Magic Soap",
+        "cashPrice": 1,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "GNTO",
+        "description": "Gentle Magic Oil 50ml",
+        "cashPrice": 2.5,
+        "onlinePrice": 2.63
+      },
+      {
+        "code": "HAR",
+        "description": "Hair Remover Cosmo 40g",
+        "cashPrice": 0.5,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "HOIT",
+        "description": "Hoit Toity 90mls",
+        "cashPrice": 2,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "HOITY",
+        "description": "Hoity Toity Lotion",
+        "cashPrice": 3,
+        "onlinePrice": 3.15
+      },
+      {
+        "code": "IGM",
+        "description": "Ingrams Herbal",
+        "cashPrice": 2.5,
+        "onlinePrice": 2.63
+      },
+      {
+        "code": "IGMS",
+        "description": "Ingrams Senstive 450ml",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "IMP",
+        "description": "Ingrams Moisture Plus 450ml",
+        "cashPrice": 2.8,
+        "onlinePrice": 2.94
+      },
+      {
+        "code": "ING",
+        "description": "Ingrams men 450ml",
+        "cashPrice": 2.8,
+        "onlinePrice": 2.94
+      },
+      {
+        "code": "INGM",
+        "description": "Ingrams Aloe 450ml",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "INGMS",
+        "description": "Ingrams tissue oi l450ml",
+        "cashPrice": 3.5,
+        "onlinePrice": 3.68
+      },
+      {
+        "code": "INGRO",
+        "description": "Ingrams Original 450mls",
+        "cashPrice": 2.8,
+        "onlinePrice": 2.94
+      },
+      {
+        "code": "INR",
+        "description": "Igrams Roibos 450ml",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "ISB",
+        "description": "Inecto Super Black75g",
+        "cashPrice": 1,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "ISOP",
+        "description": "Isoplus Edge Control",
+        "cashPrice": 2.5,
+        "onlinePrice": 2.63
+      },
+      {
+        "code": "ISP",
+        "description": "Iso Plus Hair Spry 240ml",
+        "cashPrice": 1.8,
+        "onlinePrice": 1.89
+      },
+      {
+        "code": "LACE",
+        "description": "Lace Lotion",
+        "cashPrice": 3,
+        "onlinePrice": 3.15
+      },
+      {
+        "code": "MOUS",
+        "description": "Mousse",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "NIV",
+        "description": "Nivea Cream/Lotion 400ml",
+        "cashPrice": 4,
+        "onlinePrice": 4.2
+      },
+      {
+        "code": "NIVA",
+        "description": "Nivea Radiant Cream 400ml",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "NIVES",
+        "description": "Nivea Spray",
+        "cashPrice": 3,
+        "onlinePrice": 3.15
+      },
+      {
+        "code": "NVIA",
+        "description": "Nivea Q10",
+        "cashPrice": 7.5,
+        "onlinePrice": 7.88
+      },
+      {
+        "code": "OHS",
+        "description": "Oh So Heavenly Lotion 720ml",
+        "cashPrice": 5,
+        "onlinePrice": 5.25
+      },
+      {
+        "code": "OHSHV",
+        "description": "Oh So Heavenly - 2L",
+        "cashPrice": 5.5,
+        "onlinePrice": 5.78
+      },
+      {
+        "code": "OHSL",
+        "description": "Oh  So Heavenly Lotion 1L",
+        "cashPrice": 7,
+        "onlinePrice": 7.35
+      },
+      {
+        "code": "OHSO",
+        "description": "Oh SO Heavenly Cream 450ml",
+        "cashPrice": 4,
+        "onlinePrice": 4.2
+      },
+      {
+        "code": "OHSOQ",
+        "description": "Oh So heavenly Q10",
+        "cashPrice": 7,
+        "onlinePrice": 7.35
+      },
+      {
+        "code": "OLV",
+        "description": "Olive Oil Spry 250ml",
+        "cashPrice": 1.8,
+        "onlinePrice": 1.89
+      },
+      {
+        "code": "PLA",
+        "description": "PlayBoy Roll on",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "PLAY",
+        "description": "PlayBoy Perfume",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "RLS",
+        "description": "Roll On Shield",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "ROLL",
+        "description": "Roll On Addidas 50ml",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "ROLNIV",
+        "description": "Roll on Nivea - 50ml",
+        "cashPrice": 2,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "ROP",
+        "description": "Roll On Power House 50ml",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "SHOW",
+        "description": "Shower To Shower",
+        "cashPrice": 1,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "SHWR",
+        "description": "Shower to Shower Perfume",
+        "cashPrice": 2.5,
+        "onlinePrice": 2.63
+      },
+      {
+        "code": "SKA",
+        "description": "Skala 200g",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "SKAL",
+        "description": "Skala hairFood",
+        "cashPrice": 1,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "TOPS",
+        "description": "Top Society",
+        "cashPrice": 1.5,
+        "onlinePrice": 1.58
+      },
+      {
+        "code": "VAS",
+        "description": "Vaseline 450ml",
+        "cashPrice": 3.8,
+        "onlinePrice": 3.99
+      },
+      {
+        "code": "VASE",
+        "description": "Vaseline 250ml",
+        "cashPrice": 2,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "VASEL",
+        "description": "v",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "VASELN",
+        "description": "Vaseline lips",
+        "cashPrice": 0.5,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "VASL",
+        "description": "Vaseline 50ml",
+        "cashPrice": 0.5,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "VASLN",
+        "description": "Vaseline Cream",
+        "cashPrice": 3,
+        "onlinePrice": 3.15
+      },
+      {
+        "code": "VASLNL",
+        "description": "Vaseline Lotion",
+        "cashPrice": 3.5,
+        "onlinePrice": 3.68
+      },
+      {
+        "code": "VESTGLC",
+        "description": "Vestline Garlic - 200g",
+        "cashPrice": 1,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "VSN",
+        "description": "Vaseline - 100ml",
+        "cashPrice": 1,
+        "onlinePrice": 1.05
+      }
+    ]
+  },
+  {
+    "id": "019",
+    "name": "Toiletries",
+    "items": [
+      {
+        "code": "ANG",
+        "description": "Angel Care Tissue",
+        "cashPrice": 8,
+        "onlinePrice": 8.4
+      },
+      {
+        "code": "AQFRSH",
+        "description": "Aquafresh - 100ml",
+        "cashPrice": 1,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "BABYS",
+        "description": "Baby Soft 18s",
+        "cashPrice": 9.5,
+        "onlinePrice": 9.98
+      },
+      {
+        "code": "CLO",
+        "description": "Close Up",
+        "cashPrice": 1,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "COL",
+        "description": "Colgate 100ml",
+        "cashPrice": 1,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "DELLP",
+        "description": "Utra Pads",
+        "cashPrice": 0.6,
+        "onlinePrice": 0.63
+      },
+      {
+        "code": "DETO",
+        "description": "Dettol Liquid",
+        "cashPrice": 1,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "DETT",
+        "description": "Dettol soap",
+        "cashPrice": 1,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "GEI",
+        "description": "Geisha",
+        "cashPrice": 1,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "HIL",
+        "description": "HiLife Soap",
+        "cashPrice": 0.5,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "HYG",
+        "description": "hygienix Soap 175g",
+        "cashPrice": 0.5,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "JAD",
+        "description": "Jade Soap",
+        "cashPrice": 0.8,
+        "onlinePrice": 0.84
+      },
+      {
+        "code": "KOT",
+        "description": "Kotex pads 10s",
+        "cashPrice": 1.5,
+        "onlinePrice": 1.58
+      },
+      {
+        "code": "LIFBY",
+        "description": "Lifebouy",
+        "cashPrice": 0.8,
+        "onlinePrice": 0.84
+      },
+      {
+        "code": "LUX",
+        "description": "Lux Soap",
+        "cashPrice": 0.9,
+        "onlinePrice": 0.95
+      },
+      {
+        "code": "OHSOH",
+        "description": "Oh So Heavenly Gel",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "PANT",
+        "description": "Kotex Pant Liners",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "PDS",
+        "description": "Pads Mix",
+        "cashPrice": 1,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "PERI",
+        "description": "Period pants",
+        "cashPrice": 1,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "PROT",
+        "description": "Protex Soap",
+        "cashPrice": 1,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "PRVT",
+        "description": "Private Joy Tissue",
+        "cashPrice": 8,
+        "onlinePrice": 8.4
+      },
+      {
+        "code": "ROM",
+        "description": "Romance Soap 50g",
+        "cashPrice": 0.8,
+        "onlinePrice": 0.84
+      },
+      {
+        "code": "SAT",
+        "description": "Tissue Single",
+        "cashPrice": 0.5,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "SATI",
+        "description": "Satiskin 2L",
+        "cashPrice": 4.5,
+        "onlinePrice": 4.73
+      },
+      {
+        "code": "SATSK",
+        "description": "Satiskin 1L",
+        "cashPrice": 2.5,
+        "onlinePrice": 2.63
+      },
+      {
+        "code": "SON",
+        "description": "Sona",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "TISS",
+        "description": "Tissue 4s",
+        "cashPrice": 1,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "TWIN",
+        "description": "TwinSaver Tissue",
+        "cashPrice": 9,
+        "onlinePrice": 9.45
+      },
+      {
+        "code": "TWINS",
+        "description": "TwinSaver 9s",
+        "cashPrice": 4.5,
+        "onlinePrice": 4.73
+      },
+      {
+        "code": "YBO",
+        "description": "Yebo Soap",
+        "cashPrice": 0.5,
+        "onlinePrice": 0.53
+      }
+    ]
+  },
+  {
+    "id": "012",
+    "name": "Snack",
+    "items": [
+      {
+        "code": "ALL",
+        "description": "Allsorts sweets",
+        "cashPrice": null,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "AMAZ",
+        "description": "Amazon Cookies",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "BIC",
+        "description": "Bickies",
+        "cashPrice": null,
+        "onlinePrice": 0.42
+      },
+      {
+        "code": "BLS01",
+        "description": "Bliss - 200g",
+        "cashPrice": null,
+        "onlinePrice": 0.42
+      },
+      {
+        "code": "BUBB",
+        "description": "Bubble Chocolate",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "CAK",
+        "description": "Cake",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "CARD",
+        "description": "Cardbury choc",
+        "cashPrice": null,
+        "onlinePrice": 1.58
+      },
+      {
+        "code": "CHA",
+        "description": "Charhons 500g",
+        "cashPrice": null,
+        "onlinePrice": 1.58
+      },
+      {
+        "code": "CHAR",
+        "description": "Charhons 1kg",
+        "cashPrice": null,
+        "onlinePrice": 3.15
+      },
+      {
+        "code": "CHARH",
+        "description": "Charhorns 2kg",
+        "cashPrice": null,
+        "onlinePrice": 5.46
+      },
+      {
+        "code": "CHARHN",
+        "description": "Charhon Crunch Cookies",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "CHARNS",
+        "description": "Charhons 200g",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "CHCOK",
+        "description": "Charhons Cookies - 500g",
+        "cashPrice": null,
+        "onlinePrice": 1.58
+      },
+      {
+        "code": "CHELS",
+        "description": "ShortBread Chelsea",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "CHI",
+        "description": "Chicken curls",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "CHIC",
+        "description": "Chicken Flings",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "CHMP",
+        "description": "Chompkins 25g",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "CHO",
+        "description": "Chocolate Coated Biscuits",
+        "cashPrice": null,
+        "onlinePrice": 1.58
+      },
+      {
+        "code": "CHOCC",
+        "description": "Chocalate Coated Small",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "CHOCCB",
+        "description": "Chocolate coated Box",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "CHOI",
+        "description": "Choice Biscuits",
+        "cashPrice": null,
+        "onlinePrice": 1.58
+      },
+      {
+        "code": "CHOMP",
+        "description": "Chompkins 150g",
+        "cashPrice": null,
+        "onlinePrice": 1.37
+      },
+      {
+        "code": "CHPP",
+        "description": "Chippa",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "COC",
+        "description": "Coco Bongo Choc",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "COKI",
+        "description": "Cookies",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "COU",
+        "description": "Cough drops",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "CRAC",
+        "description": "Cracker Jax",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "CRINK",
+        "description": "Crinkles big",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "CRM",
+        "description": "CreamFeast",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "DAI",
+        "description": "Daisy Biscuits",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "DAND",
+        "description": "Dandy Pack",
+        "cashPrice": null,
+        "onlinePrice": 2.63
+      },
+      {
+        "code": "DELL",
+        "description": "Dell Cookies 500ml",
+        "cashPrice": null,
+        "onlinePrice": 1.89
+      },
+      {
+        "code": "DELLC",
+        "description": "Dell cookies 1kg",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "DOR",
+        "description": "Doritos 145g",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "ECLAI",
+        "description": "Eclair/Big Boom Pack",
+        "cashPrice": null,
+        "onlinePrice": 3.47
+      },
+      {
+        "code": "ELD30",
+        "description": "Eldos - 30g",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "FIN",
+        "description": "Finger Biscuits",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "FRI",
+        "description": "Frimax 150g",
+        "cashPrice": null,
+        "onlinePrice": 1.58
+      },
+      {
+        "code": "FUNN",
+        "description": "Funny Dip",
+        "cashPrice": null,
+        "onlinePrice": 0.21
+      },
+      {
+        "code": "GOLD",
+        "description": "GoldenFresh Biscuits",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "HAL01",
+        "description": "HALLS",
+        "cashPrice": null,
+        "onlinePrice": 0.11
+      },
+      {
+        "code": "HELL",
+        "description": "Hello/Chippa Single",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "HELPCK",
+        "description": "Hello - Pack",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "IMPR",
+        "description": "Imperial Mints",
+        "cashPrice": null,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "JMBO",
+        "description": "Jumbo Pack",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "JOE",
+        "description": "Joe Biscuits",
+        "cashPrice": null,
+        "onlinePrice": 0.35
+      },
+      {
+        "code": "JPT",
+        "description": "Jupiter 75g",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "JUMSNG",
+        "description": "Jumbo single",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "KING",
+        "description": "KingKurls Pack",
+        "cashPrice": null,
+        "onlinePrice": 3.68
+      },
+      {
+        "code": "KIS01",
+        "description": "Kiss",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "KNG",
+        "description": "KingKurls Single",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "KRE",
+        "description": "Krema Biscuits",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "LAKK",
+        "description": "LakkerNax",
+        "cashPrice": null,
+        "onlinePrice": 1.89
+      },
+      {
+        "code": "LAYS",
+        "description": "Lays 125g",
+        "cashPrice": null,
+        "onlinePrice": 1.58
+      },
+      {
+        "code": "LOB",
+        "description": "Lobels Biscuits",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "LOBE",
+        "description": "Lobels Loose Biscuits",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "LOLI",
+        "description": "Lollipop",
+        "cashPrice": null,
+        "onlinePrice": 0.21
+      },
+      {
+        "code": "LOO",
+        "description": "Loose Biscuits 200g",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "LOS",
+        "description": "Loose Buiscuits 2kg",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "LUN",
+        "description": "Lunch Bar Choc",
+        "cashPrice": null,
+        "onlinePrice": 0.42
+      },
+      {
+        "code": "LYS",
+        "description": "Lays 23g",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "MAP",
+        "description": "Maputi",
+        "cashPrice": null,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "MARIE",
+        "description": "Marie",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "MARS",
+        "description": "MarshMallow Long",
+        "cashPrice": null,
+        "onlinePrice": 0.26
+      },
+      {
+        "code": "MARSH",
+        "description": "MarshMallow Long Pack",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "MAY",
+        "description": "Maynards Jelly Sweets",
+        "cashPrice": null,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "MINTS",
+        "description": "Mints Pack",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "MNT",
+        "description": "Mint/Dandy/toffe",
+        "cashPrice": null,
+        "onlinePrice": 0.05
+      },
+      {
+        "code": "MPT",
+        "description": "Maputi Authentic",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "MRSHP",
+        "description": "MarshMallow Pack",
+        "cashPrice": null,
+        "onlinePrice": 6.3
+      },
+      {
+        "code": "NIB",
+        "description": "Nibbles",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "NIVE",
+        "description": "Maputi Single",
+        "cashPrice": null,
+        "onlinePrice": 0.11
+      },
+      {
+        "code": "PAS",
+        "description": "Pascal Choc",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "POP",
+        "description": "Popcorn",
+        "cashPrice": null,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "POPCN",
+        "description": "Popticorn -120g",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "POPT",
+        "description": "Popticorn Pack",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "PRO",
+        "description": "Proton Cookies 1kg",
+        "cashPrice": null,
+        "onlinePrice": 3.68
+      },
+      {
+        "code": "PROTN",
+        "description": "Proton Cookies 250g",
+        "cashPrice": null,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "PROTO",
+        "description": "Proton Cookies 2kg",
+        "cashPrice": null,
+        "onlinePrice": 6.83
+      },
+      {
+        "code": "PRT",
+        "description": "Proton Cookies 500g",
+        "cashPrice": null,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "RIPP",
+        "description": "Ripples",
+        "cashPrice": null,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "ROSS",
+        "description": "Rosso Chocolate",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "ROSY",
+        "description": "Rossy Wafers",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "RUL",
+        "description": "Rul 3D",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "SHOR",
+        "description": "ShortBread Mini",
+        "cashPrice": null,
+        "onlinePrice": 0.26
+      },
+      {
+        "code": "SHRT",
+        "description": "ShortBread Biscuits - 150g",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "SIM",
+        "description": "Simba",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "SPD",
+        "description": "Spuds 30g",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "SPNRL01",
+        "description": "Spinners loose - Pack",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "SPU",
+        "description": "Spuds 75g",
+        "cashPrice": null,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "SPUD",
+        "description": "Spuds/Lays Box 30g",
+        "cashPrice": null,
+        "onlinePrice": 10.5
+      },
+      {
+        "code": "SPUDB",
+        "description": "S",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "STA",
+        "description": "Stambo/ BigBoom Pack",
+        "cashPrice": null,
+        "onlinePrice": 3.15
+      },
+      {
+        "code": "STAMB",
+        "description": "Stambo/ BigBoom Single",
+        "cashPrice": null,
+        "onlinePrice": 0.11
+      },
+      {
+        "code": "SUNB",
+        "description": "SunBite Biscuits",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "SUNSA",
+        "description": "Sun Snack",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "SWEE",
+        "description": "Sweet Cup",
+        "cashPrice": null,
+        "onlinePrice": 0.11
+      },
+      {
+        "code": "SWEEC",
+        "description": "SweetCup Can",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "TEA",
+        "description": "Tea Biscuits",
+        "cashPrice": null,
+        "onlinePrice": 3.15
+      },
+      {
+        "code": "THI",
+        "description": "Things/Kornkurl 150g",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "THIN",
+        "description": "Things 75g",
+        "cashPrice": null,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "THING",
+        "description": "Things Pack",
+        "cashPrice": null,
+        "onlinePrice": 5.25
+      },
+      {
+        "code": "THINP",
+        "description": "THINGS Pack",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "TME",
+        "description": "Time Biscuits",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "TOF",
+        "description": "Toffee Bar",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "TOPTB",
+        "description": "Top T biscuits - 150g",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "TORK",
+        "description": "Torku Chocolate",
+        "cashPrice": null,
+        "onlinePrice": 0.26
+      },
+      {
+        "code": "VIG",
+        "description": "Vigos Choc",
+        "cashPrice": null,
+        "onlinePrice": 0.11
+      },
+      {
+        "code": "WSH",
+        "description": "Wish Cream",
+        "cashPrice": null,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "YOGT",
+        "description": "Yogurt Kefalos 75ml",
+        "cashPrice": null,
+        "onlinePrice": 0.63
+      },
+      {
+        "code": "ZAP",
+        "description": "ZapNax",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "ZAPP",
+        "description": "ZapNax Pack",
+        "cashPrice": null,
+        "onlinePrice": 3.15
+      }
+    ]
+  },
+  {
+    "id": "013",
+    "name": "Soups",
+    "items": [
+      {
+        "code": "BEAN",
+        "description": "Beans kg",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "BEEF",
+        "description": "Beef Kg",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "BRON",
+        "description": "Brono Gravy",
+        "cashPrice": null,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "BST",
+        "description": "Bisto Gravy 125g",
+        "cashPrice": null,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "BSTO",
+        "description": "Bisto Gravy 250g",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "CAB",
+        "description": "Cabbages",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "CARRT",
+        "description": "Carrots",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "CHCK",
+        "description": "Chicken full",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "CUC",
+        "description": "Cucumber",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "EGG",
+        "description": "Eggs",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "GARLI",
+        "description": "Garlic",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "GREBN",
+        "description": "Green Beans",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "KNOR",
+        "description": "Knorr Soup",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "LETT",
+        "description": "Lettuce",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "ONIO",
+        "description": "Onion",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "ORANG",
+        "description": "Orange - pocket",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "ROY",
+        "description": "Royco Satchet",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "ROYC",
+        "description": "Royco Box 12s",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "RYC",
+        "description": "Royco Mchuzi",
+        "cashPrice": null,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "SAUC",
+        "description": "Sausage kg",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "SPIC",
+        "description": "Spice",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "TOM",
+        "description": "Tomatoes kg",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "TOPL",
+        "description": "Top Soy 90g",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "USV",
+        "description": "Usavi Mix",
+        "cashPrice": null,
+        "onlinePrice": 0.35
+      }
+    ]
+  },
+  {
+    "id": "014",
+    "name": "Spices",
+    "items": [
+      {
+        "code": "SOTHCTN",
+        "description": "Southern Coating - 200g",
+        "cashPrice": null,
+        "onlinePrice": 1.58
+      }
+    ]
+  },
+  {
+    "id": "015",
+    "name": "Spreads",
+    "items": [
+      {
+        "code": "BLUE",
+        "description": "Blue Band",
+        "cashPrice": null,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "BTT",
+        "description": "Buttercup Brick 500g",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "BUTC",
+        "description": "ButterCup 250ml",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "BUTT",
+        "description": "ButterCup tub",
+        "cashPrice": null,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "MAR",
+        "description": "Marmalade Jam 500g",
+        "cashPrice": null,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "PNUT",
+        "description": "Peanut Butter 1L",
+        "cashPrice": null,
+        "onlinePrice": 3.15
+      },
+      {
+        "code": "PNUTB",
+        "description": "Peanut Butter 375ml",
+        "cashPrice": null,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "ROMI",
+        "description": "Romi Margarine",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "SNJAM",
+        "description": "SunJam 900g",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "SUNJ",
+        "description": "SunJam 500g",
+        "cashPrice": null,
+        "onlinePrice": 1.58
+      },
+      {
+        "code": "TJAM",
+        "description": "Topjam 900g",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "TOP",
+        "description": "Top Jam 400ml",
+        "cashPrice": null,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "ZMG",
+        "description": "Zimgold Marg  Tub",
+        "cashPrice": null,
+        "onlinePrice": null
+      }
+    ]
+  },
+  {
+    "id": "016",
+    "name": "Starch",
+    "items": [
+      {
+        "code": "AROMA",
+        "description": "Noddles Aroma",
+        "cashPrice": null,
+        "onlinePrice": 1.26
+      },
+      {
+        "code": "ASHN",
+        "description": "Ashna Rice 2kg",
+        "cashPrice": null,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "BAS",
+        "description": "Basmattii 5kg",
+        "cashPrice": null,
+        "onlinePrice": 10.5
+      },
+      {
+        "code": "BEL",
+        "description": "Bella Macaroni 3kg",
+        "cashPrice": null,
+        "onlinePrice": 4.2
+      },
+      {
+        "code": "BET",
+        "description": "BetterBuy RollerMeal 10kg",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "BETT",
+        "description": "BetterBuy Macaroni 3kg",
+        "cashPrice": null,
+        "onlinePrice": 4.2
+      },
+      {
+        "code": "BETTR",
+        "description": "BetterBuy Spagetti",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "BRE",
+        "description": "Bread",
+        "cashPrice": null,
+        "onlinePrice": 1.05
+      },
+      {
+        "code": "BTBUY",
+        "description": "BetterBuy 400g",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "CAKFLR",
+        "description": "SnowFlak Cake Flour 2.5kg",
+        "cashPrice": null,
+        "onlinePrice": 3.68
+      },
+      {
+        "code": "CASM",
+        "description": "Noddles  casamia",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "CONT",
+        "description": "Continental Rice 2kg",
+        "cashPrice": null,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "COO",
+        "description": "Cookmore Rice 5kg",
+        "cashPrice": null,
+        "onlinePrice": 5.78
+      },
+      {
+        "code": "COOKM",
+        "description": "CookMore Rice 2kg",
+        "cashPrice": null,
+        "onlinePrice": 2.63
+      },
+      {
+        "code": "DON",
+        "description": "Donunt",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "EKN",
+        "description": "Ekono Rice white 2kg",
+        "cashPrice": null,
+        "onlinePrice": 2.31
+      },
+      {
+        "code": "EKO",
+        "description": "Ekono white Rice 5kg",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "EKON",
+        "description": "Ekono Macaron 3kg",
+        "cashPrice": null,
+        "onlinePrice": 4.2
+      },
+      {
+        "code": "EKONO",
+        "description": "Spagetti 400g",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "EKSP01",
+        "description": "Ekono Spaghett - Box (8kg)",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "GOLF",
+        "description": "Noddles Golf",
+        "cashPrice": null,
+        "onlinePrice": 1.26
+      },
+      {
+        "code": "IDE",
+        "description": "Ideal white Rice 5kg",
+        "cashPrice": null,
+        "onlinePrice": 5.46
+      },
+      {
+        "code": "IDEL",
+        "description": "Ideal whie Rice 2kg",
+        "cashPrice": null,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "INDO",
+        "description": "Noddles Indomie",
+        "cashPrice": null,
+        "onlinePrice": 1.58
+      },
+      {
+        "code": "JAS",
+        "description": "Jasmine Rice 2kg",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "MAC",
+        "description": "Macaroni Box",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "MACR01",
+        "description": "Macaron - 400g",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "MAHA",
+        "description": "Mahatma 2kg",
+        "cashPrice": null,
+        "onlinePrice": 2.63
+      },
+      {
+        "code": "MAHT",
+        "description": "Mahatma 5kg",
+        "cashPrice": null,
+        "onlinePrice": 6.3
+      },
+      {
+        "code": "MAHTMCS",
+        "description": "MAHATMA 2kg - Case",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "MARA",
+        "description": "Mariana Spagetti",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "MARI",
+        "description": "Mariiana 1kg",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "MART",
+        "description": "Martina White Rice 2kg",
+        "cashPrice": null,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "MARTIN",
+        "description": "Martina Rice 5kg",
+        "cashPrice": null,
+        "onlinePrice": 5.46
+      },
+      {
+        "code": "MEG",
+        "description": "Parboiled Rice 2kg",
+        "cashPrice": null,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "MEGA",
+        "description": "Mega Macaroni - 3KG",
+        "cashPrice": null,
+        "onlinePrice": 4.2
+      },
+      {
+        "code": "MEGAM",
+        "description": "Mega Macaroni 400g",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "MEGR01",
+        "description": "Mega Rice - 2kg",
+        "cashPrice": null,
+        "onlinePrice": 2.31
+      },
+      {
+        "code": "MEGRC",
+        "description": "Mega Rice - 5kg",
+        "cashPrice": null,
+        "onlinePrice": 6.09
+      },
+      {
+        "code": "MGAA",
+        "description": "Mega All Purpose 2kg",
+        "cashPrice": null,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "MR",
+        "description": "Mr Rice White 2kg",
+        "cashPrice": null,
+        "onlinePrice": 2.31
+      },
+      {
+        "code": "MRR",
+        "description": "Mr Rice white 5kg",
+        "cashPrice": null,
+        "onlinePrice": 5.46
+      },
+      {
+        "code": "NGW",
+        "description": "Ngwerevere",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "NODB",
+        "description": "Noddle Box",
+        "cashPrice": null,
+        "onlinePrice": 10.5
+      },
+      {
+        "code": "NODBNT",
+        "description": "Noddles Binto",
+        "cashPrice": null,
+        "onlinePrice": 1.26
+      },
+      {
+        "code": "NODD",
+        "description": "Noodle Kellogs/Golf Box",
+        "cashPrice": null,
+        "onlinePrice": 12.6
+      },
+      {
+        "code": "NODL",
+        "description": "Noddles Mega",
+        "cashPrice": null,
+        "onlinePrice": 1.37
+      },
+      {
+        "code": "NODPCK",
+        "description": "Noddles Kellogs",
+        "cashPrice": null,
+        "onlinePrice": 1.68
+      },
+      {
+        "code": "PAR",
+        "description": "Parboiled Rice 5kg",
+        "cashPrice": null,
+        "onlinePrice": 5.46
+      },
+      {
+        "code": "PAST",
+        "description": "Pastarelli - Macaroni 3kg",
+        "cashPrice": null,
+        "onlinePrice": 4.2
+      },
+      {
+        "code": "PEARL",
+        "description": "Pearlenta 10kg",
+        "cashPrice": null,
+        "onlinePrice": 8.4
+      },
+      {
+        "code": "PIE",
+        "description": "Pie",
+        "cashPrice": null,
+        "onlinePrice": 0.53
+      },
+      {
+        "code": "PLAI",
+        "description": "Plain Flour 2kg",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "POTA",
+        "description": "Potatoes 15kg",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "PRIM",
+        "description": "Primo Pasta",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "PRIMO",
+        "description": "Primo Fusilli 650g",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "RAHA",
+        "description": "Raha white Rice 2kg",
+        "cashPrice": null,
+        "onlinePrice": 2.31
+      },
+      {
+        "code": "RHA",
+        "description": "Raha white Rice 5kg",
+        "cashPrice": null,
+        "onlinePrice": 5.78
+      },
+      {
+        "code": "RLLR",
+        "description": "Roller meal Irifarm 5kg",
+        "cashPrice": null,
+        "onlinePrice": 3.15
+      },
+      {
+        "code": "ROLER",
+        "description": "Roller Meal 10kg",
+        "cashPrice": null,
+        "onlinePrice": 6.3
+      },
+      {
+        "code": "ROLLS",
+        "description": "Roller SuperLife 5kg",
+        "cashPrice": null,
+        "onlinePrice": 2.1
+      },
+      {
+        "code": "SAS",
+        "description": "Sasko Flour - 5kg",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "SASKF",
+        "description": "Sasko Flour 2.5 kg",
+        "cashPrice": null,
+        "onlinePrice": 3.15
+      },
+      {
+        "code": "SELF",
+        "description": "Self Raising Flour 2kg",
+        "cashPrice": null,
+        "onlinePrice": 1.89
+      },
+      {
+        "code": "SELFR",
+        "description": "Self Raising Flour Case",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "SNO",
+        "description": "SnowFake SelfRaising 2.5",
+        "cashPrice": null,
+        "onlinePrice": 3.99
+      },
+      {
+        "code": "SUGAR",
+        "description": "Sugar Case",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "TAPI",
+        "description": "Tapi Tapi 2kg",
+        "cashPrice": null,
+        "onlinePrice": 2.63
+      },
+      {
+        "code": "THAI",
+        "description": "Thai Rice",
+        "cashPrice": null,
+        "onlinePrice": 2.42
+      },
+      {
+        "code": "THAIR",
+        "description": "Thai 5kg",
+        "cashPrice": null,
+        "onlinePrice": null
+      },
+      {
+        "code": "TLOF",
+        "description": "Tea loaf",
+        "cashPrice": null,
+        "onlinePrice": 0.84
+      },
+      {
+        "code": "TOPC",
+        "description": "TopChef white Rice 5kg",
+        "cashPrice": null,
+        "onlinePrice": 5.78
+      },
+      {
+        "code": "TOPF",
+        "description": "TopChef 2kg",
+        "cashPrice": null,
+        "onlinePrice": 2.63
+      },
+      {
+        "code": "WHRC",
+        "description": "White Rice Case 2kg",
+        "cashPrice": null,
+        "onlinePrice": null
+      }
+    ]
+  }
+]

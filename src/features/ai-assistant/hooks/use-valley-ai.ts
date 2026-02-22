@@ -41,14 +41,16 @@ import {
 export function useValleyAI() {
     const [isOpen, setIsOpen] = useState(false);
     const [inputValue, setInputValue] = useState("");
-    const [messages, setMessages] = useState<ChatMessage[]>([
-        {
-            id: "intro",
-            role: "assistant",
-            content:
-                "Hi there! I’m Valley AI, your AI assistant. I can help you compare products, plan deliveries, arrange wholesale supply, share horticulture tips, and prepare handovers to our team. How can I support you today?",
-        },
-    ]);
+
+    // Initial welcome message
+    const welcomeMessage: ChatMessage = {
+        id: "intro",
+        role: "assistant",
+        content:
+            "Hi there! I’m Valley AI, your AI assistant. I can help you compare products, plan deliveries, arrange wholesale supply, share horticulture tips, and prepare handovers to our team. How can I support you today?",
+    };
+
+    const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [lastTopic, setLastTopic] = useState<KnowledgeTopic | null>(null);
     const [isResponding, setIsResponding] = useState(false);
     const [resourcesExpanded, setResourcesExpanded] = useState(false);
@@ -56,7 +58,34 @@ export function useValleyAI() {
     const endRef = useRef<HTMLDivElement | null>(null);
     const inputRef = useRef<HTMLInputElement | null>(null);
     const responseTimeoutRef = useRef<number | null>(null);
-    const messageCountRef = useRef(messages.length);
+    const messageCountRef = useRef(0);
+
+    // Initial load from localStorage
+    useEffect(() => {
+        const savedMessages = localStorage.getItem("valley-ai-messages");
+        if (savedMessages) {
+            try {
+                const parsed = JSON.parse(savedMessages);
+                if (Array.isArray(parsed) && parsed.length > 0) {
+                    setMessages(parsed);
+                    messageCountRef.current = parsed.length;
+                    return;
+                }
+            } catch (e) {
+                console.error("Failed to parse saved messages", e);
+            }
+        }
+        // Fallback to welcome message if no history
+        setMessages([welcomeMessage]);
+        messageCountRef.current = 1;
+    }, []);
+
+    // Save to localStorage whenever messages change
+    useEffect(() => {
+        if (messages.length > 0) {
+            localStorage.setItem("valley-ai-messages", JSON.stringify(messages));
+        }
+    }, [messages]);
 
     useEffect(() => {
         if (!isOpen) return;
@@ -282,6 +311,12 @@ export function useValleyAI() {
         sendMessage(inputValue);
     };
 
+    const clearHistory = () => {
+        localStorage.removeItem("valley-ai-messages");
+        setMessages([welcomeMessage]);
+        setLastTopic(null);
+    };
+
     return {
         isOpen,
         inputValue,
@@ -297,5 +332,6 @@ export function useValleyAI() {
         handleInputChange,
         handleFormSubmit,
         lastUserQuestion,
+        clearHistory,
     };
 }

@@ -1,4 +1,4 @@
-import { Sparkles, X, Send } from "lucide-react";
+import { Sparkles, X, Send, Trash2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { MessageList } from "./MessageList";
@@ -11,6 +11,7 @@ import { motion } from "framer-motion";
 interface ChatWindowProps {
     isOpen: boolean;
     onClose: () => void;
+    onClearHistory: () => void;
     messages: ChatMessage[];
     isResponding: boolean;
     inputValue: string;
@@ -28,6 +29,7 @@ interface ChatWindowProps {
 export function ChatWindow({
     isOpen,
     onClose,
+    onClearHistory,
     messages,
     isResponding,
     inputValue,
@@ -64,14 +66,25 @@ export function ChatWindow({
                         Flexible support for everything on Valley Farm Secrets
                     </p>
                 </div>
-                <button
-                    type="button"
-                    onClick={onClose}
-                    className="rounded-full p-1.5 text-muted-foreground transition hover:bg-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                    aria-label="Close Valley AI assistant"
-                >
-                    <X className="h-4 w-4" aria-hidden="true" />
-                </button>
+                <div className="flex items-center gap-1">
+                    <button
+                        type="button"
+                        onClick={onClearHistory}
+                        className="rounded-full p-1.5 text-muted-foreground transition hover:bg-destructive/15 hover:text-destructive focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive"
+                        aria-label="Clear chat history"
+                        title="Clear chat history"
+                    >
+                        <Trash2 className="h-4 w-4" aria-hidden="true" />
+                    </button>
+                    <button
+                        type="button"
+                        onClick={onClose}
+                        className="rounded-full p-1.5 text-muted-foreground transition hover:bg-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                        aria-label="Close Valley AI assistant"
+                    >
+                        <X className="h-4 w-4" aria-hidden="true" />
+                    </button>
+                </div>
             </div>
 
             <MessageList

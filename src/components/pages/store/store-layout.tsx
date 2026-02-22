@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import React, { useMemo, useRef, useState, useCallback } from "react";
-import { products, categories, Category } from "@/app/store/data";
+import { fetchProducts, categories, Category, Product } from "@/app/store/data";
 import ProductFilters from "./product-filters";
 import ProductGrid from "./product-grid";
 import { ShoppingCart } from "./shopping-cart";
@@ -14,10 +14,9 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { useRouter } from "next/navigation";
+import Autoplay from "embla-carousel-autoplay";
 import ProductCard from "./product-card";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { useImageSlideshow } from "@/hooks/use-image-slideshow";
-import { getHeroBackgroundPool } from "@/lib/hero-backgrounds";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -77,22 +76,32 @@ const categoryIcons: Record<Category, LucideIcon> = {
 
 export function StoreLayout() {
   const router = useRouter();
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showSpecialsOnly, setShowSpecialsOnly] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<Category | "All">("All");
   const [sortOption, setSortOption] = useState<SortOption>("name-asc");
   const [isServicesExpanded, setIsServicesExpanded] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const productSectionRef = useRef<HTMLDivElement | null>(null);
 
-  const heroBackgroundPool = useMemo(() => getHeroBackgroundPool(), []);
-  const { images: heroBackgrounds, currentIndex: heroBackgroundIndex } = useImageSlideshow(heroBackgroundPool);
+  React.useEffect(() => {
+    async function loadData() {
+      setIsLoading(true);
+      const data = await fetchProducts();
+      setAllProducts(data);
+      setIsLoading(false);
+    }
+    loadData();
+  }, []);
 
-  const specialOffers = useMemo(() => products.filter(product => product.onSpecial), []);
+
+  const specialOffers = useMemo(() => allProducts.filter(product => product.onSpecial), [allProducts]);
 
   const heroSlides = useMemo(() => {
     const slides: HeroSlide[] = [
       {
-        imageId: "hero-6",
+        imageId: "zesa",
         title: "Buy ZESA Tokens Instantly",
         description: "Top up your electricity meter in seconds. Safe, secure, and reliable.",
         highlight: "Powered by ZB Bank",
@@ -133,7 +142,7 @@ export function StoreLayout() {
   }, []);
 
   const filteredAndSortedProducts = useMemo(() => {
-    let filtered = [...products];
+    let filtered = [...allProducts];
 
     if (showSpecialsOnly) {
       filtered = filtered.filter(product => product.onSpecial);
@@ -163,7 +172,7 @@ export function StoreLayout() {
           return 0;
       }
     });
-  }, [searchTerm, showSpecialsOnly, selectedCategory, sortOption]);
+  }, [allProducts, searchTerm, showSpecialsOnly, selectedCategory, sortOption]);
 
   const hasActiveFilter = Boolean(searchTerm) || showSpecialsOnly || selectedCategory !== "All";
 
@@ -186,155 +195,133 @@ export function StoreLayout() {
     <div className="bg-muted/10 pb-16">
       <ShoppingCart />
 
-      <section className="relative overflow-hidden border-b bg-gradient-to-br from-primary/10 via-background to-background pb-10 lg:pb-14">
-        <div className="absolute inset-0">
-          {heroBackgrounds.length > 0 ? (
-            heroBackgrounds.map((image, index) => (
-              <div
-                key={image.id}
-                className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${index === heroBackgroundIndex ? "opacity-100" : "opacity-0"
-                  }`}
-                aria-hidden={index !== heroBackgroundIndex}
-              >
-                <Image
-                  src={image.imageUrl}
-                  alt={image.description}
-                  fill
-                  className="object-cover"
-                  priority={index === heroBackgroundIndex}
-                  loading={index === heroBackgroundIndex ? "eager" : "lazy"}
-                  data-ai-hint={image.imageHint}
-                />
-              </div>
-            ))
-          ) : (
-            <div className="h-full w-full bg-gradient-to-br from-primary/10 via-background to-background" />
-          )}
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-br from-background/95 via-background/85 to-background/70" />
-        <div className="relative z-10">
-          <div className="container mx-auto px-4 md:px-6">
-            <div className="grid gap-6 lg:grid-cols-[280px_minmax(0,1fr)] xl:grid-cols-[300px_minmax(0,1fr)]">
-              <aside className="hidden h-full rounded-2xl border bg-card/70 backdrop-blur lg:block">
-                <div className="border-b px-6 py-5">
-                  <h3 className="font-headline text-lg font-semibold">Shop by Department</h3>
-                  <p className="mt-1 text-sm text-muted-foreground">Browse categories just like the store aisles.</p>
-                </div>
-                <nav className="flex flex-col divide-y">
-                  <button
-                    type="button"
-                    onClick={() => handleCategorySelect("All")}
-                    className={`flex items-center gap-3 px-6 py-3 text-left text-sm font-medium transition-colors hover:bg-muted/60 ${selectedCategory === "All" ? "bg-primary text-primary-foreground" : "text-foreground"}`}
-                  >
-                    <Sparkle className="h-4 w-4" />
-                    View everything
-                  </button>
-                  {categories.map(category => {
-                    const Icon = categoryIcons[category];
-                    const isActive = selectedCategory === category;
-                    return (
-                      <button
-                        key={category}
-                        type="button"
-                        onClick={() => handleCategorySelect(category)}
-                        className={`flex items-center gap-3 px-6 py-3 text-left text-sm font-medium transition-colors hover:bg-muted/60 ${isActive ? "bg-primary text-primary-foreground" : "text-foreground"}`}
-                      >
-                        {Icon && <Icon className="h-4 w-4" />}
-                        {category}
-                      </button>
-                    );
-                  })}
-                </nav>
-
-                <div className="border-b border-t px-6 py-5">
-                  <h3 className="font-headline text-lg font-semibold">Utilities & Services</h3>
-                  <p className="mt-1 text-sm text-muted-foreground">Pay bills and buy tokens.</p>
-                </div>
-                <nav className="flex flex-col divide-y">
-                  <a
-                    href="/store/zesa-tokens"
-                    className="flex items-center gap-3 px-6 py-3 text-left text-sm font-medium transition-colors hover:bg-muted/60 text-foreground"
-                  >
-                    <Zap className="h-4 w-4" />
-                    ZESA Token Purchase
-                  </a>
-                </nav>
-
-              </aside>
-
-              <div className="space-y-5">
-                <div className="lg:hidden">
-                  <div className="flex gap-3 overflow-x-auto pb-2">
-                    {["All", ...categories].map(category => {
-                      const isActive = selectedCategory === category;
-                      return (
-                        <Button
-                          key={category}
-                          size="sm"
-                          variant={isActive ? "default" : "outline"}
-                          className="whitespace-nowrap"
-                          onClick={() => handleCategorySelect(category as Category | "All")}
-                        >
-                          {category}
-                        </Button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                <Carousel opts={{ loop: true }} className="overflow-hidden rounded-2xl">
-                  <CarouselContent>
-                    {heroSlides.map((slide, index) => (
-                      <CarouselItem key={slide.imageId}>
-                        <div className="relative h-[260px] overflow-hidden rounded-2xl bg-muted sm:h-[320px] lg:h-[400px]">
-                          {slide.image && (
-                            <Image
-                              src={slide.image.imageUrl}
-                              alt={slide.image.description}
-                              fill
-                              className="object-cover"
-                              priority={index === 0}
-                              loading={index === 0 ? "eager" : "lazy"}
-                              sizes="(min-width: 1280px) 960px, (min-width: 768px) 70vw, 90vw"
-                              data-ai-hint={slide.image.imageHint}
-                            />
-                          )}
-                          <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/70 to-background/10" />
-                          <div className="relative z-10 flex h-full flex-col justify-center gap-4 px-7 py-8 sm:px-10">
-                            <Badge className="w-fit bg-primary text-primary-foreground shadow">{slide.highlight}</Badge>
-                            <h2 className="font-headline text-3xl font-bold text-foreground sm:text-4xl">{slide.title}</h2>
-                            <p className="max-w-xl text-sm text-muted-foreground sm:text-base">{slide.description}</p>
-                            <div className="flex flex-wrap items-center gap-3">
-                              <Button
-                                size="lg"
-                                onClick={() => {
-                                  if (slide.href) {
-                                    router.push(slide.href);
-                                  } else {
-                                    handleCategorySelect(slide.category);
-                                  }
-                                }}
-                              >
-                                {slide.cta}
-                              </Button>
-                              <Button variant="outline" size="lg" onClick={handleViewSpecials}>
-                                See specials
-                              </Button>
-                            </div>
-                          </div>
+      <section className="relative overflow-hidden border-b bg-gradient-to-br from-primary/10 via-background to-background pb-10 lg:pb-14 pt-8">
+        <div className="container mx-auto px-4 md:px-6">
+          {/* Hero Grid: Carousel + ZESA Card */}
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_320px]">
+            <Carousel
+              opts={{ loop: true }}
+              plugins={[Autoplay({ delay: 5000, stopOnInteraction: true })]}
+              className="overflow-hidden rounded-2xl shadow-xl"
+            >
+              <CarouselContent>
+                {heroSlides.map((slide, index) => (
+                  <CarouselItem key={slide.imageId}>
+                    <div className="relative h-[300px] overflow-hidden rounded-2xl bg-muted sm:h-[360px] lg:h-[420px]">
+                      {slide.image && (
+                        <Image
+                          src={slide.image.imageUrl}
+                          alt={slide.image.description}
+                          fill
+                          className="object-cover"
+                          priority={index === 0}
+                          loading={index === 0 ? "eager" : "lazy"}
+                          sizes="(min-width: 1024px) 800px, 100vw"
+                          data-ai-hint={slide.image.imageHint}
+                        />
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/70 to-background/10" />
+                      <div className="relative z-10 flex h-full flex-col justify-center gap-4 px-7 py-8 sm:px-10">
+                        <Badge className="w-fit bg-primary text-primary-foreground shadow">{slide.highlight}</Badge>
+                        <h2 className="font-headline text-3xl font-bold text-foreground sm:text-4xl lg:text-5xl">{slide.title}</h2>
+                        <p className="max-w-xl text-sm text-muted-foreground sm:text-base">{slide.description}</p>
+                        <div className="flex flex-wrap items-center gap-3">
+                          <Button
+                            size="lg"
+                            className="rounded-full px-8 shadow-lg transition-transform hover:scale-105"
+                            onClick={() => {
+                              if (slide.href) {
+                                router.push(slide.href);
+                              } else {
+                                handleCategorySelect(slide.category);
+                              }
+                            }}
+                          >
+                            {slide.cta}
+                          </Button>
+                          <Button variant="outline" size="lg" className="rounded-full" onClick={handleViewSpecials}>
+                            See specials
+                          </Button>
                         </div>
-                      </CarouselItem>
-                    ))}
-                  </CarouselContent>
-                  <CarouselPrevious className="left-4 top-1/2 hidden h-10 w-10 -translate-y-1/2 rounded-full bg-background/90 shadow lg:flex" />
-                  <CarouselNext className="right-4 top-1/2 hidden h-10 w-10 -translate-y-1/2 rounded-full bg-background/90 shadow lg:flex" />
-                </Carousel>
+                      </div>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="left-4 top-1/2 hidden h-10 w-10 -translate-y-1/2 rounded-full border-none bg-background/90 shadow-lg lg:flex" />
+              <CarouselNext className="right-4 top-1/2 hidden h-10 w-10 -translate-y-1/2 rounded-full border-none bg-background/90 shadow-lg lg:flex" />
+            </Carousel>
 
-
+            {/* ZESA Direct Card */}
+            <Card className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border-none bg-[#fdf2f2] shadow-xl transition-all hover:shadow-2xl lg:h-[420px]">
+              <div className="relative h-48 w-full overflow-hidden sm:h-56 lg:h-48">
+                <Image
+                  src="/images/Zesa.webp"
+                  alt="ZESA Token"
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#fdf2f2] to-transparent" />
               </div>
+              <div className="relative z-10 flex flex-1 flex-col p-6 pt-0">
+                <div className="mb-2 flex items-center gap-2 text-primary">
+                  <Zap className="h-5 w-5 fill-current" />
+                  <span className="text-xs font-bold uppercase tracking-wider">Flash Utility</span>
+                </div>
+                <CardTitle className="font-headline text-2xl font-bold text-[#2d1515]">Buy ZESA Tokens</CardTitle>
+                <p className="mt-2 text-sm text-[#5a3a3a]">
+                  Instant electricity top-up via ZB Bank. Safe and available 24/7.
+                </p>
+                <div className="mt-auto pt-6">
+                  <Button asChild className="w-full rounded-full bg-[#e31e24] font-bold text-white shadow-lg hover:bg-[#c1191f]">
+                    <a href="/store/zesa-tokens">Buy Now</a>
+                  </Button>
+                </div>
+              </div>
+            </Card>
+          </div>
 
+          {/* Horizontal Category Nav */}
+          <div className="mt-10 lg:mt-14">
+            <h3 className="mb-6 font-headline text-xl font-bold">Shop by Department</h3>
+            <div className="flex gap-4 overflow-x-auto pb-4 no-scrollbar lg:grid lg:grid-cols-8 lg:gap-3 lg:overflow-visible">
+              <button
+                type="button"
+                onClick={() => handleCategorySelect("All")}
+                className={`flex min-w-[120px] flex-col items-center gap-3 rounded-2xl p-4 transition-all hover:shadow-md ${selectedCategory === "All" ? "bg-primary text-primary-foreground shadow-lg scale-105" : "bg-card border hover:border-primary/20"}`}
+              >
+                <div className={`rounded-full p-3 ${selectedCategory === "All" ? "bg-white/20" : "bg-primary/10 text-primary"}`}>
+                  <Sparkle className="h-6 w-6" />
+                </div>
+                <span className="text-xs font-bold text-center">Everything</span>
+              </button>
 
+              {categories.slice(0, 7).map(category => {
+                const Icon = categoryIcons[category];
+                const isActive = selectedCategory === category;
+                return (
+                  <button
+                    key={category}
+                    type="button"
+                    onClick={() => handleCategorySelect(category)}
+                    className={`flex min-w-[120px] flex-col items-center gap-3 rounded-2xl p-4 transition-all hover:shadow-md ${isActive ? "bg-primary text-primary-foreground shadow-lg scale-105" : "bg-card border hover:border-primary/20"}`}
+                  >
+                    <div className={`rounded-full p-3 ${isActive ? "bg-white/20" : "bg-primary/10 text-primary"}`}>
+                      {Icon && <Icon className="h-6 w-6" />}
+                    </div>
+                    <span className="text-xs font-bold text-center">{category}</span>
+                  </button>
+                );
+              })}
             </div>
+            {/* View all button for mobile if categories are many */}
+            {categories.length > 7 && (
+              <div className="mt-4 flex justify-center lg:hidden">
+                <Button variant="ghost" size="sm" onClick={() => productSectionRef.current?.scrollIntoView({ behavior: 'smooth' })}>
+                  View more categories below
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -350,7 +337,13 @@ export function StoreLayout() {
           </Button>
         </div>
         <div className="mt-6">
-          {specialOffers.length > 0 ? (
+          {isLoading ? (
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {[...Array(4)].map((_, i) => (
+                <div key={i} className="h-72 animate-pulse rounded-2xl bg-muted" />
+              ))}
+            </div>
+          ) : specialOffers.length > 0 ? (
             <Carousel opts={{ align: "start", loop: true }} className="w-full">
               <CarouselContent>
                 {specialOffers.map(product => (
@@ -416,16 +409,24 @@ export function StoreLayout() {
           </div>
 
           <div className="order-1 lg:order-2">
-            <ProductGrid
-              products={filteredAndSortedProducts}
-              sortOption={sortOption}
-              setSortOption={setSortOption}
-              hasActiveFilter={hasActiveFilter}
-              categories={categories}
-            />
+            {isLoading ? (
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                {[...Array(6)].map((_, i) => (
+                  <div key={i} className="h-80 animate-pulse rounded-2xl bg-muted" />
+                ))}
+              </div>
+            ) : (
+              <ProductGrid
+                products={filteredAndSortedProducts}
+                sortOption={sortOption}
+                setSortOption={setSortOption}
+                hasActiveFilter={hasActiveFilter}
+                categories={categories}
+              />
+            )}
           </div>
         </div>
       </section>
-    </div>
+    </div >
   );
 }

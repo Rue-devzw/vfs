@@ -1,6 +1,7 @@
-import { products as staticProducts } from "@/app/store/data";
 import type { Product } from "@/app/store/data";
 import { getDb, isFirebaseConfigured } from "../firebase-admin";
+
+const PRODUCTS_JSON_URL = '/data/products.json';
 
 export type StoreProduct = {
   id: string;
@@ -137,8 +138,30 @@ function applyLocalFilters(
 
 export async function listProducts(filters: ProductFilters = {}): Promise<ListProductsResult> {
   if (!isFirebaseConfigured()) {
-    const { items, nextCursor } = applyLocalFilters(staticProducts, filters);
-    return { items, nextCursor, source: "static" };
+    try {
+      // In a server-side context (like an API route), we might need an absolute URL
+      // or to read the file from disk. For now, we'll assume fetch works or handle it.
+      // But listProducts is often called in API routes where fetch('/data/...') might not work.
+      // However, if this is called in a Client Component, fetch is fine.
+      // If called in an API route (Server side), we should use fs.
+
+      let allProducts: Product[] = [];
+      if (typeof window === 'undefined') {
+        const fs = await import('fs');
+        const path = await import('path');
+        const filePath = path.join(process.cwd(), 'public/data/products.json');
+        allProducts = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      } else {
+        const response = await fetch(PRODUCTS_JSON_URL);
+        allProducts = await response.json();
+      }
+
+      const { items, nextCursor } = applyLocalFilters(allProducts, filters);
+      return { items, nextCursor, source: "static" };
+    } catch (error) {
+      console.error("Failed to load static products", error);
+      return { items: [], source: "static" };
+    }
   }
 
   const db = getDb();
@@ -180,11 +203,26 @@ export async function listProducts(filters: ProductFilters = {}): Promise<ListPr
 
 export async function getProductById(id: string): Promise<{ product: StoreProduct | null; source: "firestore" | "static" }> {
   if (!isFirebaseConfigured()) {
-    const match = staticProducts.find(product => String(product.id) === id);
-    return {
-      product: match ? fromStaticProduct(match) : null,
-      source: "static",
-    };
+    try {
+      let allProducts: Product[] = [];
+      if (typeof window === 'undefined') {
+        const fs = await import('fs');
+        const path = await import('path');
+        const filePath = path.join(process.cwd(), 'public/data/products.json');
+        allProducts = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      } else {
+        const response = await fetch(PRODUCTS_JSON_URL);
+        allProducts = await response.json();
+      }
+      const match = allProducts.find(product => String(product.id) === id);
+      return {
+        product: match ? fromStaticProduct(match) : null,
+        source: "static",
+      };
+    } catch (error) {
+      console.error("Failed to load static product by id", error);
+      return { product: null, source: "static" };
+    }
   }
 
   const db = getDb();
@@ -202,27 +240,43 @@ export async function getProductById(id: string): Promise<{ product: StoreProduc
 
 export async function listCategories(): Promise<ListCategoriesResult> {
   if (!isFirebaseConfigured()) {
-    const summaries = new Map<string, CategorySummary>();
-
-    for (const product of staticProducts) {
-      const summary = summaries.get(product.category) ?? {
-        name: product.category,
-        productCount: 0,
-        onSpecialCount: 0,
-        subcategories: [],
-      };
-
-      summary.productCount += 1;
-      if (product.onSpecial) summary.onSpecialCount += 1;
-      if (product.subcategory && !summary.subcategories.includes(product.subcategory)) {
-        summary.subcategories.push(product.subcategory);
+    try {
+      let allProducts: Product[] = [];
+      if (typeof window === 'undefined') {
+        const fs = await import('fs');
+        const path = await import('path');
+        const filePath = path.join(process.cwd(), 'public/data/products.json');
+        allProducts = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      } else {
+        const response = await fetch(PRODUCTS_JSON_URL);
+        allProducts = await response.json();
       }
 
-      summaries.set(product.category, summary);
-    }
+      const summaries = new Map<string, CategorySummary>();
 
-    const categories = Array.from(summaries.values()).sort((a, b) => a.name.localeCompare(b.name));
-    return { categories, source: "static" };
+      for (const product of allProducts) {
+        const summary = summaries.get(product.category) ?? {
+          name: product.category,
+          productCount: 0,
+          onSpecialCount: 0,
+          subcategories: [],
+        };
+
+        summary.productCount += 1;
+        if (product.onSpecial) summary.onSpecialCount += 1;
+        if (product.subcategory && !summary.subcategories.includes(product.subcategory)) {
+          summary.subcategories.push(product.subcategory);
+        }
+
+        summaries.set(product.category, summary);
+      }
+
+      const categories = Array.from(summaries.values()).sort((a, b) => a.name.localeCompare(b.name));
+      return { categories, source: "static" };
+    } catch (error) {
+      console.error("Failed to load static categories", error);
+      return { categories: [], source: "static" };
+    }
   }
 
   const db = getDb();

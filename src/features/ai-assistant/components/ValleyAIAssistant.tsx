@@ -22,6 +22,7 @@ export function ValleyAIAssistant() {
         handleInputChange,
         handleFormSubmit,
         lastUserQuestion,
+        clearHistory,
     } = useValleyAI();
 
     return (
@@ -31,6 +32,7 @@ export function ValleyAIAssistant() {
                     <ChatWindow
                         isOpen={isOpen}
                         onClose={toggleAssistant}
+                        onClearHistory={clearHistory}
                         messages={messages}
                         isResponding={isResponding}
                         inputValue={inputValue}
