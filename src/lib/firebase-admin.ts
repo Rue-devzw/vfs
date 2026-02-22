@@ -17,7 +17,17 @@ export function getDb() {
 
   const projectId = process.env.FIREBASE_PROJECT_ID;
   const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
-  const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n');
+  // Handle various formats Vercel may store the key in:
+  // 1. Literal \n sequences (most common)
+  // 2. Actual newlines
+  // 3. Surrounded by extra quotes
+  let privateKey = process.env.FIREBASE_PRIVATE_KEY;
+  if (privateKey) {
+    // Strip surrounding quotes if Vercel added them
+    privateKey = privateKey.replace(/^["']|["']$/g, '');
+    // Convert literal \n to real newlines
+    privateKey = privateKey.replace(/\\n/g, '\n');
+  }
 
   if (!projectId || !clientEmail || !privateKey) {
     throw new Error('Firebase environment variables are not set');

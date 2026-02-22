@@ -1,6 +1,10 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AdminSidebar } from "./components/admin-sidebar"
 
+// Force all admin pages to render dynamically (never statically prerendered).
+// This prevents build-time Firebase connection attempts which fail on Vercel.
+export const dynamic = 'force-dynamic'
+
 export default function AdminLayout({
     children,
 }: {
