@@ -38,17 +38,17 @@ import {
     getFollowUpForTopic,
 } from "../data/response-builders";
 
+// Initial welcome message
+const welcomeMessage: ChatMessage = {
+    id: "intro",
+    role: "assistant",
+    content:
+        "Hi there! I’m Valley AI, your AI assistant. I can help you compare products, plan deliveries, arrange wholesale supply, share horticulture tips, and prepare handovers to our team. How can I support you today?",
+};
+
 export function useValleyAI() {
     const [isOpen, setIsOpen] = useState(false);
     const [inputValue, setInputValue] = useState("");
-
-    // Initial welcome message
-    const welcomeMessage: ChatMessage = {
-        id: "intro",
-        role: "assistant",
-        content:
-            "Hi there! I’m Valley AI, your AI assistant. I can help you compare products, plan deliveries, arrange wholesale supply, share horticulture tips, and prepare handovers to our team. How can I support you today?",
-    };
 
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [lastTopic, setLastTopic] = useState<KnowledgeTopic | null>(null);

@@ -43,7 +43,8 @@ export const navLinks: NavLink[] = [
     label: "Branches",
     icon: MapPin,
     tone: "accent",
-
+  },
+  {
     href: "/#wholesale",
     label: "Wholesale",
     icon: Boxes,

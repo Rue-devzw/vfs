@@ -19,7 +19,7 @@ export async function POST(req: Request) {
       metadata,
     });
 
-    return NextResponse.json({ success: true, ...payment });
+    return NextResponse.json(payment);
   } catch (error) {
     console.error('Error initiating Paynow payment:', error);
     return NextResponse.json(

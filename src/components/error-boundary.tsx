@@ -42,7 +42,7 @@ export class ErrorBoundary extends Component<Props, State> {
                     <div className="space-y-2">
                         <h2 className="font-headline text-3xl font-bold">Something went wrong</h2>
                         <p className="mx-auto max-w-md text-muted-foreground">
-                            We encountered an unexpected error. Don't worry, your data is safe.
+                            We encountered an unexpected error. Don&apos;t worry, your data is safe.
                             Please try refreshing the page or return to the home page.
                         </p>
                     </div>

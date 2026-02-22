@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { paynow } from '@/lib/payments/paynow';
+
 import { URLSearchParams } from 'url';
 import crypto from 'crypto';
 import { setOrderStatus } from '@/server/orders';
@@ -28,7 +28,7 @@ export async function POST(req: Request) {
     const paynowreference = params.get('paynowreference');
 
     if (status && reference) {
-      await setOrderStatus(reference, status.toUpperCase() as any, { paynowreference });
+      await setOrderStatus(reference, status.toLowerCase() as "pending" | "processing" | "shipped" | "delivered" | "cancelled", { paynowreference });
     }
 
     return NextResponse.json({ success: true });

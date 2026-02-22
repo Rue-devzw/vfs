@@ -21,13 +21,14 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: validation.error.errors }, { status: 400 });
     }
 
-    let { reference, email, items } = validation.data;
+    const { reference, items } = validation.data;
+    let { email } = validation.data;
 
     if (process.env.NODE_ENV === 'development') {
       email = process.env.PAYNOW_MERCHANT_EMAIL;
     }
 
-    const payment = paynow.createPayment(reference, email);
+    const payment = paynow.createPayment(reference, email || "customer@example.com");
 
     items.forEach(item => {
       payment.add(item.name, item.price);
@@ -36,7 +37,7 @@ export async function POST(req: Request) {
     const response = await paynow.send(payment);
 
     if (response.success) {
-      await savePollUrl(reference, response.pollUrl);
+      if (response.pollUrl) await savePollUrl(reference, response.pollUrl);
       return NextResponse.json({ success: true, redirectUrl: response.redirectUrl });
     } else {
       return NextResponse.json({ success: false, error: response.error }, { status: 400 });

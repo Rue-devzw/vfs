@@ -2,11 +2,12 @@ import { NextResponse } from "next/server";
 import { getProductById } from "@/lib/firestore/products";
 
 type RouteContext = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 export async function GET(_request: Request, context: RouteContext) {
-  const productId = decodeURIComponent(context.params.id);
+  const { id } = await context.params;
+  const productId = decodeURIComponent(id);
 
   try {
     const result = await getProductById(productId);

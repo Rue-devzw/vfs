@@ -29,20 +29,20 @@ import Link from "next/link"
 import Image from "next/image"
 
 interface OrderDetailsPageProps {
-    params: {
+    params: Promise<{
         id: string
-    }
+    }>
 }
 
 export default async function OrderDetailsPage({ params }: OrderDetailsPageProps) {
-    const { id } = params
+    const { id } = await params
     const order = await getOrderById(id)
 
     if (!order) {
         notFound()
     }
 
-    async function handleStatusUpdate(status: any) {
+    async function handleStatusUpdate(status: "pending" | "processing" | "shipped" | "delivered" | "cancelled") {
         "use server"
         await updateOrderStatus(id, status)
     }

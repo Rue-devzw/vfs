@@ -50,7 +50,7 @@ export function Wholesale() {
         description: "Thank you! We will get back to you shortly.",
       });
       form.reset();
-    } catch (error) {
+    } catch {
       toast({
         title: "Submission failed",
         description: "Please try again later.",
@@ -99,7 +99,7 @@ export function Wholesale() {
                     </FormItem>
                   )}
                 />
-                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                   <FormField
                     control={form.control}
                     name="contactPerson"
@@ -127,20 +127,20 @@ export function Wholesale() {
                     )}
                   />
                 </div>
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email Address</FormLabel>
-                        <FormControl>
-                          <Input placeholder="jane.doe@company.com" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                 <FormField
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email Address</FormLabel>
+                      <FormControl>
+                        <Input placeholder="jane.doe@company.com" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
                   control={form.control}
                   name="message"
                   render={({ field }) => (

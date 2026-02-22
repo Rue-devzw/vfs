@@ -50,7 +50,7 @@ export function PartnerForm() {
                 description: "Our team will review it and get back to you within 5–7 working days. For urgent queries: +263 788 679 000 | +263 711 406 919.",
             });
             form.reset();
-        } catch (error) {
+        } catch {
             toast({
                 title: "Submission failed",
                 description: "Please try again later.",

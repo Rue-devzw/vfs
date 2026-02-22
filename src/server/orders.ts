@@ -1,4 +1,5 @@
-type OrderStatus = "PAID" | "CANCELLED" | "EXPIRED" | "PENDING";
+import { Order } from "@/lib/firestore/orders";
+type OrderStatus = Order['status'] | "PAID" | "EXPIRED";
 
 export async function savePollUrl(reference: string, pollUrl: string) {
   // TODO: Implement database logic to save the pollUrl against the order reference

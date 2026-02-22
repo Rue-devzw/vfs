@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { format } from "date-fns";
-import { CalendarIcon, CheckCircle, Loader2 } from "lucide-react";
+import { CalendarIcon, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,13 +27,13 @@ const formSchema = z.object({
   pickupAddress: z.string().optional(),
   notes: z.string().optional(),
 }).refine(data => {
-    if (data.transportRequired && !data.pickupAddress) {
-        return false;
-    }
-    return true;
+  if (data.transportRequired && !data.pickupAddress) {
+    return false;
+  }
+  return true;
 }, {
-    message: "Pickup address is required if you need transport.",
-    path: ["pickupAddress"],
+  message: "Pickup address is required if you need transport.",
+  path: ["pickupAddress"],
 });
 
 export function PreBookingForm() {
@@ -72,7 +72,7 @@ export function PreBookingForm() {
         description: "Thank you for pre-booking your harvest with us. We'll be in touch.",
       });
       form.reset();
-    } catch (error) {
+    } catch {
       toast({
         title: "Submission failed",
         description: "Please try again later.",
@@ -137,13 +137,13 @@ export function PreBookingForm() {
             {transportRequired && (
               <FormField name="pickupAddress" control={form.control} render={({ field }) => (
                 <FormItem className="animate-fade-in-up">
-                    <FormLabel>Pickup Address</FormLabel>
-                    <FormControl><Textarea placeholder="Please provide the full address for pickup." {...field} /></FormControl>
-                    <FormMessage />
+                  <FormLabel>Pickup Address</FormLabel>
+                  <FormControl><Textarea placeholder="Please provide the full address for pickup." {...field} /></FormControl>
+                  <FormMessage />
                 </FormItem>
               )} />
             )}
-             <FormField name="notes" control={form.control} render={({ field }) => (
+            <FormField name="notes" control={form.control} render={({ field }) => (
               <FormItem><FormLabel>Additional Notes</FormLabel><FormControl><Textarea placeholder="Any other details we should know?" {...field} /></FormControl><FormMessage /></FormItem>
             )} />
 

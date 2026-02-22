@@ -2,6 +2,7 @@ import { createProduct } from "@/lib/firestore/products"
 import { ProductForm } from "../components/product-form"
 
 export default function NewProductPage() {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async function handleCreate(data: any) {
         "use server"
         await createProduct(data)

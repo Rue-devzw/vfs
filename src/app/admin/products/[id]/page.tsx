@@ -3,19 +3,20 @@ import { ProductForm } from "../components/product-form"
 import { notFound } from "next/navigation"
 
 interface EditProductPageProps {
-    params: {
+    params: Promise<{
         id: string
-    }
+    }>
 }
 
 export default async function EditProductPage({ params }: EditProductPageProps) {
-    const { id } = params
+    const { id } = await params
     const { product } = await getProductById(id)
 
     if (!product) {
         notFound()
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async function handleUpdate(data: any) {
         "use server"
         await updateProduct(id, data)

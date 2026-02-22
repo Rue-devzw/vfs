@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Settings, Save } from "lucide-react"
+import { Save } from "lucide-react"
 
 export default function AdminSettingsPage() {
     return (
@@ -54,7 +54,7 @@ export default function AdminSettingsPage() {
                         </div>
                         <div className="flex items-center justify-between py-2 border-b">
                             <div>
-                                <div className="font-medium">Show "Out of Stock"</div>
+                                <div className="font-medium">Show &quot;Out of Stock&quot;</div>
                                 <div className="text-sm text-muted-foreground">Display unavailable items in store.</div>
                             </div>
                             <div className="h-6 w-10 bg-muted rounded-full relative">

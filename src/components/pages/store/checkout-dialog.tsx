@@ -34,16 +34,16 @@ const formSchema = z.object({
   customerAddress: z.string().optional(),
   customerEmail: z.string().email().optional(),
 }).superRefine((data, ctx) => {
-    if (data.isDiasporaGift) {
-        if (!data.recipientName) ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Recipient name is required.", path: ["recipientName"] });
-        if (!data.recipientPhone) ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Recipient phone is required.", path: ["recipientPhone"] });
-    } else {
-        if (data.deliveryMethod === 'delivery') {
-            if (!data.customerName) ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Your name is required for delivery.", path: ["customerName"] });
-            if (!data.customerPhone) ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Your phone is required for delivery.", path: ["customerPhone"] });
-            if (!data.customerAddress) ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Your address is required for delivery.", path: ["customerAddress"] });
-        }
+  if (data.isDiasporaGift) {
+    if (!data.recipientName) ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Recipient name is required.", path: ["recipientName"] });
+    if (!data.recipientPhone) ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Recipient phone is required.", path: ["recipientPhone"] });
+  } else {
+    if (data.deliveryMethod === 'delivery') {
+      if (!data.customerName) ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Your name is required for delivery.", path: ["customerName"] });
+      if (!data.customerPhone) ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Your phone is required for delivery.", path: ["customerPhone"] });
+      if (!data.customerAddress) ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Your address is required for delivery.", path: ["customerAddress"] });
     }
+  }
 });
 
 
@@ -53,9 +53,9 @@ interface CheckoutDialogProps {
 }
 
 export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
-  const { state, dispatch } = useCart();
+  const { state } = useCart();
   const { toast } = useToast();
-  
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -65,7 +65,7 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
   });
   const { isSubmitting } = form.formState;
 
-  const { watch, reset } = form;
+  const { watch } = form;
   const isDiasporaGift = watch("isDiasporaGift");
   const deliveryMethod = watch("deliveryMethod");
 
@@ -119,24 +119,24 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 max-h-[70vh] overflow-y-auto pr-2">
-            
+
             <FormField name="isDiasporaGift" control={form.control} render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+              <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
                 <FormControl><Checkbox checked={field.value} onCheckedChange={field.onChange} /></FormControl>
                 <div className="space-y-1 leading-none">
-                    <FormLabel>This is a gift for someone in Zimbabwe</FormLabel>
-                    <FormDescription>Defaults to remittance payment.</FormDescription>
+                  <FormLabel>This is a gift for someone in Zimbabwe</FormLabel>
+                  <FormDescription>Defaults to remittance payment.</FormDescription>
                 </div>
-                </FormItem>
+              </FormItem>
             )} />
 
             {isDiasporaGift ? (
               <div className="space-y-4 p-4 border rounded-md animate-fade-in-up">
                 <FormField name="recipientName" control={form.control} render={({ field }) => (
-                    <FormItem><FormLabel>Recipient&rsquo;s Name</FormLabel><FormControl><Input placeholder="Jane Doe" {...field} /></FormControl><FormMessage /></FormItem>
+                  <FormItem><FormLabel>Recipient&rsquo;s Name</FormLabel><FormControl><Input placeholder="Jane Doe" {...field} /></FormControl><FormMessage /></FormItem>
                 )} />
                 <FormField name="recipientPhone" control={form.control} render={({ field }) => (
-                    <FormItem><FormLabel>Recipient&rsquo;s Phone</FormLabel><FormControl><Input placeholder="+263 7..." {...field} /></FormControl><FormMessage /></FormItem>
+                  <FormItem><FormLabel>Recipient&rsquo;s Phone</FormLabel><FormControl><Input placeholder="+263 7..." {...field} /></FormControl><FormMessage /></FormItem>
                 )} />
               </div>
             ) : (
@@ -163,27 +163,27 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
             <Separator />
 
             <div className="space-y-2">
-                <div className="flex justify-between"><p>Subtotal</p><p>${subtotal.toFixed(2)}</p></div>
-                {deliveryMethod === 'delivery' && <div className="flex justify-between"><p>Delivery Fee</p><p>${BIKER_DELIVERY_FEE.toFixed(2)}</p></div>}
-                <div className="flex justify-between text-xl font-bold"><p>Total</p><p>${total.toFixed(2)}</p></div>
+              <div className="flex justify-between"><p>Subtotal</p><p>${subtotal.toFixed(2)}</p></div>
+              {deliveryMethod === 'delivery' && <div className="flex justify-between"><p>Delivery Fee</p><p>${BIKER_DELIVERY_FEE.toFixed(2)}</p></div>}
+              <div className="flex justify-between text-xl font-bold"><p>Total</p><p>${total.toFixed(2)}</p></div>
             </div>
-            
+
             <DialogFooter>
-                <Button
-                  type="submit"
-                  size="lg"
-                  className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Submitting...
-                    </>
-                  ) : (
-                    "Pay with Paynow"
-                  )}
-                </Button>
+              <Button
+                type="submit"
+                size="lg"
+                className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Submitting...
+                  </>
+                ) : (
+                  "Pay with Paynow"
+                )}
+              </Button>
             </DialogFooter>
             <p aria-live="polite" className="sr-only" role="status">
               {isSubmitting ? "Submitting..." : ""}

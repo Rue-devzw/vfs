@@ -24,7 +24,7 @@ export default async function AdminDashboardPage() {
                     <pre className="p-4 bg-muted rounded text-xs font-mono overflow-auto">
                         FIREBASE_PROJECT_ID=your-project-id{"\n"}
                         FIREBASE_CLIENT_EMAIL=your-client-email{"\n"}
-                        FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
+                        FIREBASE_PRIVATE_KEY=&quot;-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n&quot;
                     </pre>
                     <p className="text-xs text-yellow-600">
                         Note: You can get these from your Firebase Console &gt; Project Settings &gt; Service Accounts.

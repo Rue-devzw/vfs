@@ -6,8 +6,9 @@ let db: FirebaseFirestore.Firestore | null = null;
 export function isFirebaseConfigured() {
   return Boolean(
     process.env.FIREBASE_PROJECT_ID &&
-      process.env.FIREBASE_CLIENT_EMAIL &&
-      process.env.FIREBASE_PRIVATE_KEY,
+    process.env.FIREBASE_PROJECT_ID !== 'your-project-id' &&
+    process.env.FIREBASE_CLIENT_EMAIL &&
+    process.env.FIREBASE_PRIVATE_KEY,
   );
 }
 
@@ -25,8 +26,8 @@ export function getDb() {
   const app = getApps().length
     ? getApps()[0]
     : initializeApp({
-        credential: cert({ projectId, clientEmail, privateKey }),
-      });
+      credential: cert({ projectId, clientEmail, privateKey }),
+    });
 
   db = getFirestore(app);
   return db;
