@@ -1,6 +1,8 @@
+"use server"
+
 import type { Product } from "@/app/store/data";
+
 import { getDb, isFirebaseConfigured } from "../firebase-admin";
-import type { DocumentReference, WriteResult } from 'firebase-admin/firestore';
 
 
 const PRODUCTS_JSON_URL = '/data/products.json';

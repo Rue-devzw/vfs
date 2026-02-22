@@ -1,4 +1,7 @@
+"use server"
+
 import { getDb } from "../firebase-admin";
+
 
 export type OrderItem = {
     id: string;
