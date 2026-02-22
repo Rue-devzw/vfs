@@ -1,6 +1,7 @@
 import { getProductById, updateProduct } from "@/lib/firestore/products"
 import { ProductForm } from "../components/product-form"
 import { notFound } from "next/navigation"
+import { revalidatePath } from "next/cache"
 
 interface EditProductPageProps {
     params: Promise<{
@@ -20,6 +21,9 @@ export default async function EditProductPage({ params }: EditProductPageProps) 
     async function handleUpdate(data: any) {
         "use server"
         await updateProduct(id, data)
+        revalidatePath("/store")
+        revalidatePath("/admin/products")
+        revalidatePath(`/admin/products/${id}`)
     }
 
     return (

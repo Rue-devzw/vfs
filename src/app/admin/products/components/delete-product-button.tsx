@@ -14,7 +14,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { deleteProduct } from "@/lib/firestore/products"
+import { deleteProductAction } from "../actions"
 import { useRouter } from "next/navigation"
 
 interface DeleteProductButtonProps {
@@ -29,7 +29,7 @@ export function DeleteProductButton({ productId, productName }: DeleteProductBut
     const handleDelete = async () => {
         try {
             setLoading(true)
-            await deleteProduct(productId)
+            await deleteProductAction(productId)
             router.refresh()
         } catch (error) {
             console.error("Failed to delete product:", error)

@@ -53,14 +53,10 @@ export async function GET(request: Request) {
       cursor,
     });
 
-    return NextResponse.json({
-      data: result.items,
-      pagination: {
-        nextCursor: result.nextCursor,
-        limit: limitParam,
-      },
-      source: result.source,
-    });
+    return NextResponse.json(
+      { data: result.items, pagination: { nextCursor: result.nextCursor, limit: limitParam }, source: result.source },
+      { headers: { 'Cache-Control': 'no-store, max-age=0' } }
+    );
   } catch (error) {
     console.error("Failed to load products", error);
     return NextResponse.json(

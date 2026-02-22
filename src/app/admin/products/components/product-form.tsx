@@ -46,7 +46,7 @@ const formSchema = z.object({
             "Must be a valid path or URL"
         )
         .refine(
-            (val) => val === "" || val.toLowerCase().endsWith(".webp"),
+            (val) => val === "" || val.toLowerCase().includes(".webp"),
             "Image must be in WebP format (.webp)"
         ),
     onSpecial: z.boolean().default(false),

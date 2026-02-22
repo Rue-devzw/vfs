@@ -1,16 +1,26 @@
 import { NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import { join } from 'path';
+import { v2 as cloudinary } from 'cloudinary';
 
-// WebP file signature (magic bytes)
-const WEBP_MAGIC = Buffer.from([0x52, 0x49, 0x46, 0x46]); // RIFF
-const WEBP_FORMAT = Buffer.from([0x57, 0x45, 0x42, 0x50]); // WEBP (at bytes 8-12)
+// WebP magic bytes: RIFF....WEBP
+const WEBP_RIFF = Buffer.from([0x52, 0x49, 0x46, 0x46]);
+const WEBP_FORMAT = Buffer.from([0x57, 0x45, 0x42, 0x50]);
 
 function isWebP(buffer: Buffer): boolean {
     if (buffer.length < 12) return false;
-    const riff = buffer.subarray(0, 4);
-    const webp = buffer.subarray(8, 12);
-    return riff.equals(WEBP_MAGIC) && webp.equals(WEBP_FORMAT);
+    return buffer.subarray(0, 4).equals(WEBP_RIFF) &&
+        buffer.subarray(8, 12).equals(WEBP_FORMAT);
+}
+
+function configureCloudinary() {
+    const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
+    const apiKey = process.env.CLOUDINARY_API_KEY;
+    const apiSecret = process.env.CLOUDINARY_API_SECRET;
+
+    if (!cloudName || !apiKey || !apiSecret) {
+        throw new Error('Cloudinary environment variables are not configured.');
+    }
+
+    cloudinary.config({ cloud_name: cloudName, api_key: apiKey, api_secret: apiSecret });
 }
 
 export async function POST(req: Request) {
@@ -22,7 +32,6 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: 'No file provided.' }, { status: 400 });
         }
 
-        // Validate file type by MIME
         if (file.type !== 'image/webp') {
             return NextResponse.json(
                 { error: 'Only WebP images are allowed. Please convert your image to .webp format.' },
@@ -33,7 +42,6 @@ export async function POST(req: Request) {
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
 
-        // Validate magic bytes
         if (!isWebP(buffer)) {
             return NextResponse.json(
                 { error: 'File does not appear to be a valid WebP image.' },
@@ -41,21 +49,26 @@ export async function POST(req: Request) {
             );
         }
 
-        // Sanitize filename and ensure .webp extension
-        const originalName = file.name.replace(/[^a-zA-Z0-9\-_.]/g, '-');
-        const baseName = originalName.replace(/\.webp$/i, '');
-        const filename = `${baseName}.webp`;
+        configureCloudinary();
 
-        const imagesDir = join(process.cwd(), 'public', 'images');
-        await mkdir(imagesDir, { recursive: true });
+        // Sanitise filename (strip extension for use as public_id)
+        const originalName = file.name.replace(/[^a-zA-Z0-9\-_]/g, '-');
+        const publicId = `products/${originalName.replace(/\.webp$/i, '')}`;
 
-        const filePath = join(imagesDir, filename);
-        await writeFile(filePath, buffer);
+        // Upload as a data URI so we don't need to write to disk
+        const dataUri = `data:image/webp;base64,${buffer.toString('base64')}`;
 
-        const publicPath = `/images/${filename}`;
-        return NextResponse.json({ success: true, path: publicPath });
+        const result = await cloudinary.uploader.upload(dataUri, {
+            public_id: publicId,
+            overwrite: true,
+            resource_type: 'image',
+            format: 'webp',
+        });
+
+        return NextResponse.json({ success: true, path: result.secure_url });
     } catch (error) {
         console.error('Image upload failed:', error);
-        return NextResponse.json({ error: 'Failed to upload image.' }, { status: 500 });
+        const message = error instanceof Error ? error.message : 'Failed to upload image.';
+        return NextResponse.json({ error: message }, { status: 500 });
     }
 }
