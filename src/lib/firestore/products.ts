@@ -1,5 +1,7 @@
 import type { Product } from "@/app/store/data";
 import { getDb, isFirebaseConfigured } from "../firebase-admin";
+import type { DocumentReference, WriteResult } from 'firebase-admin/firestore';
+
 
 const PRODUCTS_JSON_URL = '/data/products.json';
 
@@ -309,4 +311,29 @@ export async function listCategories(): Promise<ListCategoriesResult> {
 
   const categories = Array.from(summaries.values()).sort((a, b) => a.name.localeCompare(b.name));
   return { categories, source: "firestore" };
+}
+
+export async function createProduct(product: Omit<StoreProduct, 'id'>): Promise<string> {
+  const db = getDb();
+  const timestamp = new Date().toISOString();
+  const docRef = await db.collection("products").add({
+    ...product,
+    createdAt: timestamp,
+    updatedAt: timestamp,
+  });
+  return docRef.id;
+}
+
+export async function updateProduct(id: string, product: Partial<StoreProduct>): Promise<void> {
+  const db = getDb();
+  const timestamp = new Date().toISOString();
+  await db.collection("products").doc(id).update({
+    ...product,
+    updatedAt: timestamp,
+  });
+}
+
+export async function deleteProduct(id: string): Promise<void> {
+  const db = getDb();
+  await db.collection("products").doc(id).delete();
 }
