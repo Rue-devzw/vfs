@@ -109,12 +109,12 @@ export function StoreLayout() {
     const slides: HeroSlide[] = [
       {
         imageId: "zesa",
-        title: "Buy ZESA Tokens Instantly",
-        description: "Top up your electricity meter in seconds. Safe, secure, and reliable.",
+        title: "Valleyfarm Digital",
+        description: "Pay ZESA, DStv, councils, and more securely via our Digital Services hub.",
         highlight: "Powered by ZB Bank",
         category: "Other Items",
-        cta: "Buy Token",
-        href: "/store/zesa-tokens",
+        cta: "Explore Digital Services",
+        href: "/digital",
       },
       {
         imageId: "hero-produce",
@@ -281,7 +281,7 @@ export function StoreLayout() {
                 </p>
                 <div className="mt-auto pt-6">
                   <Button asChild className="w-full rounded-full bg-[#e31e24] font-bold text-white shadow-lg hover:bg-[#c1191f]">
-                    <a href="/store/zesa-tokens">Buy Now</a>
+                    <a href="/digital/zesa">Buy Now</a>
                   </Button>
                 </div>
               </div>

@@ -62,4 +62,10 @@ export const navLinks: NavLink[] = [
     icon: ShoppingCart,
     tone: "primary",
   },
+  {
+    href: "/digital",
+    label: "Digital Services",
+    icon: Cog,
+    tone: "accent",
+  },
 ];

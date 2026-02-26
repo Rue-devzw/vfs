@@ -81,35 +81,35 @@ export const services = [
   },
   {
     icon: Laptop,
-    title: "Valley Farm Digital (Coming Soon)",
-    description: "Kitchenware, Office ware, and Electronics under one roof.",
-    purchaseLink: "/store",
-    purchaseLabel: "Explore Our Store",
-    image: "/images/office-and-kitchenware.webp",
+    title: "Valleyfarm Digital Services",
+    description: "Purchase ZESA tokens, buy airtime, and pay your utility bills in one place.",
+    purchaseLink: "/digital",
+    purchaseLabel: "Explore Digital Services",
+    image: "/images/Zesa.webp",
   }
 ];
 
 export const whyChooseUsFeatures = [
-    {
-        icon: ThumbsUp,
-        title: "Quality Assured",
-        description: "We ensure every product meets our stringent quality standards for freshness and taste."
-    },
-    {
-        icon: Users,
-        title: "Community Driven",
-        description: "By supporting local farmers, we strengthen our community and promote sustainable agriculture."
-    },
-    {
-        icon: Leaf,
-        title: "Sustainably Sourced",
-        description: "Our commitment to sustainable farming practices helps protect the environment for future generations."
-    },
-    {
-        icon: HeartHandshake,
-        title: "Direct Partnerships",
-        description: "We work directly with producers, ensuring fair prices and a transparent supply chain."
-    }
+  {
+    icon: ThumbsUp,
+    title: "Quality Assured",
+    description: "We ensure every product meets our stringent quality standards for freshness and taste."
+  },
+  {
+    icon: Users,
+    title: "Community Driven",
+    description: "By supporting local farmers, we strengthen our community and promote sustainable agriculture."
+  },
+  {
+    icon: Leaf,
+    title: "Sustainably Sourced",
+    description: "Our commitment to sustainable farming practices helps protect the environment for future generations."
+  },
+  {
+    icon: HeartHandshake,
+    title: "Direct Partnerships",
+    description: "We work directly with producers, ensuring fair prices and a transparent supply chain."
+  }
 ];
 
 export const locations = [
@@ -132,71 +132,71 @@ export const locations = [
 ];
 
 export const contactDetails = [
-    {
-        icon: Phone,
-        label: "WhatsApp / Call",
-        value: "+263 788 679 000 / +263 711 406 919",
-        href: "tel:+263788679000"
-    },
-     {
-        icon: Phone,
-        label: "Landline (Gweru)",
-        value: "054 222 5955",
-        href: "tel:0542225955"
-    },
-    {
-        icon: Mail,
-        label: "General Enquiries",
-        value: "info@valleyfarmsecrets.com",
-        href: "mailto:info@valleyfarmsecrets.com"
-    },
-    {
-        icon: Mail,
-        label: "Support",
-        value: "support@valleyfarmsecrets.com",
-        href: "mailto:support@valleyfarmsecrets.com"
-    },
-    {
-        icon: MapPin,
-        label: "Address",
-        value: "75 Main Street, Gweru, Zimbabwe"
-    },
-    {
-        icon: Clock,
-        label: "Hours",
-        value: "Mon-Sat: 8:00 AM - 7:00 PM, Sun: Closed"
-    }
+  {
+    icon: Phone,
+    label: "WhatsApp / Call",
+    value: "+263 788 679 000 / +263 711 406 919",
+    href: "tel:+263788679000"
+  },
+  {
+    icon: Phone,
+    label: "Landline (Gweru)",
+    value: "054 222 5955",
+    href: "tel:0542225955"
+  },
+  {
+    icon: Mail,
+    label: "General Enquiries",
+    value: "info@valleyfarmsecrets.com",
+    href: "mailto:info@valleyfarmsecrets.com"
+  },
+  {
+    icon: Mail,
+    label: "Support",
+    value: "support@valleyfarmsecrets.com",
+    href: "mailto:support@valleyfarmsecrets.com"
+  },
+  {
+    icon: MapPin,
+    label: "Address",
+    value: "75 Main Street, Gweru, Zimbabwe"
+  },
+  {
+    icon: Clock,
+    label: "Hours",
+    value: "Mon-Sat: 8:00 AM - 7:00 PM, Sun: Closed"
+  }
 ];
 
 export const horticultureTips = [
-    {
-        icon: Sprout,
-        title: "Soil Preparation",
-        description: "Healthy soil is the foundation of a successful farm. Learn about composting, soil testing, and amendment strategies to create a nutrient-rich environment for your crops."
-    },
-    {
-        icon: Tractor,
-        title: "Integrated Pest Management",
-        description: "Discover sustainable and effective ways to manage pests and diseases. We cover companion planting, beneficial insects, and organic pesticide options."
-    },
-    {
-        icon: Combine,
-        title: "Animal Husbandry",
-        description: "Best practices for raising healthy livestock. This includes tips on feeding, housing, breeding, and disease prevention for various farm animals."
-    },
-    {
-        icon: Flower,
-        title: "Crop Rotation",
-        description: "Understand the importance of crop rotation to maintain soil health, prevent disease buildup, and improve yields over the long term."
-    },
-    {
-        icon: Leaf,
-        title: "Water Conservation",
-        description: "Learn smart irrigation techniques like drip irrigation and mulching to conserve water, a precious resource, while ensuring your crops thrive."
-    },
-    {
-        icon: BookOpen,
-        title: "Post-Harvest Handling",
-        description: "Proper handling, storage, and transportation techniques to minimize post-harvest losses and ensure your produce reaches the market in prime condition."
-    }
+  {
+    icon: Sprout,
+    title: "Soil Preparation",
+    description: "Healthy soil is the foundation of a successful farm. Learn about composting, soil testing, and amendment strategies to create a nutrient-rich environment for your crops."
+  },
+  {
+    icon: Tractor,
+    title: "Integrated Pest Management",
+    description: "Discover sustainable and effective ways to manage pests and diseases. We cover companion planting, beneficial insects, and organic pesticide options."
+  },
+  {
+    icon: Combine,
+    title: "Animal Husbandry",
+    description: "Best practices for raising healthy livestock. This includes tips on feeding, housing, breeding, and disease prevention for various farm animals."
+  },
+  {
+    icon: Flower,
+    title: "Crop Rotation",
+    description: "Understand the importance of crop rotation to maintain soil health, prevent disease buildup, and improve yields over the long term."
+  },
+  {
+    icon: Leaf,
+    title: "Water Conservation",
+    description: "Learn smart irrigation techniques like drip irrigation and mulching to conserve water, a precious resource, while ensuring your crops thrive."
+  },
+  {
+    icon: BookOpen,
+    title: "Post-Harvest Handling",
+    description: "Proper handling, storage, and transportation techniques to minimize post-harvest losses and ensure your produce reaches the market in prime condition."
+  }
 ];
