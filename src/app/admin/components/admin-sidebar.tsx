@@ -22,7 +22,8 @@ import {
     SidebarGroupContent,
 } from "@/components/ui/sidebar"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
+import { logoutAction } from "../login/actions"
 
 const items = [
     {
@@ -54,6 +55,13 @@ const items = [
 
 export function AdminSidebar() {
     const pathname = usePathname()
+    const router = useRouter()
+
+    const handleLogout = async () => {
+        await logoutAction()
+        router.push("/")
+        router.refresh()
+    }
 
     return (
         <Sidebar collapsible="icon">
@@ -89,11 +97,9 @@ export function AdminSidebar() {
             <SidebarFooter className="border-t p-4">
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton asChild>
-                            <Link href="/">
-                                <LogOut className="h-4 w-4" />
-                                <span>Exit Admin</span>
-                            </Link>
+                        <SidebarMenuButton onClick={handleLogout}>
+                            <LogOut className="h-4 w-4" />
+                            <span>Exit Admin</span>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>

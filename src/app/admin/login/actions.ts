@@ -1,6 +1,6 @@
 "use server";
 
-import { createAdminSession } from "@/lib/auth";
+import { createAdminSession, destroyAdminSession } from "@/lib/auth";
 
 export async function loginAction(password: string) {
     const correctPassword = process.env.ADMIN_PASSWORD;
@@ -15,4 +15,9 @@ export async function loginAction(password: string) {
     }
 
     return { success: false, error: "Invalid password." };
+}
+
+export async function logoutAction() {
+    await destroyAdminSession();
+    return { success: true };
 }

@@ -1,7 +1,10 @@
 import { cert, getApps, initializeApp } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
+import { getStorage } from 'firebase-admin/storage';
+import { type Bucket } from '@google-cloud/storage';
 
 let db: FirebaseFirestore.Firestore | null = null;
+let storageBucket: Bucket | null = null;
 
 export function isFirebaseConfigured() {
   return Boolean(
@@ -13,7 +16,7 @@ export function isFirebaseConfigured() {
 }
 
 export function getDb() {
-  if (db) return db;
+  if (db && storageBucket) return db;
 
   const projectId = process.env.FIREBASE_PROJECT_ID;
   const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
@@ -33,12 +36,23 @@ export function getDb() {
     throw new Error('Firebase environment variables are not set');
   }
 
+  const storageBucketName = process.env.FIREBASE_STORAGE_BUCKET || `${projectId}.appspot.com`;
+
   const app = getApps().length
     ? getApps()[0]
     : initializeApp({
       credential: cert({ projectId, clientEmail, privateKey }),
+      storageBucket: storageBucketName,
     });
 
   db = getFirestore(app);
+  storageBucket = getStorage(app).bucket();
   return db;
+}
+
+export function getStorageBucket() {
+  if (!storageBucket) {
+    getDb(); // Initializes both db and storageBucket
+  }
+  return storageBucket!;
 }

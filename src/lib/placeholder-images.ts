@@ -46,6 +46,15 @@ export const findProductImagePlaceholder = (
 ): ImagePlaceholder | undefined => {
   const explicit = imageId?.trim();
 
+  if (explicit && (explicit.startsWith('http://') || explicit.startsWith('https://'))) {
+    return {
+      id: explicit,
+      description: productName,
+      imageUrl: explicit,
+      imageHint: productName,
+    };
+  }
+
   if (explicit && !isGenericImageId(explicit)) {
     const match = getPlaceholderById(explicit);
     if (match) {

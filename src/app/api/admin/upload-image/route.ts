@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { v2 as cloudinary } from 'cloudinary';
 import { verifyAdminSession } from '@/lib/auth';
+import { getStorageBucket } from '@/lib/firebase-admin';
 
 // WebP magic bytes: RIFF....WEBP
 const WEBP_RIFF = Buffer.from([0x52, 0x49, 0x46, 0x46]);
@@ -12,17 +12,7 @@ function isWebP(buffer: Buffer): boolean {
         buffer.subarray(8, 12).equals(WEBP_FORMAT);
 }
 
-function configureCloudinary() {
-    const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
-    const apiKey = process.env.CLOUDINARY_API_KEY;
-    const apiSecret = process.env.CLOUDINARY_API_SECRET;
 
-    if (!cloudName || !apiKey || !apiSecret) {
-        throw new Error('Cloudinary environment variables are not configured.');
-    }
-
-    cloudinary.config({ cloud_name: cloudName, api_key: apiKey, api_secret: apiSecret });
-}
 
 export async function POST(req: Request) {
     try {
@@ -55,23 +45,27 @@ export async function POST(req: Request) {
             );
         }
 
-        configureCloudinary();
-
-        // Sanitise filename (strip extension for use as public_id)
+        // Sanitise filename
         const originalName = file.name.replace(/[^a-zA-Z0-9\-_]/g, '-');
-        const publicId = `products/${originalName.replace(/\.webp$/i, '')}`;
+        const filename = `${originalName.replace(/\.webp$/i, '')}-${Date.now()}.webp`;
+        const filePath = `products/${filename}`;
 
-        // Upload as a data URI so we don't need to write to disk
-        const dataUri = `data:image/webp;base64,${buffer.toString('base64')}`;
+        // Get initialized bucket
+        const bucket = getStorageBucket();
+        const fileRef = bucket.file(filePath);
 
-        const result = await cloudinary.uploader.upload(dataUri, {
-            public_id: publicId,
-            overwrite: true,
-            resource_type: 'image',
-            format: 'webp',
+        // Upload buffer to Firebase Storage
+        await fileRef.save(buffer, {
+            metadata: {
+                contentType: 'image/webp',
+            },
+            public: true, // Make file publicly readable
         });
 
-        return NextResponse.json({ success: true, path: result.secure_url });
+        // Generate public URL for the file
+        const publicUrl = `https://storage.googleapis.com/${bucket.name}/${filePath}`;
+
+        return NextResponse.json({ success: true, path: publicUrl });
     } catch (error) {
         console.error('Image upload failed:', error);
         const message = error instanceof Error ? error.message : 'Failed to upload image.';
