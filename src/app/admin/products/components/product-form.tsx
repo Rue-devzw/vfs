@@ -210,7 +210,7 @@ export function ProductForm({ initialData, onSubmit }: ProductFormProps) {
                             <FormItem>
                                 <FormLabel>Old Price ($) - Optional</FormLabel>
                                 <FormControl>
-                                    <Input type="number" step="0.01" {...field} />
+                                    <Input type="number" step="0.01" {...field} value={field.value ?? ""} />
                                 </FormControl>
                                 <FormDescription>Shows a line-through price if set</FormDescription>
                                 <FormMessage />

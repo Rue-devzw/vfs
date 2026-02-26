@@ -45,7 +45,7 @@ export const subCategories = [
 export type SubCategory = typeof subCategories[number];
 
 export type Product = {
-  id: number;
+  id: string | number;
   name: string;
   price: number;
   oldPrice?: number;

@@ -15,6 +15,10 @@ export interface TokenResponse {
     receiptNumber: string;
 }
 
+export interface PaymentInitResponse {
+    redirectUrl: string;
+}
+
 // Mock database
 const MOCK_CUSTOMERS: Record<string, CustomerDetails> = {
     "123456789": {
@@ -59,26 +63,25 @@ export const ZBService = {
         throw new Error("Meter number not found. Please check and try again.");
     },
 
-    purchaseToken: async (meterNumber: string, amount: number): Promise<TokenResponse> => {
-        // Simulate API delay
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-
+    purchaseToken: async (meterNumber: string, amount: number): Promise<PaymentInitResponse> => {
         if (amount < 2) {
             throw new Error("Minimum purchase amount is $2.00");
         }
 
-        // Generate a random 20-digit token
-        const token = Array.from({ length: 4 }, () =>
-            Math.floor(Math.random() * 90000 + 10000).toString()
-        ).join(" ");
+        const res = await fetch("/api/zb/initiate", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ meterNumber, amount })
+        });
 
-        return {
-            token,
-            units: Number((amount * 0.15).toFixed(2)), // Approx conversion
-            amount,
-            meterNumber,
-            date: new Date().toISOString(),
-            receiptNumber: `ZB-${Math.floor(Math.random() * 1000000)}`,
-        };
+        const data = await res.json();
+
+        if (!res.ok || !data.success) {
+            throw new Error(data.error || "Failed to initiate ZB payment");
+        }
+
+        return { redirectUrl: data.redirectUrl };
     }
 };

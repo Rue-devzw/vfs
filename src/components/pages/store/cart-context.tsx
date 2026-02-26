@@ -13,8 +13,8 @@ type CartState = {
 
 type CartAction =
   | { type: 'ADD_ITEM'; payload: Product }
-  | { type: 'REMOVE_ITEM'; payload: { id: number } }
-  | { type: 'UPDATE_QUANTITY'; payload: { id: number; quantity: number } }
+  | { type: 'REMOVE_ITEM'; payload: { id: string | number } }
+  | { type: 'UPDATE_QUANTITY'; payload: { id: string | number; quantity: number } }
   | { type: 'CLEAR_CART' };
 
 const initialState: CartState = {

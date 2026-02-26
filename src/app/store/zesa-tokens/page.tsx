@@ -1,5 +1,6 @@
-
+import { Suspense } from "react";
 import { ZesaFlow } from "@/features/zesa/components/ZesaFlow";
+import { ZesaSkeleton } from "@/features/zesa/components/ZesaSkeleton";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -59,7 +60,9 @@ export default function ZesaPage() {
                     </div>
 
                     <div className="flex justify-center">
-                        <ZesaFlow />
+                        <Suspense fallback={<ZesaSkeleton />}>
+                            <ZesaFlow />
+                        </Suspense>
                     </div>
                 </div>
             </div>

@@ -3,6 +3,7 @@
 import type { Product } from "@/app/store/data";
 
 import { getDb, isFirebaseConfigured } from "../firebase-admin";
+import { verifyAdminSession } from "../auth";
 
 
 const PRODUCTS_JSON_URL = '/data/products.json';
@@ -316,6 +317,9 @@ export async function listCategories(): Promise<ListCategoriesResult> {
 }
 
 export async function createProduct(product: Omit<StoreProduct, 'id'>): Promise<string> {
+  const session = await verifyAdminSession();
+  if (!session) throw new Error("Unauthorized");
+
   const db = getDb();
   const timestamp = new Date().toISOString();
   const docRef = await db.collection("products").add({
@@ -327,6 +331,9 @@ export async function createProduct(product: Omit<StoreProduct, 'id'>): Promise<
 }
 
 export async function updateProduct(id: string, product: Partial<StoreProduct>): Promise<void> {
+  const session = await verifyAdminSession();
+  if (!session) throw new Error("Unauthorized");
+
   const db = getDb();
   const timestamp = new Date().toISOString();
   await db.collection("products").doc(id).update({
@@ -336,6 +343,9 @@ export async function updateProduct(id: string, product: Partial<StoreProduct>):
 }
 
 export async function deleteProduct(id: string): Promise<void> {
+  const session = await verifyAdminSession();
+  if (!session) throw new Error("Unauthorized");
+
   const db = getDb();
   await db.collection("products").doc(id).delete();
 }

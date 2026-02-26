@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import React, { useMemo, useRef, useState, useCallback } from "react";
-import { fetchProducts, categories, Category, Product } from "@/app/store/data";
+import { categories, Category, Product } from "@/app/store/data";
+import { listProducts } from "@/lib/firestore/products";
 import ProductFilters from "./product-filters";
 import ProductGrid from "./product-grid";
 import { ShoppingCart } from "./shopping-cart";
@@ -88,9 +89,15 @@ export function StoreLayout() {
   React.useEffect(() => {
     async function loadData() {
       setIsLoading(true);
-      const data = await fetchProducts();
-      setAllProducts(data);
-      setIsLoading(false);
+      try {
+        const data = await listProducts({});
+        setAllProducts(data.items as unknown as Product[]);
+      } catch (error) {
+        console.error("Failed to fetch products:", error);
+        setAllProducts([]);
+      } finally {
+        setIsLoading(false);
+      }
     }
     loadData();
   }, []);

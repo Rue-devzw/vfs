@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { v2 as cloudinary } from 'cloudinary';
+import { verifyAdminSession } from '@/lib/auth';
 
 // WebP magic bytes: RIFF....WEBP
 const WEBP_RIFF = Buffer.from([0x52, 0x49, 0x46, 0x46]);
@@ -25,6 +26,11 @@ function configureCloudinary() {
 
 export async function POST(req: Request) {
     try {
+        const session = await verifyAdminSession();
+        if (!session) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
         const formData = await req.formData();
         const file = formData.get('file') as File | null;
 

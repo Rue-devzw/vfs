@@ -17,7 +17,7 @@ export function ShoppingCart() {
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
   const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-  const updateQuantity = (id: number, quantity: number) => {
+  const updateQuantity = (id: string | number, quantity: number) => {
     dispatch({ type: 'UPDATE_QUANTITY', payload: { id, quantity } });
   };
 
@@ -79,7 +79,7 @@ export function ShoppingCart() {
   );
 }
 
-function CartLineItem({ item, onUpdateQuantity }: { item: CartItem, onUpdateQuantity: (id: number, q: number) => void }) {
+function CartLineItem({ item, onUpdateQuantity }: { item: CartItem, onUpdateQuantity: (id: string | number, q: number) => void }) {
   const image = findProductImagePlaceholder(item.image, item.name);
   return (
     <div className="flex items-center gap-4 py-4">
