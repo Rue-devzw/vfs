@@ -11,7 +11,7 @@ const RATE_LIMIT_WINDOW_MS = 60_000; // 1 minute
 const RATE_LIMIT_MAX_REQUESTS = 10;
 
 export async function POST(request: NextRequest) {
-  const rateStatus = checkRateLimit(request, RATE_LIMIT_MAX_REQUESTS, RATE_LIMIT_WINDOW_MS);
+  const rateStatus = await checkRateLimit(request, RATE_LIMIT_MAX_REQUESTS, RATE_LIMIT_WINDOW_MS, "ai:image-caption");
   if (rateStatus.limited) {
     const response = NextResponse.json(
       { error: "Too many requests. Please wait before trying again." },

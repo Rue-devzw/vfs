@@ -41,7 +41,7 @@ export function StepVerification({
                         <span className="font-medium text-right max-w-[60%]">{customer.address}</span>
                     </div>
 
-                    {customer.balance < 0 && (
+                    {typeof customer.balance === "number" && customer.balance < 0 && (
                         <div className="mt-4 rounded-lg bg-orange-50 p-3 text-xs text-orange-800 flex items-start gap-2">
                             <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
                             <p>

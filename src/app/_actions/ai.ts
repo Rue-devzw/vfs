@@ -5,12 +5,28 @@ import { generateFarmingTip as generateFarmingTipFlow, GenerateFarmingTipInput }
 
 const ALLOWED_CONTENT_TYPES = ["image/jpeg", "image/png", "image/gif", "image/webp"];
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
+const PRIVATE_IP_PATTERN = /^(localhost|127\.|10\.|172\.(1[6-9]|2\d|3[0-1])\.|192\.168\.|169\.254\.|::1)/i;
+
+function validateExternalImageUrl(rawUrl: string): string {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+    const parsed = rawUrl.startsWith("/")
+        ? new URL(rawUrl, baseUrl)
+        : new URL(rawUrl);
+
+    if (!["https:", "http:"].includes(parsed.protocol)) {
+        throw new Error("Only HTTP/HTTPS image URLs are allowed.");
+    }
+
+    if (PRIVATE_IP_PATTERN.test(parsed.hostname)) {
+        throw new Error("Private network image URLs are not allowed.");
+    }
+
+    return parsed.toString();
+}
 
 async function imageUrlToDataUri(url: string): Promise<string> {
     const controller = new AbortController();
-    const absoluteUrl = url.startsWith('/')
-        ? `${process.env.NEXT_PUBLIC_BASE_URL}${url}`
-        : url;
+    const absoluteUrl = validateExternalImageUrl(url);
     const response = await fetch(absoluteUrl, { signal: controller.signal });
     if (!response.ok) {
         throw new Error(`Failed to fetch image: ${response.statusText}`);

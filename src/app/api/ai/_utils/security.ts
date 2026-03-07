@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getDb, isFirebaseConfigured } from "@/lib/firebase-admin";
+import crypto from "crypto";
 
 const rateLimitStore = new Map<string, { count: number; reset: number }>();
 
@@ -29,17 +31,46 @@ function getClientIdentifier(request: NextRequest): string {
   return "anonymous";
 }
 
-export function checkRateLimit(
+export async function checkRateLimit(
   request: NextRequest,
   limit: number,
-  windowMs: number
-): RateLimitStatus {
+  windowMs: number,
+  scope = "ai"
+): Promise<RateLimitStatus> {
   const identifier = getClientIdentifier(request);
   const now = Date.now();
-  const existing = rateLimitStore.get(identifier);
+  const key = crypto.createHash("sha256").update(`${scope}:${identifier}`).digest("hex");
 
+  if (isFirebaseConfigured()) {
+    const db = getDb();
+    const bucket = Math.floor(now / windowMs);
+    const reset = (bucket + 1) * windowMs;
+    const ref = db.collection("rate_limits").doc(`${key}:${bucket}`);
+    let countAfter = 0;
+
+    await db.runTransaction(async tx => {
+      const doc = await tx.get(ref);
+      const existingCount = doc.exists ? Number((doc.data() as { count?: number }).count ?? 0) : 0;
+      countAfter = existingCount + 1;
+      tx.set(ref, {
+        count: countAfter,
+        reset,
+        scope,
+        key,
+      }, { merge: true });
+    });
+
+    if (countAfter > limit) {
+      const retryAfter = Math.ceil((reset - now) / 1000);
+      return { limited: true, remaining: 0, reset, retryAfter: Math.max(retryAfter, 1) };
+    }
+
+    return { limited: false, remaining: Math.max(limit - countAfter, 0), reset };
+  }
+
+  const existing = rateLimitStore.get(key);
   if (!existing || now > existing.reset) {
-    rateLimitStore.set(identifier, { count: 1, reset: now + windowMs });
+    rateLimitStore.set(key, { count: 1, reset: now + windowMs });
     return { limited: false, remaining: Math.max(limit - 1, 0), reset: now + windowMs };
   }
 
@@ -49,7 +80,7 @@ export function checkRateLimit(
   }
 
   existing.count += 1;
-  rateLimitStore.set(identifier, existing);
+  rateLimitStore.set(key, existing);
 
   return { limited: false, remaining: Math.max(limit - existing.count, 0), reset: existing.reset };
 }
@@ -73,7 +104,7 @@ export interface AuthCheckResult {
 }
 
 export function verifyAuthToken(request: NextRequest): AuthCheckResult {
-  const expectedToken = process.env.AI_API_TOKEN || process.env.NEXT_PUBLIC_AI_API_TOKEN;
+  const expectedToken = process.env.AI_API_TOKEN;
   if (!expectedToken) {
     // Token enforcement disabled when not configured.
     return { authorized: true };

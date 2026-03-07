@@ -1,19 +1,38 @@
 import { NextResponse } from 'next/server';
+import { setOrderStatus } from '@/server/orders';
 import crypto from 'crypto';
-
-const ZB_MERCHANT_KEY = process.env.ZB_MERCHANT_KEY || "MOCK_ZB_KEY";
 
 export async function POST(req: Request) {
     try {
+        const webhookSecret = process.env.ZB_WEBHOOK_SECRET;
+        if (webhookSecret) {
+            const secretHeader = req.headers.get('x-webhook-secret');
+            if (secretHeader !== webhookSecret) {
+                return NextResponse.json({ error: "Unauthorized webhook." }, { status: 401 });
+            }
+        }
+
         const body = await req.json();
+        const rawStatus = typeof body?.status === "string" ? body.status : "PENDING";
+        const reference = typeof body?.orderReference === "string"
+            ? body.orderReference
+            : typeof body?.reference === "string"
+                ? body.reference
+                : "";
 
-        // Webhook verification pattern
+        if (!reference) {
+            return NextResponse.json({ error: "Missing reference." }, { status: 400 });
+        }
+
+        const merchantSecret = process.env.ZB_API_SECRET;
         const signature = req.headers.get('x-signature');
-
         if (signature) {
+            if (!merchantSecret) {
+                return NextResponse.json({ error: "ZB_API_SECRET is required for signature validation." }, { status: 500 });
+            }
             const payloadString = JSON.stringify(body);
             const expectedSignature = crypto
-                .createHmac('sha256', ZB_MERCHANT_KEY)
+                .createHmac('sha256', merchantSecret)
                 .update(payloadString)
                 .digest('hex');
 
@@ -23,19 +42,12 @@ export async function POST(req: Request) {
             }
         }
 
-        const { reference, status, metadata } = body;
-
-        // Check if payment was successful
-        if (status === "PAID" || status === "SUCCESS") {
-            console.log(`Payment successful for ZESA reference: ${reference} and meter: ${metadata?.meterNumber}`);
-
-            // At this point, you would:
-            // 1. Mark transaction as paid in database
-            // 2. Actually purchase the ZESA token from your downstream provider 
-            // 3. Email or SMS the token to the user
-
-            // e.g., await fulfillZesaToken(reference, metadata.meterNumber)
-        }
+        await setOrderStatus(reference, rawStatus, {
+            gatewayReference: body?.reference,
+            paymentOption: body?.paymentOption,
+            amount: body?.amount,
+            currency: body?.currency,
+        });
 
         return NextResponse.json({ received: true });
 

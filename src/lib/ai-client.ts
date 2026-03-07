@@ -1,5 +1,3 @@
-const API_TOKEN = process.env.NEXT_PUBLIC_AI_API_TOKEN;
-
 interface FarmingTipResponse {
   tip: string;
 }
@@ -42,7 +40,6 @@ async function handleResponse<T>(response: Response): Promise<ApiResult<T>> {
 function buildHeaders(): HeadersInit {
   return {
     "Content-Type": "application/json",
-    ...(API_TOKEN ? { Authorization: `Bearer ${API_TOKEN}` } : {}),
   };
 }
 

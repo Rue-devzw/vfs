@@ -6,25 +6,27 @@ import { type Bucket } from '@google-cloud/storage';
 let db: FirebaseFirestore.Firestore | null = null;
 let storageBucket: Bucket | null = null;
 
+import { env } from '@/lib/env';
+
 export function isFirebaseConfigured() {
   return Boolean(
-    process.env.FIREBASE_PROJECT_ID &&
-    process.env.FIREBASE_PROJECT_ID !== 'your-project-id' &&
-    process.env.FIREBASE_CLIENT_EMAIL &&
-    process.env.FIREBASE_PRIVATE_KEY,
+    env.FIREBASE_PROJECT_ID &&
+    env.FIREBASE_PROJECT_ID !== 'your-project-id' &&
+    env.FIREBASE_CLIENT_EMAIL &&
+    env.FIREBASE_PRIVATE_KEY,
   );
 }
 
 export function getDb() {
   if (db && storageBucket) return db;
 
-  const projectId = process.env.FIREBASE_PROJECT_ID;
-  const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
+  const projectId = env.FIREBASE_PROJECT_ID;
+  const clientEmail = env.FIREBASE_CLIENT_EMAIL;
   // Handle various formats Vercel may store the key in:
   // 1. Literal \n sequences (most common)
   // 2. Actual newlines
   // 3. Surrounded by extra quotes
-  let privateKey = process.env.FIREBASE_PRIVATE_KEY;
+  let privateKey = env.FIREBASE_PRIVATE_KEY;
   if (privateKey) {
     // Strip surrounding quotes if Vercel added them
     privateKey = privateKey.replace(/^["']|["']$/g, '');
