@@ -8,14 +8,17 @@ import { ShoppingBag, Trash2, Plus, Minus } from 'lucide-react';
 import Image from 'next/image';
 import { findProductImagePlaceholder } from '@/lib/placeholder-images';
 import { CheckoutDialog } from './checkout-dialog';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { convertFromUsd, formatMoney } from '@/lib/currency';
 
 export function ShoppingCart() {
-  const { state: { items }, dispatch } = useCart();
+  const { state: { items, currencyCode }, dispatch } = useCart();
   const [isCheckoutOpen, setCheckoutOpen] = useState(false);
   const [isCartOpen, setCartOpen] = useState(false);
 
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
-  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const subtotalUsd = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const subtotal = convertFromUsd(subtotalUsd, currencyCode);
 
   const updateQuantity = (id: string | number, quantity: number) => {
     dispatch({ type: 'UPDATE_QUANTITY', payload: { id, quantity } });
@@ -47,6 +50,21 @@ export function ShoppingCart() {
         <SheetContent className="flex flex-col w-full sm:max-w-md">
           <SheetHeader>
             <SheetTitle className="font-headline text-2xl">Your Cart</SheetTitle>
+            <div className="w-40">
+              <Select value={currencyCode} onValueChange={(value: string) => {
+                if (value === "840" || value === "924") {
+                  dispatch({ type: "SET_CURRENCY", payload: value });
+                }
+              }}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Currency" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="840">USD (840)</SelectItem>
+                  <SelectItem value="924">ZWG (924)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </SheetHeader>
           {items.length > 0 ? (
             <div className="flex-grow overflow-y-auto -mx-6 px-6">
@@ -65,7 +83,7 @@ export function ShoppingCart() {
             <div className="w-full space-y-4">
               <div className="flex justify-between text-lg font-semibold">
                 <span>Subtotal</span>
-                <span>${subtotal.toFixed(2)}</span>
+                <span>{formatMoney(subtotal, currencyCode)}</span>
               </div>
               <Button size="lg" className="w-full bg-accent text-accent-foreground hover:bg-accent/90" disabled={items.length === 0} onClick={handleCheckout}>
                 Proceed to Checkout
@@ -80,13 +98,16 @@ export function ShoppingCart() {
 }
 
 function CartLineItem({ item, onUpdateQuantity }: { item: CartItem, onUpdateQuantity: (id: string | number, q: number) => void }) {
+  const { state: { currencyCode } } = useCart();
   const image = findProductImagePlaceholder(item.image, item.name);
+  const unitPrice = convertFromUsd(item.price, currencyCode);
+  const lineTotal = convertFromUsd(item.price * item.quantity, currencyCode);
   return (
     <div className="flex items-center gap-4 py-4">
       {image && <Image src={image.imageUrl} alt={item.name} width={64} height={64} className="rounded-md object-cover" />}
       <div className="flex-grow">
         <p className="font-semibold">{item.name}</p>
-        <p className="text-sm text-muted-foreground">${item.price.toFixed(2)}</p>
+        <p className="text-sm text-muted-foreground">{formatMoney(unitPrice, currencyCode)}</p>
         <div className="flex items-center gap-2 mt-2">
           <Button variant="outline" size="icon" className="h-6 w-6" onClick={() => onUpdateQuantity(item.id, item.quantity - 1)}><Minus className="h-4 w-4" /></Button>
           <span>{item.quantity}</span>
@@ -94,7 +115,7 @@ function CartLineItem({ item, onUpdateQuantity }: { item: CartItem, onUpdateQuan
         </div>
       </div>
       <div className="text-right">
-        <p className="font-semibold">${(item.price * item.quantity).toFixed(2)}</p>
+        <p className="font-semibold">{formatMoney(lineTotal, currencyCode)}</p>
         <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive" onClick={() => onUpdateQuantity(item.id, 0)}><Trash2 className="h-4 w-4" /></Button>
       </div>
     </div>

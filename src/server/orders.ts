@@ -9,6 +9,11 @@ type PendingOrderInput = {
   subtotal: number;
   deliveryFee: number;
   total: number;
+  subtotalUsd?: number;
+  deliveryFeeUsd?: number;
+  totalUsd?: number;
+  currencyCode?: "840" | "924";
+  exchangeRate?: number;
   customerName: string;
   customerEmail: string;
   customerPhone?: string;
@@ -67,6 +72,18 @@ export async function createPendingOrder(input: PendingOrderInput) {
   const db = await getOrdersDb();
   const timestamp = new Date().toISOString();
 
+  if (input.customerEmail) {
+    await db.collection("customers").doc(input.customerEmail.toLowerCase()).set(stripUndefined({
+      email: input.customerEmail,
+      name: input.customerName,
+      phone: input.customerPhone,
+      address: input.customerAddress,
+      lastOrderReference: input.reference,
+      updatedAt: timestamp,
+      createdAt: timestamp,
+    }), { merge: true });
+  }
+
   await db.collection("orders").doc(input.reference).set(stripUndefined({
     id: input.reference,
     reference: input.reference,
@@ -74,6 +91,11 @@ export async function createPendingOrder(input: PendingOrderInput) {
     subtotal: input.subtotal,
     deliveryFee: input.deliveryFee,
     total: input.total,
+    subtotalUsd: input.subtotalUsd,
+    deliveryFeeUsd: input.deliveryFeeUsd,
+    totalUsd: input.totalUsd,
+    currencyCode: input.currencyCode ?? "840",
+    exchangeRate: input.exchangeRate,
     customerName: input.customerName,
     customerEmail: input.customerEmail,
     customerPhone: input.customerPhone,
@@ -85,6 +107,23 @@ export async function createPendingOrder(input: PendingOrderInput) {
     createdAt: timestamp,
     updatedAt: timestamp,
   }));
+}
+
+export async function getOrderTransactionReport(reference: string) {
+  const db = await getOrdersDb();
+  const orderDoc = await db.collection("orders").doc(reference).get();
+  if (!orderDoc.exists) return null;
+  const eventsSnapshot = await db
+    .collection("payment_events")
+    .where("reference", "==", reference)
+    .orderBy("createdAt", "asc")
+    .get();
+
+  return {
+    order: { id: orderDoc.id, ...orderDoc.data() },
+    events: eventsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })),
+    generatedAt: new Date().toISOString(),
+  };
 }
 
 export async function savePollUrl(reference: string, pollUrl: string) {

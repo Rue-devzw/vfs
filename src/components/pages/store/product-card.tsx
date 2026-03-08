@@ -8,6 +8,7 @@ import { findProductImagePlaceholder } from '@/lib/placeholder-images';
 import { useCart } from './cart-context';
 import { ShoppingCart } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { convertFromUsd, formatMoney } from '@/lib/currency';
 
 interface ProductCardProps {
   product: Product;
@@ -34,11 +35,13 @@ const formatUnit = (unit: string) => {
 };
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  const { dispatch } = useCart();
+  const { dispatch, state: { currencyCode } } = useCart();
   const { toast } = useToast();
   const image = findProductImagePlaceholder(product.image, product.name);
 
   const isOutOfStock = product.price <= 0;
+  const displayPrice = convertFromUsd(product.price, currencyCode);
+  const displayOldPrice = product.oldPrice ? convertFromUsd(product.oldPrice, currencyCode) : undefined;
 
   const handleAddToCart = () => {
     if (isOutOfStock) {
@@ -78,9 +81,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             <p className="text-sm font-semibold text-destructive">Currently not in stock</p>
           ) : (
             <div className="flex items-baseline gap-2">
-              <p className="text-xl font-bold text-primary">${product.price.toFixed(2)}</p>
-              {product.onSpecial && product.oldPrice && (
-                <p className="text-sm text-muted-foreground line-through">${product.oldPrice.toFixed(2)}</p>
+              <p className="text-xl font-bold text-primary">{formatMoney(displayPrice, currencyCode)}</p>
+              {product.onSpecial && displayOldPrice && (
+                <p className="text-sm text-muted-foreground line-through">{formatMoney(displayOldPrice, currencyCode)}</p>
               )}
             </div>
           )}

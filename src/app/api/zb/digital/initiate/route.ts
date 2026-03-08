@@ -3,12 +3,14 @@ import { z } from "zod";
 import { initiateZbWalletExpress, ZbGatewayError } from "@/lib/payments/zb";
 import { createPendingOrder, setOrderStatus } from "@/server/orders";
 import { DIGITAL_SERVICE_LABELS, isDigitalServiceId } from "@/lib/digital-services";
+import { convertFromUsd, CurrencyCode, getZwgPerUsdRate } from "@/lib/currency";
 
 const schema = z.object({
   service: z.string().min(1),
   accountReference: z.string().trim().min(2),
   amount: z.number().min(1),
   zbWalletMobile: z.string().trim().min(8),
+  currencyCode: z.enum(["840", "924"]).default("840"),
   customerEmail: z.string().email().optional(),
   customerName: z.string().trim().optional(),
 });
@@ -21,8 +23,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: validation.error.errors }, { status: 400 });
     }
 
-    const { service, accountReference, amount, zbWalletMobile } = validation.data;
-    const expressCurrency = process.env.ZB_EXPRESS_CURRENCY_CODE?.trim() || process.env.ZB_CURRENCY_CODE?.trim() || "USD";
+    const { service, accountReference, amount: amountUsd, zbWalletMobile, currencyCode } = validation.data;
     if (!isDigitalServiceId(service) || service === "zesa") {
       return NextResponse.json({ success: false, error: "Unsupported digital service." }, { status: 400 });
     }
@@ -37,6 +38,9 @@ export async function POST(req: Request) {
     const customerName = validation.data.customerName || "Digital Customer";
     const customerEmail = validation.data.customerEmail || "customer@example.com";
 
+    const exchangeRate = getZwgPerUsdRate();
+    const amount = convertFromUsd(amountUsd, currencyCode as CurrencyCode, exchangeRate);
+
     await createPendingOrder({
       reference,
       items: [{
@@ -49,6 +53,11 @@ export async function POST(req: Request) {
       subtotal: amount,
       deliveryFee: 0,
       total: amount,
+      subtotalUsd: amountUsd,
+      deliveryFeeUsd: 0,
+      totalUsd: amountUsd,
+      exchangeRate,
+      currencyCode: currencyCode as CurrencyCode,
       customerName,
       customerEmail,
       customerPhone: zbWalletMobile,
@@ -65,7 +74,7 @@ export async function POST(req: Request) {
       failureUrl: `${baseUrl}/digital/${service}?status=FAILED&reference=${encodeURIComponent(reference)}`,
       itemName: `${label} Payment`,
       itemDescription: `${label} - ${accountReference}`,
-      currencyCode: expressCurrency,
+      currencyCode,
       firstName: customerName.split(" ")[0],
       lastName: customerName.split(" ").slice(1).join(" ") || undefined,
       mobilePhoneNumber: zbWalletMobile,

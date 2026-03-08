@@ -28,6 +28,7 @@ import { useCart } from "./cart-context";
 import { useToast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
 import { Loader2 } from "lucide-react";
+import { convertFromUsd, formatMoney } from "@/lib/currency";
 
 const BIKER_DELIVERY_FEE = 5.0;
 
@@ -36,10 +37,10 @@ const formSchema = z.object({
   recipientName: z.string().optional(),
   recipientPhone: z.string().optional(),
   deliveryMethod: z.enum(["collect", "delivery"]).default("collect"),
-  customerName: z.string().optional(),
-  customerPhone: z.string().optional(),
+  customerName: z.string().trim().min(2, "Your name is required."),
+  customerPhone: z.string().trim().min(7, "Your phone is required."),
   customerAddress: z.string().optional(),
-  customerEmail: z.string().email().optional(),
+  customerEmail: z.string().email("A valid email is required."),
   paymentMethod: z.enum(["WALLETPLUS", "ECOCASH", "INNBUCKS", "OMARI", "CARD"]).default("WALLETPLUS"),
   customerMobile: z.string().optional(),
   otp: z.string().optional(),
@@ -73,6 +74,7 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
   const [awaitingOtp, setAwaitingOtp] = React.useState(false);
   const [transactionReference, setTransactionReference] = React.useState<string | null>(null);
   const [orderReference, setOrderReference] = React.useState<string | null>(null);
+  const [lastOrderReference, setLastOrderReference] = React.useState<string | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -90,10 +92,35 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
   const isDiasporaGift = watch("isDiasporaGift");
   const deliveryMethod = watch("deliveryMethod");
   const paymentMethod = watch("paymentMethod");
-  const subtotal = state.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const total = subtotal + (deliveryMethod === "delivery" ? BIKER_DELIVERY_FEE : 0);
+  const subtotalUsd = state.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const totalUsd = subtotalUsd + (deliveryMethod === "delivery" ? BIKER_DELIVERY_FEE : 0);
+  const subtotal = convertFromUsd(subtotalUsd, state.currencyCode);
+  const total = convertFromUsd(totalUsd, state.currencyCode);
 
   const needsOtp = paymentMethod === "WALLETPLUS" || paymentMethod === "OMARI";
+
+  React.useEffect(() => {
+    const raw = window.localStorage.getItem("vfs.checkout.profile");
+    if (!raw) return;
+    try {
+      const parsed = JSON.parse(raw) as Partial<z.infer<typeof formSchema>>;
+      form.reset({ ...form.getValues(), ...parsed });
+    } catch {
+      // Ignore malformed profile cache.
+    }
+  }, [form]);
+
+  async function pollPaymentStatus(reference: string) {
+    let status = "PENDING";
+    for (let i = 0; i < 8; i += 1) {
+      await new Promise(resolve => setTimeout(resolve, 2500));
+      const statusRes = await fetch(`/api/zb/status/${encodeURIComponent(reference)}`, { cache: "no-store" });
+      const statusData = await statusRes.json();
+      status = String(statusData?.data?.status ?? status).toUpperCase();
+      if (["PAID", "SUCCESS", "FAILED", "EXPIRED", "CANCELED", "CANCELLED"].includes(status)) break;
+    }
+    return status;
+  }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
@@ -103,10 +130,11 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             items: state.items.map(item => ({ productId: String(item.id), quantity: item.quantity })),
-            email: values.customerEmail,
-            customerMobile: values.customerMobile,
-            paymentMethod: values.paymentMethod,
-            deliveryMethod: values.deliveryMethod,
+                email: values.customerEmail,
+                customerMobile: values.customerMobile,
+                paymentMethod: values.paymentMethod,
+                currencyCode: state.currencyCode,
+                deliveryMethod: values.deliveryMethod,
             customerName: values.customerName,
             customerPhone: values.customerPhone,
             customerAddress: values.customerAddress,
@@ -121,6 +149,13 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
           throw new Error(data.error || "Failed to initiate payment");
         }
 
+        window.localStorage.setItem("vfs.checkout.profile", JSON.stringify({
+          customerName: values.customerName,
+          customerPhone: values.customerPhone,
+          customerAddress: values.customerAddress,
+          customerEmail: values.customerEmail,
+        }));
+
         if (values.paymentMethod === "CARD") {
           if (data.paymentUrl) {
             window.location.href = data.paymentUrl;
@@ -133,6 +168,7 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
           setAwaitingOtp(true);
           setTransactionReference(data.transactionReference ?? null);
           setOrderReference(data.reference ?? null);
+          setLastOrderReference(data.reference ?? null);
           toast({
             title: "OTP required",
             description: data.message ?? "Enter the OTP sent to your account to complete payment.",
@@ -140,12 +176,23 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
           return;
         }
 
-        // Ecocash/Innbucks/OneMoney typically use USSD pull/push
-        dispatch({ type: "CLEAR_CART" });
-        onOpenChange(false);
+        const reference = String(data.reference ?? "");
+        if (reference) {
+          setLastOrderReference(reference);
+          const finalStatus = await pollPaymentStatus(reference);
+          if (finalStatus === "PAID" || finalStatus === "SUCCESS") {
+            dispatch({ type: "CLEAR_CART" });
+            toast({
+              title: "Payment successful",
+              description: "Transaction confirmed. You can now download your receipt.",
+            });
+            return;
+          }
+        }
+
         toast({
-          title: "Payment Requested",
-          description: "Check your phone for a USSD prompt to complete payment.",
+          title: "Payment processing",
+          description: "Awaiting final confirmation from gateway. Use the transaction report link below.",
         });
         return;
       }
@@ -177,8 +224,8 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
         setAwaitingOtp(false);
         setTransactionReference(null);
         setOrderReference(null);
-        onOpenChange(false);
-        toast({ title: "Payment successful", description: "Your order has been placed." });
+        setLastOrderReference(orderReference);
+        toast({ title: "Payment successful", description: "Your order has been placed. You can download the receipt." });
       } else {
         toast({
           title: "Payment processing",
@@ -220,6 +267,11 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
                   <FormField name="recipientPhone" control={form.control} render={({ field }) => (
                     <FormItem><FormLabel>Recipient&apos;s Phone</FormLabel><FormControl><Input placeholder="+263 7..." {...field} /></FormControl><FormMessage /></FormItem>
                   )} />
+                  <div className="grid grid-cols-2 gap-4">
+                    <FormField name="customerName" control={form.control} render={({ field }) => (<FormItem><FormLabel>Your Name</FormLabel><FormControl><Input placeholder="John Doe" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                    <FormField name="customerPhone" control={form.control} render={({ field }) => (<FormItem><FormLabel>Your Phone</FormLabel><FormControl><Input placeholder="+263 7..." {...field} /></FormControl><FormMessage /></FormItem>)} />
+                  </div>
+                  <FormField name="customerEmail" control={form.control} render={({ field }) => (<FormItem><FormLabel>Your Email</FormLabel><FormControl><Input placeholder="me@example.com" {...field} /></FormControl><FormMessage /></FormItem>)} />
                 </div>
               ) : (
                 <div className="space-y-4 p-4 border rounded-xl animate-fade-in-up bg-background shadow-sm">
@@ -243,16 +295,16 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
                       </RadioGroup><FormMessage />
                     </FormItem>
                   )} />
-                  {deliveryMethod === "delivery" && (
-                    <div className="space-y-4 animate-fade-in-up pt-4">
-                      <div className="grid grid-cols-2 gap-4">
-                        <FormField name="customerName" control={form.control} render={({ field }) => (<FormItem><FormLabel>Your Name</FormLabel><FormControl><Input placeholder="John Doe" {...field} /></FormControl><FormMessage /></FormItem>)} />
-                        <FormField name="customerPhone" control={form.control} render={({ field }) => (<FormItem><FormLabel>Your Phone</FormLabel><FormControl><Input placeholder="+263 7..." {...field} /></FormControl><FormMessage /></FormItem>)} />
-                      </div>
-                      <FormField name="customerAddress" control={form.control} render={({ field }) => (<FormItem><FormLabel>Delivery Address</FormLabel><FormControl><Input placeholder="123 Main St, Harare" {...field} /></FormControl><FormMessage /></FormItem>)} />
-                      <FormField name="customerEmail" control={form.control} render={({ field }) => (<FormItem><FormLabel>Your Email (Optional)</FormLabel><FormControl><Input placeholder="me@example.com" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                  <div className="space-y-4 animate-fade-in-up pt-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <FormField name="customerName" control={form.control} render={({ field }) => (<FormItem><FormLabel>Your Name</FormLabel><FormControl><Input placeholder="John Doe" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                      <FormField name="customerPhone" control={form.control} render={({ field }) => (<FormItem><FormLabel>Your Phone</FormLabel><FormControl><Input placeholder="+263 7..." {...field} /></FormControl><FormMessage /></FormItem>)} />
                     </div>
-                  )}
+                    <FormField name="customerEmail" control={form.control} render={({ field }) => (<FormItem><FormLabel>Your Email</FormLabel><FormControl><Input placeholder="me@example.com" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                    {deliveryMethod === "delivery" && (
+                      <FormField name="customerAddress" control={form.control} render={({ field }) => (<FormItem><FormLabel>Delivery Address</FormLabel><FormControl><Input placeholder="123 Main St, Harare" {...field} /></FormControl><FormMessage /></FormItem>)} />
+                    )}
+                  </div>
                 </div>
               )}
             </div>
@@ -306,10 +358,24 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
             <Separator />
 
             <div className="space-y-2 bg-muted/20 p-4 rounded-xl">
-              <div className="flex justify-between text-sm text-muted-foreground"><p>Subtotal</p><p>${subtotal.toFixed(2)}</p></div>
-              {deliveryMethod === "delivery" && <div className="flex justify-between text-sm text-muted-foreground"><p>Delivery Fee</p><p>${BIKER_DELIVERY_FEE.toFixed(2)}</p></div>}
-              <div className="flex justify-between text-xl font-headline font-bold pt-2 border-t"><p>Total</p><p>${total.toFixed(2)}</p></div>
+              <div className="flex justify-between text-sm text-muted-foreground"><p>Subtotal</p><p>{formatMoney(subtotal, state.currencyCode)}</p></div>
+              {deliveryMethod === "delivery" && <div className="flex justify-between text-sm text-muted-foreground"><p>Delivery Fee</p><p>{formatMoney(convertFromUsd(BIKER_DELIVERY_FEE, state.currencyCode), state.currencyCode)}</p></div>}
+              <div className="flex justify-between text-xl font-headline font-bold pt-2 border-t"><p>Total</p><p>{formatMoney(total, state.currencyCode)}</p></div>
             </div>
+
+            {lastOrderReference && (
+              <div className="rounded-xl border bg-muted/20 p-3 text-sm">
+                <p className="font-medium">Transaction Report</p>
+                <a
+                  className="text-primary underline"
+                  href={`/api/orders/${encodeURIComponent(lastOrderReference)}/report?format=txt`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Download receipt / transaction report
+                </a>
+              </div>
+            )}
 
             <div className="sticky bottom-0 bg-background pt-4 pb-2 border-t mt-auto">
               <Button type="submit" size="lg" className="w-full text-lg h-12" disabled={isSubmitting}>

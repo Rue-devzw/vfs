@@ -8,6 +8,7 @@ const purchaseSchema = z.object({
     accountNumber: z.string().min(1),
     amount: z.number().min(1),
     paymentMethod: z.enum(["WALLETPLUS", "ECOCASH", "INNBUCKS", "OMARI", "CARD"]),
+    currencyCode: z.enum(["840", "924"]).default("840"),
     customerMobile: z.string().optional(),
     customerName: z.string().optional(),
     customerEmail: z.string().optional(),
@@ -22,7 +23,7 @@ export async function POST(req: Request) {
             return NextResponse.json({ success: false, error: validation.error.errors }, { status: 400 });
         }
 
-        const { serviceType, accountNumber, amount, paymentMethod, customerMobile, customerName, customerEmail } = validation.data;
+        const { serviceType, accountNumber, amount: amountUsd, paymentMethod, currencyCode, customerMobile, customerName, customerEmail } = validation.data;
 
         const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
         if (!baseUrl) {
@@ -36,8 +37,9 @@ export async function POST(req: Request) {
         const initiateResult = await DigitalService.initiatePurchase({
             serviceType,
             accountNumber,
-            amount,
+            amount: amountUsd,
             paymentMethod,
+            currencyCode,
             customerMobile,
             email: customerEmail,
         }, baseUrl);
@@ -48,13 +50,18 @@ export async function POST(req: Request) {
             items: [{
                 id: `${serviceType.toLowerCase()}-${accountNumber}`,
                 name: `${serviceType} Purchase`,
-                price: amount,
+                price: initiateResult.amount,
                 quantity: 1,
                 image: `/images/${serviceType.toLowerCase()}.webp`,
             }],
-            subtotal: amount,
+            subtotal: initiateResult.amount,
             deliveryFee: 0,
-            total: amount,
+            total: initiateResult.amount,
+            subtotalUsd: initiateResult.amountUsd,
+            deliveryFeeUsd: 0,
+            totalUsd: initiateResult.amountUsd,
+            exchangeRate: initiateResult.exchangeRate,
+            currencyCode: initiateResult.currencyCode,
             customerName: customerName || "Digital Customer",
             customerEmail: customerEmail || "customer@example.com",
             customerPhone: customerMobile,

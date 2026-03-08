@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useReducer, ReactNode } from 'react';
 import { Product } from '@/app/store/data';
+import { CurrencyCode } from '@/lib/currency';
 
 export interface CartItem extends Product {
   quantity: number;
@@ -9,16 +10,19 @@ export interface CartItem extends Product {
 
 type CartState = {
   items: CartItem[];
+  currencyCode: CurrencyCode;
 };
 
 type CartAction =
   | { type: 'ADD_ITEM'; payload: Product }
   | { type: 'REMOVE_ITEM'; payload: { id: string | number } }
   | { type: 'UPDATE_QUANTITY'; payload: { id: string | number; quantity: number } }
-  | { type: 'CLEAR_CART' };
+  | { type: 'CLEAR_CART' }
+  | { type: 'SET_CURRENCY'; payload: CurrencyCode };
 
 const initialState: CartState = {
   items: [],
+  currencyCode: "840",
 };
 
 const CartContext = createContext<{
@@ -65,6 +69,11 @@ function cartReducer(state: CartState, action: CartAction): CartState {
         ...state,
         items: []
       }
+    case 'SET_CURRENCY':
+      return {
+        ...state,
+        currencyCode: action.payload,
+      };
     default:
       return state;
   }
@@ -72,6 +81,17 @@ function cartReducer(state: CartState, action: CartAction): CartState {
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(cartReducer, initialState);
+
+  React.useEffect(() => {
+    const stored = window.localStorage.getItem("vfs.currency.code");
+    if (stored === "840" || stored === "924") {
+      dispatch({ type: "SET_CURRENCY", payload: stored });
+    }
+  }, []);
+
+  React.useEffect(() => {
+    window.localStorage.setItem("vfs.currency.code", state.currencyCode);
+  }, [state.currencyCode]);
 
   return (
     <CartContext.Provider value={{ state, dispatch }}>

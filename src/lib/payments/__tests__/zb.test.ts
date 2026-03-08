@@ -63,12 +63,44 @@ describe("zb payments client", () => {
       resultUrl: "https://app.test/api/zb/webhook",
       itemName: "Order",
       itemDescription: "Order item",
-      currencyCode: "USD",
+      currencyCode: "840",
       customerMobile: "263771234567",
     });
 
     expect(fetchMock).toHaveBeenCalledOnce();
     expect(result.transactionReference).toBe(body.transactionReference);
     expect(result.status).toBe(body.status);
+  });
+
+  it("initiates ZWG express and applies conversion (mocked behavior check)", async () => {
+    const body = {
+      status: "PENDING",
+      transactionReference: "ZWG-TRX-1",
+    };
+    const fetchMock = vi.fn(async () => ({
+      ok: true,
+      status: 200,
+      text: async () => JSON.stringify(body),
+    }));
+    vi.stubGlobal("fetch", fetchMock as unknown as typeof fetch);
+
+    const { initiateSmileCashExpress } = await import("@/lib/payments/zb");
+    const result = await initiateSmileCashExpress({
+      orderReference: "ORDER-3",
+      amount: 250.50, // This would be the converted ZWG amount from the caller
+      resultUrl: "https://app.test/api/zb/webhook",
+      itemName: "ZWG Order",
+      itemDescription: "Order in ZWG",
+      currencyCode: "924",
+      customerMobile: "263771234567",
+    });
+
+    expect(fetchMock).toHaveBeenCalledOnce();
+    const mockCall = fetchMock.mock.calls[0];
+    if (!mockCall || !mockCall[1]) throw new Error("Mock call malformed");
+    const callBody = JSON.parse(mockCall[1].body as string);
+    expect(callBody.currencyCode).toBe("924");
+    expect(callBody.amount).toBe(250.50);
+    expect(result.transactionReference).toBe(body.transactionReference);
   });
 });

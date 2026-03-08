@@ -6,6 +6,7 @@ import {
     initiateZbStandardCheckout,
     type ZbCheckoutResponse,
 } from "@/lib/payments/zb";
+import { convertFromUsd, CurrencyCode, getZwgPerUsdRate } from "@/lib/currency";
 
 export type DigitalServiceType = "ZESA" | "AIRTIME" | "DSTV" | "COUNCILS" | "NYARADZO" | "INTERNET";
 
@@ -14,6 +15,7 @@ export interface DigitalPurchasePayload {
     accountNumber: string; // Meter number, Phone number, Smartcard, etc.
     amount: number;
     paymentMethod: "WALLETPLUS" | "ECOCASH" | "INNBUCKS" | "OMARI" | "CARD";
+    currencyCode?: CurrencyCode;
     customerMobile?: string;
     email?: string;
 }
@@ -41,17 +43,20 @@ export const DigitalService = {
     initiatePurchase: async (payload: DigitalPurchasePayload, baseUrl: string) => {
         const reference = `digi_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
 
+        const currencyCode = payload.currencyCode ?? "840";
+        const exchangeRate = getZwgPerUsdRate();
+        const amount = convertFromUsd(payload.amount, currencyCode, exchangeRate);
+
         const zbPayload = {
             orderReference: reference,
-            amount: payload.amount,
+            amount,
             returnUrl: `${baseUrl}/digital/success?ref=${reference}`,
             resultUrl: `${baseUrl}/api/zb/webhook`,
             itemName: `${payload.serviceType} Payment`,
             itemDescription: `${payload.serviceType} for ${payload.accountNumber}`,
-            currencyCode: "USD",
+            currencyCode,
             email: payload.email,
         };
-
         let response: ZbCheckoutResponse;
         if (payload.paymentMethod === "CARD") {
             response = await initiateZbStandardCheckout({ ...zbPayload, paymentMethod: "CARD" });
@@ -74,6 +79,10 @@ export const DigitalService = {
             status: response.status ?? "PENDING",
             paymentUrl: response.paymentUrl,
             message: response.responseMessage,
+            amount,
+            currencyCode,
+            exchangeRate,
+            amountUsd: payload.amount,
         };
     }
 };

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createPendingOrder, setOrderStatus } from "@/server/orders";
 import { getProductById } from "@/lib/firestore/products";
+import { convertFromUsd, CurrencyCode, getZwgPerUsdRate } from "@/lib/currency";
 import {
   initiateSmileCashExpress,
   initiateEcocashExpress,
@@ -20,15 +21,31 @@ const checkoutItemSchema = z.object({
 });
 
 const initiatePaymentSchema = z.object({
-  email: z.string().email().optional(),
+  email: z.string().email(),
   customerMobile: z.string().trim().min(8).optional(), // Renamed for clarity across providers
   paymentMethod: z.enum(["WALLETPLUS", "ECOCASH", "INNBUCKS", "CARD", "OMARI", "ONEMONEY"]).default("WALLETPLUS"),
+  currencyCode: z.enum(["840", "924"]).default("840"),
   deliveryMethod: z.enum(["collect", "delivery"]).default("collect"),
-  customerName: z.string().trim().min(1).optional(),
-  customerPhone: z.string().trim().min(1).optional(),
+  customerName: z.string().trim().min(2),
+  customerPhone: z.string().trim().min(7),
   customerAddress: z.string().trim().min(1).optional(),
   notes: z.string().trim().max(500).optional(),
   items: z.array(checkoutItemSchema).min(1),
+}).superRefine((data, ctx) => {
+  if (data.deliveryMethod === "delivery" && !data.customerAddress) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Customer address is required for delivery orders.",
+      path: ["customerAddress"],
+    });
+  }
+  if (data.paymentMethod !== "CARD" && !data.customerMobile) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Customer mobile is required for express payment methods.",
+      path: ["customerMobile"],
+    });
+  }
 });
 
 export async function POST(req: Request) {
@@ -40,10 +57,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: validation.error.errors }, { status: 400 });
     }
 
-    const { items, deliveryMethod, paymentMethod, customerMobile } = validation.data;
-    const defaultCurrency = process.env.ZB_CURRENCY_CODE?.trim() || "USD";
-    const expressCurrency = process.env.ZB_EXPRESS_CURRENCY_CODE?.trim() || defaultCurrency;
-    const cardCurrency = process.env.ZB_CARD_CURRENCY_CODE?.trim() || defaultCurrency;
+    const { items, deliveryMethod, paymentMethod, customerMobile, currencyCode } = validation.data;
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
     if (!baseUrl) {
       return NextResponse.json(
@@ -68,13 +82,17 @@ export async function POST(req: Request) {
       }),
     );
 
-    const subtotal = enrichedItems.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0);
-    const deliveryFee = deliveryMethod === "delivery" ? BIKER_DELIVERY_FEE : 0;
-    const total = Number((subtotal + deliveryFee).toFixed(2));
+    const subtotalUsd = enrichedItems.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0);
+    const deliveryFeeUsd = deliveryMethod === "delivery" ? BIKER_DELIVERY_FEE : 0;
+    const totalUsd = Number((subtotalUsd + deliveryFeeUsd).toFixed(2));
+    const exchangeRate = getZwgPerUsdRate();
+    const subtotal = convertFromUsd(subtotalUsd, currencyCode as CurrencyCode, exchangeRate);
+    const deliveryFee = convertFromUsd(deliveryFeeUsd, currencyCode as CurrencyCode, exchangeRate);
+    const total = convertFromUsd(totalUsd, currencyCode as CurrencyCode, exchangeRate);
     const reference = `order_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
 
-    const customerName = validation.data.customerName ?? "Guest";
-    const customerEmail = validation.data.email ?? "customer@example.com";
+    const customerName = validation.data.customerName;
+    const customerEmail = validation.data.email;
 
     await createPendingOrder({
       reference,
@@ -85,9 +103,14 @@ export async function POST(req: Request) {
         quantity: item.quantity,
         image: item.image,
       })),
-      subtotal: Number(subtotal.toFixed(2)),
+      subtotal,
       deliveryFee,
       total,
+      subtotalUsd,
+      deliveryFeeUsd,
+      totalUsd,
+      exchangeRate,
+      currencyCode,
       customerName,
       customerEmail,
       customerPhone: validation.data.customerPhone,
@@ -117,10 +140,10 @@ export async function POST(req: Request) {
 
     let response: ZbCheckoutResponse;
     if (paymentMethod === "CARD") {
-      response = await initiateZbStandardCheckout({ ...payload, currencyCode: cardCurrency, paymentMethod: "CARD" });
+      response = await initiateZbStandardCheckout({ ...payload, currencyCode, paymentMethod: "CARD" });
     } else {
       if (!customerMobile) throw new Error(`${paymentMethod} requires a mobile number.`);
-      const expressPayload = { ...payload, currencyCode: expressCurrency, customerMobile };
+      const expressPayload = { ...payload, currencyCode, customerMobile };
 
       switch (paymentMethod) {
         case "ECOCASH": response = await initiateEcocashExpress(expressPayload); break;
