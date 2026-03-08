@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import React, { useMemo, useRef, useState, useCallback } from "react";
 import { categories, Category, Product } from "@/app/store/data";
 import { listProducts } from "@/lib/firestore/products";
@@ -281,7 +282,7 @@ export function StoreLayout() {
                 </p>
                 <div className="mt-auto pt-6">
                   <Button asChild className="w-full rounded-full bg-[#e31e24] font-bold text-white shadow-lg hover:bg-[#c1191f]">
-                    <a href="/digital/zesa">Buy Now</a>
+                    <Link href="/digital/zesa">Buy Now</Link>
                   </Button>
                 </div>
               </div>
