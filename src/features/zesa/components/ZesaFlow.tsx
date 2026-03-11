@@ -58,14 +58,39 @@ export function ZesaFlow() {
 
     const pollStatus = async (reference: string, amount: number, gatewayRef: string) => {
         let status = "PENDING";
+        let vendedData: { token?: string; units?: number } | null = null;
         for (let attempt = 0; attempt < 12; attempt += 1) {
-            const statusResult = await ZBService.checkStatus(reference);
-            status = String(statusResult.status || "PENDING").toUpperCase();
-            if (["PAID", "SUCCESS", "FAILED", "CANCELED", "CANCELLED", "EXPIRED"].includes(status)) {
-                break;
+            try {
+                const statusResult = await ZBService.checkStatus(reference);
+                status = String(statusResult.status || "PENDING").toUpperCase();
+                const rawVended = statusResult.vendedData;
+                if (rawVended && typeof rawVended === "object") {
+                    const candidate = rawVended as { token?: unknown; units?: unknown };
+                    vendedData = {
+                        token: typeof candidate.token === "string" ? candidate.token : undefined,
+                        units: typeof candidate.units === "number" ? candidate.units : undefined,
+                    };
+                } else {
+                    vendedData = null;
+                }
+
+                if (["PAID", "SUCCESS", "FAILED", "CANCELED", "CANCELLED", "EXPIRED"].includes(status)) {
+                    // Even if success, we might want to wait a bit for vended record to appear 
+                    // if it's ZESA and token is missing.
+                    if ((status === "PAID" || status === "SUCCESS") && !vendedData) {
+                        // wait one more time for vending to complete on backend
+                        await new Promise(resolve => setTimeout(resolve, 3000));
+                        continue;
+                    }
+                    break;
+                }
+            } catch (err) {
+                console.error("Status check failed:", err);
             }
             await new Promise(resolve => setTimeout(resolve, 5000));
         }
+
+        const isSuccess = status === "PAID" || status === "SUCCESS";
 
         setReceipt({
             amount,
@@ -74,9 +99,11 @@ export function ZesaFlow() {
             receiptNumber: reference,
             status,
             transactionReference: gatewayRef,
-            message: status === "PAID" || status === "SUCCESS"
-                ? "Payment completed successfully."
-                : "Payment confirmation is pending or requires support follow-up.",
+            token: vendedData?.token,
+            units: vendedData?.units,
+            message: isSuccess
+                ? (vendedData?.token ? "Payment and vending successful." : "Payment successful. Token vending may be delayed.")
+                : "Payment confirmation is pending or failed.",
         });
         setStep("RECEIPT");
     };
@@ -132,30 +159,14 @@ export function ZesaFlow() {
         if (!pendingPayment) return;
         setIsLoading(true);
         try {
-            const result = await ZBService.confirmTokenPayment(
+            await ZBService.confirmTokenPayment(
                 pendingPayment.reference,
                 pendingPayment.transactionReference,
                 otp,
                 paymentMethod
             );
 
-            const immediateStatus = String(result.status || "PENDING").toUpperCase();
-            if (["PAID", "SUCCESS", "FAILED", "CANCELED", "CANCELLED", "EXPIRED"].includes(immediateStatus)) {
-                setReceipt({
-                    amount: pendingPayment.amount,
-                    meterNumber,
-                    date: new Date().toISOString(),
-                    receiptNumber: pendingPayment.reference,
-                    status: immediateStatus,
-                    transactionReference: pendingPayment.transactionReference,
-                    message: immediateStatus === "PAID" || immediateStatus === "SUCCESS"
-                        ? "Payment completed successfully."
-                        : "Payment was not completed.",
-                });
-                setStep("RECEIPT");
-                return;
-            }
-
+            // Even if immediate result is success, we poll to get the vended token
             await pollStatus(
                 pendingPayment.reference,
                 pendingPayment.amount,
@@ -167,7 +178,6 @@ export function ZesaFlow() {
                 description: error instanceof Error ? error.message : "Failed to confirm OTP.",
                 variant: "destructive",
             });
-        } finally {
             setIsLoading(false);
         }
     };

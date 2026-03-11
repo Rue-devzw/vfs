@@ -5,6 +5,8 @@ import {
     initiateOmariExpress,
     initiateZbStandardCheckout,
     type ZbCheckoutResponse,
+    validateUtility,
+    vendUtility,
 } from "@/lib/payments/zb";
 import { convertFromUsd, CurrencyCode, getZwgPerUsdRate } from "@/lib/currency";
 
@@ -26,9 +28,29 @@ export const DigitalService = {
      * In production, this would call ZB's utility validation endpoints.
      */
     validateAccount: async (serviceType: DigitalServiceType, accountNumber: string) => {
-        // Mock validation for now - in production this connects to ZB Bank Utility API
         if (!accountNumber) throw new Error("Account number is required.");
 
+        if (serviceType === "ZESA") {
+            try {
+                const result = await validateUtility({
+                    billerCode: "ZESAPRE",
+                    accountNumber,
+                });
+                return {
+                    success: result.success,
+                    accountName: result.accountName || "Verified Customer",
+                    accountNumber: result.accountNumber || accountNumber,
+                    billerName: "ZESA Prepaid",
+                };
+            } catch (error) {
+                console.error("ZESA Verification Error:", error);
+                // For development/demo, we might fallback to mock if API fails, 
+                // but for "proper" flow we should throw.
+                throw error;
+            }
+        }
+
+        // Mock validation for other services for now
         return {
             success: true,
             accountName: "Verified Customer",
@@ -84,5 +106,30 @@ export const DigitalService = {
             exchangeRate,
             amountUsd: payload.amount,
         };
+    },
+
+    /**
+     * Vends a ZESA token after successful payment.
+     */
+    vendZesaToken: async (orderReference: string, meterNumber: string, amount: number) => {
+        try {
+            const result = await vendUtility({
+                billerCode: "ZESAPRE",
+                accountNumber: meterNumber,
+                amount,
+                transactionReference: orderReference,
+            });
+
+            return {
+                success: result.success,
+                token: result.token,
+                units: result.units,
+                receiptNumber: result.receiptNumber,
+                message: result.success ? "Token vended successfully" : (result.error || "Vending failed"),
+            };
+        } catch (error) {
+            console.error("ZESA Vending Error:", error);
+            throw error;
+        }
     }
 };

@@ -137,6 +137,13 @@ export async function savePollUrl(reference: string, pollUrl: string) {
   );
 }
 
+export async function getOrder(reference: string) {
+  const db = await getOrdersDb();
+  const doc = await db.collection("orders").doc(reference).get();
+  if (!doc.exists) return null;
+  return { id: doc.id, ...doc.data() } as Order & { paymentMeta?: Record<string, unknown> };
+}
+
 export async function setOrderStatus(reference: string, status: string, meta?: Record<string, unknown>) {
   const db = await getOrdersDb();
   const eventId = buildEventId(reference, status, meta);

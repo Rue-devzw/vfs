@@ -19,6 +19,11 @@ export type Order = {
     customerEmail: string;
     customerPhone?: string;
     status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+    totalUsd?: number;
+    subtotalUsd?: number;
+    currencyCode?: string;
+    exchangeRate?: number;
+    paymentMeta?: Record<string, unknown>;
     createdAt: string;
     updatedAt: string;
     paymentMethod?: string;

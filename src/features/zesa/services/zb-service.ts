@@ -39,10 +39,21 @@ export const ZBService = {
             throw new Error("Please enter a valid meter number.");
         }
 
+        const res = await fetch("/api/digital/validate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ serviceType: "ZESA", accountNumber: cleanMeter }),
+        });
+
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+            throw new Error(data.error || "Meter verification failed");
+        }
+
         return {
             meterNumber: cleanMeter,
-            name: "Meter verified",
-            address: "Will be confirmed on successful vend.",
+            name: data.data.accountName,
+            address: data.data.billerName,
             balance: 0,
         };
     },
@@ -111,7 +122,7 @@ export const ZBService = {
         };
     },
 
-    checkStatus: async (reference: string): Promise<PaymentStatusResponse> => {
+    checkStatus: async (reference: string): Promise<PaymentStatusResponse & { vendedData?: unknown }> => {
         const res = await fetch(`/api/zb/status/${encodeURIComponent(reference)}`, {
             method: "GET",
             cache: "no-store",
@@ -124,6 +135,7 @@ export const ZBService = {
             status: data.data?.status ?? "PENDING",
             reference: data.data?.reference ?? reference,
             paymentOption: data.data?.paymentOption,
+            vendedData: data.data?.vendedData,
         };
     },
 };

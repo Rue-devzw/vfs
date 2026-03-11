@@ -75,6 +75,8 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
   const [transactionReference, setTransactionReference] = React.useState<string | null>(null);
   const [orderReference, setOrderReference] = React.useState<string | null>(null);
   const [lastOrderReference, setLastOrderReference] = React.useState<string | null>(null);
+  const [paymentStatus, setPaymentStatus] = React.useState<string | null>(null);
+  const [isAwaitingGatewayStatus, setIsAwaitingGatewayStatus] = React.useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -110,15 +112,37 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
     }
   }, [form]);
 
-  async function pollPaymentStatus(reference: string) {
+  React.useEffect(() => {
+    if (!isOpen) {
+      setIsAwaitingGatewayStatus(false);
+      setPaymentStatus(null);
+    }
+  }, [isOpen]);
+
+  async function waitForFinalPaymentStatus(reference: string) {
+    const startedAt = Date.now();
+    const timeoutMs = 3 * 60 * 1000;
+    const terminalStatuses = ["PAID", "SUCCESS", "FAILED", "EXPIRED", "CANCELED", "CANCELLED"];
     let status = "PENDING";
-    for (let i = 0; i < 8; i += 1) {
-      await new Promise(resolve => setTimeout(resolve, 2500));
+    let previousStatus = "";
+
+    while (Date.now() - startedAt < timeoutMs) {
       const statusRes = await fetch(`/api/zb/status/${encodeURIComponent(reference)}`, { cache: "no-store" });
       const statusData = await statusRes.json();
       status = String(statusData?.data?.status ?? status).toUpperCase();
-      if (["PAID", "SUCCESS", "FAILED", "EXPIRED", "CANCELED", "CANCELLED"].includes(status)) break;
+
+      if (status !== previousStatus) {
+        previousStatus = status;
+        setPaymentStatus(status);
+      }
+
+      if (terminalStatuses.includes(status)) {
+        return status;
+      }
+
+      await new Promise(resolve => setTimeout(resolve, 2500));
     }
+
     return status;
   }
 
@@ -179,7 +203,10 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
         const reference = String(data.reference ?? "");
         if (reference) {
           setLastOrderReference(reference);
-          const finalStatus = await pollPaymentStatus(reference);
+          setPaymentStatus(String(data.status ?? "PENDING").toUpperCase());
+          setIsAwaitingGatewayStatus(true);
+          const finalStatus = await waitForFinalPaymentStatus(reference);
+          setIsAwaitingGatewayStatus(false);
           if (finalStatus === "PAID" || finalStatus === "SUCCESS") {
             dispatch({ type: "CLEAR_CART" });
             toast({
@@ -225,12 +252,24 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
         setTransactionReference(null);
         setOrderReference(null);
         setLastOrderReference(orderReference);
+        setPaymentStatus(status);
         toast({ title: "Payment successful", description: "Your order has been placed. You can download the receipt." });
       } else {
+        setPaymentStatus(status);
+        setIsAwaitingGatewayStatus(true);
+        const finalStatus = await waitForFinalPaymentStatus(orderReference);
+        setIsAwaitingGatewayStatus(false);
         toast({
-          title: "Payment processing",
-          description: data.message ?? "Payment is pending confirmation. We'll update your order shortly.",
+          title: finalStatus === "PAID" || finalStatus === "SUCCESS" ? "Payment successful" : "Payment processing",
+          description: data.message ?? `Current status: ${finalStatus}`,
         });
+        if (finalStatus === "PAID" || finalStatus === "SUCCESS") {
+          dispatch({ type: "CLEAR_CART" });
+          setAwaitingOtp(false);
+          setTransactionReference(null);
+          setOrderReference(null);
+          setLastOrderReference(orderReference);
+        }
       }
     } catch (error) {
       const message = error instanceof Error ? error.message : "Something went wrong while placing your order.";
@@ -366,6 +405,8 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
             {lastOrderReference && (
               <div className="rounded-xl border bg-muted/20 p-3 text-sm">
                 <p className="font-medium">Transaction Report</p>
+                {paymentStatus && <p className="text-muted-foreground">Current status: {paymentStatus}</p>}
+                {isAwaitingGatewayStatus && <p className="text-muted-foreground">Waiting for payment system confirmation...</p>}
                 <a
                   className="text-primary underline"
                   href={`/api/orders/${encodeURIComponent(lastOrderReference)}/report?format=txt`}

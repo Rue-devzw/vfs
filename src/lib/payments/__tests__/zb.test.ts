@@ -96,9 +96,11 @@ describe("zb payments client", () => {
     });
 
     expect(fetchMock).toHaveBeenCalledOnce();
-    const mockCall = fetchMock.mock.calls[0];
-    if (!mockCall || !mockCall[1]) throw new Error("Mock call malformed");
-    const callBody = JSON.parse(mockCall[1].body as string);
+    const firstCall = (fetchMock.mock.calls as unknown[])[0];
+    if (!Array.isArray(firstCall) || firstCall.length < 2) throw new Error("Mock call malformed");
+    const init = firstCall[1] as RequestInit | undefined;
+    if (!init?.body || typeof init.body !== "string") throw new Error("Missing request body");
+    const callBody = JSON.parse(init.body);
     expect(callBody.currencyCode).toBe("924");
     expect(callBody.amount).toBe(250.50);
     expect(result.transactionReference).toBe(body.transactionReference);
