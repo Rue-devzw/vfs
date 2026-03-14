@@ -1,0 +1,500 @@
+[
+  {
+    "page": 1,
+    "code": "FACP04",
+    "description": "Apples assorted hds",
+    "price_usd": 0.25
+  },
+  {
+    "page": 1,
+    "code": "FAPC03",
+    "description": "Apples - Box",
+    "price_usd": 32.0
+  },
+  {
+    "page": 1,
+    "code": "BN102",
+    "description": "Bananas - kg",
+    "price_usd": 1.0
+  },
+  {
+    "page": 1,
+    "code": "FBAN01",
+    "description": "Bananas Box",
+    "price_usd": 18.0
+  },
+  {
+    "page": 1,
+    "code": "BOB",
+    "description": "BAOBAB (Powdered) - 500g",
+    "price_usd": 3.5
+  },
+  {
+    "page": 1,
+    "code": "BOAB0001",
+    "description": "Baobab - 500g",
+    "price_usd": 1.0
+  },
+  {
+    "page": 1,
+    "code": "VBER01",
+    "description": "Beetroot - (bun)",
+    "price_usd": 1.0
+  },
+  {
+    "page": 1,
+    "code": "VBR06",
+    "description": "Brinjals - kg",
+    "price_usd": 1.0
+  },
+  {
+    "page": 1,
+    "code": "VBN09",
+    "description": "Broccolli - kg",
+    "price_usd": 2.5
+  },
+  {
+    "page": 1,
+    "code": "BRWN",
+    "description": "Brown rice - 1kg",
+    "price_usd": 3.0
+  },
+  {
+    "page": 1,
+    "code": "BROWN02",
+    "description": "Brown Rice - 2kg",
+    "price_usd": 6.0
+  },
+  {
+    "page": 1,
+    "code": "VBNO10",
+    "description": "Buttenuts - kg",
+    "price_usd": 1.2
+  },
+  {
+    "page": 1,
+    "code": "VCA11",
+    "description": "Cabbage - Head",
+    "price_usd": 1.0
+  },
+  {
+    "page": 1,
+    "code": "VPCP23",
+    "description": "Carrots - (Pnt)",
+    "price_usd": 1.0
+  },
+  {
+    "page": 1,
+    "code": "VCP21",
+    "description": "Carrots - kg",
+    "price_usd": 2.0
+  },
+  {
+    "page": 1,
+    "code": "VCAU01",
+    "description": "Cauliflower kg",
+    "price_usd": 2.5
+  },
+  {
+    "page": 1,
+    "code": "NCB02",
+    "description": "Chimera - 500g",
+    "price_usd": 2.0
+  },
+  {
+    "page": 1,
+    "code": "DCOO1",
+    "description": "Covo - Bunches",
+    "price_usd": 0.5
+  },
+  {
+    "page": 1,
+    "code": "VCUC02",
+    "description": "Cucumber - Big Pack",
+    "price_usd": 1.0
+  },
+  {
+    "page": 1,
+    "code": "EG",
+    "description": "Egg plant - kg",
+    "price_usd": 1.0
+  },
+  {
+    "page": 1,
+    "code": "EGT",
+    "description": "Eggs Trays",
+    "price_usd": 4.0
+  },
+  {
+    "page": 1,
+    "code": "NFI01",
+    "description": "English Cucumber",
+    "price_usd": 1.0
+  },
+  {
+    "page": 1,
+    "code": "VGAR",
+    "description": "Garlic - kg",
+    "price_usd": 8.0
+  },
+  {
+    "page": 1,
+    "code": "VGM01",
+    "description": "Gemsquash kg",
+    "price_usd": 1.0
+  },
+  {
+    "page": 1,
+    "code": "VGI130",
+    "description": "Ginger - kg",
+    "price_usd": 5.0
+  },
+  {
+    "page": 1,
+    "code": "FGR02",
+    "description": "Grapes Black pnts",
+    "price_usd": 3.5
+  },
+  {
+    "page": 1,
+    "code": "VGB33",
+    "description": "Green Beans - kg",
+    "price_usd": 2.0
+  },
+  {
+    "page": 1,
+    "code": "VGB34",
+    "description": "Green Beans - pnt",
+    "price_usd": 0.5
+  },
+  {
+    "page": 1,
+    "code": "MHO1",
+    "description": "Honey 500g",
+    "price_usd": 2.0
+  },
+  {
+    "page": 1,
+    "code": "HONP003",
+    "description": "Honey Pure - 500g (1st Grade)",
+    "price_usd": 4.0
+  },
+  {
+    "page": 1,
+    "code": "VLEEKB",
+    "description": "Lemon - Pnt",
+    "price_usd": 1.0
+  },
+  {
+    "page": 1,
+    "code": "VLET01",
+    "description": "Lettuce - Head",
+    "price_usd": 1.0
+  },
+  {
+    "page": 1,
+    "code": "VPEP06",
+    "description": "Macademia nuts - Pack",
+    "price_usd": 1.0
+  },
+  {
+    "page": 1,
+    "code": "MMDR01",
+    "description": "Madora Kg",
+    "price_usd": 0.0
+  },
+  {
+    "page": 1,
+    "code": "MAN",
+    "description": "Mango - kg",
+    "price_usd": 0.0
+  },
+  {
+    "page": 1,
+    "code": "MSMIL75",
+    "description": "Millet - 1kg",
+    "price_usd": 3.0
+  },
+  {
+    "page": 1,
+    "code": "MMDR03",
+    "description": "MILLET 2kg",
+    "price_usd": 5.0
+  },
+  {
+    "page": 1,
+    "code": "MMIXED",
+    "description": "Mixed grain - 2kg",
+    "price_usd": 5.0
+  },
+  {
+    "page": 1,
+    "code": "MUNY002",
+    "description": "Munyemba - 75g",
+    "price_usd": 0.75
+  },
+  {
+    "page": 1,
+    "code": "VMUBO",
+    "description": "Mushroom Oyester - Pnt",
+    "price_usd": 1.0
+  },
+  {
+    "page": 1,
+    "code": "NYOO2",
+    "description": "Nyimo - 500g",
+    "price_usd": 2.5
+  },
+  {
+    "page": 1,
+    "code": "VOK41",
+    "description": "Okra Pnt",
+    "price_usd": 1.0
+  },
+  {
+    "page": 1,
+    "code": "ON-02",
+    "description": "Onion  Red (kgs)",
+    "price_usd": 2.0
+  },
+  {
+    "page": 1,
+    "code": "VOIM53",
+    "description": "Onions - kg",
+    "price_usd": 1.2
+  },
+  {
+    "page": 1,
+    "code": "VOIL04",
+    "description": "Onions - pocket",
+    "price_usd": 10.0
+  },
+  {
+    "page": 1,
+    "code": "VPEC02",
+    "description": "Peacan Nuts - Pack",
+    "price_usd": 1.75
+  },
+  {
+    "page": 1,
+    "code": "PEANTOO2",
+    "description": "Peanut butter (Paguyo) - 1L",
+    "price_usd": 3.0
+  },
+  {
+    "page": 1,
+    "code": "PEANT06",
+    "description": "Peanut butter - 300ml",
+    "price_usd": 1.0
+  },
+  {
+    "page": 1,
+    "code": "MPEN",
+    "description": "Peanut Butter 375ml",
+    "price_usd": 3.0
+  },
+  {
+    "page": 1,
+    "code": "PEANT001",
+    "description": "Peanuts (unshelled) - 75g",
+    "price_usd": 0.5
+  },
+  {
+    "page": 1,
+    "code": "MSPN75",
+    "description": "Peanuts 500g",
+    "price_usd": 2.0
+  },
+  {
+    "page": 1,
+    "code": "FPF04",
+    "description": "Pears Forelle each",
+    "price_usd": 0.33
+  },
+  {
+    "page": 1,
+    "code": "VPEP66",
+    "description": "Pepper (green) - Pnts",
+    "price_usd": 0.5
+  },
+  {
+    "page": 1,
+    "code": "VPE65",
+    "description": "Pepper (Green)- kg",
+    "price_usd": 2.0
+  },
+  {
+    "page": 1,
+    "code": "VPEPP",
+    "description": "Pepper Yellow/Red - kg",
+    "price_usd": 3.5
+  },
+  {
+    "page": 1,
+    "code": "FPIN02",
+    "description": "Pine Apples each",
+    "price_usd": 1.5
+  },
+  {
+    "page": 1,
+    "code": "VP271",
+    "description": "Potatoes - 7.5kg",
+    "price_usd": 5.0
+  },
+  {
+    "page": 1,
+    "code": "VPL68",
+    "description": "POTATOES - LARGE 15KG POC",
+    "price_usd": 10.0
+  },
+  {
+    "page": 1,
+    "code": "VPOT04",
+    "description": "Potatoes 3kg Med Pack",
+    "price_usd": 3.0
+  },
+  {
+    "page": 2,
+    "code": "FDFRO2",
+    "description": "Raisins Punnets",
+    "price_usd": 2.0
+  },
+  {
+    "page": 2,
+    "code": "RAP",
+    "description": "Rapoko 1kg",
+    "price_usd": 3.0
+  },
+  {
+    "page": 2,
+    "code": "RPW06",
+    "description": "Rapoko 2kg",
+    "price_usd": 6.0
+  },
+  {
+    "page": 2,
+    "code": "MGRO",
+    "description": "Rapoko 5kg",
+    "price_usd": 14.5
+  },
+  {
+    "page": 2,
+    "code": "RPW10",
+    "description": "Rice (White) - 1kg",
+    "price_usd": 2.25
+  },
+  {
+    "page": 2,
+    "code": "RPW12",
+    "description": "Rice (White) - 2kg",
+    "price_usd": 4.5
+  },
+  {
+    "page": 2,
+    "code": "RPW11",
+    "description": "Rice (White) - 5kg",
+    "price_usd": 11.25
+  },
+  {
+    "page": 2,
+    "code": "SCE03",
+    "description": "Sauce(garlic,Bbq,Lemon Herd) - 1L",
+    "price_usd": 4.0
+  },
+  {
+    "page": 2,
+    "code": "SCE02",
+    "description": "Sauce - 330ml",
+    "price_usd": 1.0
+  },
+  {
+    "page": 2,
+    "code": "SCE01",
+    "description": "Sauce Bbq - 2 Litres",
+    "price_usd": 4.0
+  },
+  {
+    "page": 2,
+    "code": "SEDS",
+    "description": "Seeds",
+    "price_usd": 1.0
+  },
+  {
+    "page": 2,
+    "code": "SORGA",
+    "description": "Sorghum 1Kg",
+    "price_usd": 3.0
+  },
+  {
+    "page": 2,
+    "code": "SPCE003",
+    "description": "Spice - 200g",
+    "price_usd": 5.0
+  },
+  {
+    "page": 2,
+    "code": "BLPER",
+    "description": "Spice Bbq - 500g",
+    "price_usd": 6.0
+  },
+  {
+    "page": 2,
+    "code": "SPC004",
+    "description": "Spices - 100g",
+    "price_usd": 1.0
+  },
+  {
+    "page": 2,
+    "code": "MSSP",
+    "description": "Spices 60g Satchets",
+    "price_usd": 1.0
+  },
+  {
+    "page": 2,
+    "code": "MSB12",
+    "description": "Sugar Beans - 1KG",
+    "price_usd": 3.0
+  },
+  {
+    "page": 2,
+    "code": "MSB14",
+    "description": "Sugar Beans 2kg",
+    "price_usd": 6.0
+  },
+  {
+    "page": 2,
+    "code": "MSB16",
+    "description": "Sugar Beans Kg",
+    "price_usd": 3.0
+  },
+  {
+    "page": 2,
+    "code": "VSP82",
+    "description": "Sweet potatoes - kg",
+    "price_usd": 32.0
+  },
+  {
+    "page": 2,
+    "code": "VTO83",
+    "description": "Tomatoes - kg",
+    "price_usd": 0.8
+  },
+  {
+    "page": 2,
+    "code": "VIGR750",
+    "description": "Vinegar - 750ml",
+    "price_usd": 1.0
+  },
+  {
+    "page": 2,
+    "code": "WHT",
+    "description": "WHEAT 2KG",
+    "price_usd": 5.0
+  },
+  {
+    "page": 2,
+    "code": "WHETBK",
+    "description": "Wheat Buckets",
+    "price_usd": 32.0
+  }
+]

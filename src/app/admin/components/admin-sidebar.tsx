@@ -3,11 +3,17 @@
 import {
     LayoutDashboard,
     Package,
+    ReceiptText,
     ShoppingCart,
     Settings,
     Store,
     Users,
-    LogOut
+    LogOut,
+    Bell,
+    History,
+    Zap,
+    Truck,
+    Undo2
 } from "lucide-react"
 import {
     Sidebar,
@@ -24,38 +30,87 @@ import {
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { logoutAction } from "../login/actions"
+import type { StaffPermission, StaffRole } from "@/lib/auth"
+import { Badge } from "@/components/ui/badge"
 
 const items = [
     {
         title: "Dashboard",
         url: "/admin",
         icon: LayoutDashboard,
+        permission: "dashboard.view",
     },
     {
         title: "Products",
         url: "/admin/products",
         icon: Package,
+        permission: "products.view",
     },
     {
         title: "Orders",
         url: "/admin/orders",
         icon: ShoppingCart,
+        permission: "orders.view",
+    },
+    {
+        title: "Payments",
+        url: "/admin/payments",
+        icon: ReceiptText,
+        permission: "payments.view",
+    },
+    {
+        title: "Shipments",
+        url: "/admin/shipments",
+        icon: Truck,
+        permission: "shipments.view",
+    },
+    {
+        title: "Refunds",
+        url: "/admin/refunds",
+        icon: Undo2,
+        permission: "refunds.view",
     },
     {
         title: "Customers",
         url: "/admin/customers",
         icon: Users,
+        permission: "customers.view",
+    },
+    {
+        title: "Notifications",
+        url: "/admin/notifications",
+        icon: Bell,
+        permission: "notifications.view",
+    },
+    {
+        title: "Audit Log",
+        url: "/admin/audit",
+        icon: History,
+        permission: "audit.view",
+    },
+    {
+        title: "Digital Ops",
+        url: "/admin/digital",
+        icon: Zap,
+        permission: "digital.view",
     },
     {
         title: "Settings",
         url: "/admin/settings",
         icon: Settings,
+        permission: "settings.manage",
     },
 ]
 
-export function AdminSidebar() {
+type AdminSidebarProps = {
+    role: StaffRole
+    permissions: StaffPermission[]
+}
+
+export function AdminSidebar({ role, permissions }: AdminSidebarProps) {
     const pathname = usePathname()
     const router = useRouter()
+    const visibleItems = items.filter(item => permissions.includes(item.permission as StaffPermission))
 
     const handleLogout = async () => {
         await logoutAction()
@@ -66,17 +121,22 @@ export function AdminSidebar() {
     return (
         <Sidebar collapsible="icon">
             <SidebarHeader className="border-b px-6 py-4">
-                <Link href="/" className="flex items-center gap-2 font-bold text-xl uppercase tracking-tighter">
-                    <Store className="h-6 w-6 text-primary" />
-                    <span className="group-data-[collapsible=icon]:hidden">VFS Admin</span>
-                </Link>
+                <div className="space-y-2">
+                    <Link href="/" className="flex items-center gap-2 font-bold text-xl uppercase tracking-tighter">
+                        <Store className="h-6 w-6 text-primary" />
+                        <span className="group-data-[collapsible=icon]:hidden">VFS Admin</span>
+                    </Link>
+                    <Badge variant="outline" className="group-data-[collapsible=icon]:hidden capitalize">
+                        {role.replace(/_/g, " ")}
+                    </Badge>
+                </div>
             </SidebarHeader>
             <SidebarContent>
                 <SidebarGroup>
                     <SidebarGroupLabel>Management</SidebarGroupLabel>
                     <SidebarGroupContent>
                         <SidebarMenu>
-                            {items.map((item) => (
+                            {visibleItems.map((item) => (
                                 <SidebarMenuItem key={item.title}>
                                     <SidebarMenuButton
                                         asChild

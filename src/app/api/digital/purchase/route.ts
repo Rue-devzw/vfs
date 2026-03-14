@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createPendingOrder, setOrderStatus } from "@/server/orders";
-import { DigitalService } from "@/lib/digital-service-logic";
+import { DigitalService, DigitalServiceUnavailableError } from "@/lib/digital-service-logic";
+import { getDigitalServiceConfig } from "@/lib/digital-services";
+import { upsertDigitalOrder } from "@/lib/firestore/digital-orders";
+import { ZbGatewayError } from "@/lib/payments/zb";
 
 const purchaseSchema = z.object({
     serviceType: z.enum(["ZESA", "AIRTIME", "DSTV", "COUNCILS", "NYARADZO", "INTERNET"]),
@@ -24,14 +27,18 @@ export async function POST(req: Request) {
         }
 
         const { serviceType, accountNumber, amount: amountUsd, paymentMethod, currencyCode, customerMobile, customerName, customerEmail } = validation.data;
+        const serviceConfig = getDigitalServiceConfig(serviceType.toLowerCase());
+        if (!serviceConfig) {
+            return NextResponse.json({ success: false, error: "Unsupported digital service." }, { status: 400 });
+        }
 
         const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
         if (!baseUrl) {
             return NextResponse.json({ success: false, error: "NEXT_PUBLIC_BASE_URL missing" }, { status: 500 });
         }
 
-        // 1. Initial Validation with Biller (Mocked for now)
         const accountInfo = await DigitalService.validateAccount(serviceType, accountNumber);
+        const normalizedServiceId = serviceType.toLowerCase() as "zesa" | "airtime" | "dstv" | "councils" | "nyaradzo" | "internet";
 
         // 2. Initiate Payment
         const initiateResult = await DigitalService.initiatePurchase({
@@ -49,7 +56,7 @@ export async function POST(req: Request) {
             reference: initiateResult.reference,
             items: [{
                 id: `${serviceType.toLowerCase()}-${accountNumber}`,
-                name: `${serviceType} Purchase`,
+                name: `${serviceConfig.label} Purchase`,
                 price: initiateResult.amount,
                 quantity: 1,
                 image: `/images/${serviceType.toLowerCase()}.webp`,
@@ -65,8 +72,29 @@ export async function POST(req: Request) {
             customerName: customerName || "Digital Customer",
             customerEmail: customerEmail || "customer@example.com",
             customerPhone: customerMobile,
+            deliveryMethod: "collect",
             paymentMethod: paymentMethod.toLowerCase(),
-            notes: `${serviceType} for ${accountNumber} (${accountInfo.accountName})`,
+            notes: `${serviceConfig.label} for ${accountNumber} (${accountInfo.accountName})`,
+        });
+
+        await upsertDigitalOrder({
+            orderReference: initiateResult.reference,
+            serviceId: normalizedServiceId,
+            provider: serviceConfig.provider,
+            accountReference: accountNumber,
+            customerEmail,
+            customerName,
+            validationSnapshot: accountInfo.raw ?? {
+                accountName: accountInfo.accountName,
+                accountNumber: accountInfo.accountNumber,
+                billerName: accountInfo.billerName,
+            },
+            provisioningStatus: "pending",
+            resultPayload: {
+                transactionReference: initiateResult.transactionReference,
+                status: initiateResult.status,
+                paymentUrl: initiateResult.paymentUrl,
+            },
         });
 
         await setOrderStatus(initiateResult.reference, initiateResult.status, {
@@ -89,6 +117,23 @@ export async function POST(req: Request) {
         if (error instanceof Error) {
             console.error("Error message:", error.message);
             console.error("Error stack:", error.stack);
+        }
+        if (error instanceof DigitalServiceUnavailableError) {
+            return NextResponse.json(
+                { success: false, error: error.message, code: "SERVICE_UNAVAILABLE" },
+                { status: error.status }
+            );
+        }
+        if (error instanceof ZbGatewayError) {
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: error.message,
+                    code: "PROVIDER_GATEWAY_FAILED",
+                    gatewayStatus: error.status,
+                },
+                { status: error.status >= 400 && error.status < 500 ? error.status : 502 }
+            );
         }
         return NextResponse.json(
             { success: false, error: error instanceof Error ? error.message : "Purchase failed" },

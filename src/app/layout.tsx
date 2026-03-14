@@ -10,8 +10,12 @@ export const metadata: Metadata = {
   title: "Valley Farm Secrets",
   description: "Freshness. Quality. Convenience. Your farm-to-table partner.",
   icons: {
-    icon: [{ url: "/images/logo.png", type: "image/png" }],
-    shortcut: [{ url: "/images/logo.png", type: "image/png" }],
+    icon: [
+      { url: "/favicon.ico", type: "image/x-icon" },
+      { url: "/images/logo.webp", type: "image/webp" },
+    ],
+    shortcut: [{ url: "/favicon.ico", type: "image/x-icon" }],
+    apple: [{ url: "/images/logo.webp", type: "image/webp" }],
   },
 };
 

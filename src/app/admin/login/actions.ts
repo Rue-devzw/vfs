@@ -1,6 +1,6 @@
 "use server";
 
-import { createAdminSession, destroyAdminSession } from "@/lib/auth";
+import { createAdminSession, destroyAdminSession, type StaffRole } from "@/lib/auth";
 import { headers } from "next/headers";
 import {
     checkAdminLoginLock,
@@ -20,13 +20,23 @@ function getRequestIdentifier() {
 }
 
 export async function loginAction(password: string) {
-    const correctPassword = process.env.ADMIN_PASSWORD;
+    return loginWithRoleAction("admin", password);
+}
+
+function getStaffPassword(role: StaffRole) {
+    if (role === "admin") return process.env.ADMIN_PASSWORD;
+    if (role === "store_manager") return process.env.STORE_MANAGER_PASSWORD;
+    return process.env.AUDITOR_PASSWORD;
+}
+
+export async function loginWithRoleAction(role: StaffRole, password: string) {
+    const correctPassword = getStaffPassword(role);
 
     if (!correctPassword) {
-        throw new Error("ADMIN_PASSWORD environment variable is not set on the server.");
+        throw new Error(`${role.toUpperCase()} password is not configured on the server.`);
     }
 
-    const identifier = await getRequestIdentifier();
+    const identifier = `${role}:${await getRequestIdentifier()}`;
     const lockStatus = await checkAdminLoginLock(identifier);
     if (lockStatus.locked) {
         const minutes = Math.ceil((lockStatus.retryAfterMs ?? 0) / (60 * 1000));
@@ -35,8 +45,8 @@ export async function loginAction(password: string) {
 
     if (password === correctPassword) {
         await clearAdminLoginAttempts(identifier);
-        await createAdminSession();
-        return { success: true };
+        await createAdminSession(role);
+        return { success: true, role };
     }
 
     await registerFailedAdminLogin(identifier);

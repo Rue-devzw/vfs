@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useMemo, useRef, useState, useCallback } from "react";
 import { categories, Category, Product } from "@/app/store/data";
-import { listProducts } from "@/lib/firestore/products";
 import ProductFilters from "./product-filters";
 import ProductGrid from "./product-grid";
 import { ShoppingCart } from "./shopping-cart";
@@ -91,8 +90,13 @@ export function StoreLayout() {
     async function loadData() {
       setIsLoading(true);
       try {
-        const data = await listProducts({});
-        setAllProducts(data.items as unknown as Product[]);
+        const response = await fetch("/api/store/products", { cache: "no-store" });
+        if (!response.ok) {
+          throw new Error("Failed to fetch store products");
+        }
+
+        const payload = await response.json();
+        setAllProducts((payload.data ?? []) as Product[]);
       } catch (error) {
         console.error("Failed to fetch products:", error);
         setAllProducts([]);

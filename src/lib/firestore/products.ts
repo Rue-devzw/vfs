@@ -1,9 +1,8 @@
 "use server"
 
-import type { Product } from "@/app/store/data";
 import { getDb, isFirebaseConfigured } from "../firebase-admin";
-import { verifyAdminSession } from "../auth";
-import { getStaticData } from "../static-data";
+import { requireStaffPermission } from "../auth";
+import { getInventoryRecordBySku, getInventoryStatus, listInventoryRecords, type InventoryStatus } from "./inventory";
 
 export type StoreProduct = {
   id: string;
@@ -15,8 +14,19 @@ export type StoreProduct = {
   subcategory?: string;
   image: string;
   onSpecial: boolean;
+  sku?: string;
+  availableForSale: boolean;
+  inventoryManaged: boolean;
+  stockOnHand: number;
+  reservedQuantity: number;
+  allowBackorder: boolean;
+  inventoryStatus: InventoryStatus;
   createdAt?: string;
   updatedAt?: string;
+};
+
+export type ProductWriteInput = Omit<StoreProduct, "id" | "inventoryStatus"> & {
+  inventoryStatus?: InventoryStatus;
 };
 
 export type ProductFilters = {
@@ -30,7 +40,7 @@ export type ProductFilters = {
 export type ListProductsResult = {
   items: StoreProduct[];
   nextCursor?: string;
-  source: "firestore" | "static";
+  source: "firestore";
 };
 
 export type CategorySummary = {
@@ -42,7 +52,7 @@ export type CategorySummary = {
 
 export type ListCategoriesResult = {
   categories: CategorySummary[];
-  source: "firestore" | "static";
+  source: "firestore";
 };
 
 type FirestoreProductRecord = {
@@ -54,6 +64,7 @@ type FirestoreProductRecord = {
   subcategory?: string;
   image: string;
   onSpecial?: boolean;
+  sku?: string;
   createdAt?: string;
   updatedAt?: string;
 };
@@ -61,89 +72,47 @@ type FirestoreProductRecord = {
 function normaliseFirestoreProduct(
   id: string,
   data: FirestoreProductRecord,
+  inventory?: {
+    onlinePrice?: number | null;
+    availableForSale: boolean;
+    inventoryManaged: boolean;
+    stockOnHand: number;
+    reservedQuantity: number;
+    allowBackorder: boolean;
+    inventoryStatus: InventoryStatus;
+  },
 ): StoreProduct {
+  const fallbackAvailableForSale = data.price > 0;
   return {
     id,
     name: data.name,
-    price: data.price,
+    price: typeof inventory?.onlinePrice === "number" ? inventory.onlinePrice : data.price,
     oldPrice: typeof data.oldPrice === "number" ? data.oldPrice : undefined,
     unit: data.unit,
     category: data.category,
     subcategory: data.subcategory,
     image: data.image,
     onSpecial: Boolean(data.onSpecial),
+    sku: data.sku,
+    availableForSale: inventory?.availableForSale ?? fallbackAvailableForSale,
+    inventoryManaged: inventory?.inventoryManaged ?? false,
+    stockOnHand: inventory?.stockOnHand ?? 0,
+    reservedQuantity: inventory?.reservedQuantity ?? 0,
+    allowBackorder: inventory?.allowBackorder ?? false,
+    inventoryStatus: inventory?.inventoryStatus ?? (fallbackAvailableForSale ? "in_stock" : "out_of_stock"),
     createdAt: data.createdAt,
     updatedAt: data.updatedAt,
   };
 }
 
-function fromStaticProduct(product: Product): StoreProduct {
-  return {
-    id: String(product.id),
-    name: product.name,
-    price: product.price,
-    oldPrice: product.oldPrice,
-    unit: product.unit,
-    category: product.category,
-    subcategory: product.subcategory,
-    image: product.image,
-    onSpecial: product.onSpecial,
-  };
-}
-
-function applyLocalFilters(
-  allProducts: Product[],
-  filters: ProductFilters,
-): { items: StoreProduct[]; nextCursor?: string } {
-  let filtered = [...allProducts];
-
-  if (filters.category) {
-    filtered = filtered.filter(
-      product => product.category.toLowerCase() === filters.category!.toLowerCase(),
-    );
+function ensureFirestoreConfigured() {
+  if (!isFirebaseConfigured()) {
+    throw new Error("Firebase is not configured. Firestore is required for product data.");
   }
-
-  if (filters.subcategory) {
-    filtered = filtered.filter(product =>
-      product.subcategory?.toLowerCase() === filters.subcategory!.toLowerCase(),
-    );
-  }
-
-  if (typeof filters.onSpecial === "boolean") {
-    filtered = filtered.filter(product => product.onSpecial === filters.onSpecial);
-  }
-
-  filtered.sort((a, b) => a.name.localeCompare(b.name));
-
-  if (filters.cursor) {
-    const cursorIndex = filtered.findIndex(product => String(product.id) === filters.cursor);
-    if (cursorIndex >= 0) {
-      filtered = filtered.slice(cursorIndex + 1);
-    }
-  }
-
-  if (typeof filters.limit === "number") {
-    const safeLimit = Math.max(1, Math.floor(filters.limit));
-    const limited = filtered.slice(0, safeLimit);
-    const hasMore = filtered.length > safeLimit;
-
-    return {
-      items: limited.map(fromStaticProduct),
-      nextCursor: hasMore && limited.length > 0 ? String(limited[limited.length - 1].id) : undefined,
-    };
-  }
-
-  return {
-    items: filtered.map(fromStaticProduct),
-  };
 }
 
 export async function listProducts(filters: ProductFilters = {}): Promise<ListProductsResult> {
-  if (!isFirebaseConfigured()) {
-    const allProducts = await getStaticData<Product>('data/products.json');
-    const { items, nextCursor } = applyLocalFilters(allProducts, filters);
-    return { items, nextCursor, source: "static" };
-  }
+  ensureFirestoreConfigured();
 
   const db = getDb();
   let query: FirebaseFirestore.Query<FirebaseFirestore.DocumentData> = db.collection("products");
@@ -175,22 +144,23 @@ export async function listProducts(filters: ProductFilters = {}): Promise<ListPr
   }
 
   const snapshot = await query.get();
-  const items = snapshot.docs.map(doc => normaliseFirestoreProduct(doc.id, doc.data() as FirestoreProductRecord));
+  const inventoryMap = await listInventoryRecords();
+  const items = snapshot.docs.map(doc => {
+    const data = doc.data() as FirestoreProductRecord;
+    const inventoryRecord = data.sku ? inventoryMap.get(data.sku.toUpperCase()) : undefined;
+    return normaliseFirestoreProduct(doc.id, data, inventoryRecord ? {
+      ...inventoryRecord,
+      inventoryStatus: getInventoryStatus(inventoryRecord),
+    } : undefined);
+  });
   const hasMore = Boolean(limit && snapshot.size === limit);
   const nextCursor = hasMore && snapshot.docs.length > 0 ? snapshot.docs[snapshot.docs.length - 1].id : undefined;
 
   return { items, nextCursor, source: "firestore" };
 }
 
-export async function getProductById(id: string): Promise<{ product: StoreProduct | null; source: "firestore" | "static" }> {
-  if (!isFirebaseConfigured()) {
-    const allProducts = await getStaticData<Product>('data/products.json');
-    const match = allProducts.find(product => String(product.id) === id);
-    return {
-      product: match ? fromStaticProduct(match) : null,
-      source: "static",
-    };
-  }
+export async function getProductById(id: string): Promise<{ product: StoreProduct | null; source: "firestore" }> {
+  ensureFirestoreConfigured();
 
   const db = getDb();
   const doc = await db.collection("products").doc(id).get();
@@ -199,38 +169,20 @@ export async function getProductById(id: string): Promise<{ product: StoreProduc
     return { product: null, source: "firestore" };
   }
 
+  const data = doc.data() as FirestoreProductRecord;
+  const inventoryRecord = await getInventoryRecordBySku(data.sku);
+
   return {
-    product: normaliseFirestoreProduct(doc.id, doc.data() as FirestoreProductRecord),
+    product: normaliseFirestoreProduct(doc.id, data, inventoryRecord ? {
+      ...inventoryRecord,
+      inventoryStatus: getInventoryStatus(inventoryRecord),
+    } : undefined),
     source: "firestore",
   };
 }
 
 export async function listCategories(): Promise<ListCategoriesResult> {
-  if (!isFirebaseConfigured()) {
-    const allProducts = await getStaticData<Product>('data/products.json');
-
-    const summaries = new Map<string, CategorySummary>();
-
-    for (const product of allProducts) {
-      const summary = summaries.get(product.category) ?? {
-        name: product.category,
-        productCount: 0,
-        onSpecialCount: 0,
-        subcategories: [],
-      };
-
-      summary.productCount += 1;
-      if (product.onSpecial) summary.onSpecialCount += 1;
-      if (product.subcategory && !summary.subcategories.includes(product.subcategory)) {
-        summary.subcategories.push(product.subcategory);
-      }
-
-      summaries.set(product.category, summary);
-    }
-
-    const categories = Array.from(summaries.values()).sort((a, b) => a.name.localeCompare(b.name));
-    return { categories, source: "static" };
-  }
+  ensureFirestoreConfigured();
 
   const db = getDb();
   const snapshot = await db
@@ -264,35 +216,70 @@ export async function listCategories(): Promise<ListCategoriesResult> {
   return { categories, source: "firestore" };
 }
 
-export async function createProduct(product: Omit<StoreProduct, 'id'>): Promise<string> {
-  const session = await verifyAdminSession();
-  if (!session) throw new Error("Unauthorized");
+export async function createProduct(product: ProductWriteInput): Promise<string> {
+  await requireStaffPermission("products.edit");
 
   const db = getDb();
   const timestamp = new Date().toISOString();
+  const productPayload = { ...product };
+  delete productPayload.inventoryStatus;
+  const { availableForSale, inventoryManaged, stockOnHand, reservedQuantity, allowBackorder } = product;
   const docRef = await db.collection("products").add({
-    ...product,
+    ...productPayload,
     createdAt: timestamp,
     updatedAt: timestamp,
   });
+
+  if (product.sku) {
+    await db.collection("inventory_items").doc(product.sku.toUpperCase()).set({
+      sku: product.sku.toUpperCase(),
+      productId: docRef.id,
+      onlinePrice: product.price,
+      availableForSale,
+      inventoryManaged,
+      stockOnHand,
+      reservedQuantity,
+      allowBackorder,
+      updatedAt: timestamp,
+    }, { merge: true });
+  }
   return docRef.id;
 }
 
-export async function updateProduct(id: string, product: Partial<StoreProduct>): Promise<void> {
-  const session = await verifyAdminSession();
-  if (!session) throw new Error("Unauthorized");
+export async function updateProduct(id: string, product: Partial<ProductWriteInput>): Promise<void> {
+  await requireStaffPermission("products.edit");
 
   const db = getDb();
   const timestamp = new Date().toISOString();
+  const productPayload = { ...product };
+  delete productPayload.inventoryStatus;
+  const { availableForSale, inventoryManaged, stockOnHand, reservedQuantity, allowBackorder } = product;
   await db.collection("products").doc(id).update({
-    ...product,
+    ...productPayload,
     updatedAt: timestamp,
   });
+
+  const sku = typeof product.sku === "string" && product.sku.trim()
+    ? product.sku.toUpperCase()
+    : undefined;
+
+  if (sku) {
+    await db.collection("inventory_items").doc(sku).set({
+      sku,
+      productId: id,
+      onlinePrice: product.price,
+      availableForSale,
+      inventoryManaged,
+      stockOnHand,
+      reservedQuantity,
+      allowBackorder,
+      updatedAt: timestamp,
+    }, { merge: true });
+  }
 }
 
 export async function deleteProduct(id: string): Promise<void> {
-  const session = await verifyAdminSession();
-  if (!session) throw new Error("Unauthorized");
+  await requireStaffPermission("products.edit");
 
   const db = getDb();
   await db.collection("products").doc(id).delete();

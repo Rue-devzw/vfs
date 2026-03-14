@@ -5,10 +5,13 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Lock, Loader2 } from "lucide-react";
-import { loginAction } from "./actions";
+import { loginWithRoleAction } from "./actions";
+
+type StaffRole = "admin" | "store_manager" | "auditor";
 
 export default function AdminLoginPage() {
     const [password, setPassword] = useState("");
+    const [role, setRole] = useState<StaffRole>("admin");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const router = useRouter();
@@ -19,7 +22,7 @@ export default function AdminLoginPage() {
         setError("");
 
         try {
-            const res = await loginAction(password);
+            const res = await loginWithRoleAction(role, password);
             if (res.success) {
                 // Redirect to admin dashboard on success
                 router.push("/admin");
@@ -44,12 +47,24 @@ export default function AdminLoginPage() {
                     <div className="text-center">
                         <h1 className="text-2xl font-bold font-headline">Admin Access</h1>
                         <p className="text-sm text-muted-foreground mt-1">
-                            Enter the admin password to continue.
+                            Sign in as admin, store manager, or auditor.
                         </p>
                     </div>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium">Access role</label>
+                        <select
+                            value={role}
+                            onChange={(e) => setRole(e.target.value as StaffRole)}
+                            className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+                        >
+                            <option value="admin">Admin</option>
+                            <option value="store_manager">Store Manager</option>
+                            <option value="auditor">Auditor</option>
+                        </select>
+                    </div>
                     <div className="space-y-2">
                         <Input
                             type="password"

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { confirmSmileCashExpress, confirmOmariExpress } from "@/lib/payments/zb";
+import { mapGatewayStatusToPaymentIntent, upsertPaymentIntent } from "@/lib/firestore/payments";
 import { setOrderStatus } from "@/server/orders";
 
 const confirmSchema = z.object({
@@ -30,6 +31,14 @@ export async function POST(req: Request) {
     await setOrderStatus(reference, result.status ?? "PENDING", {
       gatewayReference: result.transactionReference ?? transactionReference,
       responseCode: result.responseCode,
+    });
+    await upsertPaymentIntent({
+      orderReference: reference,
+      provider: "zb",
+      paymentMethod,
+      gatewayReference: result.transactionReference ?? transactionReference,
+      status: mapGatewayStatusToPaymentIntent(result.status ?? "PENDING"),
+      responsePayload: result as Record<string, unknown>,
     });
 
     return NextResponse.json({

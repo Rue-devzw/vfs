@@ -1,0 +1,9 @@
+{
+  "original_count": 308,
+  "import_count": 441,
+  "updated_existing": 237,
+  "added_new": 204,
+  "final_count": 512,
+  "backup_path": "/Users/Strive/Projects/vfs/public/data/products.before-merge.json",
+  "output_path": "/Users/Strive/Projects/vfs/public/data/products.json"
+}

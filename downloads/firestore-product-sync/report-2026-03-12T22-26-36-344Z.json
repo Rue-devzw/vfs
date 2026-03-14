@@ -1,0 +1,2603 @@
+{
+  "dryRun": true,
+  "staticProductCount": 512,
+  "firestoreProductCountBefore": 316,
+  "touchedCanonicalDocs": 512,
+  "createdCanonicalDocs": 204,
+  "updatedCanonicalDocs": 308,
+  "deletedDuplicateDocs": 4,
+  "duplicateResolutions": [
+    {
+      "name": "ginger powder",
+      "keptId": "2lFGaVoHTE3w8xigcJMj",
+      "deletedIds": [
+        "FrrFiyKX1NcT4XUV8En1"
+      ]
+    },
+    {
+      "name": "garlic powder",
+      "keptId": "3zlmVW32nM0ww2nj9TeB",
+      "deletedIds": [
+        "Lk9SCiFGPmlgKcx6QoQO"
+      ]
+    },
+    {
+      "name": "nyama choma spice",
+      "keptId": "5fldlXhxfZIzlOzext3q",
+      "deletedIds": [
+        "MrUKa3T26r0ycWybwTFb"
+      ]
+    },
+    {
+      "name": "bbq spice",
+      "keptId": "i7m4MLwAPBQu1kxjZgAy",
+      "deletedIds": [
+        "sDWQcPp9k3l9qjEZErQd"
+      ]
+    }
+  ],
+  "orphanManualDocs": [],
+  "syncActions": [
+    {
+      "targetId": "product-190",
+      "action": "updated",
+      "name": "Addidas Spray"
+    },
+    {
+      "targetId": "product-312",
+      "action": "updated",
+      "name": "Allsorts sweets"
+    },
+    {
+      "targetId": "product-143",
+      "action": "updated",
+      "name": "Aloha Dishwasher"
+    },
+    {
+      "targetId": "product-142",
+      "action": "updated",
+      "name": "Aloha Washing Pwd 1kg"
+    },
+    {
+      "targetId": "product-141",
+      "action": "updated",
+      "name": "Aloha Washing Pwd 2kg"
+    },
+    {
+      "targetId": "product-144",
+      "action": "updated",
+      "name": "Aloha Washing Pwdr 500g"
+    },
+    {
+      "targetId": "product-313",
+      "action": "updated",
+      "name": "Amazon Cookies"
+    },
+    {
+      "targetId": "product-272",
+      "action": "updated",
+      "name": "Angel Care Tissue"
+    },
+    {
+      "targetId": "product-318",
+      "action": "created",
+      "name": "Apples - Box"
+    },
+    {
+      "targetId": "product-10",
+      "action": "updated",
+      "name": "Apples assorted hds"
+    },
+    {
+      "targetId": "product-11",
+      "action": "updated",
+      "name": "Apples Econo - 1.5kg"
+    },
+    {
+      "targetId": "product-12",
+      "action": "updated",
+      "name": "Apples Econo - Box"
+    },
+    {
+      "targetId": "product-319",
+      "action": "created",
+      "name": "Aquaclear 500ml"
+    },
+    {
+      "targetId": "product-320",
+      "action": "created",
+      "name": "Aquaclear 750ml"
+    },
+    {
+      "targetId": "product-321",
+      "action": "created",
+      "name": "Aquaclear case"
+    },
+    {
+      "targetId": "product-273",
+      "action": "updated",
+      "name": "Aquafresh - 100ml"
+    },
+    {
+      "targetId": "product-145",
+      "action": "updated",
+      "name": "Arpic Cleaner 750ml"
+    },
+    {
+      "targetId": "product-322",
+      "action": "created",
+      "name": "Ashna Rice 2kg"
+    },
+    {
+      "targetId": "product-13",
+      "action": "updated",
+      "name": "Avocado - Heads"
+    },
+    {
+      "targetId": "product-191",
+      "action": "updated",
+      "name": "Axe Perfumer"
+    },
+    {
+      "targetId": "product-123",
+      "action": "updated",
+      "name": "Baby & Me Cream"
+    },
+    {
+      "targetId": "product-192",
+      "action": "updated",
+      "name": "Baby Crez 500ml"
+    },
+    {
+      "targetId": "product-193",
+      "action": "updated",
+      "name": "Baby line 500ml"
+    },
+    {
+      "targetId": "product-274",
+      "action": "updated",
+      "name": "Baby Soft 18s"
+    },
+    {
+      "targetId": "product-323",
+      "action": "created",
+      "name": "Baked Beand Montys"
+    },
+    {
+      "targetId": "product-324",
+      "action": "created",
+      "name": "Ballyhouse lime/crush 2L"
+    },
+    {
+      "targetId": "product-325",
+      "action": "created",
+      "name": "Ballyhouse Ras/Blkbery"
+    },
+    {
+      "targetId": "product-14",
+      "action": "updated",
+      "name": "Bananas - kg"
+    },
+    {
+      "targetId": "product-326",
+      "action": "created",
+      "name": "Bananas Box"
+    },
+    {
+      "targetId": "product-15",
+      "action": "updated",
+      "name": "Bananas Misc - kg"
+    },
+    {
+      "targetId": "product-16",
+      "action": "updated",
+      "name": "BAOBAB (Powdered) - 500g"
+    },
+    {
+      "targetId": "product-17",
+      "action": "updated",
+      "name": "Baobab - 500g"
+    },
+    {
+      "targetId": "product-327",
+      "action": "created",
+      "name": "Basmattii 5kg"
+    },
+    {
+      "targetId": "product-18",
+      "action": "updated",
+      "name": "Beetroot - (bun)"
+    },
+    {
+      "targetId": "product-328",
+      "action": "created",
+      "name": "Bella Macaroni 3kg"
+    },
+    {
+      "targetId": "product-329",
+      "action": "created",
+      "name": "BetterBuy 400g"
+    },
+    {
+      "targetId": "product-330",
+      "action": "created",
+      "name": "BetterBuy Macaroni 3kg"
+    },
+    {
+      "targetId": "product-331",
+      "action": "created",
+      "name": "BetterBuy Spagetti"
+    },
+    {
+      "targetId": "product-196",
+      "action": "updated",
+      "name": "Beverly Hills Perfume"
+    },
+    {
+      "targetId": "product-195",
+      "action": "updated",
+      "name": "BeverlyHills Roll on"
+    },
+    {
+      "targetId": "product-332",
+      "action": "created",
+      "name": "Bickies"
+    },
+    {
+      "targetId": "product-146",
+      "action": "updated",
+      "name": "BigBen bar"
+    },
+    {
+      "targetId": "product-333",
+      "action": "created",
+      "name": "Bisto Gravy 125g"
+    },
+    {
+      "targetId": "product-194",
+      "action": "updated",
+      "name": "Black Chick  Small 125ml"
+    },
+    {
+      "targetId": "product-197",
+      "action": "updated",
+      "name": "BlackChic Big 250ml"
+    },
+    {
+      "targetId": "product-334",
+      "action": "created",
+      "name": "Bliss - 200g"
+    },
+    {
+      "targetId": "product-335",
+      "action": "created",
+      "name": "Blue Band"
+    },
+    {
+      "targetId": "product-198",
+      "action": "updated",
+      "name": "Bodi doc"
+    },
+    {
+      "targetId": "product-199",
+      "action": "updated",
+      "name": "Bodi doc Tissue Oil"
+    },
+    {
+      "targetId": "product-306",
+      "action": "updated",
+      "name": "Bokomo CornFlakes"
+    },
+    {
+      "targetId": "product-336",
+      "action": "created",
+      "name": "Bonaqua"
+    },
+    {
+      "targetId": "product-150",
+      "action": "updated",
+      "name": "Boom - 1KG"
+    },
+    {
+      "targetId": "product-149",
+      "action": "updated",
+      "name": "Boom 150g"
+    },
+    {
+      "targetId": "product-175",
+      "action": "updated",
+      "name": "Boom 2kg"
+    },
+    {
+      "targetId": "product-152",
+      "action": "updated",
+      "name": "Boom Bleach 750ml"
+    },
+    {
+      "targetId": "product-200",
+      "action": "updated",
+      "name": "Boom Fabric Conditioner 2ltr"
+    },
+    {
+      "targetId": "product-148",
+      "action": "updated",
+      "name": "Boom Force Cream 750ml"
+    },
+    {
+      "targetId": "product-153",
+      "action": "updated",
+      "name": "Boom Force Scouring"
+    },
+    {
+      "targetId": "product-147",
+      "action": "updated",
+      "name": "Boom Paste"
+    },
+    {
+      "targetId": "product-154",
+      "action": "updated",
+      "name": "Boom W/P 500g"
+    },
+    {
+      "targetId": "product-151",
+      "action": "updated",
+      "name": "BoomDish washer 750ml"
+    },
+    {
+      "targetId": "product-337",
+      "action": "created",
+      "name": "Bread"
+    },
+    {
+      "targetId": "product-19",
+      "action": "updated",
+      "name": "Brinjals - kg"
+    },
+    {
+      "targetId": "product-20",
+      "action": "updated",
+      "name": "Broccolli - kg"
+    },
+    {
+      "targetId": "product-338",
+      "action": "created",
+      "name": "Brono Gravy"
+    },
+    {
+      "targetId": "product-339",
+      "action": "created",
+      "name": "Brothers Juice"
+    },
+    {
+      "targetId": "product-21",
+      "action": "updated",
+      "name": "Brown rice - 1kg"
+    },
+    {
+      "targetId": "product-22",
+      "action": "updated",
+      "name": "Brown Rice - 2kg"
+    },
+    {
+      "targetId": "product-340",
+      "action": "created",
+      "name": "Bubble Chocolate"
+    },
+    {
+      "targetId": "product-23",
+      "action": "updated",
+      "name": "Bulk - Mufushwa (Bucket)"
+    },
+    {
+      "targetId": "product-24",
+      "action": "updated",
+      "name": "Bulk - Rapoko - Buckets"
+    },
+    {
+      "targetId": "product-25",
+      "action": "updated",
+      "name": "Bulk - Sugar Beans"
+    },
+    {
+      "targetId": "product-26",
+      "action": "updated",
+      "name": "Buttenuts - kg"
+    },
+    {
+      "targetId": "product-341",
+      "action": "created",
+      "name": "ButterCup tub"
+    },
+    {
+      "targetId": "product-28",
+      "action": "updated",
+      "name": "Butternut - Pocket"
+    },
+    {
+      "targetId": "product-27",
+      "action": "updated",
+      "name": "Butternut - Punnet"
+    },
+    {
+      "targetId": "product-29",
+      "action": "updated",
+      "name": "Cabbage - Head"
+    },
+    {
+      "targetId": "product-30",
+      "action": "updated",
+      "name": "Cabbages Red"
+    },
+    {
+      "targetId": "product-342",
+      "action": "created",
+      "name": "Cardbury choc"
+    },
+    {
+      "targetId": "product-31",
+      "action": "updated",
+      "name": "Carrots - (Pnt)"
+    },
+    {
+      "targetId": "product-32",
+      "action": "updated",
+      "name": "Carrots - kg"
+    },
+    {
+      "targetId": "product-343",
+      "action": "created",
+      "name": "Cascade 1L"
+    },
+    {
+      "targetId": "product-303",
+      "action": "updated",
+      "name": "Cascade 500ml"
+    },
+    {
+      "targetId": "product-33",
+      "action": "updated",
+      "name": "Cauliflower kg"
+    },
+    {
+      "targetId": "product-344",
+      "action": "created",
+      "name": "Cerelac 250g"
+    },
+    {
+      "targetId": "product-345",
+      "action": "created",
+      "name": "Cerelac 500ml"
+    },
+    {
+      "targetId": "product-346",
+      "action": "created",
+      "name": "Ceres 1L"
+    },
+    {
+      "targetId": "product-307",
+      "action": "updated",
+      "name": "Cerevita 500g"
+    },
+    {
+      "targetId": "product-347",
+      "action": "created",
+      "name": "Cerevita Milk 500G"
+    },
+    {
+      "targetId": "product-348",
+      "action": "created",
+      "name": "Cerevita Sour"
+    },
+    {
+      "targetId": "product-349",
+      "action": "created",
+      "name": "Charhons 1kg"
+    },
+    {
+      "targetId": "product-350",
+      "action": "created",
+      "name": "Charhons 200g"
+    },
+    {
+      "targetId": "product-351",
+      "action": "created",
+      "name": "Charhons 500g"
+    },
+    {
+      "targetId": "product-352",
+      "action": "created",
+      "name": "Charhons Cookies - 500g"
+    },
+    {
+      "targetId": "product-353",
+      "action": "created",
+      "name": "Charhorns 2kg"
+    },
+    {
+      "targetId": "product-34",
+      "action": "updated",
+      "name": "Chimera - 500g"
+    },
+    {
+      "targetId": "product-354",
+      "action": "created",
+      "name": "Chocalate Coated Small"
+    },
+    {
+      "targetId": "product-355",
+      "action": "created",
+      "name": "Chocolate Coated Biscuits"
+    },
+    {
+      "targetId": "product-356",
+      "action": "created",
+      "name": "Choice Biscuits"
+    },
+    {
+      "targetId": "product-357",
+      "action": "created",
+      "name": "Chompkins 150g"
+    },
+    {
+      "targetId": "product-358",
+      "action": "created",
+      "name": "Citro Juice 1L"
+    },
+    {
+      "targetId": "product-201",
+      "action": "updated",
+      "name": "Clere Beautiful Cream 400ml"
+    },
+    {
+      "targetId": "product-202",
+      "action": "updated",
+      "name": "Clere For Men 450ml"
+    },
+    {
+      "targetId": "product-203",
+      "action": "updated",
+      "name": "Clere Glycerine 100ml"
+    },
+    {
+      "targetId": "product-205",
+      "action": "updated",
+      "name": "Clere Glyco Glycerine 100ml"
+    },
+    {
+      "targetId": "product-206",
+      "action": "updated",
+      "name": "Clere Ladies Cream"
+    },
+    {
+      "targetId": "product-204",
+      "action": "updated",
+      "name": "Clere Men lotion 400ml"
+    },
+    {
+      "targetId": "product-275",
+      "action": "updated",
+      "name": "Close Up"
+    },
+    {
+      "targetId": "product-155",
+      "action": "updated",
+      "name": "Cobra 350ml"
+    },
+    {
+      "targetId": "product-276",
+      "action": "updated",
+      "name": "Colgate 100ml"
+    },
+    {
+      "targetId": "product-156",
+      "action": "updated",
+      "name": "Comfort 1L"
+    },
+    {
+      "targetId": "product-359",
+      "action": "created",
+      "name": "Continental Rice 2kg"
+    },
+    {
+      "targetId": "product-360",
+      "action": "created",
+      "name": "Cookies"
+    },
+    {
+      "targetId": "product-361",
+      "action": "created",
+      "name": "CookMore Rice 2kg"
+    },
+    {
+      "targetId": "product-362",
+      "action": "created",
+      "name": "Cookmore Rice 5kg"
+    },
+    {
+      "targetId": "product-363",
+      "action": "created",
+      "name": "Cornflakes Bigtree - 1kg"
+    },
+    {
+      "targetId": "product-364",
+      "action": "created",
+      "name": "Cornflakes Bigtree - 500g"
+    },
+    {
+      "targetId": "product-365",
+      "action": "created",
+      "name": "Cornflakes Bigtree - 750g"
+    },
+    {
+      "targetId": "product-366",
+      "action": "created",
+      "name": "Cornflakes Kellogs - 1kg"
+    },
+    {
+      "targetId": "product-367",
+      "action": "created",
+      "name": "Cornflakes Kellogs 500g"
+    },
+    {
+      "targetId": "product-368",
+      "action": "created",
+      "name": "CornFLakes Willards"
+    },
+    {
+      "targetId": "product-207",
+      "action": "updated",
+      "name": "Cosmo Foam Bath"
+    },
+    {
+      "targetId": "product-369",
+      "action": "created",
+      "name": "Cough drops"
+    },
+    {
+      "targetId": "product-35",
+      "action": "updated",
+      "name": "Covo - Bunches"
+    },
+    {
+      "targetId": "product-36",
+      "action": "updated",
+      "name": "Cucumber - Big Pack"
+    },
+    {
+      "targetId": "product-370",
+      "action": "created",
+      "name": "Daisy Biscuits"
+    },
+    {
+      "targetId": "product-371",
+      "action": "created",
+      "name": "Dandy Pack"
+    },
+    {
+      "targetId": "product-208",
+      "action": "updated",
+      "name": "Dark& Lovely"
+    },
+    {
+      "targetId": "product-209",
+      "action": "updated",
+      "name": "Dawn"
+    },
+    {
+      "targetId": "product-210",
+      "action": "updated",
+      "name": "Dawn Cream"
+    },
+    {
+      "targetId": "product-211",
+      "action": "updated",
+      "name": "Dax 3 in 1 375mls"
+    },
+    {
+      "targetId": "product-217",
+      "action": "updated",
+      "name": "Dax Big 3 n 1"
+    },
+    {
+      "targetId": "product-214",
+      "action": "updated",
+      "name": "Dax Freez Big 250ml"
+    },
+    {
+      "targetId": "product-216",
+      "action": "updated",
+      "name": "Dax Freez Small 100ml"
+    },
+    {
+      "targetId": "product-213",
+      "action": "updated",
+      "name": "Dax Hair Grower 125mls"
+    },
+    {
+      "targetId": "product-212",
+      "action": "updated",
+      "name": "Dax Hair Grower 250ml"
+    },
+    {
+      "targetId": "product-372",
+      "action": "created",
+      "name": "Dell Cookies 500ml"
+    },
+    {
+      "targetId": "product-373",
+      "action": "created",
+      "name": "DELTA 2L"
+    },
+    {
+      "targetId": "product-374",
+      "action": "created",
+      "name": "Delta 300ml"
+    },
+    {
+      "targetId": "product-375",
+      "action": "created",
+      "name": "Delta 440ml"
+    },
+    {
+      "targetId": "product-278",
+      "action": "updated",
+      "name": "Dettol Liquid"
+    },
+    {
+      "targetId": "product-279",
+      "action": "updated",
+      "name": "Dettol soap"
+    },
+    {
+      "targetId": "product-157",
+      "action": "updated",
+      "name": "Dishwasher Seawave"
+    },
+    {
+      "targetId": "product-181",
+      "action": "updated",
+      "name": "DishWasher Seawave 2L"
+    },
+    {
+      "targetId": "product-159",
+      "action": "updated",
+      "name": "Domestos"
+    },
+    {
+      "targetId": "product-158",
+      "action": "updated",
+      "name": "Domestos local"
+    },
+    {
+      "targetId": "product-215",
+      "action": "updated",
+      "name": "Dove Lotion"
+    },
+    {
+      "targetId": "product-376",
+      "action": "created",
+      "name": "Dragon"
+    },
+    {
+      "targetId": "product-219",
+      "action": "updated",
+      "name": "EasyWaves Pack"
+    },
+    {
+      "targetId": "product-377",
+      "action": "created",
+      "name": "Eclair/Big Boom Pack"
+    },
+    {
+      "targetId": "product-37",
+      "action": "updated",
+      "name": "Egg plant - kg"
+    },
+    {
+      "targetId": "product-38",
+      "action": "updated",
+      "name": "Eggs - Each"
+    },
+    {
+      "targetId": "product-39",
+      "action": "updated",
+      "name": "Eggs Trays"
+    },
+    {
+      "targetId": "product-378",
+      "action": "created",
+      "name": "Ekono Macaron 3kg"
+    },
+    {
+      "targetId": "product-379",
+      "action": "created",
+      "name": "Ekono Rice white 2kg"
+    },
+    {
+      "targetId": "product-218",
+      "action": "updated",
+      "name": "English Blazer"
+    },
+    {
+      "targetId": "product-40",
+      "action": "updated",
+      "name": "English Cucumber"
+    },
+    {
+      "targetId": "product-124",
+      "action": "updated",
+      "name": "Epimax Cream 400g"
+    },
+    {
+      "targetId": "product-220",
+      "action": "updated",
+      "name": "Exclamation Perfume"
+    },
+    {
+      "targetId": "product-380",
+      "action": "created",
+      "name": "Finger Biscuits"
+    },
+    {
+      "targetId": "product-381",
+      "action": "created",
+      "name": "Fizzi 2L"
+    },
+    {
+      "targetId": "product-382",
+      "action": "created",
+      "name": "Flava Burst 5L"
+    },
+    {
+      "targetId": "product-383",
+      "action": "created",
+      "name": "Fresh-Up - 400ml"
+    },
+    {
+      "targetId": "product-384",
+      "action": "created",
+      "name": "Frimax 150g"
+    },
+    {
+      "targetId": "product-385",
+      "action": "created",
+      "name": "Fruitade"
+    },
+    {
+      "targetId": "product-386",
+      "action": "created",
+      "name": "Fruitcana"
+    },
+    {
+      "targetId": "product-387",
+      "action": "created",
+      "name": "Frutesca 430mls"
+    },
+    {
+      "targetId": "product-388",
+      "action": "created",
+      "name": "Fun 'n Fresh"
+    },
+    {
+      "targetId": "product-389",
+      "action": "created",
+      "name": "Funny Dip"
+    },
+    {
+      "targetId": "product-41",
+      "action": "updated",
+      "name": "Garlic - kg"
+    },
+    {
+      "targetId": "product-280",
+      "action": "updated",
+      "name": "Geisha"
+    },
+    {
+      "targetId": "product-42",
+      "action": "updated",
+      "name": "Gemsquash kg"
+    },
+    {
+      "targetId": "product-221",
+      "action": "updated",
+      "name": "Gentel Magic lotion"
+    },
+    {
+      "targetId": "product-223",
+      "action": "updated",
+      "name": "Gentel Magic Serum"
+    },
+    {
+      "targetId": "product-224",
+      "action": "updated",
+      "name": "Gentel Magic Soap"
+    },
+    {
+      "targetId": "product-222",
+      "action": "updated",
+      "name": "Gentle Magic Cream"
+    },
+    {
+      "targetId": "product-225",
+      "action": "updated",
+      "name": "Gentle Magic Oil 50ml"
+    },
+    {
+      "targetId": "product-160",
+      "action": "updated",
+      "name": "Gik 750ml"
+    },
+    {
+      "targetId": "product-43",
+      "action": "updated",
+      "name": "Ginger - kg"
+    },
+    {
+      "targetId": "product-44",
+      "action": "updated",
+      "name": "Grapes Black pnts"
+    },
+    {
+      "targetId": "product-162",
+      "action": "updated",
+      "name": "Green Bar"
+    },
+    {
+      "targetId": "product-161",
+      "action": "updated",
+      "name": "Green Bar Perfection"
+    },
+    {
+      "targetId": "product-45",
+      "action": "updated",
+      "name": "Green Beans - kg"
+    },
+    {
+      "targetId": "product-46",
+      "action": "updated",
+      "name": "Green Beans - pnt"
+    },
+    {
+      "targetId": "product-390",
+      "action": "created",
+      "name": "Grown ups"
+    },
+    {
+      "targetId": "product-226",
+      "action": "updated",
+      "name": "Hair Remover Cosmo 40g"
+    },
+    {
+      "targetId": "product-391",
+      "action": "created",
+      "name": "HALLS"
+    },
+    {
+      "targetId": "product-163",
+      "action": "updated",
+      "name": "Handy Andy"
+    },
+    {
+      "targetId": "product-164",
+      "action": "updated",
+      "name": "Harpic"
+    },
+    {
+      "targetId": "product-392",
+      "action": "created",
+      "name": "Hello/Chippa Single"
+    },
+    {
+      "targetId": "product-281",
+      "action": "updated",
+      "name": "HiLife Soap"
+    },
+    {
+      "targetId": "product-227",
+      "action": "updated",
+      "name": "Hoit Toity 90mls"
+    },
+    {
+      "targetId": "product-228",
+      "action": "updated",
+      "name": "Hoity Toity Lotion"
+    },
+    {
+      "targetId": "product-47",
+      "action": "updated",
+      "name": "Honey 500g"
+    },
+    {
+      "targetId": "product-48",
+      "action": "updated",
+      "name": "Honey Pure - 500g (1st Grade)"
+    },
+    {
+      "targetId": "product-125",
+      "action": "updated",
+      "name": "Huggies Diapers - Pack"
+    },
+    {
+      "targetId": "product-126",
+      "action": "updated",
+      "name": "Huggies Wipes"
+    },
+    {
+      "targetId": "product-282",
+      "action": "updated",
+      "name": "hygienix Soap 175g"
+    },
+    {
+      "targetId": "product-393",
+      "action": "created",
+      "name": "Ideal whie Rice 2kg"
+    },
+    {
+      "targetId": "product-394",
+      "action": "created",
+      "name": "Ideal white Rice 5kg"
+    },
+    {
+      "targetId": "product-236",
+      "action": "updated",
+      "name": "Igrams Roibos 450ml"
+    },
+    {
+      "targetId": "product-395",
+      "action": "created",
+      "name": "Imperial Mints"
+    },
+    {
+      "targetId": "product-237",
+      "action": "updated",
+      "name": "Inecto Super Black75g"
+    },
+    {
+      "targetId": "product-233",
+      "action": "updated",
+      "name": "Ingrams Aloe 450ml"
+    },
+    {
+      "targetId": "product-229",
+      "action": "updated",
+      "name": "Ingrams Herbal"
+    },
+    {
+      "targetId": "product-232",
+      "action": "updated",
+      "name": "Ingrams men 450ml"
+    },
+    {
+      "targetId": "product-231",
+      "action": "updated",
+      "name": "Ingrams Moisture Plus 450ml"
+    },
+    {
+      "targetId": "product-235",
+      "action": "updated",
+      "name": "Ingrams Original 450mls"
+    },
+    {
+      "targetId": "product-230",
+      "action": "updated",
+      "name": "Ingrams Senstive 450ml"
+    },
+    {
+      "targetId": "product-234",
+      "action": "updated",
+      "name": "Ingrams tissue oi l450ml"
+    },
+    {
+      "targetId": "product-239",
+      "action": "updated",
+      "name": "Iso Plus Hair Spry 240ml"
+    },
+    {
+      "targetId": "product-238",
+      "action": "updated",
+      "name": "Isoplus Edge Control"
+    },
+    {
+      "targetId": "product-283",
+      "action": "updated",
+      "name": "Jade Soap"
+    },
+    {
+      "targetId": "product-165",
+      "action": "updated",
+      "name": "Jik 750ml"
+    },
+    {
+      "targetId": "product-396",
+      "action": "created",
+      "name": "Joe Biscuits"
+    },
+    {
+      "targetId": "product-128",
+      "action": "updated",
+      "name": "Johnson Aqueous 350ml"
+    },
+    {
+      "targetId": "product-129",
+      "action": "updated",
+      "name": "Johnson Baby soap 175g"
+    },
+    {
+      "targetId": "product-127",
+      "action": "updated",
+      "name": "Johnson Jelly 325ml"
+    },
+    {
+      "targetId": "product-140",
+      "action": "updated",
+      "name": "Johnson Wipes"
+    },
+    {
+      "targetId": "product-397",
+      "action": "created",
+      "name": "Juice it 250ml"
+    },
+    {
+      "targetId": "product-398",
+      "action": "created",
+      "name": "Kambucha No.3"
+    },
+    {
+      "targetId": "product-49",
+      "action": "updated",
+      "name": "Kapenta - kg"
+    },
+    {
+      "targetId": "product-309",
+      "action": "updated",
+      "name": "Kefalos Dairy/Juice 200ml"
+    },
+    {
+      "targetId": "product-399",
+      "action": "created",
+      "name": "KingKurls Pack"
+    },
+    {
+      "targetId": "product-400",
+      "action": "created",
+      "name": "KingKurls Single"
+    },
+    {
+      "targetId": "product-173",
+      "action": "updated",
+      "name": "Kiwi 100ml"
+    },
+    {
+      "targetId": "product-166",
+      "action": "updated",
+      "name": "Kiwi Polish 50ml"
+    },
+    {
+      "targetId": "product-167",
+      "action": "updated",
+      "name": "Knock Dishwasher 750ml"
+    },
+    {
+      "targetId": "product-170",
+      "action": "updated",
+      "name": "Knock out Satchet"
+    },
+    {
+      "targetId": "product-169",
+      "action": "updated",
+      "name": "Knockout All Purpose Cleaner 500ml"
+    },
+    {
+      "targetId": "product-172",
+      "action": "updated",
+      "name": "Knockout Bleach"
+    },
+    {
+      "targetId": "product-168",
+      "action": "updated",
+      "name": "Knockout Can"
+    },
+    {
+      "targetId": "product-171",
+      "action": "updated",
+      "name": "Knockout Dishwasher 2L"
+    },
+    {
+      "targetId": "product-316",
+      "action": "updated",
+      "name": "Knorr Soup"
+    },
+    {
+      "targetId": "product-284",
+      "action": "updated",
+      "name": "Kotex pads 10s"
+    },
+    {
+      "targetId": "product-288",
+      "action": "updated",
+      "name": "Kotex Pant Liners"
+    },
+    {
+      "targetId": "product-240",
+      "action": "updated",
+      "name": "Lace Lotion"
+    },
+    {
+      "targetId": "product-401",
+      "action": "created",
+      "name": "LakkerNax"
+    },
+    {
+      "targetId": "product-402",
+      "action": "created",
+      "name": "Lays 125g"
+    },
+    {
+      "targetId": "product-50",
+      "action": "updated",
+      "name": "Lemon - Pnt"
+    },
+    {
+      "targetId": "product-51",
+      "action": "updated",
+      "name": "Lemons - kg"
+    },
+    {
+      "targetId": "product-52",
+      "action": "updated",
+      "name": "Lettuce - Head"
+    },
+    {
+      "targetId": "product-285",
+      "action": "updated",
+      "name": "Lifebouy"
+    },
+    {
+      "targetId": "product-403",
+      "action": "created",
+      "name": "Liqui/Ceres Fruit Juice"
+    },
+    {
+      "targetId": "product-404",
+      "action": "created",
+      "name": "Lobels Biscuits"
+    },
+    {
+      "targetId": "product-405",
+      "action": "created",
+      "name": "Lollipop"
+    },
+    {
+      "targetId": "product-406",
+      "action": "created",
+      "name": "Lunch Bar Choc"
+    },
+    {
+      "targetId": "product-286",
+      "action": "updated",
+      "name": "Lux Soap"
+    },
+    {
+      "targetId": "product-54",
+      "action": "updated",
+      "name": "Macadamia Nuts - Punnet"
+    },
+    {
+      "targetId": "product-53",
+      "action": "updated",
+      "name": "Macademia nuts - Pack"
+    },
+    {
+      "targetId": "product-407",
+      "action": "created",
+      "name": "Macaron - 400g"
+    },
+    {
+      "targetId": "product-55",
+      "action": "updated",
+      "name": "Madora - kg"
+    },
+    {
+      "targetId": "product-408",
+      "action": "created",
+      "name": "Mahatma 2kg"
+    },
+    {
+      "targetId": "product-409",
+      "action": "created",
+      "name": "Mahatma 5kg"
+    },
+    {
+      "targetId": "product-56",
+      "action": "updated",
+      "name": "Mango - kg"
+    },
+    {
+      "targetId": "product-57",
+      "action": "updated",
+      "name": "Mango - Packs"
+    },
+    {
+      "targetId": "product-410",
+      "action": "created",
+      "name": "Maputi"
+    },
+    {
+      "targetId": "product-411",
+      "action": "created",
+      "name": "Maputi Single"
+    },
+    {
+      "targetId": "product-174",
+      "action": "updated",
+      "name": "Maq 1kg"
+    },
+    {
+      "targetId": "product-176",
+      "action": "updated",
+      "name": "Maq 2kg"
+    },
+    {
+      "targetId": "product-412",
+      "action": "created",
+      "name": "Marmalade Jam 500g"
+    },
+    {
+      "targetId": "product-413",
+      "action": "created",
+      "name": "MarshMallow Long"
+    },
+    {
+      "targetId": "product-414",
+      "action": "created",
+      "name": "MarshMallow Pack"
+    },
+    {
+      "targetId": "product-415",
+      "action": "created",
+      "name": "Martina Rice 5kg"
+    },
+    {
+      "targetId": "product-416",
+      "action": "created",
+      "name": "Martina White Rice 2kg"
+    },
+    {
+      "targetId": "product-130",
+      "action": "updated",
+      "name": "Masters Wipes"
+    },
+    {
+      "targetId": "product-417",
+      "action": "created",
+      "name": "Maynards Jelly Sweets"
+    },
+    {
+      "targetId": "product-418",
+      "action": "created",
+      "name": "Mazoe Blackberry 2L"
+    },
+    {
+      "targetId": "product-419",
+      "action": "created",
+      "name": "Mazoe Mix"
+    },
+    {
+      "targetId": "product-304",
+      "action": "updated",
+      "name": "Mazoe Orange 2L"
+    },
+    {
+      "targetId": "product-420",
+      "action": "created",
+      "name": "Mega All Purpose 2kg"
+    },
+    {
+      "targetId": "product-421",
+      "action": "created",
+      "name": "Mega Macaroni - 3KG"
+    },
+    {
+      "targetId": "product-422",
+      "action": "created",
+      "name": "Mega Macaroni 400g"
+    },
+    {
+      "targetId": "product-423",
+      "action": "created",
+      "name": "Mega Rice - 2kg"
+    },
+    {
+      "targetId": "product-424",
+      "action": "created",
+      "name": "Mega Rice - 5kg"
+    },
+    {
+      "targetId": "product-310",
+      "action": "updated",
+      "name": "Milkit Milkshake 100ml"
+    },
+    {
+      "targetId": "product-425",
+      "action": "created",
+      "name": "Milkit/ Juice Box"
+    },
+    {
+      "targetId": "product-426",
+      "action": "created",
+      "name": "Millet - 1kg"
+    },
+    {
+      "targetId": "product-427",
+      "action": "created",
+      "name": "MILLET 2kg"
+    },
+    {
+      "targetId": "product-428",
+      "action": "created",
+      "name": "Mint/Dandy/toffe"
+    },
+    {
+      "targetId": "product-429",
+      "action": "created",
+      "name": "Minute Maid Original 400ml"
+    },
+    {
+      "targetId": "product-430",
+      "action": "created",
+      "name": "Minute Maid Refresh"
+    },
+    {
+      "targetId": "product-58",
+      "action": "updated",
+      "name": "Mixed grain - 2kg"
+    },
+    {
+      "targetId": "product-241",
+      "action": "updated",
+      "name": "Mousse"
+    },
+    {
+      "targetId": "product-431",
+      "action": "created",
+      "name": "Mr Rice White 2kg"
+    },
+    {
+      "targetId": "product-432",
+      "action": "created",
+      "name": "Mr Rice white 5kg"
+    },
+    {
+      "targetId": "product-433",
+      "action": "created",
+      "name": "Muesli"
+    },
+    {
+      "targetId": "product-59",
+      "action": "updated",
+      "name": "Munyemba - 75g"
+    },
+    {
+      "targetId": "product-60",
+      "action": "updated",
+      "name": "Munyevhe - 50g"
+    },
+    {
+      "targetId": "product-434",
+      "action": "created",
+      "name": "Mushroom Oyester - Pnt"
+    },
+    {
+      "targetId": "product-61",
+      "action": "updated",
+      "name": "Naartjies - Box"
+    },
+    {
+      "targetId": "product-62",
+      "action": "updated",
+      "name": "Naartjies - Each"
+    },
+    {
+      "targetId": "product-131",
+      "action": "updated",
+      "name": "Nan 1;2;3&4"
+    },
+    {
+      "targetId": "product-435",
+      "action": "created",
+      "name": "Natural Joy - 1litre"
+    },
+    {
+      "targetId": "product-242",
+      "action": "updated",
+      "name": "Nivea Cream/Lotion 400ml"
+    },
+    {
+      "targetId": "product-245",
+      "action": "updated",
+      "name": "Nivea Q10"
+    },
+    {
+      "targetId": "product-243",
+      "action": "updated",
+      "name": "Nivea Radiant Cream 400ml"
+    },
+    {
+      "targetId": "product-244",
+      "action": "updated",
+      "name": "Nivea Spray"
+    },
+    {
+      "targetId": "product-436",
+      "action": "created",
+      "name": "Noddle Box"
+    },
+    {
+      "targetId": "product-437",
+      "action": "created",
+      "name": "Noddles Aroma"
+    },
+    {
+      "targetId": "product-438",
+      "action": "created",
+      "name": "Noddles Binto"
+    },
+    {
+      "targetId": "product-439",
+      "action": "created",
+      "name": "Noddles Golf"
+    },
+    {
+      "targetId": "product-440",
+      "action": "created",
+      "name": "Noddles Indomie"
+    },
+    {
+      "targetId": "product-441",
+      "action": "created",
+      "name": "Noddles Kellogs"
+    },
+    {
+      "targetId": "product-442",
+      "action": "created",
+      "name": "Noddles Mega"
+    },
+    {
+      "targetId": "product-443",
+      "action": "created",
+      "name": "Noodle Kellogs/Golf Box"
+    },
+    {
+      "targetId": "product-177",
+      "action": "updated",
+      "name": "Nugget - 100ml"
+    },
+    {
+      "targetId": "product-63",
+      "action": "updated",
+      "name": "Nyimo - 500g"
+    },
+    {
+      "targetId": "product-444",
+      "action": "created",
+      "name": "Oats"
+    },
+    {
+      "targetId": "product-248",
+      "action": "updated",
+      "name": "Oh  So Heavenly Lotion 1L"
+    },
+    {
+      "targetId": "product-247",
+      "action": "updated",
+      "name": "Oh So Heavenly - 2L"
+    },
+    {
+      "targetId": "product-249",
+      "action": "updated",
+      "name": "Oh SO Heavenly Cream 450ml"
+    },
+    {
+      "targetId": "product-287",
+      "action": "updated",
+      "name": "Oh So Heavenly Gel"
+    },
+    {
+      "targetId": "product-246",
+      "action": "updated",
+      "name": "Oh So Heavenly Lotion 720ml"
+    },
+    {
+      "targetId": "product-250",
+      "action": "updated",
+      "name": "Oh So heavenly Q10"
+    },
+    {
+      "targetId": "product-64",
+      "action": "updated",
+      "name": "Okra Pnt"
+    },
+    {
+      "targetId": "product-251",
+      "action": "updated",
+      "name": "Olive Oil Spry 250ml"
+    },
+    {
+      "targetId": "product-178",
+      "action": "updated",
+      "name": "Omo Powder 2kg"
+    },
+    {
+      "targetId": "product-65",
+      "action": "updated",
+      "name": "Onion  Red (kgs)"
+    },
+    {
+      "targetId": "product-66",
+      "action": "updated",
+      "name": "Onion King Bun"
+    },
+    {
+      "targetId": "product-67",
+      "action": "updated",
+      "name": "Onions - kg"
+    },
+    {
+      "targetId": "product-68",
+      "action": "updated",
+      "name": "Onions - pocket"
+    },
+    {
+      "targetId": "product-69",
+      "action": "updated",
+      "name": "Onions Misc - kg"
+    },
+    {
+      "targetId": "product-70",
+      "action": "updated",
+      "name": "Onions Red - Bundle"
+    },
+    {
+      "targetId": "product-445",
+      "action": "created",
+      "name": "Oran Crush 5L"
+    },
+    {
+      "targetId": "product-71",
+      "action": "updated",
+      "name": "Oranges - Pack"
+    },
+    {
+      "targetId": "product-72",
+      "action": "updated",
+      "name": "Oranges - Pocket"
+    },
+    {
+      "targetId": "product-289",
+      "action": "updated",
+      "name": "Pads Mix"
+    },
+    {
+      "targetId": "product-132",
+      "action": "updated",
+      "name": "Pampers Masters Pack"
+    },
+    {
+      "targetId": "product-133",
+      "action": "updated",
+      "name": "Pampers Masters Single"
+    },
+    {
+      "targetId": "product-446",
+      "action": "created",
+      "name": "Parboiled Rice 2kg"
+    },
+    {
+      "targetId": "product-447",
+      "action": "created",
+      "name": "Parboiled Rice 5kg"
+    },
+    {
+      "targetId": "product-448",
+      "action": "created",
+      "name": "Pascal Choc"
+    },
+    {
+      "targetId": "product-449",
+      "action": "created",
+      "name": "Pastarelli - Macaroni 3kg"
+    },
+    {
+      "targetId": "product-73",
+      "action": "updated",
+      "name": "Peacan Nuts - Pack"
+    },
+    {
+      "targetId": "product-450",
+      "action": "created",
+      "name": "Peanut butter (Paguyo) - 1L"
+    },
+    {
+      "targetId": "product-75",
+      "action": "updated",
+      "name": "Peanut butter - 300ml"
+    },
+    {
+      "targetId": "product-451",
+      "action": "created",
+      "name": "Peanut Butter 1L"
+    },
+    {
+      "targetId": "product-76",
+      "action": "updated",
+      "name": "Peanut Butter 375ml"
+    },
+    {
+      "targetId": "product-77",
+      "action": "updated",
+      "name": "Peanuts (unshelled) - 75g"
+    },
+    {
+      "targetId": "product-78",
+      "action": "updated",
+      "name": "Peanuts - kg"
+    },
+    {
+      "targetId": "product-79",
+      "action": "updated",
+      "name": "Peanuts 500g"
+    },
+    {
+      "targetId": "product-452",
+      "action": "created",
+      "name": "Pearlenta 10kg"
+    },
+    {
+      "targetId": "product-453",
+      "action": "created",
+      "name": "Pearlenta Porridge 1kg"
+    },
+    {
+      "targetId": "product-80",
+      "action": "updated",
+      "name": "Pears Forelle each"
+    },
+    {
+      "targetId": "product-81",
+      "action": "updated",
+      "name": "Peas Big - Punnet"
+    },
+    {
+      "targetId": "product-74",
+      "action": "updated",
+      "name": "Pecanuts - Pack"
+    },
+    {
+      "targetId": "product-82",
+      "action": "updated",
+      "name": "Pepper (green) - Pnts"
+    },
+    {
+      "targetId": "product-83",
+      "action": "updated",
+      "name": "Pepper (Green)- kg"
+    },
+    {
+      "targetId": "product-84",
+      "action": "updated",
+      "name": "Pepper Red - kg"
+    },
+    {
+      "targetId": "product-85",
+      "action": "updated",
+      "name": "Pepper Yellow/Red - kg"
+    },
+    {
+      "targetId": "product-454",
+      "action": "created",
+      "name": "PEPS 1L"
+    },
+    {
+      "targetId": "product-305",
+      "action": "updated",
+      "name": "Peps 500ml"
+    },
+    {
+      "targetId": "product-455",
+      "action": "created",
+      "name": "Peps Case"
+    },
+    {
+      "targetId": "product-290",
+      "action": "updated",
+      "name": "Period pants"
+    },
+    {
+      "targetId": "product-311",
+      "action": "updated",
+      "name": "Pfuko Buttermilk - 500ml"
+    },
+    {
+      "targetId": "product-456",
+      "action": "created",
+      "name": "Pfuko case"
+    },
+    {
+      "targetId": "product-457",
+      "action": "created",
+      "name": "Pfuko Traditional 500ml"
+    },
+    {
+      "targetId": "product-458",
+      "action": "created",
+      "name": "Pie"
+    },
+    {
+      "targetId": "product-86",
+      "action": "updated",
+      "name": "Pine Apples each"
+    },
+    {
+      "targetId": "product-180",
+      "action": "updated",
+      "name": "Pinegel 1L"
+    },
+    {
+      "targetId": "product-179",
+      "action": "updated",
+      "name": "Pinegel 500ml"
+    },
+    {
+      "targetId": "product-253",
+      "action": "updated",
+      "name": "PlayBoy Perfume"
+    },
+    {
+      "targetId": "product-252",
+      "action": "updated",
+      "name": "PlayBoy Roll on"
+    },
+    {
+      "targetId": "product-314",
+      "action": "updated",
+      "name": "Popcorn"
+    },
+    {
+      "targetId": "product-459",
+      "action": "created",
+      "name": "Popticorn -120g"
+    },
+    {
+      "targetId": "product-87",
+      "action": "updated",
+      "name": "Potatoes - 5kg"
+    },
+    {
+      "targetId": "product-88",
+      "action": "updated",
+      "name": "Potatoes - 7.5kg"
+    },
+    {
+      "targetId": "product-89",
+      "action": "updated",
+      "name": "Potatoes - kg"
+    },
+    {
+      "targetId": "product-90",
+      "action": "updated",
+      "name": "POTATOES - LARGE 15KG POC"
+    },
+    {
+      "targetId": "product-91",
+      "action": "updated",
+      "name": "Potatoes 3kg Med Pack"
+    },
+    {
+      "targetId": "product-460",
+      "action": "created",
+      "name": "PowerPlus"
+    },
+    {
+      "targetId": "product-134",
+      "action": "updated",
+      "name": "Predo  Wipes"
+    },
+    {
+      "targetId": "product-292",
+      "action": "updated",
+      "name": "Private Joy Tissue"
+    },
+    {
+      "targetId": "product-291",
+      "action": "updated",
+      "name": "Protex Soap"
+    },
+    {
+      "targetId": "product-461",
+      "action": "created",
+      "name": "Proton Cookies 1kg"
+    },
+    {
+      "targetId": "product-462",
+      "action": "created",
+      "name": "Proton Cookies 250g"
+    },
+    {
+      "targetId": "product-463",
+      "action": "created",
+      "name": "Proton Cookies 2kg"
+    },
+    {
+      "targetId": "product-464",
+      "action": "created",
+      "name": "Proton Cookies 500g"
+    },
+    {
+      "targetId": "product-465",
+      "action": "created",
+      "name": "PureJoy Juice"
+    },
+    {
+      "targetId": "product-135",
+      "action": "updated",
+      "name": "Purity Aqueous"
+    },
+    {
+      "targetId": "product-466",
+      "action": "created",
+      "name": "Quench"
+    },
+    {
+      "targetId": "product-467",
+      "action": "created",
+      "name": "Raha white Rice 2kg"
+    },
+    {
+      "targetId": "product-468",
+      "action": "created",
+      "name": "Raha white Rice 5kg"
+    },
+    {
+      "targetId": "product-92",
+      "action": "updated",
+      "name": "Raisins Punnets"
+    },
+    {
+      "targetId": "product-96",
+      "action": "updated",
+      "name": "Rapoko - kg"
+    },
+    {
+      "targetId": "product-93",
+      "action": "updated",
+      "name": "Rapoko 1kg"
+    },
+    {
+      "targetId": "product-94",
+      "action": "updated",
+      "name": "Rapoko 2kg"
+    },
+    {
+      "targetId": "product-95",
+      "action": "updated",
+      "name": "Rapoko 5kg"
+    },
+    {
+      "targetId": "product-469",
+      "action": "created",
+      "name": "RedBull"
+    },
+    {
+      "targetId": "product-470",
+      "action": "created",
+      "name": "Revive Juice 1L"
+    },
+    {
+      "targetId": "product-471",
+      "action": "created",
+      "name": "Revive juice 500ml"
+    },
+    {
+      "targetId": "product-472",
+      "action": "created",
+      "name": "Revive Maheu 1L"
+    },
+    {
+      "targetId": "product-473",
+      "action": "created",
+      "name": "Revive Maheu 500ml"
+    },
+    {
+      "targetId": "product-474",
+      "action": "created",
+      "name": "Rhodes Juice"
+    },
+    {
+      "targetId": "product-97",
+      "action": "updated",
+      "name": "Rice (White) - 1kg"
+    },
+    {
+      "targetId": "product-98",
+      "action": "updated",
+      "name": "Rice (White) - 2kg"
+    },
+    {
+      "targetId": "product-475",
+      "action": "created",
+      "name": "Rice (White) - 5kg"
+    },
+    {
+      "targetId": "product-476",
+      "action": "created",
+      "name": "Ripples"
+    },
+    {
+      "targetId": "product-255",
+      "action": "updated",
+      "name": "Roll On Addidas 50ml"
+    },
+    {
+      "targetId": "product-256",
+      "action": "updated",
+      "name": "Roll on Nivea - 50ml"
+    },
+    {
+      "targetId": "product-257",
+      "action": "updated",
+      "name": "Roll On Power House 50ml"
+    },
+    {
+      "targetId": "product-254",
+      "action": "updated",
+      "name": "Roll On Shield"
+    },
+    {
+      "targetId": "product-477",
+      "action": "created",
+      "name": "Roller Meal 10kg"
+    },
+    {
+      "targetId": "product-478",
+      "action": "created",
+      "name": "Roller meal Irifarm 5kg"
+    },
+    {
+      "targetId": "product-479",
+      "action": "created",
+      "name": "Roller SuperLife 5kg"
+    },
+    {
+      "targetId": "product-293",
+      "action": "updated",
+      "name": "Romance Soap 50g"
+    },
+    {
+      "targetId": "product-480",
+      "action": "created",
+      "name": "Rossy Wafers"
+    },
+    {
+      "targetId": "product-99",
+      "action": "updated",
+      "name": "Roundnuts - kg"
+    },
+    {
+      "targetId": "product-317",
+      "action": "updated",
+      "name": "Royco Mchuzi"
+    },
+    {
+      "targetId": "product-481",
+      "action": "created",
+      "name": "Royco Satchet"
+    },
+    {
+      "targetId": "product-100",
+      "action": "updated",
+      "name": "Samp - kg"
+    },
+    {
+      "targetId": "product-482",
+      "action": "created",
+      "name": "Sasko Flour 2.5 kg"
+    },
+    {
+      "targetId": "product-296",
+      "action": "updated",
+      "name": "Satiskin 1L"
+    },
+    {
+      "targetId": "product-295",
+      "action": "updated",
+      "name": "Satiskin 2L"
+    },
+    {
+      "targetId": "product-102",
+      "action": "updated",
+      "name": "Sauce - 330ml"
+    },
+    {
+      "targetId": "product-103",
+      "action": "updated",
+      "name": "Sauce - 375ml"
+    },
+    {
+      "targetId": "product-104",
+      "action": "updated",
+      "name": "Sauce Bbq - 2 Litres"
+    },
+    {
+      "targetId": "product-105",
+      "action": "updated",
+      "name": "Sauce Daddies - 375ml"
+    },
+    {
+      "targetId": "product-101",
+      "action": "updated",
+      "name": "Sauce(garlic,Bbq,Lemon Herd) - 1L"
+    },
+    {
+      "targetId": "product-106",
+      "action": "updated",
+      "name": "Seeds"
+    },
+    {
+      "targetId": "product-483",
+      "action": "created",
+      "name": "Self Raising Flour 2kg"
+    },
+    {
+      "targetId": "product-484",
+      "action": "created",
+      "name": "ShortBread Biscuits - 150g"
+    },
+    {
+      "targetId": "product-485",
+      "action": "created",
+      "name": "ShortBread Chelsea"
+    },
+    {
+      "targetId": "product-486",
+      "action": "created",
+      "name": "ShortBread Mini"
+    },
+    {
+      "targetId": "product-258",
+      "action": "updated",
+      "name": "Shower To Shower"
+    },
+    {
+      "targetId": "product-259",
+      "action": "updated",
+      "name": "Shower to Shower Perfume"
+    },
+    {
+      "targetId": "product-302",
+      "action": "updated",
+      "name": "Shumba"
+    },
+    {
+      "targetId": "product-260",
+      "action": "updated",
+      "name": "Skala 200g"
+    },
+    {
+      "targetId": "product-261",
+      "action": "updated",
+      "name": "Skala hairFood"
+    },
+    {
+      "targetId": "product-487",
+      "action": "created",
+      "name": "SnowFake SelfRaising 2.5"
+    },
+    {
+      "targetId": "product-488",
+      "action": "created",
+      "name": "SnowFlak Cake Flour 2.5kg"
+    },
+    {
+      "targetId": "product-136",
+      "action": "updated",
+      "name": "Soft Care Pampers"
+    },
+    {
+      "targetId": "product-297",
+      "action": "updated",
+      "name": "Sona"
+    },
+    {
+      "targetId": "product-108",
+      "action": "updated",
+      "name": "Sorghum - kg"
+    },
+    {
+      "targetId": "product-107",
+      "action": "updated",
+      "name": "Sorghum 1Kg"
+    },
+    {
+      "targetId": "product-315",
+      "action": "updated",
+      "name": "Southern Coating - 200g"
+    },
+    {
+      "targetId": "product-489",
+      "action": "created",
+      "name": "Spagetti 400g"
+    },
+    {
+      "targetId": "product-109",
+      "action": "updated",
+      "name": "Spice - 200g"
+    },
+    {
+      "targetId": "product-110",
+      "action": "updated",
+      "name": "Spice Bbq - 500g"
+    },
+    {
+      "targetId": "product-111",
+      "action": "updated",
+      "name": "Spices - 100g"
+    },
+    {
+      "targetId": "product-112",
+      "action": "updated",
+      "name": "Spices 60g Satchets"
+    },
+    {
+      "targetId": "product-490",
+      "action": "created",
+      "name": "Spuds 30g"
+    },
+    {
+      "targetId": "product-491",
+      "action": "created",
+      "name": "Spuds 75g"
+    },
+    {
+      "targetId": "product-492",
+      "action": "created",
+      "name": "Spuds/Lays Box 30g"
+    },
+    {
+      "targetId": "product-493",
+      "action": "created",
+      "name": "Stambo/ BigBoom Pack"
+    },
+    {
+      "targetId": "product-494",
+      "action": "created",
+      "name": "Stambo/ BigBoom Single"
+    },
+    {
+      "targetId": "product-183",
+      "action": "updated",
+      "name": "Star Soft - 2litre"
+    },
+    {
+      "targetId": "product-184",
+      "action": "updated",
+      "name": "StarSoft Refill mix"
+    },
+    {
+      "targetId": "product-495",
+      "action": "created",
+      "name": "Sting 500ml"
+    },
+    {
+      "targetId": "product-113",
+      "action": "updated",
+      "name": "Sugar Beans - 1KG"
+    },
+    {
+      "targetId": "product-114",
+      "action": "updated",
+      "name": "Sugar Beans -Misc - kg"
+    },
+    {
+      "targetId": "product-115",
+      "action": "updated",
+      "name": "Sugar Beans 2kg"
+    },
+    {
+      "targetId": "product-116",
+      "action": "updated",
+      "name": "Sugar Beans Kg"
+    },
+    {
+      "targetId": "product-496",
+      "action": "created",
+      "name": "Sun Snack"
+    },
+    {
+      "targetId": "product-497",
+      "action": "created",
+      "name": "SunBite Biscuits"
+    },
+    {
+      "targetId": "product-498",
+      "action": "created",
+      "name": "SunJam 500g"
+    },
+    {
+      "targetId": "product-185",
+      "action": "updated",
+      "name": "Sunlight 1kg"
+    },
+    {
+      "targetId": "product-182",
+      "action": "updated",
+      "name": "Sunlight Liquid"
+    },
+    {
+      "targetId": "product-186",
+      "action": "updated",
+      "name": "SunLight Pwd 2kg"
+    },
+    {
+      "targetId": "product-137",
+      "action": "updated",
+      "name": "Sunlight soap"
+    },
+    {
+      "targetId": "product-499",
+      "action": "created",
+      "name": "Sunny Porridge"
+    },
+    {
+      "targetId": "product-138",
+      "action": "updated",
+      "name": "Superdry - Pamper"
+    },
+    {
+      "targetId": "product-500",
+      "action": "created",
+      "name": "Sweet Cup"
+    },
+    {
+      "targetId": "product-117",
+      "action": "updated",
+      "name": "Sweet potatoes - kg"
+    },
+    {
+      "targetId": "product-501",
+      "action": "created",
+      "name": "Switch"
+    },
+    {
+      "targetId": "product-502",
+      "action": "created",
+      "name": "Tapi Tapi 2kg"
+    },
+    {
+      "targetId": "product-503",
+      "action": "created",
+      "name": "Tea Biscuits"
+    },
+    {
+      "targetId": "product-504",
+      "action": "created",
+      "name": "Tea loaf"
+    },
+    {
+      "targetId": "product-505",
+      "action": "created",
+      "name": "Thai Rice"
+    },
+    {
+      "targetId": "product-506",
+      "action": "created",
+      "name": "Things 75g"
+    },
+    {
+      "targetId": "product-507",
+      "action": "created",
+      "name": "THINGS Pack"
+    },
+    {
+      "targetId": "product-508",
+      "action": "created",
+      "name": "Things/Kornkurl 150g"
+    },
+    {
+      "targetId": "product-298",
+      "action": "updated",
+      "name": "Tissue 4s"
+    },
+    {
+      "targetId": "product-294",
+      "action": "updated",
+      "name": "Tissue Single"
+    },
+    {
+      "targetId": "product-118",
+      "action": "updated",
+      "name": "Tomatoes kg"
+    },
+    {
+      "targetId": "product-119",
+      "action": "updated",
+      "name": "Tomatoes Misc - kg"
+    },
+    {
+      "targetId": "product-509",
+      "action": "created",
+      "name": "Top Jam 400ml"
+    },
+    {
+      "targetId": "product-262",
+      "action": "updated",
+      "name": "Top Society"
+    },
+    {
+      "targetId": "product-510",
+      "action": "created",
+      "name": "Top Soy 90g"
+    },
+    {
+      "targetId": "product-511",
+      "action": "created",
+      "name": "TopChef 2kg"
+    },
+    {
+      "targetId": "product-512",
+      "action": "created",
+      "name": "TopChef white Rice 5kg"
+    },
+    {
+      "targetId": "product-513",
+      "action": "created",
+      "name": "Torku Chocolate"
+    },
+    {
+      "targetId": "product-300",
+      "action": "updated",
+      "name": "TwinSaver 9s"
+    },
+    {
+      "targetId": "product-299",
+      "action": "updated",
+      "name": "TwinSaver Tissue"
+    },
+    {
+      "targetId": "product-514",
+      "action": "created",
+      "name": "Usavi Mix"
+    },
+    {
+      "targetId": "product-277",
+      "action": "updated",
+      "name": "Utra Pads"
+    },
+    {
+      "targetId": "product-265",
+      "action": "updated",
+      "name": "v"
+    },
+    {
+      "targetId": "product-271",
+      "action": "updated",
+      "name": "Vaseline - 100ml"
+    },
+    {
+      "targetId": "product-264",
+      "action": "updated",
+      "name": "Vaseline 250ml"
+    },
+    {
+      "targetId": "product-263",
+      "action": "updated",
+      "name": "Vaseline 450ml"
+    },
+    {
+      "targetId": "product-267",
+      "action": "updated",
+      "name": "Vaseline 50ml"
+    },
+    {
+      "targetId": "product-268",
+      "action": "updated",
+      "name": "Vaseline Cream"
+    },
+    {
+      "targetId": "product-266",
+      "action": "updated",
+      "name": "Vaseline lips"
+    },
+    {
+      "targetId": "product-269",
+      "action": "updated",
+      "name": "Vaseline Lotion"
+    },
+    {
+      "targetId": "product-270",
+      "action": "updated",
+      "name": "Vestline Garlic - 200g"
+    },
+    {
+      "targetId": "product-515",
+      "action": "created",
+      "name": "Victoria Juice"
+    },
+    {
+      "targetId": "product-516",
+      "action": "created",
+      "name": "Vigos Choc"
+    },
+    {
+      "targetId": "product-188",
+      "action": "updated",
+      "name": "Vim Can"
+    },
+    {
+      "targetId": "product-120",
+      "action": "updated",
+      "name": "Vinegar - 750ml"
+    },
+    {
+      "targetId": "product-308",
+      "action": "updated",
+      "name": "Weetbix - 450g"
+    },
+    {
+      "targetId": "product-121",
+      "action": "updated",
+      "name": "WHEAT 2KG"
+    },
+    {
+      "targetId": "product-122",
+      "action": "updated",
+      "name": "Wheat Buckets"
+    },
+    {
+      "targetId": "product-517",
+      "action": "created",
+      "name": "Wild Cat - 500ml"
+    },
+    {
+      "targetId": "product-139",
+      "action": "updated",
+      "name": "Wipes"
+    },
+    {
+      "targetId": "product-518",
+      "action": "created",
+      "name": "Wish Cream"
+    },
+    {
+      "targetId": "product-187",
+      "action": "updated",
+      "name": "Xtra Vim"
+    },
+    {
+      "targetId": "product-189",
+      "action": "updated",
+      "name": "XTRA Washing Powder"
+    },
+    {
+      "targetId": "product-301",
+      "action": "updated",
+      "name": "Yebo Soap"
+    },
+    {
+      "targetId": "product-519",
+      "action": "created",
+      "name": "Yogurt Kefalos 75ml"
+    },
+    {
+      "targetId": "product-520",
+      "action": "created",
+      "name": "ZapNax"
+    },
+    {
+      "targetId": "product-521",
+      "action": "created",
+      "name": "ZapNax Pack"
+    }
+  ],
+  "generatedAt": "2026-03-12T22:26:36.344Z"
+}

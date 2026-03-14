@@ -2,6 +2,7 @@ import { getProductById, updateProduct } from "@/lib/firestore/products"
 import { ProductForm } from "../components/product-form"
 import { notFound } from "next/navigation"
 import { revalidatePath } from "next/cache"
+import type { ProductFormValues } from "../components/product-form"
 
 interface EditProductPageProps {
     params: Promise<{
@@ -17,8 +18,7 @@ export default async function EditProductPage({ params }: EditProductPageProps) 
         notFound()
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async function handleUpdate(data: any) {
+    async function handleUpdate(data: ProductFormValues) {
         "use server"
         await updateProduct(id, data)
         revalidatePath("/store")

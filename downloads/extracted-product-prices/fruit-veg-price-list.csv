@@ -1,0 +1,84 @@
+page,code,description,price_usd
+1,FACP04,Apples assorted hds,0.25
+1,FAPC03,Apples - Box,32.0
+1,BN102,Bananas - kg,1.0
+1,FBAN01,Bananas Box,18.0
+1,BOB,BAOBAB (Powdered) - 500g,3.5
+1,BOAB0001,Baobab - 500g,1.0
+1,VBER01,Beetroot - (bun),1.0
+1,VBR06,Brinjals - kg,1.0
+1,VBN09,Broccolli - kg,2.5
+1,BRWN,Brown rice - 1kg,3.0
+1,BROWN02,Brown Rice - 2kg,6.0
+1,VBNO10,Buttenuts - kg,1.2
+1,VCA11,Cabbage - Head,1.0
+1,VPCP23,Carrots - (Pnt),1.0
+1,VCP21,Carrots - kg,2.0
+1,VCAU01,Cauliflower kg,2.5
+1,NCB02,Chimera - 500g,2.0
+1,DCOO1,Covo - Bunches,0.5
+1,VCUC02,Cucumber - Big Pack,1.0
+1,EG,Egg plant - kg,1.0
+1,EGT,Eggs Trays,4.0
+1,NFI01,English Cucumber,1.0
+1,VGAR,Garlic - kg,8.0
+1,VGM01,Gemsquash kg,1.0
+1,VGI130,Ginger - kg,5.0
+1,FGR02,Grapes Black pnts,3.5
+1,VGB33,Green Beans - kg,2.0
+1,VGB34,Green Beans - pnt,0.5
+1,MHO1,Honey 500g,2.0
+1,HONP003,Honey Pure - 500g (1st Grade),4.0
+1,VLEEKB,Lemon - Pnt,1.0
+1,VLET01,Lettuce - Head,1.0
+1,VPEP06,Macademia nuts - Pack,1.0
+1,MMDR01,Madora Kg,0.0
+1,MAN,Mango - kg,0.0
+1,MSMIL75,Millet - 1kg,3.0
+1,MMDR03,MILLET 2kg,5.0
+1,MMIXED,Mixed grain - 2kg,5.0
+1,MUNY002,Munyemba - 75g,0.75
+1,VMUBO,Mushroom Oyester - Pnt,1.0
+1,NYOO2,Nyimo - 500g,2.5
+1,VOK41,Okra Pnt,1.0
+1,ON-02,Onion  Red (kgs),2.0
+1,VOIM53,Onions - kg,1.2
+1,VOIL04,Onions - pocket,10.0
+1,VPEC02,Peacan Nuts - Pack,1.75
+1,PEANTOO2,Peanut butter (Paguyo) - 1L,3.0
+1,PEANT06,Peanut butter - 300ml,1.0
+1,MPEN,Peanut Butter 375ml,3.0
+1,PEANT001,Peanuts (unshelled) - 75g,0.5
+1,MSPN75,Peanuts 500g,2.0
+1,FPF04,Pears Forelle each,0.33
+1,VPEP66,Pepper (green) - Pnts,0.5
+1,VPE65,Pepper (Green)- kg,2.0
+1,VPEPP,Pepper Yellow/Red - kg,3.5
+1,FPIN02,Pine Apples each,1.5
+1,VP271,Potatoes - 7.5kg,5.0
+1,VPL68,POTATOES - LARGE 15KG POC,10.0
+1,VPOT04,Potatoes 3kg Med Pack,3.0
+2,FDFRO2,Raisins Punnets,2.0
+2,RAP,Rapoko 1kg,3.0
+2,RPW06,Rapoko 2kg,6.0
+2,MGRO,Rapoko 5kg,14.5
+2,RPW10,Rice (White) - 1kg,2.25
+2,RPW12,Rice (White) - 2kg,4.5
+2,RPW11,Rice (White) - 5kg,11.25
+2,SCE03,"Sauce(garlic,Bbq,Lemon Herd) - 1L",4.0
+2,SCE02,Sauce - 330ml,1.0
+2,SCE01,Sauce Bbq - 2 Litres,4.0
+2,SEDS,Seeds,1.0
+2,SORGA,Sorghum 1Kg,3.0
+2,SPCE003,Spice - 200g,5.0
+2,BLPER,Spice Bbq - 500g,6.0
+2,SPC004,Spices - 100g,1.0
+2,MSSP,Spices 60g Satchets,1.0
+2,MSB12,Sugar Beans - 1KG,3.0
+2,MSB14,Sugar Beans 2kg,6.0
+2,MSB16,Sugar Beans Kg,3.0
+2,VSP82,Sweet potatoes - kg,32.0
+2,VTO83,Tomatoes - kg,0.8
+2,VIGR750,Vinegar - 750ml,1.0
+2,WHT,WHEAT 2KG,5.0
+2,WHETBK,Wheat Buckets,32.0

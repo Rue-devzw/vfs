@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { verifyAdminSession } from '@/lib/auth';
+import { requireStaffPermission } from '@/lib/auth';
 import { getStorageBucket } from '@/lib/firebase-admin';
 
 // WebP magic bytes: RIFF....WEBP
@@ -16,8 +16,9 @@ function isWebP(buffer: Buffer): boolean {
 
 export async function POST(req: Request) {
     try {
-        const session = await verifyAdminSession();
-        if (!session) {
+        try {
+            await requireStaffPermission("products.edit");
+        } catch {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 

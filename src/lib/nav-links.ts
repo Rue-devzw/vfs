@@ -1,6 +1,7 @@
 import {
   Boxes,
   Cog,
+  CircleUser,
   Handshake,
 
   LucideIcon,
@@ -67,5 +68,11 @@ export const navLinks: NavLink[] = [
     label: "Digital Services",
     icon: Cog,
     tone: "accent",
+  },
+  {
+    href: "/account",
+    label: "My Account",
+    icon: CircleUser,
+    tone: "primary",
   },
 ];

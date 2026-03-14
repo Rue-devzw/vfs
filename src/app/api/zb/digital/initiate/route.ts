@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { initiateZbWalletExpress, ZbGatewayError } from "@/lib/payments/zb";
 import { createPendingOrder, setOrderStatus } from "@/server/orders";
-import { DIGITAL_SERVICE_LABELS, isDigitalServiceId } from "@/lib/digital-services";
+import { getDigitalServiceConfig, isDigitalServiceId } from "@/lib/digital-services";
 import { convertFromUsd, CurrencyCode, getZwgPerUsdRate } from "@/lib/currency";
 
 const schema = z.object({
@@ -27,6 +27,13 @@ export async function POST(req: Request) {
     if (!isDigitalServiceId(service) || service === "zesa") {
       return NextResponse.json({ success: false, error: "Unsupported digital service." }, { status: 400 });
     }
+    const serviceConfig = getDigitalServiceConfig(service);
+    if (!serviceConfig || serviceConfig.purchaseMode !== "provider") {
+      return NextResponse.json(
+        { success: false, error: serviceConfig?.supportMessage || "Digital service is not available yet." },
+        { status: 501 },
+      );
+    }
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
     if (!baseUrl) {
@@ -34,7 +41,7 @@ export async function POST(req: Request) {
     }
 
     const reference = `DIG-${service.toUpperCase()}-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
-    const label = DIGITAL_SERVICE_LABELS[service];
+    const label = serviceConfig.label;
     const customerName = validation.data.customerName || "Digital Customer";
     const customerEmail = validation.data.customerEmail || "customer@example.com";
 
@@ -61,6 +68,7 @@ export async function POST(req: Request) {
       customerName,
       customerEmail,
       customerPhone: zbWalletMobile,
+      deliveryMethod: "collect",
       paymentMethod: "zb-walletplus",
       notes: `${label} account: ${accountReference}`,
     });

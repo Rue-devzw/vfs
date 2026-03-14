@@ -24,35 +24,36 @@ import {
 import { Switch } from "@/components/ui/switch"
 import { categories, subCategories } from "@/app/store/data"
 import { StoreProduct } from "@/lib/firestore/products"
+import { ADMIN_PLACEHOLDER_IMAGE, resolveAdminImageSrc } from "@/lib/admin-images"
 import { useRouter } from "next/navigation"
 import { useRef, useState } from "react"
 import { Loader2, Upload, X, ImageIcon } from "lucide-react"
 import Image from "next/image"
 import { useToast } from "@/hooks/use-toast"
 
-const PLACEHOLDER_IMAGE = "/images/placeholder.webp"
+const PLACEHOLDER_IMAGE = ADMIN_PLACEHOLDER_IMAGE
 
 const formSchema = z.object({
     name: z.string().min(2, "Name must be at least 2 characters"),
-    price: z.coerce.number().positive("Price must be positive"),
-    oldPrice: z.coerce.number().optional(),
+    sku: z.string().trim().optional(),
+    price: z.coerce.number().min(0, "Price cannot be negative"),
+    oldPrice: z.preprocess(
+        value => (value === "" || value === null ? undefined : value),
+        z.coerce.number().optional(),
+    ),
     unit: z.string().min(1, "Unit is required"),
     category: z.string().min(1, "Category is required"),
     subcategory: z.string().optional(),
-    image: z
-        .string()
-        .refine(
-            (val) => val === "" || val.startsWith("/") || val.startsWith("http"),
-            "Must be a valid path or URL"
-        )
-        .refine(
-            (val) => val === "" || val.toLowerCase().includes(".webp"),
-            "Image must be in WebP format (.webp)"
-        ),
+    image: z.string().min(1, "Image is required"),
     onSpecial: z.boolean().default(false),
+    inventoryManaged: z.boolean().default(true),
+    availableForSale: z.boolean().default(true),
+    stockOnHand: z.coerce.number().min(0).default(0),
+    reservedQuantity: z.coerce.number().min(0).default(0),
+    allowBackorder: z.boolean().default(false),
 })
 
-type ProductFormValues = z.infer<typeof formSchema>
+export type ProductFormValues = z.infer<typeof formSchema>
 
 interface ProductFormProps {
     initialData?: StoreProduct | null
@@ -71,6 +72,7 @@ export function ProductForm({ initialData, onSubmit }: ProductFormProps) {
         defaultValues: initialData
             ? {
                 name: initialData.name,
+                sku: initialData.sku || "",
                 price: initialData.price,
                 oldPrice: initialData.oldPrice,
                 unit: initialData.unit,
@@ -78,19 +80,32 @@ export function ProductForm({ initialData, onSubmit }: ProductFormProps) {
                 subcategory: initialData.subcategory || "None",
                 image: initialData.image,
                 onSpecial: initialData.onSpecial,
+                inventoryManaged: initialData.inventoryManaged,
+                availableForSale: initialData.availableForSale,
+                stockOnHand: initialData.stockOnHand,
+                reservedQuantity: initialData.reservedQuantity,
+                allowBackorder: initialData.allowBackorder,
             }
             : {
                 name: "",
+                sku: "",
                 price: 0,
                 unit: "per kg",
                 category: "",
                 subcategory: "None",
                 image: PLACEHOLDER_IMAGE,
                 onSpecial: false,
+                inventoryManaged: true,
+                availableForSale: true,
+                stockOnHand: 0,
+                reservedQuantity: 0,
+                allowBackorder: false,
             },
     })
 
     const currentImage = form.watch("image")
+    const currentName = form.watch("name")
+    const previewImage = resolveAdminImageSrc(currentImage, currentName || initialData?.name || "Product")
 
     const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
@@ -179,6 +194,20 @@ export function ProductForm({ initialData, onSubmit }: ProductFormProps) {
                     />
                     <FormField
                         control={form.control}
+                        name="sku"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>SKU</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="e.g. FACP04" {...field} value={field.value ?? ""} />
+                                </FormControl>
+                                <FormDescription>Used for imports, matching, and stock operations.</FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
                         name="unit"
                         render={({ field }) => (
                             <FormItem>
@@ -213,6 +242,34 @@ export function ProductForm({ initialData, onSubmit }: ProductFormProps) {
                                     <Input type="number" step="0.01" {...field} value={field.value ?? ""} />
                                 </FormControl>
                                 <FormDescription>Shows a line-through price if set</FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="stockOnHand"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Stock On Hand</FormLabel>
+                                <FormControl>
+                                    <Input type="number" step="1" min="0" {...field} />
+                                </FormControl>
+                                <FormDescription>Physical stock available before reservations.</FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="reservedQuantity"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Reserved Quantity</FormLabel>
+                                <FormControl>
+                                    <Input type="number" step="1" min="0" {...field} />
+                                </FormControl>
+                                <FormDescription>Units temporarily held by pending checkouts/orders.</FormDescription>
                                 <FormMessage />
                             </FormItem>
                         )}
@@ -283,13 +340,10 @@ export function ProductForm({ initialData, onSubmit }: ProductFormProps) {
                                 <div className="relative w-32 h-32 rounded-lg border bg-muted overflow-hidden flex-shrink-0">
                                     {currentImage && !isPlaceholder ? (
                                         <Image
-                                            src={currentImage}
+                                            src={previewImage}
                                             alt="Product preview"
                                             fill
                                             className="object-cover"
-                                            onError={() =>
-                                                form.setValue("image", PLACEHOLDER_IMAGE)
-                                            }
                                         />
                                     ) : (
                                         <div className="flex items-center justify-center w-full h-full text-muted-foreground">
@@ -338,13 +392,13 @@ export function ProductForm({ initialData, onSubmit }: ProductFormProps) {
                                     {/* Manual URL input as fallback */}
                                     <FormControl>
                                         <Input
-                                            placeholder="/images/product-name.webp"
+                                            placeholder="image-id or /images/product-name.webp"
                                             {...field}
                                             className="text-xs text-muted-foreground"
                                         />
                                     </FormControl>
                                     <p className="text-xs text-muted-foreground">
-                                        Or enter a path/URL manually. Must end in <code>.webp</code>
+                                        Use an image id, a public path, or an uploaded WebP asset.
                                     </p>
                                 </div>
                             </div>
@@ -364,6 +418,52 @@ export function ProductForm({ initialData, onSubmit }: ProductFormProps) {
                                 <FormDescription>
                                     Mark this product as a special offer to highlight it in the store.
                                 </FormDescription>
+                            </div>
+                            <FormControl>
+                                <Switch checked={field.value} onCheckedChange={field.onChange} />
+                            </FormControl>
+                        </FormItem>
+                    )}
+                />
+
+                <FormField
+                    control={form.control}
+                    name="inventoryManaged"
+                    render={({ field }) => (
+                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                            <div className="space-y-0.5">
+                                <FormLabel>Inventory Managed</FormLabel>
+                                <FormDescription>Track stock and availability explicitly for this item.</FormDescription>
+                            </div>
+                            <FormControl>
+                                <Switch checked={field.value} onCheckedChange={field.onChange} />
+                            </FormControl>
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="availableForSale"
+                    render={({ field }) => (
+                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                            <div className="space-y-0.5">
+                                <FormLabel>Available For Sale</FormLabel>
+                                <FormDescription>Hide item from checkout without changing its price.</FormDescription>
+                            </div>
+                            <FormControl>
+                                <Switch checked={field.value} onCheckedChange={field.onChange} />
+                            </FormControl>
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="allowBackorder"
+                    render={({ field }) => (
+                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                            <div className="space-y-0.5">
+                                <FormLabel>Allow Backorder</FormLabel>
+                                <FormDescription>Accept checkout when stock is zero but supply will be fulfilled later.</FormDescription>
                             </div>
                             <FormControl>
                                 <Switch checked={field.value} onCheckedChange={field.onChange} />

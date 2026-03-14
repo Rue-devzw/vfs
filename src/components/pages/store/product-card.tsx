@@ -39,7 +39,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { toast } = useToast();
   const image = findProductImagePlaceholder(product.image, product.name);
 
-  const isOutOfStock = product.price <= 0;
+  const isOutOfStock = !product.availableForSale;
   const displayPrice = convertFromUsd(product.price, currencyCode);
   const displayOldPrice = product.oldPrice ? convertFromUsd(product.oldPrice, currencyCode) : undefined;
 
@@ -78,7 +78,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <CardTitle className="font-headline text-lg mb-2">{product.name}</CardTitle>
         <div className="flex flex-col gap-1">
           {isOutOfStock ? (
-            <p className="text-sm font-semibold text-destructive">Currently not in stock</p>
+            <p className="text-sm font-semibold text-destructive">
+              {product.inventoryStatus === "backorder" ? "Available on backorder" : "Currently not in stock"}
+            </p>
           ) : (
             <div className="flex items-baseline gap-2">
               <p className="text-xl font-bold text-primary">{formatMoney(displayPrice, currencyCode)}</p>

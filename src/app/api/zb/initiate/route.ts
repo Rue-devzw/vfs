@@ -58,6 +58,7 @@ export async function POST(req: Request) {
       customerName,
       customerEmail,
       customerPhone: zbWalletMobile,
+      deliveryMethod: "collect",
       paymentMethod: "zb-walletplus",
       notes: `Meter: ${meterNumber}`,
     });

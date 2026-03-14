@@ -1,0 +1,581 @@
+normalized_name,description,category,price_usd,cash_price_usd,online_price_usd,pdf_price_usd,excel_codes,pdf_codes,sources
+addidas spray,Addidas Spray,005 - COSMETICS,3.15,3.0,3.15,,ADDSPRY,,excel
+allsorts sweets,Allsorts sweets,012 - SNACK,1.05,1.0,1.05,,ALL,,excel
+aloha dishwasher,Aloha Dishwasher,004 - CLEANING PRODUCTS,1.575,1.5,1.575,,ALOD,,excel
+aloha washing pwd 1kg,Aloha Washing Pwd 1kg,004 - CLEANING PRODUCTS,2.1,2.0,2.1,,ALO,,excel
+aloha washing pwd 2kg,Aloha Washing Pwd 2kg,004 - CLEANING PRODUCTS,4.2,4.0,4.2,,ALH,,excel
+aloha washing pwdr 500g,Aloha Washing Pwdr 500g,004 - CLEANING PRODUCTS,1.05,1.0,1.05,,ALOH,,excel
+amasip,AmaSip,002 - BEVERAGES,,,0.0,,AMAS,,excel
+amazon cookies,Amazon Cookies,012 - SNACK,0.525,0.5,0.525,,AMAZ,,excel
+angel care tissue,Angel Care Tissue,019 - TOILETRIES,8.4,8.0,8.4,,ANG,,excel
+apples box,Apples - Box,,32.0,,,32.0,,FAPC03,pdf
+apples assorted hds,Apples assorted hds,,0.25,,,0.25,,FACP04,pdf
+aquaclear 500ml,Aquaclear 500ml,002 - BEVERAGES,0.34650000000000003,0.33,0.34650000000000003,,AQU,,excel
+aquaclear 750ml,Aquaclear 750ml,002 - BEVERAGES,0.525,0.5,0.525,,AQUA,,excel
+aquaclear case,Aquaclear case,002 - BEVERAGES,4.2,4.0,4.2,,AQA,,excel
+aquafresh 100ml,Aquafresh - 100ml,019 - TOILETRIES,1.05,1.0,1.05,,AQFRSH,,excel
+arpic cleaner 750ml,Arpic Cleaner 750ml,004 - CLEANING PRODUCTS,,,0.0,,ARP,,excel
+ashna rice 2kg,Ashna Rice 2kg,016 - STARCH,2.1,2.0,2.1,,ASHN,,excel
+axe perfumer,Axe Perfumer,005 - COSMETICS,2.1,2.0,2.1,,AXP,,excel
+baby and me cream,Baby & Me Cream,001 - BABY,1.05,1.0,1.05,,BABC,,excel
+baby crez 500ml,Baby Crez 500ml,005 - COSMETICS,1.8900000000000001,1.8,1.8900000000000001,,BAB,,excel
+baby line 500ml,Baby line 500ml,005 - COSMETICS,,,0.0,,BABL,,excel
+baby soft 18s,Baby Soft 18s,019 - TOILETRIES,9.975,9.5,9.975,,BABYS,,excel
+baked beand montys,Baked Beand Montys,002 - BEVERAGES,1.05,1.0,1.05,,MONTY,,excel
+ballyhouse lime crush 2l,Ballyhouse lime/crush 2L,002 - BEVERAGES,2.625,2.5,2.625,,BAL,,excel
+ballyhouse ras blkbery,Ballyhouse Ras/Blkbery,002 - BEVERAGES,2.1,2.0,2.1,,BALY,,excel
+bananas kg,Bananas - kg,,1.0,,,1.0,,BN102,pdf
+bananas box,Bananas Box,,18.0,,,18.0,,FBAN01,pdf
+baobab powdered 500g,BAOBAB (Powdered) - 500g,,3.5,,,3.5,,BOB,pdf
+baobab 500g,Baobab - 500g,,1.0,,,1.0,,BOAB0001,pdf
+baobab juice 500ml,Baobab Juice -500ml,002 - BEVERAGES,,,0.0,,BAOJ01,,excel
+basmattii 5kg,Basmattii 5kg,016 - STARCH,10.5,10.0,10.5,,BAS,,excel
+beans kg,Beans kg,013 - SOUPS,,,0.0,,BEAN,,excel
+beef kg,Beef Kg,013 - SOUPS,,,0.0,,BEEF,,excel
+beetroot bun,Beetroot - (bun),,1.0,,,1.0,,VBER01,pdf
+bella macaroni 3kg,Bella Macaroni 3kg,016 - STARCH,4.2,4.0,4.2,,BEL,,excel
+betterbuy 400g,BetterBuy 400g,016 - STARCH,0.525,0.5,0.525,,BTBUY,,excel
+betterbuy macaroni 3kg,BetterBuy Macaroni 3kg,016 - STARCH,4.2,4.0,4.2,,BETT,,excel
+betterbuy rollermeal 10kg,BetterBuy RollerMeal 10kg,016 - STARCH,,,0.0,,BET,,excel
+betterbuy spagetti,BetterBuy Spagetti,016 - STARCH,0.525,0.5,0.525,,BETTR,,excel
+beverly hills perfume,Beverly Hills Perfume,005 - COSMETICS,2.625,2.5,2.625,,BEVP,,excel
+beverlyhills roll on,BeverlyHills Roll on,005 - COSMETICS,,,0.0,,BEV,,excel
+bickies,Bickies,012 - SNACK,0.42000000000000004,0.4,0.42000000000000004,,BIC,,excel
+bigben bar,BigBen bar,004 - CLEANING PRODUCTS,1.575,1.5,1.575,,BIG,,excel
+bisto gravy 125g,Bisto Gravy 125g,013 - SOUPS,1.05,1.0,1.05,,BST,,excel
+bisto gravy 250g,Bisto Gravy 250g,013 - SOUPS,,,0.0,,BSTO,,excel
+black chick small 125ml,Black Chick  Small 125ml,005 - COSMETICS,1.05,1.0,1.05,,BCS,,excel
+blackchic big 250ml,BlackChic Big 250ml,005 - COSMETICS,,,0.0,,BLC,,excel
+bliss 200g,Bliss - 200g,012 - SNACK,0.42000000000000004,0.4,0.42000000000000004,,BLS01,,excel
+blue band,Blue Band,015 - SPREADS,1.05,1.0,1.05,,BLUE,,excel
+bodi doc,Bodi doc,005 - COSMETICS,3.15,3.0,3.15,,BOD,,excel
+bodi doc tissue oil,Bodi doc Tissue Oil,005 - COSMETICS,3.15,3.0,3.15,,BODD,,excel
+bokomo cornflakes,Bokomo CornFlakes,003 - CEREALS,3.675,3.5,3.675,,BOKO,,excel
+bonaqua,Bonaqua,002 - BEVERAGES,0.34650000000000003,0.33,0.34650000000000003,,BON,,excel
+bonaqua case,Bonaqua Case,002 - BEVERAGES,,,0.0,,BONA,,excel
+boom 1kg,Boom - 1KG,004 - CLEANING PRODUCTS,2.1,2.0,2.1,,BOMW,,excel
+boom 150g,Boom 150g,004 - CLEANING PRODUCTS,0.525,0.5,0.525,,BOMM,,excel
+boom 2kg,Boom 2kg,004 - CLEANING PRODUCTS,4.2,4.0,4.2,,MEGFLR,,excel
+boom bleach 750ml,Boom Bleach 750ml,004 - CLEANING PRODUCTS,1.8900000000000001,1.8,1.8900000000000001,,BOOMB,,excel
+boom fabric conditioner 2ltr,Boom Fabric Conditioner 2ltr,005 - COSMETICS,,,0.0,,BOMO,,excel
+boom force cream 750ml,Boom Force Cream 750ml,004 - CLEANING PRODUCTS,1.575,1.5,1.575,,BOMFC,,excel
+boom force scouring,Boom Force Scouring,004 - CLEANING PRODUCTS,1.05,1.0,1.05,,BOOMF,,excel
+boom paste,Boom Paste,004 - CLEANING PRODUCTS,0.525,0.5,0.525,,BOM,,excel
+boom w p 500g,Boom W/P 500g,004 - CLEANING PRODUCTS,1.05,1.0,1.05,,BOOMM,,excel
+boomdish washer 750ml,BoomDish washer 750ml,004 - CLEANING PRODUCTS,2.1,2.0,2.1,,BOO,,excel
+bread,Bread,016 - STARCH,1.05,1.0,1.05,,BRE,,excel
+brinjals kg,Brinjals - kg,,1.0,,,1.0,,VBR06,pdf
+broccoli kg,Broccolli - kg,,2.5,,,2.5,,VBN09,pdf
+brono gravy,Brono Gravy,013 - SOUPS,1.05,1.0,1.05,,BRON,,excel
+brothers juice,Brothers Juice,002 - BEVERAGES,0.525,0.5,0.525,,BROTH,,excel
+brown rice 1kg,Brown rice - 1kg,,3.0,,,3.0,,BRWN,pdf
+brown rice 2kg,Brown Rice - 2kg,,6.0,,,6.0,,BROWN02,pdf
+bubble chocolate,Bubble Chocolate,012 - SNACK,0.525,0.5,0.525,,BUBB,,excel
+butternuts kg,Buttenuts - kg,,1.2,,,1.2,,VBNO10,pdf
+buttercup 250ml,ButterCup 250ml,015 - SPREADS,,,0.0,,BUTC,,excel
+buttercup brick 500g,Buttercup Brick 500g,015 - SPREADS,,,0.0,,BTT,,excel
+buttercup tub,ButterCup tub,015 - SPREADS,2.1,2.0,2.1,,BUTT,,excel
+cabbage head,Cabbage - Head,,1.0,,,1.0,,VCA11,pdf
+cabbages,Cabbages,013 - SOUPS,,,0.0,,CAB,,excel
+cake,Cake,012 - SNACK,,,0.0,,CAK,,excel
+cardbury choc,Cardbury choc,012 - SNACK,1.575,1.5,1.575,,CARD,,excel
+carrots,Carrots,013 - SOUPS,,,0.0,,CARRT,,excel
+carrots pnt,Carrots - (Pnt),,1.0,,,1.0,,VPCP23,pdf
+carrots kg,Carrots - kg,,2.0,,,2.0,,VCP21,pdf
+cascade 1l,Cascade 1L,002 - BEVERAGES,1.05,1.0,1.05,,CASC,,excel
+cascade 500ml,Cascade 500ml,002 - BEVERAGES,0.525,0.5,0.525,,CAS,,excel
+cauliflower kg,Cauliflower kg,,2.5,,,2.5,,VCAU01,pdf
+cerelac 250g,Cerelac 250g,003 - CEREALS,2.625,2.5,2.625,,CER,,excel
+cerelac 500ml,Cerelac 500ml,003 - CEREALS,5.25,5.0,5.25,,CERE,,excel
+ceres 1l,Ceres 1L,002 - BEVERAGES,2.1,2.0,2.1,,CERES,,excel
+cerevita 500g,Cerevita 500g,003 - CEREALS,3.15,3.0,3.15,,CEREV,,excel
+cerevita milk 500g,Cerevita Milk 500G,003 - CEREALS,4.2,4.0,4.2,,CEREVM,,excel
+cerevita sour,Cerevita Sour,003 - CEREALS,2.625,2.5,2.625,,CERV,,excel
+charhon crunch cookies,Charhon Crunch Cookies,012 - SNACK,,,0.0,,CHARHN,,excel
+charhons 1kg,Charhons 1kg,012 - SNACK,3.15,3.0,3.15,,CHAR,,excel
+charhons 200g,Charhons 200g,012 - SNACK,0.525,0.5,0.525,,CHARNS,,excel
+charhons 500g,Charhons 500g,012 - SNACK,1.575,1.5,1.575,,CHA,,excel
+charhons cookies 500g,Charhons Cookies - 500g,012 - SNACK,1.575,1.5,1.575,,CHCOK,,excel
+charhorns 2kg,Charhorns 2kg,012 - SNACK,5.46,5.2,5.46,,CHARH,,excel
+chicken curls,Chicken curls,012 - SNACK,,,0.0,,CHI,,excel
+chicken flings,Chicken Flings,012 - SNACK,,,0.0,,CHIC,,excel
+chicken full,Chicken full,013 - SOUPS,,,0.0,,CHCK,,excel
+chimera 500g,Chimera - 500g,,2.0,,,2.0,,NCB02,pdf
+chippa,Chippa,012 - SNACK,,,0.0,,CHPP,,excel
+chocalate coated small,Chocalate Coated Small,012 - SNACK,0.525,0.5,0.525,,CHOCC,,excel
+chocolate coated biscuits,Chocolate Coated Biscuits,012 - SNACK,1.575,1.5,1.575,,CHO,,excel
+chocolate coated box,Chocolate coated Box,012 - SNACK,,,0.0,,CHOCCB,,excel
+choice biscuits,Choice Biscuits,012 - SNACK,1.575,1.5,1.575,,CHOI,,excel
+chompkins 150g,Chompkins 150g,012 - SNACK,1.365,1.3,1.365,,CHOMP,,excel
+chompkins 25g,Chompkins 25g,012 - SNACK,,,0.0,,CHMP,,excel
+citro juice 1l,Citro Juice 1L,002 - BEVERAGES,1.05,1.0,1.05,,CIT,,excel
+clere beautiful cream 400ml,Clere Beautiful Cream 400ml,005 - COSMETICS,2.1,2.0,2.1,,CBL,,excel
+clere for men 450ml,Clere For Men 450ml,005 - COSMETICS,2.1,2.0,2.1,,CFM,,excel
+clere glycerine 100ml,Clere Glycerine 100ml,005 - COSMETICS,1.05,1.0,1.05,,CLG,,excel
+clere glyco glycerine 100ml,Clere Glyco Glycerine 100ml,005 - COSMETICS,1.26,1.2,1.26,,CLR,,excel
+clere ladies cream,Clere Ladies Cream,005 - COSMETICS,2.1,2.0,2.1,,CLRE,,excel
+clere men lotion 400ml,Clere Men lotion 400ml,005 - COSMETICS,2.1,2.0,2.1,,CLM,,excel
+close up,Close Up,019 - TOILETRIES,1.05,1.0,1.05,,CLO,,excel
+cobra 350ml,Cobra 350ml,004 - CLEANING PRODUCTS,2.625,2.5,2.625,,COB,,excel
+coco bongo choc,Coco Bongo Choc,012 - SNACK,,,0.0,,COC,,excel
+colgate 100ml,Colgate 100ml,019 - TOILETRIES,1.05,1.0,1.05,,COL,,excel
+comfort 1l,Comfort 1L,004 - CLEANING PRODUCTS,3.15,3.0,3.15,,COM,,excel
+continental rice 2kg,Continental Rice 2kg,016 - STARCH,2.1,2.0,2.1,,CONT,,excel
+cookies,Cookies,012 - SNACK,0.525,0.5,0.525,,COKI,,excel
+cookmore rice 2kg,CookMore Rice 2kg,016 - STARCH,2.625,2.5,2.625,,COOKM,,excel
+cookmore rice 5kg,Cookmore Rice 5kg,016 - STARCH,5.775,5.5,5.775,,COO,,excel
+cornflakes bigtree 1kg,Cornflakes Bigtree - 1kg,003 - CEREALS,4.2,4.0,4.2,,CORNBG,,excel
+cornflakes bigtree 500g,Cornflakes Bigtree - 500g,003 - CEREALS,2.415,2.3,2.415,,CORNBG02,,excel
+cornflakes bigtree 750g,Cornflakes Bigtree - 750g,003 - CEREALS,3.3600000000000003,3.2,3.3600000000000003,,CORNFBG,,excel
+cornflakes kellogs 1kg,Cornflakes Kellogs - 1kg,003 - CEREALS,4.725,4.5,4.725,,KELCORNF,,excel
+cornflakes kellogs 500g,Cornflakes Kellogs 500g,003 - CEREALS,3.15,3.0,3.15,,CON,,excel
+cornflakes mamas,CornFlakes Mamas,003 - CEREALS,,,0.0,,COR,,excel
+cornflakes willards,CornFLakes Willards,003 - CEREALS,2.31,2.2,2.31,,CORN,,excel
+cosmo foam bath,Cosmo Foam Bath,005 - COSMETICS,1.05,1.0,1.05,,COSMO,,excel
+cough drops,Cough drops,012 - SNACK,0.525,0.5,0.525,,COU,,excel
+covo bunches,Covo - Bunches,,0.5,,,0.5,,DCOO1,pdf
+cracker jax,Cracker Jax,012 - SNACK,,,0.0,,CRAC,,excel
+creamfeast,CreamFeast,012 - SNACK,,,0.0,,CRM,,excel
+crinkles big,Crinkles big,012 - SNACK,,,0.0,,CRINK,,excel
+cucumber,Cucumber,013 - SOUPS,,,0.0,,CUC,,excel
+cucumber big pack,Cucumber - Big Pack,,1.0,,,1.0,,VCUC02,pdf
+daisy biscuits,Daisy Biscuits,012 - SNACK,0.525,0.5,0.525,,DAI,,excel
+dandy pack,Dandy Pack,012 - SNACK,2.625,2.5,2.625,,DAND,,excel
+dark and lovely,Dark& Lovely,005 - COSMETICS,5.775,5.5,5.775,,DAR,,excel
+dawn,Dawn,005 - COSMETICS,,,0.0,,DAW,,excel
+dawn cream,Dawn Cream,005 - COSMETICS,,,0.0,,DAWN,,excel
+dax 3 in 1 375mls,Dax 3 in 1 375mls,005 - COSMETICS,1.575,1.5,1.575,,DAX31,,excel
+dax big 3 n 1,Dax Big 3 n 1,005 - COSMETICS,2.625,2.5,2.625,,DXB,,excel
+dax freez big 250ml,Dax Freez Big 250ml,005 - COSMETICS,2.1,2.0,2.1,,DAXI,,excel
+dax freez small 100ml,Dax Freez Small 100ml,005 - COSMETICS,1.26,1.2,1.26,,DXA,,excel
+dax hair grower 125mls,Dax Hair Grower 125mls,005 - COSMETICS,1.575,1.5,1.575,,DAXH,,excel
+dax hair grower 250ml,Dax Hair Grower 250ml,005 - COSMETICS,3.15,3.0,3.15,,DAXG,,excel
+dell cookies 1kg,Dell cookies 1kg,012 - SNACK,,,0.0,,DELLC,,excel
+dell cookies 500ml,Dell Cookies 500ml,012 - SNACK,1.8900000000000001,1.8,1.8900000000000001,,DELL,,excel
+delta 1l,Delta 1L,002 - BEVERAGES,,,0.0,,DEL,,excel
+delta 2l,DELTA 2L,002 - BEVERAGES,2.1,2.0,2.1,,DETA,,excel
+delta 300ml,Delta 300ml,002 - BEVERAGES,0.34650000000000003,0.33,0.34650000000000003,,DETM,,excel
+delta 440ml,Delta 440ml,002 - BEVERAGES,0.525,0.5,0.525,,DELTA,,excel
+dettol liquid,Dettol Liquid,019 - TOILETRIES,1.05,1.0,1.05,,DETO,,excel
+dettol soap,Dettol soap,019 - TOILETRIES,1.05,1.0,1.05,,DETT,,excel
+dishwasher seawave,Dishwasher Seawave,004 - CLEANING PRODUCTS,1.05,1.0,1.05,,DISW,,excel
+dishwasher seawave 2l,DishWasher Seawave 2L,004 - CLEANING PRODUCTS,2.1,2.0,2.1,,SEAW,,excel
+domestos,Domestos,004 - CLEANING PRODUCTS,2.1,2.0,2.1,,DOMS,,excel
+domestos local,Domestos local,004 - CLEANING PRODUCTS,,,0.0,,DOMES,,excel
+donunt,Donunt,016 - STARCH,,,0.0,,DON,,excel
+doritos 145g,Doritos 145g,012 - SNACK,,,0.0,,DOR,,excel
+dove lotion,Dove Lotion,005 - COSMETICS,5.775,5.5,5.775,,DOVE,,excel
+dragon,Dragon,002 - BEVERAGES,1.05,1.0,1.05,,DRA,,excel
+easywaves pack,EasyWaves Pack,005 - COSMETICS,,,0.0,,EWP,,excel
+eclair big boom pack,Eclair/Big Boom Pack,012 - SNACK,3.465,3.3,3.465,,ECLAI,,excel
+egg plant kg,Egg plant - kg,,1.0,,,1.0,,EG,pdf
+eggs,Eggs,013 - SOUPS,,,0.0,,EGG,,excel
+eggs trays,Eggs Trays,,4.0,,,4.0,,EGT,pdf
+ekono macaron 3kg,Ekono Macaron 3kg,016 - STARCH,4.2,4.0,4.2,,EKON,,excel
+ekono rice white 2kg,Ekono Rice white 2kg,016 - STARCH,2.31,2.2,2.31,,EKN,,excel
+ekono spaghett box 8kg,Ekono Spaghett - Box (8kg),016 - STARCH,,,0.0,,EKSP01,,excel
+ekono white rice 5kg,Ekono white Rice 5kg,016 - STARCH,,,0.0,,EKO,,excel
+eldos 30g,Eldos - 30g,012 - SNACK,,,0.0,,ELD30,,excel
+english blazer,English Blazer,005 - COSMETICS,2.625,2.5,2.625,,ENG,,excel
+english cucumber,English Cucumber,,1.0,,,1.0,,NFI01,pdf
+epimax cream 400g,Epimax Cream 400g,001 - BABY,5.775,5.5,5.775,,EPX,,excel
+exclamation perfume,Exclamation Perfume,005 - COSMETICS,2.1,2.0,2.1,,EXCLA,,excel
+finger biscuits,Finger Biscuits,012 - SNACK,0.525,0.5,0.525,,FIN,,excel
+fizzi 2l,Fizzi 2L,002 - BEVERAGES,1.05,1.0,1.05,,FIZZ,,excel
+fizzi 500ml,Fizzi 500ml,002 - BEVERAGES,,,0.0,,FIZ,,excel
+flava burst 5l,Flava Burst 5L,002 - BEVERAGES,2.1,2.0,2.1,,FRT,,excel
+fresh up 400ml,Fresh-Up - 400ml,002 - BEVERAGES,0.525,0.5,0.525,,FRMIX,,excel
+frimax 150g,Frimax 150g,012 - SNACK,1.575,1.5,1.575,,FRI,,excel
+frugo 300mls,Frugo 300mls,002 - BEVERAGES,,,0.0,,FRUG,,excel
+fruitade,Fruitade,002 - BEVERAGES,1.575,1.5,1.575,,FRU,,excel
+fruitade guava,Fruitade Guava,002 - BEVERAGES,,,0.0,,FRUT,,excel
+fruitcana,Fruitcana,002 - BEVERAGES,0.525,0.5,0.525,,FRUTC,,excel
+frutesca 430mls,Frutesca 430mls,002 - BEVERAGES,1.05,1.0,1.05,,FRUI,,excel
+fun n fresh,Fun 'n Fresh,002 - BEVERAGES,1.365,1.3,1.365,,FUN,,excel
+funny dip,Funny Dip,012 - SNACK,0.21000000000000002,0.2,0.21000000000000002,,FUNN,,excel
+garlic,Garlic,013 - SOUPS,,,0.0,,GARLI,,excel
+garlic kg,Garlic - kg,,8.0,,,8.0,,VGAR,pdf
+geisha,Geisha,019 - TOILETRIES,1.05,1.0,1.05,,GEI,,excel
+gemsquash kg,Gemsquash kg,,1.0,,,1.0,,VGM01,pdf
+gentel magic lotion,Gentel Magic lotion,005 - COSMETICS,1.05,1.0,1.05,,GMG,,excel
+gentel magic serum,Gentel Magic Serum,005 - COSMETICS,1.575,1.5,1.575,,GMS,,excel
+gentel magic soap,Gentel Magic Soap,005 - COSMETICS,1.05,1.0,1.05,,GNT,,excel
+gentle magic cream,Gentle Magic Cream,005 - COSMETICS,1.05,1.0,1.05,,GML,,excel
+gentle magic oil 50ml,Gentle Magic Oil 50ml,005 - COSMETICS,2.625,2.5,2.625,,GNTO,,excel
+gik 750ml,Gik 750ml,004 - CLEANING PRODUCTS,,,0.0,,GK,,excel
+ginger kg,Ginger - kg,,5.0,,,5.0,,VGI130,pdf
+ginger zinga,Ginger Zinga,002 - BEVERAGES,,,0.0,,GINZNG,,excel
+goldenfresh biscuits,GoldenFresh Biscuits,012 - SNACK,,,0.0,,GOLD,,excel
+grapes black pnt,Grapes Black pnts,,3.5,,,3.5,,FGR02,pdf
+green bar,Green Bar,004 - CLEANING PRODUCTS,,,0.0,,GRN,,excel
+green bar perfection,Green Bar Perfection,004 - CLEANING PRODUCTS,1.365,1.3,1.365,,GREE,,excel
+green beans,Green Beans,013 - SOUPS,,,0.0,,GREBN,,excel
+green beans kg,Green Beans - kg,,2.0,,,2.0,,VGB33,pdf
+green beans pnt,Green Beans - pnt,,0.5,,,0.5,,VGB34,pdf
+grown ups,Grown ups,003 - CEREALS,2.1,2.0,2.1,,GRW,,excel
+hair remover cosmo 40g,Hair Remover Cosmo 40g,005 - COSMETICS,0.525,0.5,0.525,,HAR,,excel
+halls,HALLS,012 - SNACK,0.10500000000000001,0.1,0.10500000000000001,,HAL01,,excel
+handy andy,Handy Andy,004 - CLEANING PRODUCTS,2.1,2.0,2.1,,HAN,,excel
+harpic,Harpic,004 - CLEANING PRODUCTS,2.1,2.0,2.1,,HARP,,excel
+hello pack,Hello - Pack,012 - SNACK,,,0.0,,HELPCK,,excel
+hello chippa single,Hello/Chippa Single,012 - SNACK,0.525,0.5,0.525,,HELL,,excel
+hilife soap,HiLife Soap,019 - TOILETRIES,0.525,0.5,0.525,,HIL,,excel
+hoit toity 90mls,Hoit Toity 90mls,005 - COSMETICS,2.1,2.0,2.1,,HOIT,,excel
+hoity toity lotion,Hoity Toity Lotion,005 - COSMETICS,3.15,3.0,3.15,,HOITY,,excel
+honey 500g,Honey 500g,,2.0,,,2.0,,MHO1,pdf
+honey pot mahewu,Honey Pot - Mahewu,002 - BEVERAGES,,,0.0,,HNYPOT,,excel
+honey pure 500g 1st grade,Honey Pure - 500g (1st Grade),,4.0,,,4.0,,HONP003,pdf
+honeypot,HoneyPot,002 - BEVERAGES,,,0.0,,HNY,,excel
+huggies diapers pack,Huggies Diapers - Pack,001 - BABY,11.55,11.0,11.55,,HUGD,,excel
+huggies wipes,Huggies Wipes,001 - BABY,2.1,2.0,2.1,,HUGW,,excel
+hygienix soap 175g,hygienix Soap 175g,019 - TOILETRIES,0.525,0.5,0.525,,HYG,,excel
+ideal whie rice 2kg,Ideal whie Rice 2kg,016 - STARCH,2.1,2.0,2.1,,IDEL,,excel
+ideal white rice 5kg,Ideal white Rice 5kg,016 - STARCH,5.46,5.2,5.46,,IDE,,excel
+igrams roibos 450ml,Igrams Roibos 450ml,005 - COSMETICS,,,0.0,,INR,,excel
+imperial mints,Imperial Mints,012 - SNACK,1.05,1.0,1.05,,IMPR,,excel
+inecto super black75g,Inecto Super Black75g,005 - COSMETICS,1.05,1.0,1.05,,ISB,,excel
+ingrams aloe 450ml,Ingrams Aloe 450ml,005 - COSMETICS,,,0.0,,INGM,,excel
+ingrams herbal,Ingrams Herbal,005 - COSMETICS,2.625,2.5,2.625,,IGM,,excel
+ingrams men 450ml,Ingrams men 450ml,005 - COSMETICS,2.94,2.8,2.94,,ING,,excel
+ingrams moisture plus 450ml,Ingrams Moisture Plus 450ml,005 - COSMETICS,2.94,2.8,2.94,,IMP,,excel
+ingrams original 450mls,Ingrams Original 450mls,005 - COSMETICS,2.94,2.8,2.94,,INGRO,,excel
+ingrams senstive 450ml,Ingrams Senstive 450ml,005 - COSMETICS,,,0.0,,IGMS,,excel
+ingrams tissue oi l450ml,Ingrams tissue oi l450ml,005 - COSMETICS,3.675,3.5,3.675,,INGMS,,excel
+iso plus hair spry 240ml,Iso Plus Hair Spry 240ml,005 - COSMETICS,1.8900000000000001,1.8,1.8900000000000001,,ISP,,excel
+isoplus edge control,Isoplus Edge Control,005 - COSMETICS,2.625,2.5,2.625,,ISOP,,excel
+jade soap,Jade Soap,019 - TOILETRIES,0.8400000000000001,0.8,0.8400000000000001,,JAD,,excel
+jasmine rice 2kg,Jasmine Rice 2kg,016 - STARCH,,,0.0,,JAS,,excel
+jik 750ml,Jik 750ml,004 - CLEANING PRODUCTS,2.1,2.0,2.1,,JK,,excel
+joe biscuits,Joe Biscuits,012 - SNACK,0.34650000000000003,0.33,0.34650000000000003,,JOE,,excel
+johnson aqueous 350ml,Johnson Aqueous 350ml,001 - BABY,2.625,2.5,2.625,,JOHA,,excel
+johnson baby soap 175g,Johnson Baby soap 175g,001 - BABY,1.26,1.2,1.26,,JOHN,,excel
+johnson jelly 325ml,Johnson Jelly 325ml,001 - BABY,2.625,2.5,2.625,,JOH,,excel
+johnson wipes,Johnson Wipes,001 - BABY,,,0.0,,WIPJOHN,,excel
+juice it 250ml,Juice it 250ml,002 - BEVERAGES,0.525,0.5,0.525,,JUC,,excel
+juicyplus 5l,Juicyplus 5L,002 - BEVERAGES,,,0.0,,JUIPC,,excel
+juicyplus crush 5l,JuicyPlus Crush 5L,002 - BEVERAGES,,,0.0,,JICP,,excel
+jumbo pack,Jumbo Pack,012 - SNACK,,,0.0,,JMBO,,excel
+jumbo single,Jumbo single,012 - SNACK,,,0.0,,JUMSNG,,excel
+jupiter 75g,Jupiter 75g,012 - SNACK,,,0.0,,JPT,,excel
+kambucha,Kambucha,002 - BEVERAGES,,,0.0,,KAMBU,,excel
+kambucha no 3,Kambucha No.3,002 - BEVERAGES,1.05,1.0,1.05,,KAMB,,excel
+kefalos dairy juice 200ml,Kefalos Dairy/Juice 200ml,002 - BEVERAGES,0.525,0.5,0.525,,KEF,,excel
+kingkurls pack,KingKurls Pack,012 - SNACK,3.675,3.5,3.675,,KING,,excel
+kingkurls single,KingKurls Single,012 - SNACK,0.525,0.5,0.525,,KNG,,excel
+kiss,Kiss,012 - SNACK,,,0.0,,KIS01,,excel
+kiwi 100ml,Kiwi 100ml,004 - CLEANING PRODUCTS,2.1,2.0,2.1,,KWI,,excel
+kiwi polish 50ml,Kiwi Polish 50ml,004 - CLEANING PRODUCTS,1.05,1.0,1.05,,KIW,,excel
+knock dishwasher 750ml,Knock Dishwasher 750ml,004 - CLEANING PRODUCTS,1.05,1.0,1.05,,KNCK,,excel
+knock out satchet,Knock out Satchet,004 - CLEANING PRODUCTS,0.525,0.5,0.525,,KNOC,,excel
+knockout all purpose cleaner 500ml,Knockout All Purpose Cleaner 500ml,004 - CLEANING PRODUCTS,1.05,1.0,1.05,,KNOA,,excel
+knockout bleach,Knockout Bleach,004 - CLEANING PRODUCTS,1.575,1.5,1.575,,KNOCT,,excel
+knockout can,Knockout Can,004 - CLEANING PRODUCTS,1.05,1.0,1.05,,KNO,,excel
+knockout dishwasher 2l,Knockout Dishwasher 2L,004 - CLEANING PRODUCTS,2.1,2.0,2.1,,KNOCK,,excel
+knorr soup,Knorr Soup,013 - SOUPS,0.525,0.5,0.525,,KNOR,,excel
+kotex pads 10s,Kotex pads 10s,019 - TOILETRIES,1.575,1.5,1.575,,KOT,,excel
+kotex pant liners,Kotex Pant Liners,019 - TOILETRIES,,,0.0,,PANT,,excel
+krema biscuits,Krema Biscuits,012 - SNACK,,,0.0,,KRE,,excel
+lace lotion,Lace Lotion,005 - COSMETICS,3.15,3.0,3.15,,LACE,,excel
+lakkernax,LakkerNax,012 - SNACK,1.8900000000000001,1.8,1.8900000000000001,,LAKK,,excel
+lays 125g,Lays 125g,012 - SNACK,1.575,1.5,1.575,,LAYS,,excel
+lays 23g,Lays 23g,012 - SNACK,,,0.0,,LYS,,excel
+lemon pnt,Lemon - Pnt,,1.0,,,1.0,,VLEEKB,pdf
+lettuce,Lettuce,013 - SOUPS,,,0.0,,LETT,,excel
+lettuce head,Lettuce - Head,,1.0,,,1.0,,VLET01,pdf
+lifebouy,Lifebouy,019 - TOILETRIES,0.8400000000000001,0.8,0.8400000000000001,,LIFBY,,excel
+liqui ceres fruit juice,Liqui/Ceres Fruit Juice,002 - BEVERAGES,2.1,2.0,2.1,,LIQ,,excel
+lobels biscuits,Lobels Biscuits,012 - SNACK,0.525,0.5,0.525,,LOB,,excel
+lobels loose biscuits,Lobels Loose Biscuits,012 - SNACK,,,0.0,,LOBE,,excel
+lollipop,Lollipop,012 - SNACK,0.21000000000000002,0.2,0.21000000000000002,,LOLI,,excel
+loose biscuits 200g,Loose Biscuits 200g,012 - SNACK,,,0.0,,LOO,,excel
+loose buiscuits 2kg,Loose Buiscuits 2kg,012 - SNACK,,,0.0,,LOS,,excel
+lunch bar choc,Lunch Bar Choc,012 - SNACK,0.42000000000000004,0.4,0.42000000000000004,,LUN,,excel
+lux soap,Lux Soap,019 - TOILETRIES,0.9450000000000001,0.9,0.9450000000000001,,LUX,,excel
+macademia nuts pack,Macademia nuts - Pack,,1.0,,,1.0,,VPEP06,pdf
+macaron 400g,Macaron - 400g,016 - STARCH,0.525,0.5,0.525,,MACR01,,excel
+macaroni box,Macaroni Box,016 - STARCH,,,0.0,,MAC,,excel
+madora kg,Madora Kg,,,,,0.0,,MMDR01,pdf
+mahatma 2kg,Mahatma 2kg,016 - STARCH,2.625,2.5,2.625,,MAHA,,excel
+mahatma 2kg case,MAHATMA 2kg - Case,016 - STARCH,,,0.0,,MAHTMCS,,excel
+mahatma 5kg,Mahatma 5kg,016 - STARCH,6.3,6.0,6.3,,MAHT,,excel
+mammoth energy drink,Mammoth Energy Drink,002 - BEVERAGES,,,0.0,,MAM,,excel
+mango kg,Mango - kg,,,,,0.0,,MAN,pdf
+maputi,Maputi,012 - SNACK,1.05,1.0,1.05,,MAP,,excel
+maputi authentic,Maputi Authentic,012 - SNACK,,,0.0,,MPT,,excel
+maputi single,Maputi Single,012 - SNACK,0.10500000000000001,0.1,0.10500000000000001,,NIVE,,excel
+maq 1kg,Maq 1kg,004 - CLEANING PRODUCTS,,,0.0,,MAQ,,excel
+maq 2kg,Maq 2kg,004 - CLEANING PRODUCTS,4.2,4.0,4.2,,MQ,,excel
+mariana spagetti,Mariana Spagetti,016 - STARCH,,,0.0,,MARA,,excel
+marie,Marie,012 - SNACK,,,0.0,,MARIE,,excel
+mariiana 1kg,Mariiana 1kg,016 - STARCH,,,0.0,,MARI,,excel
+marmalade jam 500g,Marmalade Jam 500g,015 - SPREADS,2.1,2.0,2.1,,MAR,,excel
+marshmallow long,MarshMallow Long,012 - SNACK,0.2625,0.25,0.2625,,MARS,,excel
+marshmallow long pack,MarshMallow Long Pack,012 - SNACK,,,0.0,,MARSH,,excel
+marshmallow pack,MarshMallow Pack,012 - SNACK,6.3,6.0,6.3,,MRSHP,,excel
+martina rice 5kg,Martina Rice 5kg,016 - STARCH,5.46,5.2,5.46,,MARTIN,,excel
+martina white rice 2kg,Martina White Rice 2kg,016 - STARCH,2.1,2.0,2.1,,MART,,excel
+masters wipes,Masters Wipes,001 - BABY,,,0.0,,MASTW,,excel
+maynards jelly sweets,Maynards Jelly Sweets,012 - SNACK,1.05,1.0,1.05,,MAY,,excel
+mazoe blackberry 2l,Mazoe Blackberry 2L,002 - BEVERAGES,3.675,3.5,3.675,,MAZB,,excel
+mazoe mix,Mazoe Mix,002 - BEVERAGES,3.15,3.0,3.15,,MAZW,,excel
+mazoe orange 2l,Mazoe Orange 2L,002 - BEVERAGES,4.2,4.0,4.2,,MAZ,,excel
+mega all purpose 2kg,Mega All Purpose 2kg,016 - STARCH,2.1,2.0,2.1,,MGAA,,excel
+mega macaroni 3kg,Mega Macaroni - 3KG,016 - STARCH,4.2,4.0,4.2,,MEGA,,excel
+mega macaroni 400g,Mega Macaroni 400g,016 - STARCH,0.525,0.5,0.525,,MEGAM,,excel
+mega rice 2kg,Mega Rice - 2kg,016 - STARCH,2.31,2.2,2.31,,MEGR01,,excel
+mega rice 5kg,Mega Rice - 5kg,016 - STARCH,6.09,5.8,6.09,,MEGRC,,excel
+milkit big,Milkit - Big,002 - BEVERAGES,,,0.0,,MILKB01,,excel
+milkit milkshake 100ml,Milkit Milkshake 100ml,002 - BEVERAGES,0.525,0.5,0.525,,MIK,,excel
+milkit juice box,Milkit/ Juice Box,002 - BEVERAGES,12.6,12.0,12.6,,KEFALOS,,excel
+millet 1kg,Millet - 1kg,,3.0,,,3.0,,MSMIL75,pdf
+millet 2kg,MILLET 2kg,,5.0,,,5.0,,MMDR03,pdf
+mint dandy toffe,Mint/Dandy/toffe,012 - SNACK,0.052500000000000005,0.05,0.052500000000000005,,MNT,,excel
+mints pack,Mints Pack,012 - SNACK,,,0.0,,MINTS,,excel
+minute maid original 400ml,Minute Maid Original 400ml,002 - BEVERAGES,1.05,1.0,1.05,,MIN,,excel
+minute maid refresh,Minute Maid Refresh,002 - BEVERAGES,0.525,0.5,0.525,,MINU,,excel
+mixed grain 2kg,Mixed grain - 2kg,,5.0,,,5.0,,MMIXED,pdf
+mooyo maheu,Mooyo Maheu,002 - BEVERAGES,,,0.0,,MOY,,excel
+mousse,Mousse,005 - COSMETICS,,,0.0,,MOUS,,excel
+mr rice white 2kg,Mr Rice White 2kg,016 - STARCH,2.31,2.2,2.31,,MR,,excel
+mr rice white 5kg,Mr Rice white 5kg,016 - STARCH,5.46,5.2,5.46,,MRR,,excel
+muesli,Muesli,003 - CEREALS,3.675,3.5,3.675,,MUE,,excel
+munyemba 75g,Munyemba - 75g,,0.75,,,0.75,,MUNY002,pdf
+mushroom oyester pnt,Mushroom Oyester - Pnt,,1.0,,,1.0,,VMUBO,pdf
+nan 1 2 3 and 4,Nan 1;2;3&4,001 - BABY,5.775,5.5,5.775,,NAN,,excel
+natural joy 1litre,Natural Joy - 1litre,002 - BEVERAGES,1.05,1.0,1.05,,NATU,,excel
+ngwerevere,Ngwerevere,016 - STARCH,,,0.0,,NGW,,excel
+nibbles,Nibbles,012 - SNACK,,,0.0,,NIB,,excel
+nivea cream lotion 400ml,Nivea Cream/Lotion 400ml,005 - COSMETICS,4.2,4.0,4.2,,NIV,,excel
+nivea q10,Nivea Q10,005 - COSMETICS,7.875,7.5,7.875,,NVIA,,excel
+nivea radiant cream 400ml,Nivea Radiant Cream 400ml,005 - COSMETICS,,,0.0,,NIVA,,excel
+nivea spray,Nivea Spray,005 - COSMETICS,3.15,3.0,3.15,,NIVES,,excel
+noddle box,Noddle Box,016 - STARCH,10.5,10.0,10.5,,NODB,,excel
+noddles casamia,Noddles  casamia,016 - STARCH,,,0.0,,CASM,,excel
+noddles aroma,Noddles Aroma,016 - STARCH,1.26,1.2,1.26,,AROMA,,excel
+noddles binto,Noddles Binto,016 - STARCH,1.26,1.2,1.26,,NODBNT,,excel
+noddles golf,Noddles Golf,016 - STARCH,1.26,1.2,1.26,,GOLF,,excel
+noddles indomie,Noddles Indomie,016 - STARCH,1.575,1.5,1.575,,INDO,,excel
+noddles kellogs,Noddles Kellogs,016 - STARCH,1.6800000000000002,1.6,1.6800000000000002,,NODPCK,,excel
+noddles mega,Noddles Mega,016 - STARCH,1.365,1.3,1.365,,NODL,,excel
+noodle kellogs golf box,Noodle Kellogs/Golf Box,016 - STARCH,12.6,12.0,12.6,,NODD,,excel
+nugget 100ml,Nugget - 100ml,004 - CLEANING PRODUCTS,,,0.0,,NUGET,,excel
+nyimo 500g,Nyimo - 500g,,2.5,,,2.5,,NYOO2,pdf
+oats,Oats,003 - CEREALS,3.15,3.0,3.15,,OAT,,excel
+oh so heavenly lotion 1l,Oh  So Heavenly Lotion 1L,005 - COSMETICS,7.35,7.0,7.35,,OHSL,,excel
+oh so heavenly 2l,Oh So Heavenly - 2L,005 - COSMETICS,5.775,5.5,5.775,,OHSHV,,excel
+oh so heavenly cream 450ml,Oh SO Heavenly Cream 450ml,005 - COSMETICS,4.2,4.0,4.2,,OHSO,,excel
+oh so heavenly gel,Oh So Heavenly Gel,019 - TOILETRIES,,,0.0,,OHSOH,,excel
+oh so heavenly lotion 720ml,Oh So Heavenly Lotion 720ml,005 - COSMETICS,5.25,5.0,5.25,,OHS,,excel
+oh so heavenly q10,Oh So heavenly Q10,005 - COSMETICS,7.35,7.0,7.35,,OHSOQ,,excel
+okra pnt,Okra Pnt,,1.0,,,1.0,,VOK41,pdf
+olive oil spry 250ml,Olive Oil Spry 250ml,005 - COSMETICS,1.8900000000000001,1.8,1.8900000000000001,,OLV,,excel
+omo powder 2kg,Omo Powder 2kg,004 - CLEANING PRODUCTS,4.2,4.0,4.2,,OMO,,excel
+onion,Onion,013 - SOUPS,,,0.0,,ONIO,,excel
+onion red kg,Onion  Red (kgs),,2.0,,,2.0,,ON-02,pdf
+onions kg,Onions - kg,,1.2,,,1.2,,VOIM53,pdf
+onions pocket,Onions - pocket,,10.0,,,10.0,,VOIL04,pdf
+oran crush 5l,Oran Crush 5L,002 - BEVERAGES,3.9899999999999998,3.8,3.9899999999999998,,ORAN,,excel
+orange pocket,Orange - pocket,013 - SOUPS,,,0.0,,ORANG,,excel
+pads mix,Pads Mix,019 - TOILETRIES,1.05,1.0,1.05,,PDS,,excel
+pampers masters pack,Pampers Masters Pack,001 - BABY,12.6,12.0,12.6,,PAMP,,excel
+pampers masters single,Pampers Masters Single,001 - BABY,0.126,0.12,0.126,,PAMPS,,excel
+parboiled rice 2kg,Parboiled Rice 2kg,016 - STARCH,2.1,2.0,2.1,,MEG,,excel
+parboiled rice 5kg,Parboiled Rice 5kg,016 - STARCH,5.46,5.2,5.46,,PAR,,excel
+pascal choc,Pascal Choc,012 - SNACK,0.525,0.5,0.525,,PAS,,excel
+pastarelli macaroni 3kg,Pastarelli - Macaroni 3kg,016 - STARCH,4.2,4.0,4.2,,PAST,,excel
+peacan nuts pack,Peacan Nuts - Pack,,1.75,,,1.75,,VPEC02,pdf
+peanut butter paguyo 1l,Peanut butter (Paguyo) - 1L,,3.0,,,3.0,,PEANTOO2,pdf
+peanut butter 300ml,Peanut butter - 300ml,,1.0,,,1.0,,PEANT06,pdf
+peanut butter 1l,Peanut Butter 1L,015 - SPREADS,3.15,3.0,3.15,,PNUT,,excel
+peanut butter 375ml,Peanut Butter 375ml,015 - SPREADS,1.05,1.0,1.05,3.0,PNUTB,MPEN,excel|pdf
+peanuts unshelled 75g,Peanuts (unshelled) - 75g,,0.5,,,0.5,,PEANT001,pdf
+peanuts 500g,Peanuts 500g,,2.0,,,2.0,,MSPN75,pdf
+pearlenta 10kg,Pearlenta 10kg,016 - STARCH,8.4,8.0,8.4,,PEARL,,excel
+pearlenta porridge 1kg,Pearlenta Porridge 1kg,002 - BEVERAGES,1.575,1.5,1.575,,PEAR,,excel
+pears forelle each,Pears Forelle each,,0.33,,,0.33,,FPF04,pdf
+pepper green pnt,Pepper (green) - Pnts,,0.5,,,0.5,,VPEP66,pdf
+pepper green kg,Pepper (Green)- kg,,2.0,,,2.0,,VPE65,pdf
+pepper yellow red kg,Pepper Yellow/Red - kg,,3.5,,,3.5,,VPEPP,pdf
+peps 1l,PEPS 1L,002 - BEVERAGES,0.525,0.5,0.525,,PEPM,,excel
+peps 500ml,Peps 500ml,002 - BEVERAGES,0.34650000000000003,0.33,0.34650000000000003,,PEPS,,excel
+peps case,Peps Case,002 - BEVERAGES,9.45,9.0,9.45,,PEP,,excel
+period pants,Period pants,019 - TOILETRIES,1.05,1.0,1.05,,PERI,,excel
+pfuko buttermilk 500ml,Pfuko Buttermilk - 500ml,002 - BEVERAGES,0.63,0.6,0.63,,PFKBT,,excel
+pfuko case,Pfuko case,002 - BEVERAGES,6.3,6.0,6.3,,PFKO,,excel
+pfuko traditional 500ml,Pfuko Traditional 500ml,002 - BEVERAGES,0.525,0.5,0.525,,PFK,,excel
+pie,Pie,016 - STARCH,0.525,0.5,0.525,,PIE,,excel
+pine apples each,Pine Apples each,,1.5,,,1.5,,FPIN02,pdf
+pinegel 1l,Pinegel 1L,004 - CLEANING PRODUCTS,3.15,3.0,3.15,,PNE,,excel
+pinegel 500ml,Pinegel 500ml,004 - CLEANING PRODUCTS,1.575,1.5,1.575,,PIN,,excel
+plain flour 2kg,Plain Flour 2kg,016 - STARCH,,,0.0,,PLAI,,excel
+playboy perfume,PlayBoy Perfume,005 - COSMETICS,,,0.0,,PLAY,,excel
+playboy roll on,PlayBoy Roll on,005 - COSMETICS,,,0.0,,PLA,,excel
+popcorn,Popcorn,012 - SNACK,1.05,1.0,1.05,,POP,,excel
+popticorn 120g,Popticorn -120g,012 - SNACK,0.525,0.5,0.525,,POPCN,,excel
+popticorn pack,Popticorn Pack,012 - SNACK,,,0.0,,POPT,,excel
+potatoes 7 5kg,Potatoes - 7.5kg,,5.0,,,5.0,,VP271,pdf
+potatoes large 15kg poc,POTATOES - LARGE 15KG POC,,10.0,,,10.0,,VPL68,pdf
+potatoes 15kg,Potatoes 15kg,016 - STARCH,,,0.0,,POTA,,excel
+potatoes 3kg med pack,Potatoes 3kg Med Pack,,3.0,,,3.0,,VPOT04,pdf
+powerplus,PowerPlus,002 - BEVERAGES,2.1,2.0,2.1,,PWR,,excel
+predo wipes,Predo  Wipes,001 - BABY,2.1,2.0,2.1,,PRED,,excel
+primo fusilli 650g,Primo Fusilli 650g,016 - STARCH,,,0.0,,PRIMO,,excel
+primo pasta,Primo Pasta,016 - STARCH,,,0.0,,PRIM,,excel
+private joy tissue,Private Joy Tissue,019 - TOILETRIES,8.4,8.0,8.4,,PRVT,,excel
+protex soap,Protex Soap,019 - TOILETRIES,1.05,1.0,1.05,,PROT,,excel
+proton cookies 1kg,Proton Cookies 1kg,012 - SNACK,3.675,3.5,3.675,,PRO,,excel
+proton cookies 250g,Proton Cookies 250g,012 - SNACK,1.05,1.0,1.05,,PROTN,,excel
+proton cookies 2kg,Proton Cookies 2kg,012 - SNACK,6.825,6.5,6.825,,PROTO,,excel
+proton cookies 500g,Proton Cookies 500g,012 - SNACK,2.1,2.0,2.1,,PRT,,excel
+purejoy juice,PureJoy Juice,002 - BEVERAGES,2.1,2.0,2.1,,PUREJ,,excel
+purity aqueous,Purity Aqueous,001 - BABY,2.415,2.3,2.415,,PURA,,excel
+quench,Quench,002 - BEVERAGES,3.675,3.5,3.675,,QUEN,,excel
+raha white rice 2kg,Raha white Rice 2kg,016 - STARCH,2.31,2.2,2.31,,RAHA,,excel
+raha white rice 5kg,Raha white Rice 5kg,016 - STARCH,5.775,5.5,5.775,,RHA,,excel
+raisins punnet,Raisins Punnets,,2.0,,,2.0,,FDFRO2,pdf
+rapoko 1kg,Rapoko 1kg,,3.0,,,3.0,,RAP,pdf
+rapoko 2kg,Rapoko 2kg,,6.0,,,6.0,,RPW06,pdf
+rapoko 5kg,Rapoko 5kg,,14.5,,,14.5,,MGRO,pdf
+redbull,RedBull,002 - BEVERAGES,1.26,1.2,1.26,,RED,,excel
+revive juice 1l,Revive Juice 1L,002 - BEVERAGES,1.05,1.0,1.05,,REVJ,,excel
+revive juice 500ml,Revive juice 500ml,002 - BEVERAGES,0.525,0.5,0.525,,REV,,excel
+revive maheu 1l,Revive Maheu 1L,002 - BEVERAGES,1.05,1.0,1.05,,REVM,,excel
+revive maheu 500ml,Revive Maheu 500ml,002 - BEVERAGES,0.525,0.5,0.525,,REVI,,excel
+rhodes juice,Rhodes Juice,002 - BEVERAGES,0.525,0.5,0.525,,RHD,,excel
+rice white 1kg,Rice (White) - 1kg,,2.25,,,2.25,,RPW10,pdf
+rice white 2kg,Rice (White) - 2kg,,4.5,,,4.5,,RPW12,pdf
+rice white 5kg,Rice (White) - 5kg,,11.25,,,11.25,,RPW11,pdf
+ripples,Ripples,012 - SNACK,1.05,1.0,1.05,,RIPP,,excel
+roll on addidas 50ml,Roll On Addidas 50ml,005 - COSMETICS,,,0.0,,ROLL,,excel
+roll on nivea 50ml,Roll on Nivea - 50ml,005 - COSMETICS,2.1,2.0,2.1,,ROLNIV,,excel
+roll on power house 50ml,Roll On Power House 50ml,005 - COSMETICS,,,0.0,,ROP,,excel
+roll on shield,Roll On Shield,005 - COSMETICS,,,0.0,,RLS,,excel
+roller meal 10kg,Roller Meal 10kg,016 - STARCH,6.3,6.0,6.3,,ROLER,,excel
+roller meal irifarm 5kg,Roller meal Irifarm 5kg,016 - STARCH,3.15,3.0,3.15,,RLLR,,excel
+roller superlife 5kg,Roller SuperLife 5kg,016 - STARCH,2.1,2.0,2.1,,ROLLS,,excel
+romance soap 50g,Romance Soap 50g,019 - TOILETRIES,0.8400000000000001,0.8,0.8400000000000001,,ROM,,excel
+romi margarine,Romi Margarine,015 - SPREADS,,,0.0,,ROMI,,excel
+rosso chocolate,Rosso Chocolate,012 - SNACK,,,0.0,,ROSS,,excel
+rossy wafers,Rossy Wafers,012 - SNACK,0.525,0.5,0.525,,ROSY,,excel
+royco box 12s,Royco Box 12s,013 - SOUPS,,,0.0,,ROYC,,excel
+royco mchuzi,Royco Mchuzi,013 - SOUPS,2.1,2.0,2.1,,RYC,,excel
+royco satchet,Royco Satchet,013 - SOUPS,0.525,0.5,0.525,,ROY,,excel
+rul 3d,Rul 3D,012 - SNACK,,,0.0,,RUL,,excel
+s,S,012 - SNACK,,,0.0,,SPUDB,,excel
+sasko flour 5kg,Sasko Flour - 5kg,016 - STARCH,,,0.0,,SAS,,excel
+sasko flour 2 5 kg,Sasko Flour 2.5 kg,016 - STARCH,3.15,3.0,3.15,,SASKF,,excel
+satiskin 1l,Satiskin 1L,019 - TOILETRIES,2.625,2.5,2.625,,SATSK,,excel
+satiskin 2l,Satiskin 2L,019 - TOILETRIES,4.725,4.5,4.725,,SATI,,excel
+sauce 330ml,Sauce - 330ml,,1.0,,,1.0,,SCE02,pdf
+sauce bbq 2 litres,Sauce Bbq - 2 Litres,,4.0,,,4.0,,SCE01,pdf
+sauce garlic bbq lemon herd 1l,"Sauce(garlic,Bbq,Lemon Herd) - 1L",,4.0,,,4.0,,SCE03,pdf
+sausage kg,Sausage kg,013 - SOUPS,,,0.0,,SAUC,,excel
+seeds,Seeds,,1.0,,,1.0,,SEDS,pdf
+self raising flour 2kg,Self Raising Flour 2kg,016 - STARCH,1.8900000000000001,1.8,1.8900000000000001,,SELF,,excel
+self raising flour case,Self Raising Flour Case,016 - STARCH,,,0.0,,SELFR,,excel
+shortbread biscuits 150g,ShortBread Biscuits - 150g,012 - SNACK,0.525,0.5,0.525,,SHRT,,excel
+shortbread chelsea,ShortBread Chelsea,012 - SNACK,0.525,0.5,0.525,,CHELS,,excel
+shortbread mini,ShortBread Mini,012 - SNACK,0.2625,0.25,0.2625,,SHOR,,excel
+shower to shower,Shower To Shower,005 - COSMETICS,1.05,1.0,1.05,,SHOW,,excel
+shower to shower perfume,Shower to Shower Perfume,005 - COSMETICS,2.625,2.5,2.625,,SHWR,,excel
+shumba,Shumba,002 - BEVERAGES,0.525,0.5,0.525,,ADE,,excel
+simba,Simba,012 - SNACK,,,0.0,,SIM,,excel
+skala 200g,Skala 200g,005 - COSMETICS,,,0.0,,SKA,,excel
+skala hairfood,Skala hairFood,005 - COSMETICS,1.05,1.0,1.05,,SKAL,,excel
+snowfake selfraising 2 5,SnowFake SelfRaising 2.5,016 - STARCH,3.9899999999999998,3.8,3.9899999999999998,,SNO,,excel
+snowflak cake flour 2 5kg,SnowFlak Cake Flour 2.5kg,016 - STARCH,3.675,3.5,3.675,,CAKFLR,,excel
+soft care pampers,Soft Care Pampers,001 - BABY,5.25,5.0,5.25,,SOFT,,excel
+sona,Sona,019 - TOILETRIES,,,0.0,,SON,,excel
+sorghum 1kg,Sorghum 1Kg,,3.0,,,3.0,,SORGA,pdf
+southern coating 200g,Southern Coating - 200g,014 - SPICES,1.575,1.5,1.575,,SOTHCTN,,excel
+spagetti 400g,Spagetti 400g,016 - STARCH,0.525,0.5,0.525,,EKONO,,excel
+spice,Spice,013 - SOUPS,,,0.0,,SPIC,,excel
+spice 200g,Spice - 200g,,5.0,,,5.0,,SPCE003,pdf
+spice bbq 500g,Spice Bbq - 500g,,6.0,,,6.0,,BLPER,pdf
+spices 100g,Spices - 100g,,1.0,,,1.0,,SPC004,pdf
+spices 60g satchets,Spices 60g Satchets,,1.0,,,1.0,,MSSP,pdf
+spinners loose pack,Spinners loose - Pack,012 - SNACK,,,0.0,,SPNRL01,,excel
+spuds 30g,Spuds 30g,012 - SNACK,0.525,0.5,0.525,,SPD,,excel
+spuds 75g,Spuds 75g,012 - SNACK,1.05,1.0,1.05,,SPU,,excel
+spuds lays box 30g,Spuds/Lays Box 30g,012 - SNACK,10.5,10.0,10.5,,SPUD,,excel
+squish squash appl ras,Squish Squash Appl/Ras,002 - BEVERAGES,,,0.0,,SQUI,,excel
+squish squash crush 2l,Squish Squash Crush 2L,002 - BEVERAGES,,,0.0,,SQU,,excel
+stambo bigboom pack,Stambo/ BigBoom Pack,012 - SNACK,3.15,3.0,3.15,,STA,,excel
+stambo bigboom single,Stambo/ BigBoom Single,012 - SNACK,0.10500000000000001,0.1,0.10500000000000001,,STAMB,,excel
+star soft 2litre,Star Soft - 2litre,004 - CLEANING PRODUCTS,3.675,3.5,3.675,,STASFT,,excel
+starsoft refill mix,StarSoft Refill mix,004 - CLEANING PRODUCTS,2.1,2.0,2.1,,STS,,excel
+sting 500ml,Sting 500ml,002 - BEVERAGES,0.525,0.5,0.525,,STG,,excel
+sugar beans 1kg,Sugar Beans - 1KG,,3.0,,,3.0,,MSB12,pdf
+sugar beans 2kg,Sugar Beans 2kg,,6.0,,,6.0,,MSB14,pdf
+sugar beans kg,Sugar Beans Kg,,3.0,,,3.0,,MSB16,pdf
+sugar case,Sugar Case,016 - STARCH,,,0.0,,SUGAR,,excel
+sun snack,Sun Snack,012 - SNACK,0.525,0.5,0.525,,SUNSA,,excel
+sunbite biscuits,SunBite Biscuits,012 - SNACK,0.525,0.5,0.525,,SUNB,,excel
+sunjam 500g,SunJam 500g,015 - SPREADS,1.575,1.5,1.575,,SUNJ,,excel
+sunjam 900g,SunJam 900g,015 - SPREADS,,,0.0,,SNJAM,,excel
+sunlight 1kg,Sunlight 1kg,004 - CLEANING PRODUCTS,2.1,2.0,2.1,,SUNL,,excel
+sunlight liquid,Sunlight Liquid,004 - CLEANING PRODUCTS,2.1,2.0,2.1,,SNL,,excel
+sunlight pwd 2kg,SunLight Pwd 2kg,004 - CLEANING PRODUCTS,4.2,4.0,4.2,,SUNLT,,excel
+sunlight soap,Sunlight soap,001 - BABY,,,0.0,,SUNS,,excel
+sunny porridge,Sunny Porridge,003 - CEREALS,1.575,1.5,1.575,,SUN,,excel
+superday 5l,SuperDay 5L,002 - BEVERAGES,,,0.0,,SUPD,,excel
+superdry pamper,Superdry - Pamper,001 - BABY,,,0.0,,SUPRDY,,excel
+supersip 500ml,SuperSip 500ml,002 - BEVERAGES,,,0.0,,SUP,,excel
+sweet cup,Sweet Cup,012 - SNACK,0.10500000000000001,0.1,0.10500000000000001,,SWEE,,excel
+sweet potatoes kg,Sweet potatoes - kg,,32.0,,,32.0,,VSP82,pdf
+sweetcup can,SweetCup Can,012 - SNACK,,,0.0,,SWEEC,,excel
+switch,Switch,002 - BEVERAGES,1.05,1.0,1.05,,SWT,,excel
+tapi tapi 2kg,Tapi Tapi 2kg,016 - STARCH,2.625,2.5,2.625,,TAPI,,excel
+tea biscuits,Tea Biscuits,012 - SNACK,3.15,3.0,3.15,,TEA,,excel
+tea loaf,Tea loaf,016 - STARCH,0.8400000000000001,0.8,0.8400000000000001,,TLOF,,excel
+thai 5kg,Thai 5kg,016 - STARCH,,,0.0,,THAIR,,excel
+thai rice,Thai Rice,016 - STARCH,2.415,2.3,2.415,,THAI,,excel
+things 75g,Things 75g,012 - SNACK,1.05,1.0,1.05,,THIN,,excel
+things pack,THINGS Pack,012 - SNACK,5.25,5.0,5.25,,THING|THINP,,excel
+things kornkurl 150g,Things/Kornkurl 150g,012 - SNACK,0.525,0.5,0.525,,THI,,excel
+time biscuits,Time Biscuits,012 - SNACK,,,0.0,,TME,,excel
+tissue 4s,Tissue 4s,019 - TOILETRIES,1.05,1.0,1.05,,TISS,,excel
+tissue single,Tissue Single,019 - TOILETRIES,0.525,0.5,0.525,,SAT,,excel
+toffee bar,Toffee Bar,012 - SNACK,,,0.0,,TOF,,excel
+tomatoes kg,Tomatoes kg,013 - SOUPS,0.8,,0.0,0.8,TOM,VTO83,excel|pdf
+top jam 400ml,Top Jam 400ml,015 - SPREADS,1.05,1.0,1.05,,TOP,,excel
+top society,Top Society,005 - COSMETICS,1.575,1.5,1.575,,TOPS,,excel
+top soy 90g,Top Soy 90g,013 - SOUPS,0.525,0.5,0.525,,TOPL,,excel
+top t biscuits 150g,Top T biscuits - 150g,012 - SNACK,,,0.0,,TOPTB,,excel
+topchef 2kg,TopChef 2kg,016 - STARCH,2.625,2.5,2.625,,TOPF,,excel
+topchef white rice 5kg,TopChef white Rice 5kg,016 - STARCH,5.775,5.5,5.775,,TOPC,,excel
+topjam 900g,Topjam 900g,015 - SPREADS,,,0.0,,TJAM,,excel
+torku chocolate,Torku Chocolate,012 - SNACK,0.2625,0.25,0.2625,,TORK,,excel
+twinsaver 9s,TwinSaver 9s,019 - TOILETRIES,4.725,4.5,4.725,,TWINS,,excel
+twinsaver tissue,TwinSaver Tissue,019 - TOILETRIES,9.45,9.0,9.45,,TWIN,,excel
+ufresh drink,Ufresh Drink,002 - BEVERAGES,,,0.0,,UFSH,,excel
+ufresh maheu,Ufresh Maheu,002 - BEVERAGES,,,0.0,,UFRS,,excel
+usavi mix,Usavi Mix,013 - SOUPS,0.34650000000000003,0.33,0.34650000000000003,,USV,,excel
+utra pads,Utra Pads,019 - TOILETRIES,0.63,0.6,0.63,,DELLP,,excel
+v,v,005 - COSMETICS,,,0.0,,VASEL,,excel
+vaseline 100ml,Vaseline - 100ml,005 - COSMETICS,1.05,1.0,1.05,,VSN,,excel
+vaseline 250ml,Vaseline 250ml,005 - COSMETICS,2.1,2.0,2.1,,VASE,,excel
+vaseline 450ml,Vaseline 450ml,005 - COSMETICS,3.9899999999999998,3.8,3.9899999999999998,,VAS,,excel
+vaseline 50ml,Vaseline 50ml,005 - COSMETICS,0.525,0.5,0.525,,VASL,,excel
+vaseline cream,Vaseline Cream,005 - COSMETICS,3.15,3.0,3.15,,VASLN,,excel
+vaseline lips,Vaseline lips,005 - COSMETICS,0.525,0.5,0.525,,VASELN,,excel
+vaseline lotion,Vaseline Lotion,005 - COSMETICS,3.675,3.5,3.675,,VASLNL,,excel
+vestline garlic 200g,Vestline Garlic - 200g,005 - COSMETICS,1.05,1.0,1.05,,VESTGLC,,excel
+victoria juice,Victoria Juice,002 - BEVERAGES,2.1,2.0,2.1,,VIC,,excel
+vigos choc,Vigos Choc,012 - SNACK,0.10500000000000001,0.1,0.10500000000000001,,VIG,,excel
+vim can,Vim Can,004 - CLEANING PRODUCTS,1.05,1.0,1.05,,VM,,excel
+vinegar 750ml,Vinegar - 750ml,,1.0,,,1.0,,VIGR750,pdf
+weetbix 450g,Weetbix - 450g,003 - CEREALS,2.31,2.2,2.31,,WETBX,,excel
+wheat 2kg,WHEAT 2KG,,5.0,,,5.0,,WHT,pdf
+wheat buckets,Wheat Buckets,,32.0,,,32.0,,WHETBK,pdf
+white rice case 2kg,White Rice Case 2kg,016 - STARCH,,,0.0,,WHRC,,excel
+wild cat 500ml,Wild Cat - 500ml,002 - BEVERAGES,0.525,0.5,0.525,,WILDC01,,excel
+wipes,Wipes,001 - BABY,0.735,0.7,0.735,,WIP,,excel
+wish cream,Wish Cream,012 - SNACK,1.05,1.0,1.05,,WSH,,excel
+xtra vim,Xtra Vim,004 - CLEANING PRODUCTS,0.8400000000000001,0.8,0.8400000000000001,,VIM,,excel
+xtra washing powder,XTRA Washing Powder,004 - CLEANING PRODUCTS,3.675,3.5,3.675,,XTRA,,excel
+yebo soap,Yebo Soap,019 - TOILETRIES,0.525,0.5,0.525,,YBO,,excel
+yogurt kefalos 75ml,Yogurt Kefalos 75ml,012 - SNACK,0.63,0.6,0.63,,YOGT,,excel
+zapnax,ZapNax,012 - SNACK,0.525,0.5,0.525,,ZAP,,excel
+zapnax pack,ZapNax Pack,012 - SNACK,3.15,3.0,3.15,,ZAPP,,excel
+zimgold marg tub,Zimgold Marg  Tub,015 - SPREADS,,,0.0,,ZMG,,excel

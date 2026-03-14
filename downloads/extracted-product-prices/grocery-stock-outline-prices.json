@@ -1,0 +1,4002 @@
+[
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "001 - BABY",
+    "code": "BABC",
+    "description": "Baby & Me Cream",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "001 - BABY",
+    "code": "EPX",
+    "description": "Epimax Cream 400g",
+    "cash_price_usd": 5.5,
+    "online_price_usd": 5.775
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "001 - BABY",
+    "code": "HUGD",
+    "description": "Huggies Diapers - Pack",
+    "cash_price_usd": 11.0,
+    "online_price_usd": 11.55
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "001 - BABY",
+    "code": "HUGW",
+    "description": "Huggies Wipes",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "001 - BABY",
+    "code": "JOH",
+    "description": "Johnson Jelly 325ml",
+    "cash_price_usd": 2.5,
+    "online_price_usd": 2.625
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "001 - BABY",
+    "code": "JOHA",
+    "description": "Johnson Aqueous 350ml",
+    "cash_price_usd": 2.5,
+    "online_price_usd": 2.625
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "001 - BABY",
+    "code": "JOHN",
+    "description": "Johnson Baby soap 175g",
+    "cash_price_usd": 1.2,
+    "online_price_usd": 1.26
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "001 - BABY",
+    "code": "MASTW",
+    "description": "Masters Wipes",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "001 - BABY",
+    "code": "NAN",
+    "description": "Nan 1;2;3&4",
+    "cash_price_usd": 5.5,
+    "online_price_usd": 5.775
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "001 - BABY",
+    "code": "PAMP",
+    "description": "Pampers Masters Pack",
+    "cash_price_usd": 12.0,
+    "online_price_usd": 12.6
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "001 - BABY",
+    "code": "PAMPS",
+    "description": "Pampers Masters Single",
+    "cash_price_usd": 0.12,
+    "online_price_usd": 0.126
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "001 - BABY",
+    "code": "PRED",
+    "description": "Predo  Wipes",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "001 - BABY",
+    "code": "PURA",
+    "description": "Purity Aqueous",
+    "cash_price_usd": 2.3,
+    "online_price_usd": 2.415
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "001 - BABY",
+    "code": "SOFT",
+    "description": "Soft Care Pampers",
+    "cash_price_usd": 5.0,
+    "online_price_usd": 5.25
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "001 - BABY",
+    "code": "SUNS",
+    "description": "Sunlight soap",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "001 - BABY",
+    "code": "SUPRDY",
+    "description": "Superdry - Pamper",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "001 - BABY",
+    "code": "WIP",
+    "description": "Wipes",
+    "cash_price_usd": 0.7,
+    "online_price_usd": 0.735
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "001 - BABY",
+    "code": "WIPJOHN",
+    "description": "Johnson Wipes",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "ALH",
+    "description": "Aloha Washing Pwd 2kg",
+    "cash_price_usd": 4.0,
+    "online_price_usd": 4.2
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "ALO",
+    "description": "Aloha Washing Pwd 1kg",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "ALOD",
+    "description": "Aloha Dishwasher",
+    "cash_price_usd": 1.5,
+    "online_price_usd": 1.575
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "ALOH",
+    "description": "Aloha Washing Pwdr 500g",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "ARP",
+    "description": "Arpic Cleaner 750ml",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "BIG",
+    "description": "BigBen bar",
+    "cash_price_usd": 1.5,
+    "online_price_usd": 1.575
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "BOM",
+    "description": "Boom Paste",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "BOMFC",
+    "description": "Boom Force Cream 750ml",
+    "cash_price_usd": 1.5,
+    "online_price_usd": 1.575
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "BOMM",
+    "description": "Boom 150g",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "BOMW",
+    "description": "Boom - 1KG",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "BOO",
+    "description": "BoomDish washer 750ml",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "BOOMB",
+    "description": "Boom Bleach 750ml",
+    "cash_price_usd": 1.8,
+    "online_price_usd": 1.8900000000000001
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "BOOMF",
+    "description": "Boom Force Scouring",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "BOOMM",
+    "description": "Boom W/P 500g",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "COB",
+    "description": "Cobra 350ml",
+    "cash_price_usd": 2.5,
+    "online_price_usd": 2.625
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "COM",
+    "description": "Comfort 1L",
+    "cash_price_usd": 3.0,
+    "online_price_usd": 3.15
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "DISW",
+    "description": "Dishwasher Seawave",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "DOMES",
+    "description": "Domestos local",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "DOMS",
+    "description": "Domestos",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "GK",
+    "description": "Gik 750ml",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "GREE",
+    "description": "Green Bar Perfection",
+    "cash_price_usd": 1.3,
+    "online_price_usd": 1.365
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "GRN",
+    "description": "Green Bar",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "HAN",
+    "description": "Handy Andy",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "HARP",
+    "description": "Harpic",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "JK",
+    "description": "Jik 750ml",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "KIW",
+    "description": "Kiwi Polish 50ml",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "KNCK",
+    "description": "Knock Dishwasher 750ml",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "KNO",
+    "description": "Knockout Can",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "KNOA",
+    "description": "Knockout All Purpose Cleaner 500ml",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "KNOC",
+    "description": "Knock out Satchet",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "KNOCK",
+    "description": "Knockout Dishwasher 2L",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "KNOCT",
+    "description": "Knockout Bleach",
+    "cash_price_usd": 1.5,
+    "online_price_usd": 1.575
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "KWI",
+    "description": "Kiwi 100ml",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "MAQ",
+    "description": "Maq 1kg",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "MEGFLR",
+    "description": "Boom 2kg",
+    "cash_price_usd": 4.0,
+    "online_price_usd": 4.2
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "MQ",
+    "description": "Maq 2kg",
+    "cash_price_usd": 4.0,
+    "online_price_usd": 4.2
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "NUGET",
+    "description": "Nugget - 100ml",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "OMO",
+    "description": "Omo Powder 2kg",
+    "cash_price_usd": 4.0,
+    "online_price_usd": 4.2
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "PIN",
+    "description": "Pinegel 500ml",
+    "cash_price_usd": 1.5,
+    "online_price_usd": 1.575
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "PNE",
+    "description": "Pinegel 1L",
+    "cash_price_usd": 3.0,
+    "online_price_usd": 3.15
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "SEAW",
+    "description": "DishWasher Seawave 2L",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "SNL",
+    "description": "Sunlight Liquid",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "STASFT",
+    "description": "Star Soft - 2litre",
+    "cash_price_usd": 3.5,
+    "online_price_usd": 3.675
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "STS",
+    "description": "StarSoft Refill mix",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "SUNL",
+    "description": "Sunlight 1kg",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "SUNLT",
+    "description": "SunLight Pwd 2kg",
+    "cash_price_usd": 4.0,
+    "online_price_usd": 4.2
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "VIM",
+    "description": "Xtra Vim",
+    "cash_price_usd": 0.8,
+    "online_price_usd": 0.8400000000000001
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "VM",
+    "description": "Vim Can",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "004 - CLEANING PRODUCTS",
+    "code": "XTRA",
+    "description": "XTRA Washing Powder",
+    "cash_price_usd": 3.5,
+    "online_price_usd": 3.675
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "ADDSPRY",
+    "description": "Addidas Spray",
+    "cash_price_usd": 3.0,
+    "online_price_usd": 3.15
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "AXP",
+    "description": "Axe Perfumer",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "BAB",
+    "description": "Baby Crez 500ml",
+    "cash_price_usd": 1.8,
+    "online_price_usd": 1.8900000000000001
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "BABL",
+    "description": "Baby line 500ml",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "BCS",
+    "description": "Black Chick  Small 125ml",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "BEV",
+    "description": "BeverlyHills Roll on",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "BEVP",
+    "description": "Beverly Hills Perfume",
+    "cash_price_usd": 2.5,
+    "online_price_usd": 2.625
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "BLC",
+    "description": "BlackChic Big 250ml",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "BOD",
+    "description": "Bodi doc",
+    "cash_price_usd": 3.0,
+    "online_price_usd": 3.15
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "BODD",
+    "description": "Bodi doc Tissue Oil",
+    "cash_price_usd": 3.0,
+    "online_price_usd": 3.15
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "BOMO",
+    "description": "Boom Fabric Conditioner 2ltr",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "CBL",
+    "description": "Clere Beautiful Cream 400ml",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "CFM",
+    "description": "Clere For Men 450ml",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "CLG",
+    "description": "Clere Glycerine 100ml",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "CLM",
+    "description": "Clere Men lotion 400ml",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "CLR",
+    "description": "Clere Glyco Glycerine 100ml",
+    "cash_price_usd": 1.2,
+    "online_price_usd": 1.26
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "CLRE",
+    "description": "Clere Ladies Cream",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "COSMO",
+    "description": "Cosmo Foam Bath",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "DAR",
+    "description": "Dark& Lovely",
+    "cash_price_usd": 5.5,
+    "online_price_usd": 5.775
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "DAW",
+    "description": "Dawn",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "DAWN",
+    "description": "Dawn Cream",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "DAX31",
+    "description": "Dax 3 in 1 375mls",
+    "cash_price_usd": 1.5,
+    "online_price_usd": 1.575
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "DAXG",
+    "description": "Dax Hair Grower 250ml",
+    "cash_price_usd": 3.0,
+    "online_price_usd": 3.15
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "DAXH",
+    "description": "Dax Hair Grower 125mls",
+    "cash_price_usd": 1.5,
+    "online_price_usd": 1.575
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "DAXI",
+    "description": "Dax Freez Big 250ml",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "DOVE",
+    "description": "Dove Lotion",
+    "cash_price_usd": 5.5,
+    "online_price_usd": 5.775
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "DXA",
+    "description": "Dax Freez Small 100ml",
+    "cash_price_usd": 1.2,
+    "online_price_usd": 1.26
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "DXB",
+    "description": "Dax Big 3 n 1",
+    "cash_price_usd": 2.5,
+    "online_price_usd": 2.625
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "ENG",
+    "description": "English Blazer",
+    "cash_price_usd": 2.5,
+    "online_price_usd": 2.625
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "EWP",
+    "description": "EasyWaves Pack",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "EXCLA",
+    "description": "Exclamation Perfume",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "GMG",
+    "description": "Gentel Magic lotion",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "GML",
+    "description": "Gentle Magic Cream",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "GMS",
+    "description": "Gentel Magic Serum",
+    "cash_price_usd": 1.5,
+    "online_price_usd": 1.575
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "GNT",
+    "description": "Gentel Magic Soap",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "GNTO",
+    "description": "Gentle Magic Oil 50ml",
+    "cash_price_usd": 2.5,
+    "online_price_usd": 2.625
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "HAR",
+    "description": "Hair Remover Cosmo 40g",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "HOIT",
+    "description": "Hoit Toity 90mls",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "HOITY",
+    "description": "Hoity Toity Lotion",
+    "cash_price_usd": 3.0,
+    "online_price_usd": 3.15
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "IGM",
+    "description": "Ingrams Herbal",
+    "cash_price_usd": 2.5,
+    "online_price_usd": 2.625
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "IGMS",
+    "description": "Ingrams Senstive 450ml",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "IMP",
+    "description": "Ingrams Moisture Plus 450ml",
+    "cash_price_usd": 2.8,
+    "online_price_usd": 2.94
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "ING",
+    "description": "Ingrams men 450ml",
+    "cash_price_usd": 2.8,
+    "online_price_usd": 2.94
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "INGM",
+    "description": "Ingrams Aloe 450ml",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "INGMS",
+    "description": "Ingrams tissue oi l450ml",
+    "cash_price_usd": 3.5,
+    "online_price_usd": 3.675
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "INGRO",
+    "description": "Ingrams Original 450mls",
+    "cash_price_usd": 2.8,
+    "online_price_usd": 2.94
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "INR",
+    "description": "Igrams Roibos 450ml",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "ISB",
+    "description": "Inecto Super Black75g",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "ISOP",
+    "description": "Isoplus Edge Control",
+    "cash_price_usd": 2.5,
+    "online_price_usd": 2.625
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "ISP",
+    "description": "Iso Plus Hair Spry 240ml",
+    "cash_price_usd": 1.8,
+    "online_price_usd": 1.8900000000000001
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "LACE",
+    "description": "Lace Lotion",
+    "cash_price_usd": 3.0,
+    "online_price_usd": 3.15
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "MOUS",
+    "description": "Mousse",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "NIV",
+    "description": "Nivea Cream/Lotion 400ml",
+    "cash_price_usd": 4.0,
+    "online_price_usd": 4.2
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "NIVA",
+    "description": "Nivea Radiant Cream 400ml",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "NIVES",
+    "description": "Nivea Spray",
+    "cash_price_usd": 3.0,
+    "online_price_usd": 3.15
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "NVIA",
+    "description": "Nivea Q10",
+    "cash_price_usd": 7.5,
+    "online_price_usd": 7.875
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "OHS",
+    "description": "Oh So Heavenly Lotion 720ml",
+    "cash_price_usd": 5.0,
+    "online_price_usd": 5.25
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "OHSHV",
+    "description": "Oh So Heavenly - 2L",
+    "cash_price_usd": 5.5,
+    "online_price_usd": 5.775
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "OHSL",
+    "description": "Oh  So Heavenly Lotion 1L",
+    "cash_price_usd": 7.0,
+    "online_price_usd": 7.35
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "OHSO",
+    "description": "Oh SO Heavenly Cream 450ml",
+    "cash_price_usd": 4.0,
+    "online_price_usd": 4.2
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "OHSOQ",
+    "description": "Oh So heavenly Q10",
+    "cash_price_usd": 7.0,
+    "online_price_usd": 7.35
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "OLV",
+    "description": "Olive Oil Spry 250ml",
+    "cash_price_usd": 1.8,
+    "online_price_usd": 1.8900000000000001
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "PLA",
+    "description": "PlayBoy Roll on",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "PLAY",
+    "description": "PlayBoy Perfume",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "RLS",
+    "description": "Roll On Shield",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "ROLL",
+    "description": "Roll On Addidas 50ml",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "ROLNIV",
+    "description": "Roll on Nivea - 50ml",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "ROP",
+    "description": "Roll On Power House 50ml",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "SHOW",
+    "description": "Shower To Shower",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "SHWR",
+    "description": "Shower to Shower Perfume",
+    "cash_price_usd": 2.5,
+    "online_price_usd": 2.625
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "SKA",
+    "description": "Skala 200g",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "SKAL",
+    "description": "Skala hairFood",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "TOPS",
+    "description": "Top Society",
+    "cash_price_usd": 1.5,
+    "online_price_usd": 1.575
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "VAS",
+    "description": "Vaseline 450ml",
+    "cash_price_usd": 3.8,
+    "online_price_usd": 3.9899999999999998
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "VASE",
+    "description": "Vaseline 250ml",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "VASEL",
+    "description": "v",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "VASELN",
+    "description": "Vaseline lips",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "VASL",
+    "description": "Vaseline 50ml",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "VASLN",
+    "description": "Vaseline Cream",
+    "cash_price_usd": 3.0,
+    "online_price_usd": 3.15
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "VASLNL",
+    "description": "Vaseline Lotion",
+    "cash_price_usd": 3.5,
+    "online_price_usd": 3.675
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "VESTGLC",
+    "description": "Vestline Garlic - 200g",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "005 - COSMETICS",
+    "code": "VSN",
+    "description": "Vaseline - 100ml",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "019 - TOILETRIES",
+    "code": "ANG",
+    "description": "Angel Care Tissue",
+    "cash_price_usd": 8.0,
+    "online_price_usd": 8.4
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "019 - TOILETRIES",
+    "code": "AQFRSH",
+    "description": "Aquafresh - 100ml",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "019 - TOILETRIES",
+    "code": "BABYS",
+    "description": "Baby Soft 18s",
+    "cash_price_usd": 9.5,
+    "online_price_usd": 9.975
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "019 - TOILETRIES",
+    "code": "CLO",
+    "description": "Close Up",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "019 - TOILETRIES",
+    "code": "COL",
+    "description": "Colgate 100ml",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "019 - TOILETRIES",
+    "code": "DELLP",
+    "description": "Utra Pads",
+    "cash_price_usd": 0.6,
+    "online_price_usd": 0.63
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "019 - TOILETRIES",
+    "code": "DETO",
+    "description": "Dettol Liquid",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "019 - TOILETRIES",
+    "code": "DETT",
+    "description": "Dettol soap",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "019 - TOILETRIES",
+    "code": "GEI",
+    "description": "Geisha",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "019 - TOILETRIES",
+    "code": "HIL",
+    "description": "HiLife Soap",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "019 - TOILETRIES",
+    "code": "HYG",
+    "description": "hygienix Soap 175g",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "019 - TOILETRIES",
+    "code": "JAD",
+    "description": "Jade Soap",
+    "cash_price_usd": 0.8,
+    "online_price_usd": 0.8400000000000001
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "019 - TOILETRIES",
+    "code": "KOT",
+    "description": "Kotex pads 10s",
+    "cash_price_usd": 1.5,
+    "online_price_usd": 1.575
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "019 - TOILETRIES",
+    "code": "LIFBY",
+    "description": "Lifebouy",
+    "cash_price_usd": 0.8,
+    "online_price_usd": 0.8400000000000001
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "019 - TOILETRIES",
+    "code": "LUX",
+    "description": "Lux Soap",
+    "cash_price_usd": 0.9,
+    "online_price_usd": 0.9450000000000001
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "019 - TOILETRIES",
+    "code": "OHSOH",
+    "description": "Oh So Heavenly Gel",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "019 - TOILETRIES",
+    "code": "PANT",
+    "description": "Kotex Pant Liners",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "019 - TOILETRIES",
+    "code": "PDS",
+    "description": "Pads Mix",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "019 - TOILETRIES",
+    "code": "PERI",
+    "description": "Period pants",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "019 - TOILETRIES",
+    "code": "PROT",
+    "description": "Protex Soap",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "019 - TOILETRIES",
+    "code": "PRVT",
+    "description": "Private Joy Tissue",
+    "cash_price_usd": 8.0,
+    "online_price_usd": 8.4
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "019 - TOILETRIES",
+    "code": "ROM",
+    "description": "Romance Soap 50g",
+    "cash_price_usd": 0.8,
+    "online_price_usd": 0.8400000000000001
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "019 - TOILETRIES",
+    "code": "SAT",
+    "description": "Tissue Single",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "019 - TOILETRIES",
+    "code": "SATI",
+    "description": "Satiskin 2L",
+    "cash_price_usd": 4.5,
+    "online_price_usd": 4.725
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "019 - TOILETRIES",
+    "code": "SATSK",
+    "description": "Satiskin 1L",
+    "cash_price_usd": 2.5,
+    "online_price_usd": 2.625
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "019 - TOILETRIES",
+    "code": "SON",
+    "description": "Sona",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "019 - TOILETRIES",
+    "code": "TISS",
+    "description": "Tissue 4s",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "019 - TOILETRIES",
+    "code": "TWIN",
+    "description": "TwinSaver Tissue",
+    "cash_price_usd": 9.0,
+    "online_price_usd": 9.45
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "019 - TOILETRIES",
+    "code": "TWINS",
+    "description": "TwinSaver 9s",
+    "cash_price_usd": 4.5,
+    "online_price_usd": 4.725
+  },
+  {
+    "sheet": "12 Sept BCCT",
+    "category": "019 - TOILETRIES",
+    "code": "YBO",
+    "description": "Yebo Soap",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "ALL",
+    "description": "Allsorts sweets",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "AMAZ",
+    "description": "Amazon Cookies",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "BIC",
+    "description": "Bickies",
+    "cash_price_usd": 0.4,
+    "online_price_usd": 0.42000000000000004
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "BLS01",
+    "description": "Bliss - 200g",
+    "cash_price_usd": 0.4,
+    "online_price_usd": 0.42000000000000004
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "BUBB",
+    "description": "Bubble Chocolate",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "CAK",
+    "description": "Cake",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "CARD",
+    "description": "Cardbury choc",
+    "cash_price_usd": 1.5,
+    "online_price_usd": 1.575
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "CHA",
+    "description": "Charhons 500g",
+    "cash_price_usd": 1.5,
+    "online_price_usd": 1.575
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "CHAR",
+    "description": "Charhons 1kg",
+    "cash_price_usd": 3.0,
+    "online_price_usd": 3.15
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "CHARH",
+    "description": "Charhorns 2kg",
+    "cash_price_usd": 5.2,
+    "online_price_usd": 5.46
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "CHARHN",
+    "description": "Charhon Crunch Cookies",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "CHARNS",
+    "description": "Charhons 200g",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "CHCOK",
+    "description": "Charhons Cookies - 500g",
+    "cash_price_usd": 1.5,
+    "online_price_usd": 1.575
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "CHELS",
+    "description": "ShortBread Chelsea",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "CHI",
+    "description": "Chicken curls",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "CHIC",
+    "description": "Chicken Flings",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "CHMP",
+    "description": "Chompkins 25g",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "CHO",
+    "description": "Chocolate Coated Biscuits",
+    "cash_price_usd": 1.5,
+    "online_price_usd": 1.575
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "CHOCC",
+    "description": "Chocalate Coated Small",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "CHOCCB",
+    "description": "Chocolate coated Box",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "CHOI",
+    "description": "Choice Biscuits",
+    "cash_price_usd": 1.5,
+    "online_price_usd": 1.575
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "CHOMP",
+    "description": "Chompkins 150g",
+    "cash_price_usd": 1.3,
+    "online_price_usd": 1.365
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "CHPP",
+    "description": "Chippa",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "COC",
+    "description": "Coco Bongo Choc",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "COKI",
+    "description": "Cookies",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "COU",
+    "description": "Cough drops",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "CRAC",
+    "description": "Cracker Jax",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "CRINK",
+    "description": "Crinkles big",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "CRM",
+    "description": "CreamFeast",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "DAI",
+    "description": "Daisy Biscuits",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "DAND",
+    "description": "Dandy Pack",
+    "cash_price_usd": 2.5,
+    "online_price_usd": 2.625
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "DELL",
+    "description": "Dell Cookies 500ml",
+    "cash_price_usd": 1.8,
+    "online_price_usd": 1.8900000000000001
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "DELLC",
+    "description": "Dell cookies 1kg",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "DOR",
+    "description": "Doritos 145g",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "ECLAI",
+    "description": "Eclair/Big Boom Pack",
+    "cash_price_usd": 3.3,
+    "online_price_usd": 3.465
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "ELD30",
+    "description": "Eldos - 30g",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "FIN",
+    "description": "Finger Biscuits",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "FRI",
+    "description": "Frimax 150g",
+    "cash_price_usd": 1.5,
+    "online_price_usd": 1.575
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "FUNN",
+    "description": "Funny Dip",
+    "cash_price_usd": 0.2,
+    "online_price_usd": 0.21000000000000002
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "GOLD",
+    "description": "GoldenFresh Biscuits",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "HAL01",
+    "description": "HALLS",
+    "cash_price_usd": 0.1,
+    "online_price_usd": 0.10500000000000001
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "HELL",
+    "description": "Hello/Chippa Single",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "HELPCK",
+    "description": "Hello - Pack",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "IMPR",
+    "description": "Imperial Mints",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "JMBO",
+    "description": "Jumbo Pack",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "JOE",
+    "description": "Joe Biscuits",
+    "cash_price_usd": 0.33,
+    "online_price_usd": 0.34650000000000003
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "JPT",
+    "description": "Jupiter 75g",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "JUMSNG",
+    "description": "Jumbo single",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "KING",
+    "description": "KingKurls Pack",
+    "cash_price_usd": 3.5,
+    "online_price_usd": 3.675
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "KIS01",
+    "description": "Kiss",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "KNG",
+    "description": "KingKurls Single",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "KRE",
+    "description": "Krema Biscuits",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "LAKK",
+    "description": "LakkerNax",
+    "cash_price_usd": 1.8,
+    "online_price_usd": 1.8900000000000001
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "LAYS",
+    "description": "Lays 125g",
+    "cash_price_usd": 1.5,
+    "online_price_usd": 1.575
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "LOB",
+    "description": "Lobels Biscuits",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "LOBE",
+    "description": "Lobels Loose Biscuits",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "LOLI",
+    "description": "Lollipop",
+    "cash_price_usd": 0.2,
+    "online_price_usd": 0.21000000000000002
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "LOO",
+    "description": "Loose Biscuits 200g",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "LOS",
+    "description": "Loose Buiscuits 2kg",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "LUN",
+    "description": "Lunch Bar Choc",
+    "cash_price_usd": 0.4,
+    "online_price_usd": 0.42000000000000004
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "LYS",
+    "description": "Lays 23g",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "MAP",
+    "description": "Maputi",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "MARIE",
+    "description": "Marie",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "MARS",
+    "description": "MarshMallow Long",
+    "cash_price_usd": 0.25,
+    "online_price_usd": 0.2625
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "MARSH",
+    "description": "MarshMallow Long Pack",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "MAY",
+    "description": "Maynards Jelly Sweets",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "MINTS",
+    "description": "Mints Pack",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "MNT",
+    "description": "Mint/Dandy/toffe",
+    "cash_price_usd": 0.05,
+    "online_price_usd": 0.052500000000000005
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "MPT",
+    "description": "Maputi Authentic",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "MRSHP",
+    "description": "MarshMallow Pack",
+    "cash_price_usd": 6.0,
+    "online_price_usd": 6.3
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "NIB",
+    "description": "Nibbles",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "NIVE",
+    "description": "Maputi Single",
+    "cash_price_usd": 0.1,
+    "online_price_usd": 0.10500000000000001
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "PAS",
+    "description": "Pascal Choc",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "POP",
+    "description": "Popcorn",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "POPCN",
+    "description": "Popticorn -120g",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "POPT",
+    "description": "Popticorn Pack",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "PRO",
+    "description": "Proton Cookies 1kg",
+    "cash_price_usd": 3.5,
+    "online_price_usd": 3.675
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "PROTN",
+    "description": "Proton Cookies 250g",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "PROTO",
+    "description": "Proton Cookies 2kg",
+    "cash_price_usd": 6.5,
+    "online_price_usd": 6.825
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "PRT",
+    "description": "Proton Cookies 500g",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "RIPP",
+    "description": "Ripples",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "ROSS",
+    "description": "Rosso Chocolate",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "ROSY",
+    "description": "Rossy Wafers",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "RUL",
+    "description": "Rul 3D",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "SHOR",
+    "description": "ShortBread Mini",
+    "cash_price_usd": 0.25,
+    "online_price_usd": 0.2625
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "SHRT",
+    "description": "ShortBread Biscuits - 150g",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "SIM",
+    "description": "Simba",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "SPD",
+    "description": "Spuds 30g",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "SPNRL01",
+    "description": "Spinners loose - Pack",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "SPU",
+    "description": "Spuds 75g",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "SPUD",
+    "description": "Spuds/Lays Box 30g",
+    "cash_price_usd": 10.0,
+    "online_price_usd": 10.5
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "SPUDB",
+    "description": "S",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "STA",
+    "description": "Stambo/ BigBoom Pack",
+    "cash_price_usd": 3.0,
+    "online_price_usd": 3.15
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "STAMB",
+    "description": "Stambo/ BigBoom Single",
+    "cash_price_usd": 0.1,
+    "online_price_usd": 0.10500000000000001
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "SUNB",
+    "description": "SunBite Biscuits",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "SUNSA",
+    "description": "Sun Snack",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "SWEE",
+    "description": "Sweet Cup",
+    "cash_price_usd": 0.1,
+    "online_price_usd": 0.10500000000000001
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "SWEEC",
+    "description": "SweetCup Can",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "TEA",
+    "description": "Tea Biscuits",
+    "cash_price_usd": 3.0,
+    "online_price_usd": 3.15
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "THI",
+    "description": "Things/Kornkurl 150g",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "THIN",
+    "description": "Things 75g",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "THING",
+    "description": "Things Pack",
+    "cash_price_usd": 5.0,
+    "online_price_usd": 5.25
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "THINP",
+    "description": "THINGS Pack",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "TME",
+    "description": "Time Biscuits",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "TOF",
+    "description": "Toffee Bar",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "TOPTB",
+    "description": "Top T biscuits - 150g",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "TORK",
+    "description": "Torku Chocolate",
+    "cash_price_usd": 0.25,
+    "online_price_usd": 0.2625
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "VIG",
+    "description": "Vigos Choc",
+    "cash_price_usd": 0.1,
+    "online_price_usd": 0.10500000000000001
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "WSH",
+    "description": "Wish Cream",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "YOGT",
+    "description": "Yogurt Kefalos 75ml",
+    "cash_price_usd": 0.6,
+    "online_price_usd": 0.63
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "ZAP",
+    "description": "ZapNax",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "012 - SNACK",
+    "code": "ZAPP",
+    "description": "ZapNax Pack",
+    "cash_price_usd": 3.0,
+    "online_price_usd": 3.15
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "013 - SOUPS",
+    "code": "BEAN",
+    "description": "Beans kg",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "013 - SOUPS",
+    "code": "BEEF",
+    "description": "Beef Kg",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "013 - SOUPS",
+    "code": "BRON",
+    "description": "Brono Gravy",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "013 - SOUPS",
+    "code": "BST",
+    "description": "Bisto Gravy 125g",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "013 - SOUPS",
+    "code": "BSTO",
+    "description": "Bisto Gravy 250g",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "013 - SOUPS",
+    "code": "CAB",
+    "description": "Cabbages",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "013 - SOUPS",
+    "code": "CARRT",
+    "description": "Carrots",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "013 - SOUPS",
+    "code": "CHCK",
+    "description": "Chicken full",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "013 - SOUPS",
+    "code": "CUC",
+    "description": "Cucumber",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "013 - SOUPS",
+    "code": "EGG",
+    "description": "Eggs",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "013 - SOUPS",
+    "code": "GARLI",
+    "description": "Garlic",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "013 - SOUPS",
+    "code": "GREBN",
+    "description": "Green Beans",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "013 - SOUPS",
+    "code": "KNOR",
+    "description": "Knorr Soup",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "013 - SOUPS",
+    "code": "LETT",
+    "description": "Lettuce",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "013 - SOUPS",
+    "code": "ONIO",
+    "description": "Onion",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "013 - SOUPS",
+    "code": "ORANG",
+    "description": "Orange - pocket",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "013 - SOUPS",
+    "code": "ROY",
+    "description": "Royco Satchet",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "013 - SOUPS",
+    "code": "ROYC",
+    "description": "Royco Box 12s",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "013 - SOUPS",
+    "code": "RYC",
+    "description": "Royco Mchuzi",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "013 - SOUPS",
+    "code": "SAUC",
+    "description": "Sausage kg",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "013 - SOUPS",
+    "code": "SPIC",
+    "description": "Spice",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "013 - SOUPS",
+    "code": "TOM",
+    "description": "Tomatoes kg",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "013 - SOUPS",
+    "code": "TOPL",
+    "description": "Top Soy 90g",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "013 - SOUPS",
+    "code": "USV",
+    "description": "Usavi Mix",
+    "cash_price_usd": 0.33,
+    "online_price_usd": 0.34650000000000003
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "014 - SPICES",
+    "code": "SOTHCTN",
+    "description": "Southern Coating - 200g",
+    "cash_price_usd": 1.5,
+    "online_price_usd": 1.575
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "015 - SPREADS",
+    "code": "BLUE",
+    "description": "Blue Band",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "015 - SPREADS",
+    "code": "BTT",
+    "description": "Buttercup Brick 500g",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "015 - SPREADS",
+    "code": "BUTC",
+    "description": "ButterCup 250ml",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "015 - SPREADS",
+    "code": "BUTT",
+    "description": "ButterCup tub",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "015 - SPREADS",
+    "code": "MAR",
+    "description": "Marmalade Jam 500g",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "015 - SPREADS",
+    "code": "PNUT",
+    "description": "Peanut Butter 1L",
+    "cash_price_usd": 3.0,
+    "online_price_usd": 3.15
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "015 - SPREADS",
+    "code": "PNUTB",
+    "description": "Peanut Butter 375ml",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "015 - SPREADS",
+    "code": "ROMI",
+    "description": "Romi Margarine",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "015 - SPREADS",
+    "code": "SNJAM",
+    "description": "SunJam 900g",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "015 - SPREADS",
+    "code": "SUNJ",
+    "description": "SunJam 500g",
+    "cash_price_usd": 1.5,
+    "online_price_usd": 1.575
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "015 - SPREADS",
+    "code": "TJAM",
+    "description": "Topjam 900g",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "015 - SPREADS",
+    "code": "TOP",
+    "description": "Top Jam 400ml",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "015 - SPREADS",
+    "code": "ZMG",
+    "description": "Zimgold Marg  Tub",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "AROMA",
+    "description": "Noddles Aroma",
+    "cash_price_usd": 1.2,
+    "online_price_usd": 1.26
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "ASHN",
+    "description": "Ashna Rice 2kg",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "BAS",
+    "description": "Basmattii 5kg",
+    "cash_price_usd": 10.0,
+    "online_price_usd": 10.5
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "BEL",
+    "description": "Bella Macaroni 3kg",
+    "cash_price_usd": 4.0,
+    "online_price_usd": 4.2
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "BET",
+    "description": "BetterBuy RollerMeal 10kg",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "BETT",
+    "description": "BetterBuy Macaroni 3kg",
+    "cash_price_usd": 4.0,
+    "online_price_usd": 4.2
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "BETTR",
+    "description": "BetterBuy Spagetti",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "BRE",
+    "description": "Bread",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "BTBUY",
+    "description": "BetterBuy 400g",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "CAKFLR",
+    "description": "SnowFlak Cake Flour 2.5kg",
+    "cash_price_usd": 3.5,
+    "online_price_usd": 3.675
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "CASM",
+    "description": "Noddles  casamia",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "CONT",
+    "description": "Continental Rice 2kg",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "COO",
+    "description": "Cookmore Rice 5kg",
+    "cash_price_usd": 5.5,
+    "online_price_usd": 5.775
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "COOKM",
+    "description": "CookMore Rice 2kg",
+    "cash_price_usd": 2.5,
+    "online_price_usd": 2.625
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "DON",
+    "description": "Donunt",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "EKN",
+    "description": "Ekono Rice white 2kg",
+    "cash_price_usd": 2.2,
+    "online_price_usd": 2.31
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "EKO",
+    "description": "Ekono white Rice 5kg",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "EKON",
+    "description": "Ekono Macaron 3kg",
+    "cash_price_usd": 4.0,
+    "online_price_usd": 4.2
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "EKONO",
+    "description": "Spagetti 400g",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "EKSP01",
+    "description": "Ekono Spaghett - Box (8kg)",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "GOLF",
+    "description": "Noddles Golf",
+    "cash_price_usd": 1.2,
+    "online_price_usd": 1.26
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "IDE",
+    "description": "Ideal white Rice 5kg",
+    "cash_price_usd": 5.2,
+    "online_price_usd": 5.46
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "IDEL",
+    "description": "Ideal whie Rice 2kg",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "INDO",
+    "description": "Noddles Indomie",
+    "cash_price_usd": 1.5,
+    "online_price_usd": 1.575
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "JAS",
+    "description": "Jasmine Rice 2kg",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "MAC",
+    "description": "Macaroni Box",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "MACR01",
+    "description": "Macaron - 400g",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "MAHA",
+    "description": "Mahatma 2kg",
+    "cash_price_usd": 2.5,
+    "online_price_usd": 2.625
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "MAHT",
+    "description": "Mahatma 5kg",
+    "cash_price_usd": 6.0,
+    "online_price_usd": 6.3
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "MAHTMCS",
+    "description": "MAHATMA 2kg - Case",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "MARA",
+    "description": "Mariana Spagetti",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "MARI",
+    "description": "Mariiana 1kg",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "MART",
+    "description": "Martina White Rice 2kg",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "MARTIN",
+    "description": "Martina Rice 5kg",
+    "cash_price_usd": 5.2,
+    "online_price_usd": 5.46
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "MEG",
+    "description": "Parboiled Rice 2kg",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "MEGA",
+    "description": "Mega Macaroni - 3KG",
+    "cash_price_usd": 4.0,
+    "online_price_usd": 4.2
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "MEGAM",
+    "description": "Mega Macaroni 400g",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "MEGR01",
+    "description": "Mega Rice - 2kg",
+    "cash_price_usd": 2.2,
+    "online_price_usd": 2.31
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "MEGRC",
+    "description": "Mega Rice - 5kg",
+    "cash_price_usd": 5.8,
+    "online_price_usd": 6.09
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "MGAA",
+    "description": "Mega All Purpose 2kg",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "MR",
+    "description": "Mr Rice White 2kg",
+    "cash_price_usd": 2.2,
+    "online_price_usd": 2.31
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "MRR",
+    "description": "Mr Rice white 5kg",
+    "cash_price_usd": 5.2,
+    "online_price_usd": 5.46
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "NGW",
+    "description": "Ngwerevere",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "NODB",
+    "description": "Noddle Box",
+    "cash_price_usd": 10.0,
+    "online_price_usd": 10.5
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "NODBNT",
+    "description": "Noddles Binto",
+    "cash_price_usd": 1.2,
+    "online_price_usd": 1.26
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "NODD",
+    "description": "Noodle Kellogs/Golf Box",
+    "cash_price_usd": 12.0,
+    "online_price_usd": 12.6
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "NODL",
+    "description": "Noddles Mega",
+    "cash_price_usd": 1.3,
+    "online_price_usd": 1.365
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "NODPCK",
+    "description": "Noddles Kellogs",
+    "cash_price_usd": 1.6,
+    "online_price_usd": 1.6800000000000002
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "PAR",
+    "description": "Parboiled Rice 5kg",
+    "cash_price_usd": 5.2,
+    "online_price_usd": 5.46
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "PAST",
+    "description": "Pastarelli - Macaroni 3kg",
+    "cash_price_usd": 4.0,
+    "online_price_usd": 4.2
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "PEARL",
+    "description": "Pearlenta 10kg",
+    "cash_price_usd": 8.0,
+    "online_price_usd": 8.4
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "PIE",
+    "description": "Pie",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "PLAI",
+    "description": "Plain Flour 2kg",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "POTA",
+    "description": "Potatoes 15kg",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "PRIM",
+    "description": "Primo Pasta",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "PRIMO",
+    "description": "Primo Fusilli 650g",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "RAHA",
+    "description": "Raha white Rice 2kg",
+    "cash_price_usd": 2.2,
+    "online_price_usd": 2.31
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "RHA",
+    "description": "Raha white Rice 5kg",
+    "cash_price_usd": 5.5,
+    "online_price_usd": 5.775
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "RLLR",
+    "description": "Roller meal Irifarm 5kg",
+    "cash_price_usd": 3.0,
+    "online_price_usd": 3.15
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "ROLER",
+    "description": "Roller Meal 10kg",
+    "cash_price_usd": 6.0,
+    "online_price_usd": 6.3
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "ROLLS",
+    "description": "Roller SuperLife 5kg",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "SAS",
+    "description": "Sasko Flour - 5kg",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "SASKF",
+    "description": "Sasko Flour 2.5 kg",
+    "cash_price_usd": 3.0,
+    "online_price_usd": 3.15
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "SELF",
+    "description": "Self Raising Flour 2kg",
+    "cash_price_usd": 1.8,
+    "online_price_usd": 1.8900000000000001
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "SELFR",
+    "description": "Self Raising Flour Case",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "SNO",
+    "description": "SnowFake SelfRaising 2.5",
+    "cash_price_usd": 3.8,
+    "online_price_usd": 3.9899999999999998
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "SUGAR",
+    "description": "Sugar Case",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "TAPI",
+    "description": "Tapi Tapi 2kg",
+    "cash_price_usd": 2.5,
+    "online_price_usd": 2.625
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "THAI",
+    "description": "Thai Rice",
+    "cash_price_usd": 2.3,
+    "online_price_usd": 2.415
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "THAIR",
+    "description": "Thai 5kg",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "TLOF",
+    "description": "Tea loaf",
+    "cash_price_usd": 0.8,
+    "online_price_usd": 0.8400000000000001
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "TOPC",
+    "description": "TopChef white Rice 5kg",
+    "cash_price_usd": 5.5,
+    "online_price_usd": 5.775
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "TOPF",
+    "description": "TopChef 2kg",
+    "cash_price_usd": 2.5,
+    "online_price_usd": 2.625
+  },
+  {
+    "sheet": "12 Sept SSSS",
+    "category": "016 - STARCH",
+    "code": "WHRC",
+    "description": "White Rice Case 2kg",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "ADE",
+    "description": "Shumba",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "AMAS",
+    "description": "AmaSip",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "AQA",
+    "description": "Aquaclear case",
+    "cash_price_usd": 4.0,
+    "online_price_usd": 4.2
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "AQU",
+    "description": "Aquaclear 500ml",
+    "cash_price_usd": 0.33,
+    "online_price_usd": 0.34650000000000003
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "AQUA",
+    "description": "Aquaclear 750ml",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "BAL",
+    "description": "Ballyhouse lime/crush 2L",
+    "cash_price_usd": 2.5,
+    "online_price_usd": 2.625
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "BALY",
+    "description": "Ballyhouse Ras/Blkbery",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "BAOJ01",
+    "description": "Baobab Juice -500ml",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "BON",
+    "description": "Bonaqua",
+    "cash_price_usd": 0.33,
+    "online_price_usd": 0.34650000000000003
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "BONA",
+    "description": "Bonaqua Case",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "BROTH",
+    "description": "Brothers Juice",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "CAS",
+    "description": "Cascade 500ml",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "CASC",
+    "description": "Cascade 1L",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "CERES",
+    "description": "Ceres 1L",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "CIT",
+    "description": "Citro Juice 1L",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "DEL",
+    "description": "Delta 1L",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "DELTA",
+    "description": "Delta 440ml",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "DETA",
+    "description": "DELTA 2L",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "DETM",
+    "description": "Delta 300ml",
+    "cash_price_usd": 0.33,
+    "online_price_usd": 0.34650000000000003
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "DRA",
+    "description": "Dragon",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "FIZ",
+    "description": "Fizzi 500ml",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "FIZZ",
+    "description": "Fizzi 2L",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "FRMIX",
+    "description": "Fresh-Up - 400ml",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "FRT",
+    "description": "Flava Burst 5L",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "FRU",
+    "description": "Fruitade",
+    "cash_price_usd": 1.5,
+    "online_price_usd": 1.575
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "FRUG",
+    "description": "Frugo 300mls",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "FRUI",
+    "description": "Frutesca 430mls",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "FRUT",
+    "description": "Fruitade Guava",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "FRUTC",
+    "description": "Fruitcana",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "FUN",
+    "description": "Fun 'n Fresh",
+    "cash_price_usd": 1.3,
+    "online_price_usd": 1.365
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "GINZNG",
+    "description": "Ginger Zinga",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "HNY",
+    "description": "HoneyPot",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "HNYPOT",
+    "description": "Honey Pot - Mahewu",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "JICP",
+    "description": "JuicyPlus Crush 5L",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "JUC",
+    "description": "Juice it 250ml",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "JUIPC",
+    "description": "Juicyplus 5L",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "KAMB",
+    "description": "Kambucha No.3",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "KAMBU",
+    "description": "Kambucha",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "KEF",
+    "description": "Kefalos Dairy/Juice 200ml",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "KEFALOS",
+    "description": "Milkit/ Juice Box",
+    "cash_price_usd": 12.0,
+    "online_price_usd": 12.6
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "LIQ",
+    "description": "Liqui/Ceres Fruit Juice",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "MAM",
+    "description": "Mammoth Energy Drink",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "MAZ",
+    "description": "Mazoe Orange 2L",
+    "cash_price_usd": 4.0,
+    "online_price_usd": 4.2
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "MAZB",
+    "description": "Mazoe Blackberry 2L",
+    "cash_price_usd": 3.5,
+    "online_price_usd": 3.675
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "MAZW",
+    "description": "Mazoe Mix",
+    "cash_price_usd": 3.0,
+    "online_price_usd": 3.15
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "MIK",
+    "description": "Milkit Milkshake 100ml",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "MILKB01",
+    "description": "Milkit - Big",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "MIN",
+    "description": "Minute Maid Original 400ml",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "MINU",
+    "description": "Minute Maid Refresh",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "MONTY",
+    "description": "Baked Beand Montys",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "MOY",
+    "description": "Mooyo Maheu",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "NATU",
+    "description": "Natural Joy - 1litre",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "ORAN",
+    "description": "Oran Crush 5L",
+    "cash_price_usd": 3.8,
+    "online_price_usd": 3.9899999999999998
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "PEAR",
+    "description": "Pearlenta Porridge 1kg",
+    "cash_price_usd": 1.5,
+    "online_price_usd": 1.575
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "PEP",
+    "description": "Peps Case",
+    "cash_price_usd": 9.0,
+    "online_price_usd": 9.45
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "PEPM",
+    "description": "PEPS 1L",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "PEPS",
+    "description": "Peps 500ml",
+    "cash_price_usd": 0.33,
+    "online_price_usd": 0.34650000000000003
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "PFK",
+    "description": "Pfuko Traditional 500ml",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "PFKBT",
+    "description": "Pfuko Buttermilk - 500ml",
+    "cash_price_usd": 0.6,
+    "online_price_usd": 0.63
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "PFKO",
+    "description": "Pfuko case",
+    "cash_price_usd": 6.0,
+    "online_price_usd": 6.3
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "PUREJ",
+    "description": "PureJoy Juice",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "PWR",
+    "description": "PowerPlus",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "QUEN",
+    "description": "Quench",
+    "cash_price_usd": 3.5,
+    "online_price_usd": 3.675
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "RED",
+    "description": "RedBull",
+    "cash_price_usd": 1.2,
+    "online_price_usd": 1.26
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "REV",
+    "description": "Revive juice 500ml",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "REVI",
+    "description": "Revive Maheu 500ml",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "REVJ",
+    "description": "Revive Juice 1L",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "REVM",
+    "description": "Revive Maheu 1L",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "RHD",
+    "description": "Rhodes Juice",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "SQU",
+    "description": "Squish Squash Crush 2L",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "SQUI",
+    "description": "Squish Squash Appl/Ras",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "STG",
+    "description": "Sting 500ml",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "SUP",
+    "description": "SuperSip 500ml",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "SUPD",
+    "description": "SuperDay 5L",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "SWT",
+    "description": "Switch",
+    "cash_price_usd": 1.0,
+    "online_price_usd": 1.05
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "UFRS",
+    "description": "Ufresh Maheu",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "UFSH",
+    "description": "Ufresh Drink",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "VIC",
+    "description": "Victoria Juice",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "002 - BEVERAGES",
+    "code": "WILDC01",
+    "description": "Wild Cat - 500ml",
+    "cash_price_usd": 0.5,
+    "online_price_usd": 0.525
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "003 - CEREALS",
+    "code": "BOKO",
+    "description": "Bokomo CornFlakes",
+    "cash_price_usd": 3.5,
+    "online_price_usd": 3.675
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "003 - CEREALS",
+    "code": "CER",
+    "description": "Cerelac 250g",
+    "cash_price_usd": 2.5,
+    "online_price_usd": 2.625
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "003 - CEREALS",
+    "code": "CERE",
+    "description": "Cerelac 500ml",
+    "cash_price_usd": 5.0,
+    "online_price_usd": 5.25
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "003 - CEREALS",
+    "code": "CEREV",
+    "description": "Cerevita 500g",
+    "cash_price_usd": 3.0,
+    "online_price_usd": 3.15
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "003 - CEREALS",
+    "code": "CEREVM",
+    "description": "Cerevita Milk 500G",
+    "cash_price_usd": 4.0,
+    "online_price_usd": 4.2
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "003 - CEREALS",
+    "code": "CERV",
+    "description": "Cerevita Sour",
+    "cash_price_usd": 2.5,
+    "online_price_usd": 2.625
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "003 - CEREALS",
+    "code": "CON",
+    "description": "Cornflakes Kellogs 500g",
+    "cash_price_usd": 3.0,
+    "online_price_usd": 3.15
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "003 - CEREALS",
+    "code": "COR",
+    "description": "CornFlakes Mamas",
+    "cash_price_usd": null,
+    "online_price_usd": 0.0
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "003 - CEREALS",
+    "code": "CORN",
+    "description": "CornFLakes Willards",
+    "cash_price_usd": 2.2,
+    "online_price_usd": 2.31
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "003 - CEREALS",
+    "code": "CORNBG",
+    "description": "Cornflakes Bigtree - 1kg",
+    "cash_price_usd": 4.0,
+    "online_price_usd": 4.2
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "003 - CEREALS",
+    "code": "CORNBG02",
+    "description": "Cornflakes Bigtree - 500g",
+    "cash_price_usd": 2.3,
+    "online_price_usd": 2.415
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "003 - CEREALS",
+    "code": "CORNFBG",
+    "description": "Cornflakes Bigtree - 750g",
+    "cash_price_usd": 3.2,
+    "online_price_usd": 3.3600000000000003
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "003 - CEREALS",
+    "code": "GRW",
+    "description": "Grown ups",
+    "cash_price_usd": 2.0,
+    "online_price_usd": 2.1
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "003 - CEREALS",
+    "code": "KELCORNF",
+    "description": "Cornflakes Kellogs - 1kg",
+    "cash_price_usd": 4.5,
+    "online_price_usd": 4.725
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "003 - CEREALS",
+    "code": "MUE",
+    "description": "Muesli",
+    "cash_price_usd": 3.5,
+    "online_price_usd": 3.675
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "003 - CEREALS",
+    "code": "OAT",
+    "description": "Oats",
+    "cash_price_usd": 3.0,
+    "online_price_usd": 3.15
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "003 - CEREALS",
+    "code": "SUN",
+    "description": "Sunny Porridge",
+    "cash_price_usd": 1.5,
+    "online_price_usd": 1.575
+  },
+  {
+    "sheet": "12 Sept BC",
+    "category": "003 - CEREALS",
+    "code": "WETBX",
+    "description": "Weetbix - 450g",
+    "cash_price_usd": 2.2,
+    "online_price_usd": 2.31
+  }
+]

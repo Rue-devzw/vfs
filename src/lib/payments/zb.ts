@@ -96,8 +96,9 @@ function getZbConfig() {
   // Derive the root by removing the specific gateway suffix if present
   // This allows us to call /utilities or other modules sibling to payments-gateway
   const baseRoot = rawBaseUrl.replace(/\/payments-gateway\/?$/, "");
+  const utilitiesBaseUrl = env.ZB_UTILITIES_BASE_URL || baseRoot;
 
-  return { apiKey, apiSecret, baseUrl: rawBaseUrl, baseRoot };
+  return { apiKey, apiSecret, baseUrl: rawBaseUrl, baseRoot, utilitiesBaseUrl };
 }
 
 function buildAuthHeaders() {
@@ -275,8 +276,8 @@ export type UtilityVendResponse = {
 };
 
 export async function validateUtility(payload: UtilityValidationPayload) {
-  const { baseRoot } = getZbConfig();
-  const url = `${baseRoot}/utilities/v1/customer-validation`;
+  const { utilitiesBaseUrl } = getZbConfig();
+  const url = `${utilitiesBaseUrl.replace(/\/$/, "")}/utilities/v1/customer-validation`;
   console.log(`ZB Utility Validation Request [${url}]:`, JSON.stringify(payload));
 
   const response = await fetch(url, {
@@ -302,8 +303,8 @@ export async function validateUtility(payload: UtilityValidationPayload) {
 }
 
 export async function vendUtility(payload: UtilityVendPayload) {
-  const { baseRoot } = getZbConfig();
-  const url = `${baseRoot}/utilities/v1/vend`;
+  const { utilitiesBaseUrl } = getZbConfig();
+  const url = `${utilitiesBaseUrl.replace(/\/$/, "")}/utilities/v1/vend`;
   console.log(`ZB Utility Vend Request [${url}]:`, JSON.stringify(payload));
 
   const response = await fetch(url, {

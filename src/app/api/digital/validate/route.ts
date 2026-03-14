@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { DigitalService } from "@/lib/digital-service-logic";
+import { DigitalService, DigitalServiceUnavailableError } from "@/lib/digital-service-logic";
+import { ZbGatewayError } from "@/lib/payments/zb";
 
 const validateSchema = z.object({
     serviceType: z.enum(["ZESA", "AIRTIME", "DSTV", "COUNCILS", "NYARADZO", "INTERNET"]),
@@ -25,6 +26,23 @@ export async function POST(req: Request) {
         });
     } catch (error) {
         console.error("Validation error:", error);
+        if (error instanceof DigitalServiceUnavailableError) {
+            return NextResponse.json(
+                { success: false, error: error.message, code: "SERVICE_UNAVAILABLE" },
+                { status: error.status }
+            );
+        }
+        if (error instanceof ZbGatewayError) {
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: error.message,
+                    code: "PROVIDER_VALIDATION_FAILED",
+                    gatewayStatus: error.status,
+                },
+                { status: error.status >= 400 && error.status < 500 ? error.status : 502 }
+            );
+        }
         return NextResponse.json(
             { success: false, error: error instanceof Error ? error.message : "Validation failed" },
             { status: 500 }

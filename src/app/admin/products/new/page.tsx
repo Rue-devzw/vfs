@@ -1,10 +1,10 @@
 import { createProduct } from "@/lib/firestore/products"
 import { ProductForm } from "../components/product-form"
 import { revalidatePath } from "next/cache"
+import type { ProductFormValues } from "../components/product-form"
 
 export default function NewProductPage() {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    async function handleCreate(data: any) {
+    async function handleCreate(data: ProductFormValues) {
         "use server"
         await createProduct(data)
         revalidatePath("/store")

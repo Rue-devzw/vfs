@@ -1,0 +1,8 @@
+{
+  "source_rows": 580,
+  "converted_rows": 441,
+  "skipped_rows_without_price": 139,
+  "output_json": "/Users/Strive/Projects/vfs/public/data/products-import.json",
+  "starting_id": 318,
+  "ending_id": 758
+}

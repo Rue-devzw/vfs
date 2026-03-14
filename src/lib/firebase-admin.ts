@@ -1,4 +1,5 @@
 import { cert, getApps, initializeApp } from 'firebase-admin/app';
+import { getAuth as getFirebaseAdminAuth } from 'firebase-admin/auth';
 import { getFirestore } from 'firebase-admin/firestore';
 import { getStorage } from 'firebase-admin/storage';
 import { type Bucket } from '@google-cloud/storage';
@@ -57,4 +58,25 @@ export function getStorageBucket() {
     getDb(); // Initializes both db and storageBucket
   }
   return storageBucket!;
+}
+
+export function getAdminAuth() {
+  const projectId = env.FIREBASE_PROJECT_ID;
+  const clientEmail = env.FIREBASE_CLIENT_EMAIL;
+  let privateKey = env.FIREBASE_PRIVATE_KEY;
+  if (privateKey) {
+    privateKey = privateKey.replace(/^["']|["']$/g, '');
+    privateKey = privateKey.replace(/\\n/g, '\n');
+  }
+
+  const storageBucketName = process.env.FIREBASE_STORAGE_BUCKET || `${projectId}.appspot.com`;
+
+  const app = getApps().length
+    ? getApps()[0]
+    : initializeApp({
+      credential: cert({ projectId, clientEmail, privateKey }),
+      storageBucket: storageBucketName,
+    });
+
+  return getFirebaseAdminAuth(app);
 }

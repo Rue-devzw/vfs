@@ -1,0 +1,14 @@
+{
+  "excel_source_rows": 500,
+  "pdf_source_rows": 83,
+  "merged_rows": 580,
+  "overlap_rows": 3,
+  "merge_rule": {
+    "key": "normalized description",
+    "price_priority": [
+      "online_price_usd",
+      "pdf_price_usd",
+      "cash_price_usd"
+    ]
+  }
+}

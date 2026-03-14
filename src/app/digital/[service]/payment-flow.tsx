@@ -21,7 +21,19 @@ function isPaymentMethod(value: string): value is PaymentMethod {
   return ["WALLETPLUS", "ECOCASH", "INNBUCKS", "OMARI", "CARD"].includes(value);
 }
 
-export function GenericDigitalFlow({ service, serviceLabel }: { service: string; serviceLabel: string }) {
+export function GenericDigitalFlow({
+  service,
+  serviceLabel,
+  accountLabel,
+  availabilityStatus,
+  supportMessage,
+}: {
+  service: string;
+  serviceLabel: string;
+  accountLabel: string;
+  availabilityStatus: "active" | "coming_soon";
+  supportMessage?: string;
+}) {
   const { toast } = useToast();
   const [accountReference, setAccountReference] = useState("");
   const [amount, setAmount] = useState("");
@@ -34,10 +46,14 @@ export function GenericDigitalFlow({ service, serviceLabel }: { service: string;
 
   const needsOtp = paymentMethod === "WALLETPLUS" || paymentMethod === "OMARI";
   const isCard = paymentMethod === "CARD";
+  const isAvailable = availabilityStatus === "active";
 
   const initiate = async () => {
     setLoading(true);
     try {
+      if (!isAvailable) {
+        throw new Error(supportMessage || `${serviceLabel} is not available yet.`);
+      }
       const res = await fetch("/api/digital/purchase", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -121,11 +137,16 @@ export function GenericDigitalFlow({ service, serviceLabel }: { service: string;
   return (
     <Card className="w-full max-w-md mx-auto p-6 space-y-6 shadow-lg border-primary/10">
       <div className="space-y-4">
+        {!isAvailable && (
+          <div className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+            {supportMessage || `${serviceLabel} is not available yet.`}
+          </div>
+        )}
         <div className="space-y-2">
           <Label className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">{serviceLabel} Details</Label>
           <div className="grid gap-4 p-4 border rounded-xl bg-muted/5">
             <div className="space-y-2">
-              <Label htmlFor="account">Enter ID / Account Number</Label>
+              <Label htmlFor="account">{accountLabel}</Label>
               <Input
                 id="account"
                 value={accountReference}
@@ -207,7 +228,7 @@ export function GenericDigitalFlow({ service, serviceLabel }: { service: string;
 
       {!pending ? (
         <Button
-          disabled={loading || !accountReference || !amount || (!isCard && !customerMobile)}
+          disabled={loading || !isAvailable || !accountReference || !amount || (!isCard && !customerMobile)}
           onClick={initiate}
           className="w-full h-12 text-lg shadow-md"
         >
