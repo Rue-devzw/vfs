@@ -15,7 +15,7 @@ function isPaymentMethod(value: string): value is PaymentMethod {
 }
 
 interface StepPaymentProps {
-    onPay: (amount: number, paymentMethod: PaymentMethod, customerMobile?: string) => void;
+    onPay: (amount: number, paymentMethod: PaymentMethod, mobile?: string) => void;
     onBack: () => void;
     isLoading: boolean;
 }
@@ -23,10 +23,8 @@ interface StepPaymentProps {
 export function StepPayment({ onPay, onBack, isLoading }: StepPaymentProps) {
     const [amount, setAmount] = useState("");
     const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("WALLETPLUS");
-    const [customerMobile, setCustomerMobile] = useState("");
+    const [mobile, setMobile] = useState("");
     const [error, setError] = useState("");
-
-    const isCard = paymentMethod === "CARD";
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -35,12 +33,12 @@ export function StepPayment({ onPay, onBack, isLoading }: StepPaymentProps) {
             setError("Minimum purchase amount is $2.00");
             return;
         }
-        setError("");
-        if (!isCard && customerMobile.trim().length < 8) {
-            setError("Enter a valid mobile number.");
+        if (paymentMethod !== "CARD" && !mobile) {
+            setError("Mobile number is required for mobile payments");
             return;
         }
-        onPay(value, paymentMethod, isCard ? undefined : customerMobile.trim());
+        setError("");
+        onPay(value, paymentMethod, mobile);
     };
 
     return (
@@ -51,7 +49,7 @@ export function StepPayment({ onPay, onBack, isLoading }: StepPaymentProps) {
                 </div>
                 <h2 className="text-xl font-semibold">Complete Payment</h2>
                 <p className="text-sm text-muted-foreground">
-                    Select your payment method and amount.
+                    Select your payment method and continue to secure checkout.
                 </p>
             </div>
 
@@ -111,22 +109,26 @@ export function StepPayment({ onPay, onBack, isLoading }: StepPaymentProps) {
                         </RadioGroup>
                     </div>
 
-                    {!isCard && (
+                    {paymentMethod !== "CARD" && (
                         <div className="space-y-2 animate-in fade-in slide-in-from-top-2">
-                            <Label htmlFor="mobile">{paymentMethod} Mobile Number</Label>
-                            <Input
+                             <Label htmlFor="mobile">Mobile Number (Payment)</Label>
+                             <Input
                                 id="mobile"
                                 type="tel"
-                                placeholder="+263 7..."
-                                value={customerMobile}
-                                onChange={(e) => {
-                                    setCustomerMobile(e.target.value);
-                                    setError("");
-                                }}
-                                disabled={isLoading}
-                            />
+                                value={mobile}
+                                onChange={(e) => setMobile(e.target.value)}
+                                placeholder="07XX XXX XXX"
+                                className="bg-background"
+                             />
+                             <p className="text-[10px] text-muted-foreground">Enter the mobile number associated with your {paymentMethod.toLowerCase()} wallet.</p>
                         </div>
                     )}
+
+                    <div className="rounded-xl border bg-muted/30 px-4 py-3 text-sm text-muted-foreground">
+                        {paymentMethod === "CARD" 
+                          ? "Valley Farm Digital uses standard checkout. You will finish payment on the secure ZB payment page." 
+                          : `You will be prompted to confirm the payment on your mobile device for ${paymentMethod.toLowerCase()}.`}
+                    </div>
                     {error && <p className="text-sm text-destructive font-medium text-center">{error}</p>}
                 </div>
 
@@ -134,8 +136,8 @@ export function StepPayment({ onPay, onBack, isLoading }: StepPaymentProps) {
                     <Button type="button" variant="outline" onClick={onBack} disabled={isLoading} className="flex-1 h-12">
                         Back
                     </Button>
-                    <Button type="submit" disabled={isLoading || !amount || (!isCard && !customerMobile)} className="flex-[2] h-12 text-lg shadow-lg">
-                        {isLoading ? "Processing..." : isCard ? "Go to Secure Pay" : "Pay Now"}
+                    <Button type="submit" disabled={isLoading || !amount} className="flex-[2] h-12 text-lg shadow-lg">
+                        {isLoading ? "Processing..." : "Continue to Secure Checkout"}
                     </Button>
                 </div>
             </form>

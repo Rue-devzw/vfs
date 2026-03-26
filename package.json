@@ -16,7 +16,8 @@
     "db:sync-inventory": "tsx scripts/sync-inventory-to-firestore.ts",
     "db:release-expired-reservations": "tsx scripts/release-expired-reservations.ts",
     "db:backfill-order-finance": "tsx scripts/backfill-order-finance.ts",
-    "notifications:process": "tsx scripts/process-queued-notifications.ts"
+    "notifications:process": "tsx scripts/process-queued-notifications.ts",
+    "egress:test-zesa": "tsx scripts/test-egress-zesa.ts"
   },
   "dependencies": {
     "@genkit-ai/compat-oai": "^1.19.2",

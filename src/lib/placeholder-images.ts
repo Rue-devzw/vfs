@@ -9,8 +9,14 @@ export type ImagePlaceholder = {
 
 export const PlaceHolderImages: ImagePlaceholder[] = data.placeholderImages;
 
-export const DEFAULT_PRODUCT_IMAGE_ID = "product-apples";
+export const DEFAULT_PRODUCT_IMAGE_ID = "product-broccoli";
 const GENERIC_IMAGE_PREFIXES = ["hero-", "product-"];
+const KNOWN_IMAGE_FALLBACKS: Record<string, string> = {
+  "/images/hero-4.webp": "/images/hero-7.webp",
+  "/images/hero-6.webp": "/images/hero-8.webp",
+  "/images/product-apples.webp": "/images/hero-produce.webp",
+  "/images/product-spices.webp": "/images/hero-5.webp",
+};
 
 const normalizeParentheses = (value: string): string =>
   value.replace(/\(([^)]+)\)/g, (_, content) => {
@@ -38,7 +44,14 @@ export const isGenericImageId = (imageId: string): boolean =>
 const placeholderById = new Map(PlaceHolderImages.map(image => [image.id, image] as const));
 
 export const getPlaceholderById = (imageId?: string): ImagePlaceholder | undefined =>
-  imageId ? placeholderById.get(imageId) : undefined;
+  imageId
+    ? (() => {
+      const match = placeholderById.get(imageId);
+      if (!match) return undefined;
+      const fallbackUrl = KNOWN_IMAGE_FALLBACKS[match.imageUrl];
+      return fallbackUrl ? { ...match, imageUrl: fallbackUrl } : match;
+    })()
+    : undefined;
 
 export const findProductImagePlaceholder = (
   imageId: string | undefined,

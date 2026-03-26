@@ -30,6 +30,9 @@ export interface PaymentStatusResponse {
     status: string;
     reference: string;
     paymentOption?: string;
+    amount?: number;
+    transactionReference?: string;
+    meterNumber?: string;
 }
 
 export const ZBService = {
@@ -62,7 +65,7 @@ export const ZBService = {
         meterNumber: string,
         amount: number,
         paymentMethod: string,
-        customerMobile?: string
+        customerMobile?: string,
     ): Promise<PaymentInitResponse> => {
         if (amount < 2) {
             throw new Error("Minimum purchase amount is $2.00");
@@ -78,7 +81,7 @@ export const ZBService = {
                 accountNumber: meterNumber,
                 amount,
                 paymentMethod,
-                customerMobile
+                customerMobile,
             })
         });
 
@@ -97,31 +100,6 @@ export const ZBService = {
         };
     },
 
-    confirmTokenPayment: async (
-        reference: string,
-        transactionReference: string,
-        otp: string,
-        paymentMethod: string
-    ): Promise<PaymentStatusResponse> => {
-        const res = await fetch("/api/zb/checkout/confirm", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ reference, transactionReference, otp, paymentMethod }),
-        });
-
-        const data = await res.json();
-        if (!res.ok || !data.success) {
-            throw new Error(data.error || "Failed to confirm ZB payment");
-        }
-
-        return {
-            status: data.status ?? "PENDING",
-            reference: data.reference ?? reference,
-        };
-    },
-
     checkStatus: async (reference: string): Promise<PaymentStatusResponse & { vendedData?: unknown }> => {
         const res = await fetch(`/api/zb/status/${encodeURIComponent(reference)}`, {
             method: "GET",
@@ -135,6 +113,9 @@ export const ZBService = {
             status: data.data?.status ?? "PENDING",
             reference: data.data?.reference ?? reference,
             paymentOption: data.data?.paymentOption,
+            amount: typeof data.data?.amount === "number" ? data.data.amount : undefined,
+            transactionReference: typeof data.data?.transactionReference === "string" ? data.data.transactionReference : undefined,
+            meterNumber: typeof data.data?.meterNumber === "string" ? data.data.meterNumber : undefined,
             vendedData: data.data?.vendedData,
         };
     },

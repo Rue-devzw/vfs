@@ -53,7 +53,7 @@ export default function ZesaPage() {
                                 </li>
                                 <li className="flex items-start gap-3">
                                     <div className="mt-1 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-primary text-[10px] text-white font-bold">3</div>
-                                    <span>Enter amount and complete payment.</span>
+                                    <span>Enter amount, continue to secure checkout, and return here for your token.</span>
                                 </li>
                             </ul>
                         </div>

@@ -1,6 +1,6 @@
 import { findProductImagePlaceholder } from "@/lib/placeholder-images";
 
-export const ADMIN_PLACEHOLDER_IMAGE = "/images/placeholder.webp";
+export const ADMIN_PLACEHOLDER_IMAGE = "/images/logo.webp";
 
 export function resolveAdminImageSrc(image: string | undefined, productName: string) {
   const explicit = image?.trim();

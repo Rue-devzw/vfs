@@ -1,11 +1,13 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { DigitalService, DigitalServiceUnavailableError } from "@/lib/digital-service-logic";
+import { EgressGatewayError } from "@/lib/payments/egress";
 import { ZbGatewayError } from "@/lib/payments/zb";
 
 const validateSchema = z.object({
     serviceType: z.enum(["ZESA", "AIRTIME", "DSTV", "COUNCILS", "NYARADZO", "INTERNET"]),
     accountNumber: z.string().min(1),
+    serviceMeta: z.record(z.string()).optional(),
 });
 
 export async function POST(req: Request) {
@@ -17,8 +19,8 @@ export async function POST(req: Request) {
             return NextResponse.json({ success: false, error: validation.error.errors }, { status: 400 });
         }
 
-        const { serviceType, accountNumber } = validation.data;
-        const result = await DigitalService.validateAccount(serviceType, accountNumber);
+        const { serviceType, accountNumber, serviceMeta } = validation.data;
+        const result = await DigitalService.validateAccount(serviceType, accountNumber, serviceMeta);
 
         return NextResponse.json({
             success: true,
@@ -33,6 +35,17 @@ export async function POST(req: Request) {
             );
         }
         if (error instanceof ZbGatewayError) {
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: error.message,
+                    code: "PROVIDER_VALIDATION_FAILED",
+                    gatewayStatus: error.status,
+                },
+                { status: error.status >= 400 && error.status < 500 ? error.status : 502 }
+            );
+        }
+        if (error instanceof EgressGatewayError) {
             return NextResponse.json(
                 {
                     success: false,

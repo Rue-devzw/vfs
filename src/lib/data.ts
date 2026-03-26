@@ -45,7 +45,7 @@ export const services = [
     description: "Essentials like bread, sugar, flour, milk, cooking oil, plus Valley Farm Secrets branded spice packs.",
     purchaseLink: "/store?category=Grocery%20%26%20Spices",
     purchaseLabel: "Shop Groceries & Spices",
-    image: "/images/product-spices.webp",
+    image: "/images/hero-5.webp",
   },
   {
     icon: Truck,
@@ -69,7 +69,7 @@ export const services = [
     description: "We secure hard-to-find produce & volumes at competitive prices.",
     purchaseLink: "/#contact",
     purchaseLabel: "Talk to Our Team",
-    image: "/images/hero-4.webp",
+    image: "/images/hero-7.webp",
   },
   {
     icon: FileText,

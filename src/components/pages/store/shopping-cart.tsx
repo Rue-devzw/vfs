@@ -60,8 +60,8 @@ export function ShoppingCart() {
                   <SelectValue placeholder="Currency" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="840">USD (840)</SelectItem>
-                  <SelectItem value="924">ZWG (924)</SelectItem>
+                  <SelectItem value="840">USD</SelectItem>
+                  <SelectItem value="924">ZWG</SelectItem>
                 </SelectContent>
               </Select>
             </div>

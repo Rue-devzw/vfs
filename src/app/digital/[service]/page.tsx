@@ -18,7 +18,7 @@ export default async function DigitalServicePage({ params }: { params: RoutePara
     <div className="min-h-screen bg-muted/20 pb-20 pt-10">
       <div className="container mx-auto max-w-3xl px-4">
         <h1 className="font-headline text-3xl font-bold">{config.label}</h1>
-        <p className="mt-2 text-muted-foreground">{config.supportMessage ?? "WalletPlus express payment for your account."}</p>
+        <p className="mt-2 text-muted-foreground">{config.supportMessage ?? "Standard secure checkout for your digital account payment."}</p>
         <div className="mt-8">
           <GenericDigitalFlow
             service={service}
@@ -26,6 +26,7 @@ export default async function DigitalServicePage({ params }: { params: RoutePara
             accountLabel={config.accountLabel}
             availabilityStatus={config.status}
             supportMessage={config.supportMessage}
+            formFields={config.formFields}
           />
         </div>
       </div>

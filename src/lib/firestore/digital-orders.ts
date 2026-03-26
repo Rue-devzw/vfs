@@ -26,6 +26,26 @@ export type DigitalOrderRecord = {
   updatedAt: string;
 };
 
+function sanitizeValue(value: unknown): unknown {
+  if (Array.isArray(value)) {
+    return value.map(sanitizeValue).filter((entry) => entry !== undefined);
+  }
+
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value as Record<string, unknown>)
+        .map(([key, nested]) => [key, sanitizeValue(nested)])
+        .filter((entry) => entry[1] !== undefined),
+    );
+  }
+
+  return value === undefined ? undefined : value;
+}
+
+function stripUndefined<T extends Record<string, unknown>>(value: T) {
+  return sanitizeValue(value) as T;
+}
+
 function buildDigitalOrderId(orderReference: string) {
   return `digital_${orderReference}`;
 }
@@ -55,7 +75,7 @@ export async function upsertDigitalOrder(input: {
   const timestamp = new Date().toISOString();
   const current = existing.exists ? (existing.data() as Partial<DigitalOrderRecord>) : null;
 
-  await ref.set({
+  await ref.set(stripUndefined({
     orderReference: input.orderReference,
     serviceId: input.serviceId,
     provider: input.provider,
@@ -70,7 +90,7 @@ export async function upsertDigitalOrder(input: {
     completedAt: input.completedAt ?? current?.completedAt,
     createdAt: current?.createdAt ?? timestamp,
     updatedAt: timestamp,
-  } satisfies Omit<DigitalOrderRecord, "id">, { merge: true });
+  } satisfies Omit<DigitalOrderRecord, "id">), { merge: true });
 
   const doc = await ref.get();
   return doc.exists ? ({ id: doc.id, ...doc.data() } as DigitalOrderRecord) : null;
@@ -156,10 +176,23 @@ export async function retryDigitalOrderFulfilment(orderReference: string) {
   });
 
   try {
+    const serviceMeta = order.paymentMeta && typeof order.paymentMeta.serviceMeta === "object" && order.paymentMeta.serviceMeta !== null
+      ? Object.fromEntries(
+        Object.entries(order.paymentMeta.serviceMeta as Record<string, unknown>)
+          .filter((entry): entry is [string, string] => typeof entry[1] === "string"),
+      )
+      : undefined;
+
     const result = await DigitalService.vendDigitalFulfilment(toServiceType(current.serviceId), {
       orderReference,
       accountNumber: current.accountReference,
       amountUsd: order.totalUsd ?? order.total,
+      serviceMeta: {
+        ...(serviceMeta ?? {}),
+        customerName: order.customerName,
+        customerMobile: order.customerPhone ?? "",
+        currencyCode: order.currencyCode ?? "840",
+      },
     });
 
     if (!result.success) {

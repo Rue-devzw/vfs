@@ -10,7 +10,7 @@ export function PartnerCTA() {
           <span
             aria-hidden="true"
             className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: "url(/images/hero-6.webp)" }}
+            style={{ backgroundImage: "url(/images/hero-8.webp)" }}
           />
           <span
             aria-hidden="true"

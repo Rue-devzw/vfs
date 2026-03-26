@@ -7,17 +7,26 @@ export type DigitalServiceId =
   | "internet";
 
 export type DigitalServiceStatus = "active" | "coming_soon";
+export type DigitalServiceField = {
+  id: string;
+  label: string;
+  placeholder?: string;
+  type?: "text" | "number";
+  required?: boolean;
+  helpText?: string;
+};
 
 export type DigitalServiceConfig = {
   id: DigitalServiceId;
   label: string;
   description: string;
   accountLabel: string;
-  provider: "zb-utility" | "unavailable";
+  provider: "zb-egress" | "zb-manual-bills" | "unavailable";
   status: DigitalServiceStatus;
-  validationMode: "provider" | "unsupported";
-  purchaseMode: "provider" | "unsupported";
+  validationMode: "provider" | "manual" | "unsupported";
+  purchaseMode: "provider" | "manual" | "unsupported";
   supportMessage?: string;
+  formFields?: DigitalServiceField[];
 };
 
 export const DIGITAL_SERVICES: Record<DigitalServiceId, DigitalServiceConfig> = {
@@ -26,7 +35,7 @@ export const DIGITAL_SERVICES: Record<DigitalServiceId, DigitalServiceConfig> = 
     label: "ZESA Tokens",
     description: "Buy prepaid electricity tokens instantly.",
     accountLabel: "Meter Number",
-    provider: "zb-utility",
+    provider: "zb-egress",
     status: "active",
     validationMode: "provider",
     purchaseMode: "provider",
@@ -34,57 +43,80 @@ export const DIGITAL_SERVICES: Record<DigitalServiceId, DigitalServiceConfig> = 
   airtime: {
     id: "airtime",
     label: "Airtime & Data",
-    description: "Mobile top-ups are not yet live on the production gateway.",
+    description: "Create a tracked airtime or data payment request and complete payment securely online.",
     accountLabel: "Phone Number",
-    provider: "unavailable",
-    status: "coming_soon",
-    validationMode: "unsupported",
-    purchaseMode: "unsupported",
-    supportMessage: "Airtime and data purchases are not enabled on the live provider integration yet.",
+    provider: "zb-manual-bills",
+    status: "active",
+    validationMode: "manual",
+    purchaseMode: "manual",
+    supportMessage: "Payment is processed online and the airtime/data request is queued for manual fulfilment confirmation.",
   },
   dstv: {
     id: "dstv",
     label: "DStv Payments",
-    description: "DStv subscription payments will be enabled once provider validation is integrated.",
+    description: "Validate your smartcard and post your DStv payment through the EGRESS integration.",
     accountLabel: "Smartcard Number",
-    provider: "unavailable",
-    status: "coming_soon",
-    validationMode: "unsupported",
-    purchaseMode: "unsupported",
-    supportMessage: "DStv account validation is not connected to a live provider yet.",
+    provider: "zb-egress",
+    status: "active",
+    validationMode: "provider",
+    purchaseMode: "provider",
+    supportMessage: "DStv validation and posting run through the EGRESS integration.",
+    formFields: [
+      {
+        id: "bouquet",
+        label: "Bouquet",
+        placeholder: "e.g. Compact Plus",
+        required: true,
+      },
+      {
+        id: "addons",
+        label: "Add-ons",
+        placeholder: "Optional add-ons separated by |",
+        helpText: "Example: HDPVR|ASIAPK",
+      },
+    ],
   },
   councils: {
     id: "councils",
     label: "City Councils",
-    description: "Municipal bill payments require provider-specific billing integrations before go-live.",
+    description: "Current provider-backed integration is available for City of Harare bill payments through EGRESS.",
     accountLabel: "Account Number",
-    provider: "unavailable",
-    status: "coming_soon",
-    validationMode: "unsupported",
-    purchaseMode: "unsupported",
-    supportMessage: "Council bill payments are not yet connected to a live billing provider.",
+    provider: "zb-egress",
+    status: "active",
+    validationMode: "provider",
+    purchaseMode: "provider",
+    supportMessage: "Council payments currently use the City of Harare EGRESS integration.",
   },
   nyaradzo: {
     id: "nyaradzo",
     label: "Nyaradzo Life",
-    description: "Policy premium collection is awaiting verified provider integration.",
+    description: "Validate a policy and post premium payments through the EGRESS integration.",
     accountLabel: "Policy Number",
-    provider: "unavailable",
-    status: "coming_soon",
-    validationMode: "unsupported",
-    purchaseMode: "unsupported",
-    supportMessage: "Nyaradzo policy payments are not available until provider verification is implemented.",
+    provider: "zb-egress",
+    status: "active",
+    validationMode: "provider",
+    purchaseMode: "provider",
+    supportMessage: "Nyaradzo policy validation and payment posting run through the EGRESS integration.",
+    formFields: [
+      {
+        id: "months",
+        label: "Months to Pay",
+        type: "number",
+        required: true,
+        placeholder: "e.g. 2",
+      },
+    ],
   },
   internet: {
     id: "internet",
     label: "Internet Providers",
-    description: "ISP bill payments are not yet linked to a live provider adapter.",
+    description: "Pay ISP bills online with tracked requests that are verified manually after payment confirmation.",
     accountLabel: "Account Number",
-    provider: "unavailable",
-    status: "coming_soon",
-    validationMode: "unsupported",
-    purchaseMode: "unsupported",
-    supportMessage: "Internet provider payments are not enabled in production yet.",
+    provider: "zb-manual-bills",
+    status: "active",
+    validationMode: "manual",
+    purchaseMode: "manual",
+    supportMessage: "Internet bill payments are accepted online and queued for manual fulfilment verification.",
   },
 };
 

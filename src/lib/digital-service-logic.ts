@@ -10,6 +10,7 @@ export interface DigitalPurchasePayload {
   currencyCode?: "840" | "924";
   customerMobile?: string;
   email?: string;
+  serviceMeta?: Record<string, string>;
 }
 
 export class DigitalServiceUnavailableError extends Error {
@@ -31,12 +32,12 @@ function ensureAdapter(serviceType: DigitalServiceType) {
 }
 
 export const DigitalService = {
-  validateAccount: async (serviceType: DigitalServiceType, accountNumber: string) => {
+  validateAccount: async (serviceType: DigitalServiceType, accountNumber: string, serviceMeta?: Record<string, string>) => {
     if (!accountNumber) throw new Error("Account number is required.");
     const { config, adapter } = ensureAdapter(serviceType);
 
     try {
-      return await adapter.validateAccount(config, accountNumber);
+      return await adapter.validateAccount(config, accountNumber, serviceMeta);
     } catch (error) {
       if (error instanceof DigitalProviderUnavailableError) {
         throw new DigitalServiceUnavailableError(error.message, error.status);
@@ -62,6 +63,7 @@ export const DigitalService = {
     orderReference: string;
     accountNumber: string;
     amountUsd: number;
+    serviceMeta?: Record<string, string>;
   }) => {
     const { config, adapter } = ensureAdapter(serviceType);
     if (!adapter.vend) {
