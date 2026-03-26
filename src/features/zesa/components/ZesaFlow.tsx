@@ -278,7 +278,7 @@ export function ZesaFlow() {
                                 <div className="text-center space-y-2">
                                     <h3 className="text-xl font-bold">Secure Verification</h3>
                                     <p className="text-sm text-muted-foreground">
-                                        We've sent a code to your mobile device associated with {paymentMethod.toLowerCase()} ( {customerMobile} ).
+                                        We&apos;ve sent a code to your mobile device associated with {paymentMethod.toLowerCase()} ( {customerMobile} ).
                                     </p>
                                 </div>
                                 <div className="space-y-4">
