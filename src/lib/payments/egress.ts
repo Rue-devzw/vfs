@@ -73,7 +73,20 @@ function getEgressConfig() {
     clientCertPath: env.ZB_EGRESS_CLIENT_CERT_PATH,
     clientKeyPath: env.ZB_EGRESS_CLIENT_KEY_PATH,
     caCertPath: env.ZB_EGRESS_CA_CERT_PATH,
+    clientCert: env.ZB_EGRESS_CLIENT_CERT,
+    clientKey: env.ZB_EGRESS_CLIENT_KEY,
+    caCert: env.ZB_EGRESS_CA_CERT,
   };
+}
+
+async function loadCertData(path?: string, raw?: string): Promise<string | undefined> {
+  if (raw && raw.includes("-----BEGIN")) {
+    return raw;
+  }
+  if (path) {
+    return readFile(path, "utf8");
+  }
+  return undefined;
 }
 
 function escapeXml(value: string) {
@@ -105,13 +118,16 @@ function parseSoapReturn<T extends Record<string, unknown>>(xml: string, respons
 }
 
 async function postSoap(body: string) {
-  const { apiUrl, clientCertPath, clientKeyPath, caCertPath } = getEgressConfig();
+  const { apiUrl, clientCertPath, clientKeyPath, caCertPath, clientCert, clientKey, caCert } = getEgressConfig();
 
-  if (clientCertPath && clientKeyPath) {
+  if ((clientCertPath && clientKeyPath) || (clientCert && clientKey)) {
     return postSoapWithMutualTls(apiUrl, body, {
       clientCertPath,
       clientKeyPath,
       caCertPath,
+      clientCert,
+      clientKey,
+      caCert,
     });
   }
 
@@ -131,17 +147,27 @@ async function postSoapWithMutualTls(
   apiUrl: string,
   body: string,
   certConfig: {
-    clientCertPath: string;
-    clientKeyPath: string;
+    clientCertPath?: string;
+    clientKeyPath?: string;
     caCertPath?: string;
+    clientCert?: string;
+    clientKey?: string;
+    caCert?: string;
   },
 ) {
   const url = new URL(apiUrl);
   const [cert, key, ca] = await Promise.all([
-    readFile(certConfig.clientCertPath, "utf8"),
-    readFile(certConfig.clientKeyPath, "utf8"),
-    certConfig.caCertPath ? readFile(certConfig.caCertPath, "utf8") : Promise.resolve(undefined),
+    loadCertData(certConfig.clientCertPath, certConfig.clientCert),
+    loadCertData(certConfig.clientKeyPath, certConfig.clientKey),
+    loadCertData(certConfig.caCertPath, certConfig.caCert),
   ]);
+
+  if (!cert || !key) {
+    throw new EgressGatewayError(
+      500,
+      "ZB Egress Mutual TLS is enabled but missing configuration. Please ensure ZB_EGRESS_CLIENT_CERT and ZB_EGRESS_CLIENT_KEY are set in environment variables."
+    );
+  }
 
   const response = await new Promise<{ status: number; body: string }>((resolve, reject) => {
     const request = https.request(
