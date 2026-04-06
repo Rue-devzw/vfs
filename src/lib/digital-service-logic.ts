@@ -6,7 +6,7 @@ export interface DigitalPurchasePayload {
   serviceType: DigitalServiceType;
   accountNumber: string;
   amount: number;
-  paymentMethod: "WALLETPLUS" | "ECOCASH" | "INNBUCKS" | "OMARI" | "CARD";
+  paymentMethod: "WALLETPLUS" | "ECOCASH" | "INNBUCKS" | "OMARI" | "ONEMONEY" | "CARD";
   currencyCode?: "840" | "924";
   customerMobile?: string;
   email?: string;

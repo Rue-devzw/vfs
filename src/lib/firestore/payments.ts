@@ -94,6 +94,8 @@ export function mapGatewayStatusToPaymentIntent(status: string): PaymentIntentSt
     case "success":
     case "paid":
       return "paid";
+    case "awaiting_otp":
+      return "pending_confirmation";
     case "processing":
     case "awaiting delivery":
       return "processing";

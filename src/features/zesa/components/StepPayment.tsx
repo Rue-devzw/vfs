@@ -7,12 +7,14 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { cn } from "@/lib/utils";
 import { Smartphone } from "lucide-react";
-
-type PaymentMethod = "WALLETPLUS" | "ECOCASH" | "INNBUCKS" | "OMARI" | "CARD";
-
-function isPaymentMethod(value: string): value is PaymentMethod {
-    return ["WALLETPLUS", "ECOCASH", "INNBUCKS", "OMARI", "CARD"].includes(value);
-}
+import {
+    getPaymentMethodLabel,
+    getPaymentMethodMobileHint,
+    isPaymentMethod,
+    PAYMENT_METHOD_OPTIONS,
+    requiresMobileNumber,
+    type PaymentMethod,
+} from "@/lib/payment-methods";
 
 interface StepPaymentProps {
     onPay: (amount: number, paymentMethod: PaymentMethod, mobile?: string) => void;
@@ -33,7 +35,7 @@ export function StepPayment({ onPay, onBack, isLoading }: StepPaymentProps) {
             setError("Minimum purchase amount is $2.00");
             return;
         }
-        if (paymentMethod !== "CARD" && !mobile) {
+        if (requiresMobileNumber(paymentMethod) && !mobile) {
             setError("Mobile number is required for mobile payments");
             return;
         }
@@ -88,13 +90,7 @@ export function StepPayment({ onPay, onBack, isLoading }: StepPaymentProps) {
                             defaultValue={paymentMethod}
                             className="grid grid-cols-2 gap-2"
                         >
-                            {[
-                                { id: "WALLETPLUS", label: "SmileCash" },
-                                { id: "ECOCASH", label: "EcoCash" },
-                                { id: "INNBUCKS", label: "Innbucks" },
-                                { id: "OMARI", label: "Omari" },
-                                { id: "CARD", label: "Bank Card" }
-                            ].map((m) => (
+                            {PAYMENT_METHOD_OPTIONS.map((m) => (
                                 <Label
                                     key={m.id}
                                     className={cn(
@@ -109,7 +105,7 @@ export function StepPayment({ onPay, onBack, isLoading }: StepPaymentProps) {
                         </RadioGroup>
                     </div>
 
-                    {paymentMethod !== "CARD" && (
+                    {requiresMobileNumber(paymentMethod) && (
                         <div className="space-y-2 animate-in fade-in slide-in-from-top-2">
                              <Label htmlFor="mobile">Mobile Number (Payment)</Label>
                              <Input
@@ -119,15 +115,15 @@ export function StepPayment({ onPay, onBack, isLoading }: StepPaymentProps) {
                                 onChange={(e) => setMobile(e.target.value)}
                                 placeholder="07XX XXX XXX"
                                 className="bg-background"
-                             />
-                             <p className="text-[10px] text-muted-foreground">Enter the mobile number associated with your {paymentMethod.toLowerCase()} wallet.</p>
+                                />
+                             <p className="text-[10px] text-muted-foreground">{getPaymentMethodMobileHint(paymentMethod)}</p>
                         </div>
                     )}
 
                     <div className="rounded-xl border bg-muted/30 px-4 py-3 text-sm text-muted-foreground">
                         {paymentMethod === "CARD" 
                           ? "Valley Farm Digital uses standard checkout. You will finish payment on the secure ZB payment page." 
-                          : `You will be prompted to confirm the payment on your mobile device for ${paymentMethod.toLowerCase()}.`}
+                          : `You may be prompted to approve or verify the payment on your mobile device for ${getPaymentMethodLabel(paymentMethod)}.`}
                     </div>
                     {error && <p className="text-sm text-destructive font-medium text-center">{error}</p>}
                 </div>

@@ -15,6 +15,14 @@ import { Loader2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import {
+    buildReceiptMessage,
+    getPaymentProgressContent,
+    isSuccessfulGatewayStatus,
+    resolvePurchaseFlowAction,
+    shouldContinueStatusPolling,
+} from "@/lib/payment-flow";
+import { getPaymentMethodLabel, type PaymentMethod } from "@/lib/payment-methods";
 
 type Step = "METER" | "VERIFICATION" | "PAYMENT" | "OTP" | "RECEIPT";
 
@@ -30,7 +38,7 @@ export function ZesaFlow() {
     const [otp, setOtp] = useState("");
     const [transactionReference, setTransactionReference] = useState("");
     const [localReference, setLocalReference] = useState("");
-    const [paymentMethod, setPaymentMethod] = useState<"WALLETPLUS" | "ECOCASH" | "INNBUCKS" | "OMARI" | "CARD">("WALLETPLUS");
+    const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("WALLETPLUS");
     const [customerMobile, setCustomerMobile] = useState("");
 
     const handleMeterSubmit = async (meter: string) => {
@@ -86,11 +94,8 @@ export function ZesaFlow() {
                     vendedData = null;
                 }
 
-                if (["PAID", "SUCCESS", "FAILED", "CANCELED", "CANCELLED", "EXPIRED"].includes(status)) {
-                    // Even if success, we might want to wait a bit for vended record to appear 
-                    // if it's ZESA and token is missing.
-                    if ((status === "PAID" || status === "SUCCESS") && !vendedData) {
-                        // wait one more time for vending to complete on backend
+                if (!shouldContinueStatusPolling(status, Boolean(vendedData?.token))) {
+                    if (isSuccessfulGatewayStatus(status) && !vendedData?.token) {
                         await new Promise(resolve => setTimeout(resolve, 3000));
                         continue;
                     }
@@ -102,8 +107,6 @@ export function ZesaFlow() {
             await new Promise(resolve => setTimeout(resolve, 5000));
         }
 
-        const isSuccess = status === "PAID" || status === "SUCCESS";
-
         setReceipt({
             amount: resolvedAmount,
             meterNumber: resolvedMeter,
@@ -113,16 +116,15 @@ export function ZesaFlow() {
             transactionReference,
             token: vendedData?.token,
             units: vendedData?.units,
-            message: isSuccess
-                ? (vendedData?.token ? "Payment and vending successful." : "Payment successful. Token vending may be delayed.")
-                : "Payment confirmation is pending or failed.",
+            message: buildReceiptMessage(status, Boolean(vendedData?.token)),
         });
+        setIsLoading(false);
         setStep("RECEIPT");
     }, [meterNumber]);
 
-    const handlePayment = async (
+        const handlePayment = async (
         amount: number,
-        method: "WALLETPLUS" | "ECOCASH" | "INNBUCKS" | "OMARI" | "CARD",
+        method: PaymentMethod,
         mobile?: string,
     ) => {
         setIsLoading(true);
@@ -134,31 +136,31 @@ export function ZesaFlow() {
             
             setLocalReference(result.reference);
 
-            if (result.status === "AWAITING_OTP") {
+            const action = resolvePurchaseFlowAction(result);
+            const engagement = getPaymentProgressContent(result.status, {
+                paymentMethod: method,
+                subject: "your ZESA purchase",
+            });
+            if (action.type === "otp") {
                 setTransactionReference(result.transactionReference);
                 setStep("OTP");
                 toast({
-                    title: "OTP Required",
-                    description: result.message || "Please enter the OTP sent to your device",
+                    title: engagement.title,
+                    description: result.message || engagement.description,
                 });
                 return;
             }
 
-            if (result.paymentUrl) {
-                window.location.href = result.paymentUrl;
+            if (action.type === "redirect") {
+                window.location.href = action.url;
                 return;
             }
 
-            if (result.reference) {
-                 toast({
-                    title: "Payment Initiated",
-                    description: result.message || "Please check your phone to complete the payment.",
-                });
-                pollStatus(result.reference);
-                return;
-            }
-
-            throw new Error(result.message || "No payment URL was returned by the gateway.");
+            toast({
+                title: engagement.title,
+                description: result.message || engagement.description,
+            });
+            pollStatus(result.reference);
         } catch (error) {
             toast({
                 title: "Payment Failed",
@@ -278,7 +280,7 @@ export function ZesaFlow() {
                                 <div className="text-center space-y-2">
                                     <h3 className="text-xl font-bold">Secure Verification</h3>
                                     <p className="text-sm text-muted-foreground">
-                                        We&apos;ve sent a code to your mobile device associated with {paymentMethod.toLowerCase()} ( {customerMobile} ).
+                                        We&apos;ve sent a code to your mobile device associated with {getPaymentMethodLabel(paymentMethod)} ({customerMobile}).
                                     </p>
                                 </div>
                                 <div className="space-y-4">

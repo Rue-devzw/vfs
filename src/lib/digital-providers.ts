@@ -1,4 +1,5 @@
 import {
+  initiateOneMoneyExpress,
   initiateZbStandardCheckout,
   initiateEcocashExpress,
   initiateInnbucksExpress,
@@ -7,6 +8,7 @@ import {
 } from "@/lib/payments/zb";
 import { convertFromUsd, type CurrencyCode, getZwgPerUsdRate } from "@/lib/currency";
 import { env } from "@/lib/env";
+import type { PaymentMethod } from "@/lib/payment-methods";
 import {
   type EgressPaymentPayload,
   EgressGatewayError,
@@ -32,7 +34,7 @@ export type ProviderPurchasePayload = {
   serviceType: Uppercase<DigitalServiceId>;
   accountNumber: string;
   amount: number;
-  paymentMethod: "WALLETPLUS" | "ECOCASH" | "INNBUCKS" | "OMARI" | "CARD";
+  paymentMethod: PaymentMethod;
   currencyCode?: CurrencyCode;
   customerMobile?: string;
   email?: string;
@@ -151,6 +153,7 @@ const zbManualBillsAdapter: DigitalProviderAdapter = {
         case "ECOCASH": response = await initiateEcocashExpress(zbPayload); break;
         case "INNBUCKS": response = await initiateInnbucksExpress(zbPayload); break;
         case "OMARI": response = await initiateOmariExpress(zbPayload); break;
+        case "ONEMONEY": response = await initiateOneMoneyExpress(zbPayload); break;
         case "WALLETPLUS": response = await initiateSmileCashExpress(zbPayload); break;
         default: throw new Error(`Unsupported payment method: ${payload.paymentMethod}`);
       }
@@ -160,7 +163,9 @@ const zbManualBillsAdapter: DigitalProviderAdapter = {
       reference,
       transactionReference: response.transactionReference,
       status: response.status ?? "PENDING",
-      paymentUrl: response.paymentUrl || env.ZB_DIGITAL_CHECKOUT_URL,
+      paymentUrl: payload.paymentMethod === "CARD"
+        ? response.paymentUrl || env.ZB_DIGITAL_CHECKOUT_URL
+        : response.paymentUrl,
       message: response.responseMessage || "Payment initiated. Your request will be reviewed after payment confirmation.",
       amount,
       currencyCode,
@@ -417,11 +422,14 @@ const zbEgressAdapter: DigitalProviderAdapter = {
         case "ECOCASH": response = await initiateEcocashExpress(zbPayload); break;
         case "INNBUCKS": response = await initiateInnbucksExpress(zbPayload); break;
         case "OMARI": response = await initiateOmariExpress(zbPayload); break;
+        case "ONEMONEY": response = await initiateOneMoneyExpress(zbPayload); break;
         case "WALLETPLUS": response = await initiateSmileCashExpress(zbPayload); break;
         default: throw new Error(`Unsupported payment method: ${payload.paymentMethod}`);
       }
     }
-    const paymentUrl = response.paymentUrl || env.ZB_DIGITAL_CHECKOUT_URL;
+    const paymentUrl = payload.paymentMethod === "CARD"
+      ? response.paymentUrl || env.ZB_DIGITAL_CHECKOUT_URL
+      : response.paymentUrl;
 
     return {
       reference,

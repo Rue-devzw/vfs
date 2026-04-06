@@ -1,4 +1,6 @@
 
+import type { PaymentMethod } from "@/lib/payment-methods";
+
 export interface CustomerDetails {
     meterNumber: string;
     name?: string;
@@ -64,7 +66,7 @@ export const ZBService = {
     purchaseToken: async (
         meterNumber: string,
         amount: number,
-        paymentMethod: string,
+        paymentMethod: PaymentMethod,
         customerMobile?: string,
     ): Promise<PaymentInitResponse> => {
         if (amount < 2) {

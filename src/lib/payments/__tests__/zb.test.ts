@@ -72,6 +72,38 @@ describe("zb payments client", () => {
     expect(result.status).toBe(body.status);
   });
 
+  it("normalizes local mobile numbers before sending SmileCash requests", async () => {
+    const body = {
+      status: "PENDING",
+      transactionReference: "EXP-TRX-2",
+    };
+    const fetchMock = vi.fn(async () => ({
+      ok: true,
+      status: 200,
+      text: async () => JSON.stringify(body),
+    }));
+    vi.stubGlobal("fetch", fetchMock as unknown as typeof fetch);
+
+    const { initiateSmileCashExpress } = await import("@/lib/payments/zb");
+    await initiateSmileCashExpress({
+      orderReference: "ORDER-4",
+      amount: 20,
+      resultUrl: "https://app.test/api/zb/webhook",
+      itemName: "Order",
+      itemDescription: "Order item",
+      currencyCode: "840",
+      customerMobile: "0771111111",
+    });
+
+    const firstCall = (fetchMock.mock.calls as unknown[])[0];
+    if (!Array.isArray(firstCall) || firstCall.length < 2) throw new Error("Mock call malformed");
+    const init = firstCall[1] as RequestInit | undefined;
+    if (!init?.body || typeof init.body !== "string") throw new Error("Missing request body");
+    const callBody = JSON.parse(init.body);
+    expect(callBody.customerMobile).toBe("263771111111");
+    expect(callBody.zbWalletMobile).toBe("263771111111");
+  });
+
   it("initiates ZWG express and applies conversion (mocked behavior check)", async () => {
     const body = {
       status: "PENDING",

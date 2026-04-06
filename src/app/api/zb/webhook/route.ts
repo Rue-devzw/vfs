@@ -6,6 +6,7 @@ import {
   recordWebhookInbox,
   upsertPaymentIntent,
 } from "@/lib/firestore/payments";
+import { syncDigitalFulfilmentForOrder } from "@/lib/digital-fulfilment";
 import { releaseExpiredReservations } from "@/lib/firestore/inventory";
 import { setOrderStatus } from "@/server/orders";
 
@@ -82,6 +83,7 @@ export async function POST(req: Request) {
         status: mapGatewayStatusToPaymentIntent(rawStatus),
         responsePayload: body,
       });
+      await syncDigitalFulfilmentForOrder(reference, rawStatus);
       await markWebhookInboxStatus(inbox.id, "processed");
     } catch (error) {
       await markWebhookInboxStatus(

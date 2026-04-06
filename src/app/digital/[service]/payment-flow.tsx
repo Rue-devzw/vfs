@@ -12,8 +12,15 @@ import { Separator } from "@/components/ui/separator";
 import { CheckCircle2, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { DigitalServiceField } from "@/lib/digital-services";
-
-type PaymentMethod = "WALLETPLUS" | "ECOCASH" | "INNBUCKS" | "OMARI" | "CARD";
+import {
+  getPaymentMethodLabel,
+  getPaymentMethodMobileHint,
+  isPaymentMethod,
+  PAYMENT_METHOD_OPTIONS,
+  requiresMobileNumber,
+  type PaymentMethod,
+} from "@/lib/payment-methods";
+import { getPaymentProgressContent, isSuccessfulGatewayStatus, resolvePurchaseFlowAction } from "@/lib/payment-flow";
 
 type DigitalReceipt = {
   reference: string;
@@ -22,10 +29,6 @@ type DigitalReceipt = {
   transactionReference?: string;
   message: string;
 };
-
-function isPaymentMethod(value: string): value is PaymentMethod {
-  return ["WALLETPLUS", "ECOCASH", "INNBUCKS", "OMARI", "CARD"].includes(value);
-}
 
 export function GenericDigitalFlow({
   service,
@@ -56,6 +59,7 @@ export function GenericDigitalFlow({
   const [orderReference, setOrderReference] = useState("");
   const [receipt, setReceipt] = useState<DigitalReceipt | null>(null);
   const [serviceMeta, setServiceMeta] = useState<Record<string, string>>({});
+  const [activePaymentMethod, setActivePaymentMethod] = useState<PaymentMethod>("WALLETPLUS");
 
   const isAvailable = availabilityStatus === "active";
 
@@ -90,17 +94,22 @@ export function GenericDigitalFlow({
       await new Promise(resolve => setTimeout(resolve, 3000));
     }
 
-    const isSuccess = latestStatus === "PAID" || latestStatus === "SUCCESS";
+    const isSuccess = isSuccessfulGatewayStatus(latestStatus);
+    const engagement = getPaymentProgressContent(latestStatus, {
+      paymentMethod: activePaymentMethod,
+      subject: `${serviceLabel} payment`,
+      manualReview: true,
+    });
     setReceipt({
       reference,
       status: latestStatus,
       amount: latestAmount,
       transactionReference: latestGatewayReference,
       message: isSuccess
-        ? `${serviceLabel} payment received. Your request is now queued for manual processing and confirmation.`
-        : `${serviceLabel} payment is not yet complete. Please check the latest status or try again.`,
+        ? engagement.description
+        : engagement.description,
     });
-  }, [serviceLabel]);
+  }, [activePaymentMethod, serviceLabel]);
 
   useEffect(() => {
     const reference = searchParams.get("reference");
@@ -163,34 +172,36 @@ export function GenericDigitalFlow({
       const data = await res.json();
       if (!res.ok || !data.success) throw new Error(data.error || "Failed to initiate payment");
 
-      if (data.status === "AWAITING_OTP") {
+      setActivePaymentMethod(paymentMethod);
+      const action = resolvePurchaseFlowAction(data);
+      const engagement = getPaymentProgressContent(data.status, {
+        paymentMethod,
+        subject: `${serviceLabel} payment`,
+        manualReview: true,
+      });
+
+      if (action.type === "otp") {
         setTransactionReference(data.transactionReference);
         setOrderReference(data.reference);
         setAwaitingOtp(true);
         toast({
-          title: "OTP Required",
-          description: data.message || "Please enter the OTP sent to your mobile device.",
+          title: engagement.title,
+          description: data.message || engagement.description,
         });
         return;
       }
 
-      if (data.paymentUrl) {
-        window.location.href = data.paymentUrl;
+      if (action.type === "redirect") {
+        window.location.href = action.url;
         return;
       }
 
-      // If no redirect and no OTP, it might be a push-to-phone that just needs polling
-      if (data.reference) {
-        setOrderReference(data.reference);
-        toast({
-          title: "Payment Initiated",
-          description: data.message || "Please check your phone to complete the payment.",
-        });
-        checkStatus(data.reference);
-        return;
-      }
-
-      throw new Error(data.message || "No payment URL was returned by the gateway.");
+      setOrderReference(data.reference);
+      toast({
+        title: engagement.title,
+        description: data.message || engagement.description,
+      });
+      checkStatus(data.reference);
     } catch (error) {
       toast({
         title: "Initiation failed",
@@ -278,7 +289,11 @@ export function GenericDigitalFlow({
         </div>
 
         <div className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-          A team member may still need to verify and complete this digital service manually. You can track progress from your account once signed in.
+          {getPaymentProgressContent(receipt.status, {
+            paymentMethod: activePaymentMethod,
+            subject: `${serviceLabel} request`,
+            manualReview: true,
+          }).description} You can track progress from your account once signed in.
         </div>
 
         <div className="flex gap-3">
@@ -314,7 +329,7 @@ export function GenericDigitalFlow({
           <div className="rounded-xl border border-primary/20 bg-primary/5 px-4 py-3 text-sm text-primary">
             {awaitingOtp 
               ? "Please enter the OTP sent to your phone to complete the transaction." 
-              : "Standard checkout is live for this service. After payment, the request is tracked in the system and moves into manual processing confirmation."}
+              : `Pay with ${getPaymentMethodLabel(paymentMethod)}. After payment, the request is tracked in the system and moves into manual processing confirmation.`}
           </div>
         )}
         <div className="space-y-4">
@@ -414,13 +429,7 @@ export function GenericDigitalFlow({
                   defaultValue={paymentMethod}
                   className="grid grid-cols-2 gap-2"
                 >
-                  {[
-                    { id: "WALLETPLUS", label: "SmileCash" },
-                    { id: "ECOCASH", label: "EcoCash" },
-                    { id: "INNBUCKS", label: "Innbucks" },
-                    { id: "OMARI", label: "Omari" },
-                    { id: "CARD", label: "Bank Card" },
-                  ].map((m) => (
+                  {PAYMENT_METHOD_OPTIONS.map((m) => (
                     <Label
                       key={m.id}
                       className={cn(
@@ -435,7 +444,7 @@ export function GenericDigitalFlow({
                 </RadioGroup>
               </div>
 
-              {paymentMethod !== "CARD" && (
+              {requiresMobileNumber(paymentMethod) && (
                 <div className="space-y-2 animate-in fade-in slide-in-from-top-2">
                   <Label htmlFor="mobile">Mobile Number (Payment)</Label>
                   <Input
@@ -446,7 +455,7 @@ export function GenericDigitalFlow({
                     placeholder="07XX XXX XXX"
                     className="bg-background"
                   />
-                  <p className="text-[10px] text-muted-foreground">Enter the mobile number associated with your {paymentMethod.toLowerCase()} wallet.</p>
+                  <p className="text-[10px] text-muted-foreground">{getPaymentMethodMobileHint(paymentMethod)}</p>
                 </div>
               )}
 
@@ -456,7 +465,7 @@ export function GenericDigitalFlow({
                   || !isAvailable
                   || !accountReference
                   || !amount
-                  || (paymentMethod !== "CARD" && !customerMobile)
+                  || (requiresMobileNumber(paymentMethod) && !customerMobile)
                   || formFields.some(field => field.required && !(serviceMeta[field.id] ?? "").trim())
                 }
                 onClick={initiate}

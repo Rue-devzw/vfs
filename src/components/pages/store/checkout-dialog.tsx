@@ -31,6 +31,15 @@ import { Loader2 } from "lucide-react";
 import { convertFromUsd, formatMoney } from "@/lib/currency";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  getPaymentMethodLabel,
+  getPaymentMethodMobileHint,
+  PAYMENT_METHOD_OPTIONS,
+  PAYMENT_METHOD_VALUES,
+  requiresMobileNumber,
+  type PaymentMethod,
+} from "@/lib/payment-methods";
+import { getPaymentProgressContent, isSuccessfulGatewayStatus, resolvePurchaseFlowAction } from "@/lib/payment-flow";
 
 type DeliveryZone = {
   id: string;
@@ -65,7 +74,7 @@ const formSchema = z.object({
   customerAddress: z.string().optional(),
   deliveryInstructions: z.string().optional(),
   customerEmail: z.string().email("A valid email is required."),
-  paymentMethod: z.enum(["WALLETPLUS", "ECOCASH", "INNBUCKS", "OMARI", "CARD"]).default("WALLETPLUS"),
+  paymentMethod: z.enum(PAYMENT_METHOD_VALUES).default("WALLETPLUS"),
   customerMobile: z.string().optional(),
   otp: z.string().optional(),
 }).superRefine((data, ctx) => {
@@ -79,7 +88,7 @@ const formSchema = z.object({
     if (!data.customerAddress) ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Your address is required for delivery.", path: ["customerAddress"] });
   }
 
-  if (data.paymentMethod !== "CARD" && !data.customerMobile) {
+  if (requiresMobileNumber(data.paymentMethod) && !data.customerMobile) {
     ctx.addIssue({ code: z.ZodIssueCode.custom, message: "Mobile number is required for this payment method.", path: ["customerMobile"] });
   }
 
@@ -102,6 +111,7 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
   const [lastOrderReference, setLastOrderReference] = React.useState<string | null>(null);
   const [paymentStatus, setPaymentStatus] = React.useState<string | null>(null);
   const [isAwaitingGatewayStatus, setIsAwaitingGatewayStatus] = React.useState(false);
+  const [activePaymentMethod, setActivePaymentMethod] = React.useState<PaymentMethod>("WALLETPLUS");
   const [savedAddresses, setSavedAddresses] = React.useState<Array<{
     address: string;
     label?: string;
@@ -140,8 +150,6 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
   const totalUsd = subtotalUsd + deliveryFeeUsd;
   const subtotal = convertFromUsd(subtotalUsd, state.currencyCode);
   const total = convertFromUsd(totalUsd, state.currencyCode);
-
-  const needsOtp = paymentMethod === "WALLETPLUS" || paymentMethod === "OMARI";
 
   React.useEffect(() => {
     const raw = window.localStorage.getItem("vfs.checkout.profile");
@@ -361,6 +369,10 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
           throw new Error(data.error || "Failed to initiate payment");
         }
 
+        setActivePaymentMethod(values.paymentMethod);
+        setLastOrderReference(data.reference ?? null);
+        setPaymentStatus(String(data.status ?? "PENDING").toUpperCase());
+
         window.localStorage.setItem("vfs.checkout.profile", JSON.stringify({
           customerName: values.customerName,
           customerPhone: values.customerPhone,
@@ -369,34 +381,35 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
           customerEmail: values.customerEmail,
         }));
 
-        if (values.paymentMethod === "CARD") {
-          if (data.paymentUrl) {
-            window.location.href = data.paymentUrl;
-            return;
-          }
-          throw new Error("Missing Card payment URL");
+        const action = resolvePurchaseFlowAction(data);
+        const engagement = getPaymentProgressContent(data.status, {
+          paymentMethod: values.paymentMethod,
+          subject: "your order",
+        });
+
+        if (action.type === "redirect") {
+          window.location.href = action.url;
+          return;
         }
 
-        if (needsOtp) {
+        if (action.type === "otp") {
           setAwaitingOtp(true);
           setTransactionReference(data.transactionReference ?? null);
           setOrderReference(data.reference ?? null);
-          setLastOrderReference(data.reference ?? null);
           toast({
-            title: "OTP required",
-            description: data.message ?? "Enter the OTP sent to your account to complete payment.",
+            title: engagement.title,
+            description: data.message ?? engagement.description,
           });
           return;
         }
 
         const reference = String(data.reference ?? "");
         if (reference) {
-          setLastOrderReference(reference);
           setPaymentStatus(String(data.status ?? "PENDING").toUpperCase());
           setIsAwaitingGatewayStatus(true);
           const finalStatus = await waitForFinalPaymentStatus(reference);
           setIsAwaitingGatewayStatus(false);
-          if (finalStatus === "PAID" || finalStatus === "SUCCESS") {
+          if (isSuccessfulGatewayStatus(finalStatus)) {
             submitKeyRef.current = null;
             dispatch({ type: "CLEAR_CART" });
             toast({
@@ -429,7 +442,7 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
           reference: orderReference,
           transactionReference,
           otp: values.otp,
-          paymentMethod: values.paymentMethod,
+          paymentMethod: activePaymentMethod,
         }),
       });
       const data = await response.json();
@@ -439,7 +452,7 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
       }
 
       const status = String(data.status ?? "PENDING").toUpperCase();
-      if (status === "PAID" || status === "SUCCESS") {
+      if (isSuccessfulGatewayStatus(status)) {
         submitKeyRef.current = null;
         dispatch({ type: "CLEAR_CART" });
         setAwaitingOtp(false);
@@ -454,10 +467,10 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
         const finalStatus = await waitForFinalPaymentStatus(orderReference);
         setIsAwaitingGatewayStatus(false);
         toast({
-          title: finalStatus === "PAID" || finalStatus === "SUCCESS" ? "Payment successful" : "Payment processing",
+          title: isSuccessfulGatewayStatus(finalStatus) ? "Payment successful" : "Payment processing",
           description: data.message ?? `Current status: ${finalStatus}`,
         });
-        if (finalStatus === "PAID" || finalStatus === "SUCCESS") {
+        if (isSuccessfulGatewayStatus(finalStatus)) {
           submitKeyRef.current = null;
           dispatch({ type: "CLEAR_CART" });
           setAwaitingOtp(false);
@@ -622,13 +635,7 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
                 <FormItem>
                   <FormLabel className="text-base font-semibold">Select Payment Method</FormLabel>
                   <RadioGroup onValueChange={(val) => { field.onChange(val); setAwaitingOtp(false); }} defaultValue={field.value} className="grid grid-cols-2 md:grid-cols-3 gap-2 pt-2">
-                    {[
-                      { id: "WALLETPLUS", label: "SmileCash" },
-                      { id: "ECOCASH", label: "EcoCash" },
-                      { id: "INNBUCKS", label: "Innbucks" },
-                      { id: "OMARI", label: "Omari" },
-                      { id: "CARD", label: "Visa/Mastercard" }
-                    ].map((m) => (
+                    {PAYMENT_METHOD_OPTIONS.map((m) => (
                       <FormItem key={m.id}>
                         <FormControl><RadioGroupItem value={m.id} className="peer sr-only" /></FormControl>
                         <FormLabel className="flex flex-col items-center justify-center h-16 rounded-md border-2 border-muted bg-popover p-2 hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/5 [&:has([data-state=checked])]:border-primary cursor-pointer text-xs font-bold transition-all">
@@ -641,17 +648,18 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
                 </FormItem>
               )} />
 
-              {paymentMethod !== "CARD" && (
+              {requiresMobileNumber(paymentMethod) && (
                 <FormField name="customerMobile" control={form.control} render={({ field }) => (
                   <FormItem className="animate-fade-in-up">
-                    <FormLabel>{paymentMethod} Mobile Number</FormLabel>
+                    <FormLabel>{getPaymentMethodLabel(paymentMethod)} Mobile Number</FormLabel>
                     <FormControl><Input placeholder="+263 7..." {...field} /></FormControl>
+                    <FormDescription>{getPaymentMethodMobileHint(paymentMethod)}</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )} />
               )}
 
-              {awaitingOtp && needsOtp && (
+              {awaitingOtp && (
                 <FormField name="otp" control={form.control} render={({ field }) => (
                   <FormItem className="animate-fade-in-up">
                     <FormLabel>OTP Confirmation</FormLabel>
@@ -687,7 +695,18 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
 
             {lastOrderReference && (
               <div className="rounded-xl border bg-muted/20 p-3 text-sm">
-                <p className="font-medium">Transaction Report</p>
+                <p className="font-medium">
+                  {getPaymentProgressContent(paymentStatus ?? undefined, {
+                    paymentMethod: activePaymentMethod,
+                    subject: "your order",
+                  }).title}
+                </p>
+                <p className="text-muted-foreground">
+                  {getPaymentProgressContent(paymentStatus ?? undefined, {
+                    paymentMethod: activePaymentMethod,
+                    subject: "your order",
+                  }).description}
+                </p>
                 {paymentStatus && <p className="text-muted-foreground">Current status: {paymentStatus}</p>}
                 {isAwaitingGatewayStatus && <p className="text-muted-foreground">Waiting for payment system confirmation...</p>}
                 <a
@@ -709,7 +728,7 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
                 disabled={isSubmitting || (deliveryMethod === "delivery" && (!deliveryQuote || isFetchingQuote))}
               >
                 {isSubmitting ? (<><Loader2 className="mr-2 h-5 w-5 animate-spin" />Processing...</>) : (
-                  awaitingOtp ? "Verify Payment" : (paymentMethod === "CARD" ? "Proceed to Secure Pay" : `Pay with ${paymentMethod}`)
+                  awaitingOtp ? "Verify Payment" : (paymentMethod === "CARD" ? "Proceed to Secure Pay" : `Pay with ${getPaymentMethodLabel(paymentMethod)}`)
                 )}
               </Button>
             </div>

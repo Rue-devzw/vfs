@@ -19,6 +19,27 @@ export function StepReceipt({ receipt, onDone }: StepReceiptProps) {
         setTimeout(() => setCopied(false), 2000);
     };
 
+    const handleDownload = () => {
+        const lines = [
+            `Status: ${receipt.status}`,
+            receipt.token ? `Token: ${receipt.token}` : null,
+            typeof receipt.units === "number" ? `Units: ${receipt.units} kWh` : null,
+            `Amount Paid: $${receipt.amount.toFixed(2)}`,
+            `Meter Number: ${receipt.meterNumber}`,
+            `Receipt: ${receipt.receiptNumber}`,
+            receipt.transactionReference ? `Gateway Ref: ${receipt.transactionReference}` : null,
+            `Date: ${new Date(receipt.date).toISOString()}`,
+        ].filter(Boolean);
+
+        const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const anchor = document.createElement("a");
+        anchor.href = url;
+        anchor.download = `zesa-${receipt.receiptNumber}.txt`;
+        anchor.click();
+        URL.revokeObjectURL(url);
+    };
+
     return (
         <div className="space-y-6">
             <div className="text-center">
@@ -31,10 +52,12 @@ export function StepReceipt({ receipt, onDone }: StepReceiptProps) {
 
             <div className="overflow-hidden rounded-xl border bg-card shadow-sm">
                 <div className="bg-muted/30 p-6 text-center">
-                    <span className="text-xs uppercase tracking-wider text-muted-foreground">Transaction Status</span>
+                    <span className="text-xs uppercase tracking-wider text-muted-foreground">
+                        {receipt.token ? "Electricity Token" : "Transaction Status"}
+                    </span>
                     <div className="mt-2 flex items-center justify-center gap-2">
                         <code className="text-3xl font-bold tracking-widest text-primary font-mono select-all">
-                            {receipt.status}
+                            {receipt.token ?? receipt.status}
                         </code>
                         {receipt.token ? (
                             <Button size="icon" variant="ghost" onClick={handleCopy} className="h-8 w-8 rounded-full">
@@ -50,6 +73,10 @@ export function StepReceipt({ receipt, onDone }: StepReceiptProps) {
                             <span className="font-medium">{receipt.units} kWh</span>
                         </div>
                     ) : null}
+                    <div className="flex justify-between py-2">
+                        <span className="text-muted-foreground">Status</span>
+                        <span className="font-medium">{receipt.status}</span>
+                    </div>
                     <div className="flex justify-between py-2">
                         <span className="text-muted-foreground">Amount Paid</span>
                         <span className="font-medium">${receipt.amount.toFixed(2)}</span>
@@ -76,7 +103,7 @@ export function StepReceipt({ receipt, onDone }: StepReceiptProps) {
             </div>
 
             <div className="flex gap-3">
-                <Button variant="outline" className="flex-1 gap-2">
+                <Button variant="outline" className="flex-1 gap-2" onClick={handleDownload}>
                     <Download className="h-4 w-4" /> Download
                 </Button>
                 <Button onClick={onDone} className="flex-[2]">

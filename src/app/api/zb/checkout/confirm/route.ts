@@ -1,14 +1,21 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { confirmSmileCashExpress, confirmOmariExpress } from "@/lib/payments/zb";
+import {
+  confirmEcocashExpress,
+  confirmInnbucksExpress,
+  confirmOmariExpress,
+  confirmOneMoneyExpress,
+  confirmSmileCashExpress,
+} from "@/lib/payments/zb";
 import { mapGatewayStatusToPaymentIntent, upsertPaymentIntent } from "@/lib/firestore/payments";
 import { setOrderStatus } from "@/server/orders";
+import { PAYMENT_METHOD_VALUES } from "@/lib/payment-methods";
 
 const confirmSchema = z.object({
   reference: z.string().min(1),
   transactionReference: z.string().min(1),
   otp: z.string().trim().min(4),
-  paymentMethod: z.enum(["WALLETPLUS", "OMARI"]).default("WALLETPLUS"),
+  paymentMethod: z.enum(PAYMENT_METHOD_VALUES).default("WALLETPLUS"),
 });
 
 export async function POST(req: Request) {
@@ -22,10 +29,32 @@ export async function POST(req: Request) {
     const { reference, transactionReference, otp, paymentMethod } = validation.data;
 
     let result;
-    if (paymentMethod === "OMARI") {
-      result = await confirmOmariExpress({ otp, transactionReference });
-    } else {
-      result = await confirmSmileCashExpress({ otp, transactionReference });
+    switch (paymentMethod) {
+      case "ECOCASH":
+        result = await confirmEcocashExpress({ otp, transactionReference });
+        break;
+      case "INNBUCKS":
+        result = await confirmInnbucksExpress({ otp, transactionReference });
+        break;
+      case "OMARI":
+        result = await confirmOmariExpress({ otp, transactionReference });
+        break;
+      case "ONEMONEY":
+        result = await confirmOneMoneyExpress({ otp, transactionReference });
+        break;
+      case "WALLETPLUS":
+        result = await confirmSmileCashExpress({ otp, transactionReference });
+        break;
+      case "CARD":
+        return NextResponse.json(
+          { success: false, error: "Card payments do not use OTP confirmation on this route." },
+          { status: 400 },
+        );
+      default:
+        return NextResponse.json(
+          { success: false, error: `Unsupported payment method: ${paymentMethod}` },
+          { status: 400 },
+        );
     }
 
     await setOrderStatus(reference, result.status ?? "PENDING", {

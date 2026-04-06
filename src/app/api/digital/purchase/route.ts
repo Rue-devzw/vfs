@@ -6,12 +6,13 @@ import { getDigitalServiceConfig } from "@/lib/digital-services";
 import { upsertDigitalOrder } from "@/lib/firestore/digital-orders";
 import { EgressGatewayError } from "@/lib/payments/egress";
 import { ZbGatewayError } from "@/lib/payments/zb";
+import { PAYMENT_METHOD_VALUES } from "@/lib/payment-methods";
 
 const purchaseSchema = z.object({
     serviceType: z.enum(["ZESA", "AIRTIME", "DSTV", "COUNCILS", "NYARADZO", "INTERNET"]),
     accountNumber: z.string().min(1),
     amount: z.number().min(1),
-    paymentMethod: z.enum(["WALLETPLUS", "ECOCASH", "INNBUCKS", "OMARI", "CARD"]),
+    paymentMethod: z.enum(PAYMENT_METHOD_VALUES),
     currencyCode: z.enum(["840", "924"]).default("840"),
     customerMobile: z.string().optional(),
     customerName: z.string().optional(),

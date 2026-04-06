@@ -24,10 +24,12 @@ import {
   initiateEcocashExpress,
   initiateInnbucksExpress,
   initiateOmariExpress,
+  initiateOneMoneyExpress,
   initiateZbStandardCheckout,
   type ZbCheckoutResponse,
   ZbGatewayError,
 } from "@/lib/payments/zb";
+import { PAYMENT_METHOD_VALUES } from "@/lib/payment-methods";
 
 const checkoutItemSchema = z.object({
   productId: z.string().min(1),
@@ -45,7 +47,7 @@ function buildOrderReference(idempotencyKey?: string | null) {
 const initiatePaymentSchema = z.object({
   email: z.string().email(),
   customerMobile: z.string().trim().min(8).optional(), // Renamed for clarity across providers
-  paymentMethod: z.enum(["WALLETPLUS", "ECOCASH", "INNBUCKS", "CARD", "OMARI", "ONEMONEY"]).default("WALLETPLUS"),
+  paymentMethod: z.enum(PAYMENT_METHOD_VALUES).default("WALLETPLUS"),
   currencyCode: z.enum(["840", "924"]).default("840"),
   deliveryMethod: z.enum(["collect", "delivery"]).default("collect"),
   customerName: z.string().trim().min(2),
@@ -302,6 +304,7 @@ export async function POST(req: Request) {
         case "ECOCASH": response = await initiateEcocashExpress(expressPayload); break;
         case "INNBUCKS": response = await initiateInnbucksExpress(expressPayload); break;
         case "OMARI": response = await initiateOmariExpress(expressPayload); break;
+        case "ONEMONEY": response = await initiateOneMoneyExpress(expressPayload); break;
         case "WALLETPLUS": response = await initiateSmileCashExpress(expressPayload); break;
         default: throw new Error(`Unsupported payment method: ${paymentMethod}`);
       }
