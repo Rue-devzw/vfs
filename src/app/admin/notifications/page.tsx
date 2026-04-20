@@ -1,7 +1,9 @@
 import { Badge } from "@/components/ui/badge";
+import { AdminActionForm } from "@/components/admin/admin-action-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { getNotificationOpsSummary, resendNotification, retryNotification } from "@/lib/firestore/notifications";
+import { runOperationsMaintenance } from "@/lib/ops";
 import { revalidatePath } from "next/cache";
 
 export default async function AdminNotificationsPage() {
@@ -17,6 +19,13 @@ export default async function AdminNotificationsPage() {
   async function handleResend(notificationId: string) {
     "use server";
     await resendNotification(notificationId);
+    revalidatePath("/admin");
+    revalidatePath("/admin/notifications");
+  }
+
+  async function handleProcessQueue() {
+    "use server";
+    await runOperationsMaintenance({ notificationLimit: 100, reservationLimit: 0, refundLimit: 0, digitalLimit: 0 });
     revalidatePath("/admin");
     revalidatePath("/admin/notifications");
   }
@@ -56,10 +65,25 @@ export default async function AdminNotificationsPage() {
         <CardHeader>
           <CardTitle>Recent notification records</CardTitle>
           <CardDescription>
-            These records are transport-ready. Attach an email or SMS provider later without changing the business events.
+            Queue-backed records now render branded HTML email while preserving the original plain-text audit narrative.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-dashed p-4">
+            <div>
+              <div className="font-medium">Queue processor</div>
+              <div className="text-sm text-muted-foreground">
+                Use the scheduled worker or run a maintenance sweep now to flush queued notifications immediately.
+              </div>
+            </div>
+            <AdminActionForm
+              action={handleProcessQueue}
+              pendingTitle="Running maintenance sweep"
+              pendingMessage="We are flushing the notifications queue and refreshing delivery records."
+            >
+              <Button type="submit" size="sm" variant="outline">Run maintenance sweep</Button>
+            </AdminActionForm>
+          </div>
           {notifications.length === 0 ? (
             <div className="rounded-lg border border-dashed p-6 text-center text-sm text-muted-foreground">
               No notification records yet.
@@ -96,14 +120,22 @@ export default async function AdminNotificationsPage() {
                 ) : null}
                 <div className="mt-4 flex flex-wrap gap-2">
                   {notification.status === "failed" || notification.status === "queued" ? (
-                    <form action={handleRetry.bind(null, notification.id)}>
+                    <AdminActionForm
+                      action={handleRetry.bind(null, notification.id)}
+                      pendingTitle="Retrying delivery"
+                      pendingMessage="We are resubmitting this notification for delivery."
+                    >
                       <Button type="submit" size="sm" variant="outline">Retry delivery</Button>
-                    </form>
+                    </AdminActionForm>
                   ) : null}
                   {notification.status === "sent" ? (
-                    <form action={handleResend.bind(null, notification.id)}>
+                    <AdminActionForm
+                      action={handleResend.bind(null, notification.id)}
+                      pendingTitle="Resending notification"
+                      pendingMessage="We are sending this email again now."
+                    >
                       <Button type="submit" size="sm" variant="outline">Resend email</Button>
-                    </form>
+                    </AdminActionForm>
                   ) : null}
                 </div>
               </div>

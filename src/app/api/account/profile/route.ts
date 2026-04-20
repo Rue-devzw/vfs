@@ -5,7 +5,7 @@ import { getCustomerAccountSnapshot } from "@/lib/firestore/customers";
 export async function GET() {
   const session = await verifyCustomerSession();
   if (!session?.email) {
-    return NextResponse.json({ success: false, error: "Unauthorized" }, { status: 401 });
+    return new NextResponse(null, { status: 204 });
   }
 
   const snapshot = await getCustomerAccountSnapshot(session.email);

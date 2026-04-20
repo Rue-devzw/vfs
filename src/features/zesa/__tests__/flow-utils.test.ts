@@ -24,6 +24,15 @@ describe("zesa flow utils", () => {
     })).toEqual({ type: "redirect", url: "https://pay.example.com" });
   });
 
+  it("routes 3D Secure responses into HTML handoff", () => {
+    expect(resolvePurchaseFlowAction({
+      reference: "ORDER-3",
+      transactionReference: "TRX-3",
+      status: "PENDING_3DS",
+      redirectHtml: "<html></html>",
+    })).toEqual({ type: "html", html: "<html></html>" });
+  });
+
   it("keeps polling after PAID until vending data exists", () => {
     expect(shouldContinueStatusPolling("PAID", false)).toBe(true);
     expect(shouldContinueStatusPolling("PAID", true)).toBe(false);

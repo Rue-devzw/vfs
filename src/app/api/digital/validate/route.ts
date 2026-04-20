@@ -1,8 +1,13 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { DigitalService, DigitalServiceUnavailableError } from "@/lib/digital-service-logic";
-import { EgressGatewayError } from "@/lib/payments/egress";
-import { ZbGatewayError } from "@/lib/payments/zb";
+import { getDigitalServiceConfig } from "@/lib/digital-services";
+import {
+    EgressGatewayError,
+    getEgressServiceUnavailableMessage,
+    isEgressServiceUnavailable,
+} from "@/lib/payments/egress";
+import { SmilePayGatewayError } from "@/lib/payments/smile-pay";
 
 const validateSchema = z.object({
     serviceType: z.enum(["ZESA", "AIRTIME", "DSTV", "COUNCILS", "NYARADZO", "INTERNET"]),
@@ -11,6 +16,8 @@ const validateSchema = z.object({
 });
 
 export async function POST(req: Request) {
+    let serviceLabel = "Digital service";
+
     try {
         const body = await req.json();
         const validation = validateSchema.safeParse(body);
@@ -20,6 +27,10 @@ export async function POST(req: Request) {
         }
 
         const { serviceType, accountNumber, serviceMeta } = validation.data;
+        const serviceConfig = getDigitalServiceConfig(serviceType.toLowerCase());
+        if (serviceConfig) {
+            serviceLabel = serviceConfig.label;
+        }
         const result = await DigitalService.validateAccount(serviceType, accountNumber, serviceMeta);
 
         return NextResponse.json({
@@ -34,7 +45,7 @@ export async function POST(req: Request) {
                 { status: error.status }
             );
         }
-        if (error instanceof ZbGatewayError) {
+        if (error instanceof SmilePayGatewayError) {
             return NextResponse.json(
                 {
                     success: false,
@@ -46,6 +57,17 @@ export async function POST(req: Request) {
             );
         }
         if (error instanceof EgressGatewayError) {
+            if (isEgressServiceUnavailable(error)) {
+                return NextResponse.json(
+                    {
+                        success: false,
+                        error: getEgressServiceUnavailableMessage(`${serviceLabel} validation`),
+                        code: "SERVICE_UNAVAILABLE",
+                        gatewayStatus: error.status,
+                    },
+                    { status: 503 }
+                );
+            }
             return NextResponse.json(
                 {
                     success: false,

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { encrypt, decrypt } from "../auth";
+import { createStaffIdentity, decrypt, encrypt } from "../auth";
 
 // Mock the env since it's used in the module scope or getSessionKey
 vi.mock("@/lib/env", () => ({
@@ -30,5 +30,21 @@ describe("auth utilities", () => {
         // but for now, we verify basic failure handling.
         const result = await decrypt("header.payload.signature");
         expect(result).toBeNull();
+    });
+
+    it("creates a traceable staff identity from the operator identifier", () => {
+        expect(createStaffIdentity("store_manager", "Grace Moyo")).toEqual({
+            staffId: "store_manager:grace-moyo",
+            staffLabel: "Grace Moyo",
+            staffEmail: undefined,
+        });
+    });
+
+    it("captures operator email when an email address is used", () => {
+        expect(createStaffIdentity("auditor", "ops@example.com")).toEqual({
+            staffId: "auditor:ops@example.com",
+            staffLabel: "ops@example.com",
+            staffEmail: "ops@example.com",
+        });
     });
 });

@@ -96,14 +96,13 @@ Returns aggregate information for each category.
 
 ### Existing form submission endpoints
 
-The following endpoints already existed and continue to use Firestore for persistence:
+The following endpoints continue to use Firestore for persistence:
 
-- `POST /api/orders`
 - `POST /api/wholesale`
 - `POST /api/partners`
 - `POST /api/prebookings`
 
-They expect JSON bodies that match the respective forms rendered in the web application.
+`POST /api/orders` has been retired because it bypassed the orchestrated checkout flow used for inventory reservations, payment intents, shipment creation, and customer notifications.
 
 ## AI helper endpoints
 

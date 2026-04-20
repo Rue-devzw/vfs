@@ -6,6 +6,8 @@ import { WhyChooseUs } from "@/components/pages/home/why-choose-us";
 
 import { Contact } from "@/components/pages/home/contact";
 import { PartnerCTA } from "@/components/pages/home/partner-cta";
+import { Locations } from "@/components/pages/home/locations";
+import { Wholesale } from "@/components/pages/home/wholesale";
 import { SectionReveal } from "@/components/ui/section-reveal";
 
 export default function Home() {
@@ -21,9 +23,15 @@ export default function Home() {
           <WhyChooseUs />
         </SectionReveal>
         <SectionReveal delay={0.3}>
-          <PartnerCTA />
+          <Locations />
         </SectionReveal>
         <SectionReveal delay={0.4}>
+          <Wholesale />
+        </SectionReveal>
+        <SectionReveal delay={0.5}>
+          <PartnerCTA />
+        </SectionReveal>
+        <SectionReveal delay={0.6}>
           <Contact />
         </SectionReveal>
       </main>

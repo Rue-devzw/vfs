@@ -2,7 +2,12 @@
 
 import React, { createContext, useContext, useEffect, useMemo, useReducer, type ReactNode } from "react";
 import type { Product } from "@/app/store/data";
-import type { CurrencyCode } from "@/lib/currency";
+import {
+  DEFAULT_CURRENCY_CODE,
+  isCurrencyCode,
+  type CurrencyCode,
+} from "@/lib/currency";
+import { useCurrency } from "@/components/currency/currency-provider";
 
 export interface CartItem extends Product {
   quantity: number;
@@ -30,7 +35,7 @@ type CartAction =
 const initialState: CartState = {
   sessionId: null,
   items: [],
-  currencyCode: "840",
+  currencyCode: DEFAULT_CURRENCY_CODE,
   isHydrated: false,
   isSyncing: false,
 };
@@ -99,8 +104,17 @@ function getOrCreateSessionId() {
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(cartReducer, initialState);
+  const {
+    currencyCode,
+    isHydrated: isCurrencyHydrated,
+    setCurrencyCode,
+  } = useCurrency();
 
   useEffect(() => {
+    if (!isCurrencyHydrated || state.isHydrated) {
+      return;
+    }
+
     const sessionId = getOrCreateSessionId();
     const storedCurrency = window.localStorage.getItem("vfs.currency.code");
     dispatch({ type: "SET_SESSION", payload: sessionId });
@@ -109,16 +123,24 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       try {
         const response = await fetch(`/api/cart?sessionId=${encodeURIComponent(sessionId)}`, { cache: "no-store" });
         const payload = await response.json();
+        const remoteCurrency = isCurrencyCode(payload?.cart?.currencyCode) ? payload.cart.currencyCode : undefined;
+        const preferredCurrency = isCurrencyCode(storedCurrency)
+          ? storedCurrency
+          : remoteCurrency ?? currencyCode;
+
         if (response.ok && payload?.cart) {
+          if (!isCurrencyCode(storedCurrency) && remoteCurrency && remoteCurrency !== currencyCode) {
+            setCurrencyCode(remoteCurrency);
+          }
           dispatch({
             type: "SET_CART",
             payload: {
               items: payload.cart.items ?? [],
-              currencyCode: payload.cart.currencyCode ?? (storedCurrency === "924" ? "924" : "840"),
+              currencyCode: preferredCurrency,
             },
           });
-        } else if (storedCurrency === "840" || storedCurrency === "924") {
-          dispatch({ type: "SET_CURRENCY", payload: storedCurrency });
+        } else {
+          dispatch({ type: "SET_CURRENCY", payload: preferredCurrency });
         }
       } catch (error) {
         console.error("Failed to hydrate cart:", error);
@@ -128,14 +150,21 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
 
     hydrate();
-  }, []);
+  }, [currencyCode, isCurrencyHydrated, setCurrencyCode, state.isHydrated]);
+
+  useEffect(() => {
+    if (!state.isHydrated || state.currencyCode === currencyCode) {
+      return;
+    }
+
+    dispatch({ type: "SET_CURRENCY", payload: currencyCode });
+  }, [currencyCode, state.currencyCode, state.isHydrated]);
 
   useEffect(() => {
     if (!state.isHydrated || !state.sessionId) {
       return;
     }
 
-    window.localStorage.setItem("vfs.currency.code", state.currencyCode);
     dispatch({ type: "SET_SYNCING", payload: true });
 
     const timeout = window.setTimeout(async () => {

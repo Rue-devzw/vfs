@@ -301,3 +301,88 @@ export async function retryDigitalOrderFulfilment(orderReference: string) {
     throw error;
   }
 }
+
+export async function sweepStaleDigitalOrders(limit = 25, staleMinutes = 30) {
+  if (!isFirebaseConfigured()) {
+    return { attempted: 0, escalated: 0 };
+  }
+
+  const snapshot = await getDb()
+    .collection("digital_orders")
+    .where("provisioningStatus", "in", ["pending", "processing"])
+    .limit(limit)
+    .get();
+
+  const staleBefore = Date.now() - staleMinutes * 60 * 1000;
+  let escalated = 0;
+
+  for (const doc of snapshot.docs) {
+    const order = { id: doc.id, ...doc.data() } as DigitalOrderRecord;
+    const updatedAt = Date.parse(order.updatedAt);
+    if (!Number.isFinite(updatedAt) || updatedAt > staleBefore || order.token || order.receiptNumber) {
+      continue;
+    }
+
+    await upsertDigitalOrder({
+      orderReference: order.orderReference,
+      serviceId: order.serviceId,
+      provider: order.provider,
+      accountReference: order.accountReference,
+      customerEmail: order.customerEmail,
+      customerName: order.customerName,
+      validationSnapshot: order.validationSnapshot,
+      provisioningStatus: "manual_review",
+      resultPayload: {
+        ...(order.resultPayload ?? {}),
+        escalatedAt: new Date().toISOString(),
+        escalationReason: `Digital fulfilment remained ${order.provisioningStatus} for more than ${staleMinutes} minutes.`,
+      },
+      token: order.token,
+      receiptNumber: order.receiptNumber,
+      completedAt: order.completedAt,
+    });
+
+    await createAuditLog({
+      action: "digital_escalated",
+      targetType: "digital_order",
+      targetId: order.id,
+      detail: `Digital order ${order.orderReference} escalated to manual review after exceeding the ${staleMinutes}-minute SLA.`,
+      meta: {
+        orderReference: order.orderReference,
+        serviceId: order.serviceId,
+        previousStatus: order.provisioningStatus,
+        staleMinutes,
+      },
+      actor: {
+        role: "system",
+        id: "ops:maintenance",
+        label: "Operations Runner",
+      },
+    });
+
+    if (order.customerEmail) {
+      await queueNotification({
+        eventKey: `digital:${order.orderReference}:sla_escalated`,
+        type: "digital_fulfilment_issue",
+        audience: "customer",
+        customerEmail: order.customerEmail,
+        customerName: order.customerName,
+        orderReference: order.orderReference,
+        channels: ["email", "in_app"],
+        subject: `Your ${order.serviceId.toUpperCase()} fulfilment is under review`,
+        body: "Your payment succeeded, but fulfilment is taking longer than expected. Our operations team has queued this order for manual review and will follow up if anything else is needed.",
+        meta: {
+          serviceId: order.serviceId,
+          escalationReason: "stale_digital_order",
+        },
+      });
+    }
+
+    escalated += 1;
+  }
+
+  return {
+    attempted: snapshot.size,
+    escalated,
+  };
+}

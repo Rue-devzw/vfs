@@ -2,12 +2,22 @@ import type {
   DeliveryMethod,
   FulfillmentStatus,
   Order,
+  OrderStatus,
   RefundCaseReason,
   RefundCaseStatus,
 } from "@/lib/firestore/orders";
 import crypto from "crypto";
 
 type InternalOrderStatus = Order["status"];
+type OrderStatusUpdateSource = "gateway" | "admin" | "system";
+
+type SetOrderStatusOptions = {
+  source?: OrderStatusUpdateSource;
+  recordPaymentEvent?: boolean;
+  queuePaymentNotification?: boolean;
+  queueFulfilmentNotification?: boolean;
+  createRefundCaseOnCancel?: boolean;
+};
 
 type PendingOrderInput = {
   reference: string;
@@ -90,6 +100,101 @@ export function mapExternalStatusToInternal(status: string): InternalOrderStatus
     default:
       return "pending";
   }
+}
+
+const CONFIRMED_PAYMENT_INTENT_STATUSES = new Set(["paid", "processing", "refunded"]);
+const CONFIRMED_GATEWAY_ORDER_STATUSES = new Set(["processing", "shipped", "delivered"]);
+const CONFIRMED_GATEWAY_PAYMENT_STATUSES = new Set(["paid", "success", "processing", "awaiting delivery"]);
+
+export function hasConfirmedPaymentForOrder(input: {
+  orderStatus?: Order["status"];
+  gatewayStatus?: string | null;
+  paymentIntentStatus?: string | null;
+}) {
+  const orderStatus = input.orderStatus?.toLowerCase();
+  const gatewayStatus = input.gatewayStatus?.toLowerCase();
+  const paymentIntentStatus = input.paymentIntentStatus?.toLowerCase();
+
+  return (
+    (orderStatus ? CONFIRMED_GATEWAY_ORDER_STATUSES.has(orderStatus) : false)
+    || (gatewayStatus ? CONFIRMED_GATEWAY_PAYMENT_STATUSES.has(gatewayStatus) : false)
+    || (paymentIntentStatus ? CONFIRMED_PAYMENT_INTENT_STATUSES.has(paymentIntentStatus) : false)
+  );
+}
+
+export function canAdminTransitionOrderStatus(input: {
+  currentStatus: OrderStatus;
+  nextStatus: OrderStatus;
+  paymentConfirmed: boolean;
+}) {
+  const { currentStatus, nextStatus, paymentConfirmed } = input;
+
+  if (currentStatus === nextStatus) {
+    return { allowed: true as const };
+  }
+
+  if (currentStatus === "cancelled") {
+    return {
+      allowed: false as const,
+      reason: "Cancelled orders cannot be reopened from admin. Create a new order or reconcile the payment record first.",
+    };
+  }
+
+  if (currentStatus === "delivered" && nextStatus !== "delivered") {
+    return {
+      allowed: false as const,
+      reason: "Delivered orders should not be moved backwards from admin. Use shipment updates or a refund workflow instead.",
+    };
+  }
+
+  if (!paymentConfirmed && ["processing", "shipped", "delivered"].includes(nextStatus)) {
+    return {
+      allowed: false as const,
+      reason: "Payment is not confirmed yet. Keep the order pending or cancel it until the payment path finishes.",
+    };
+  }
+
+  if ((currentStatus === "processing" || currentStatus === "shipped") && nextStatus === "pending") {
+    return {
+      allowed: false as const,
+      reason: "Orders that already started fulfilment should not be moved back to pending from admin.",
+    };
+  }
+
+  return { allowed: true as const };
+}
+
+export function formatOrderStatusLabel(status: OrderStatus) {
+  switch (status) {
+    case "pending":
+      return "Pending";
+    case "processing":
+      return "Processing";
+    case "shipped":
+      return "Shipped";
+    case "delivered":
+      return "Delivered";
+    case "cancelled":
+      return "Cancelled";
+  }
+}
+
+export function shouldQueueGenericOrderStatusNotification(input: {
+  previousStatus?: OrderStatus | null;
+  nextStatus: OrderStatus;
+  queuePaymentNotification: boolean;
+  queueFulfilmentNotification: boolean;
+}) {
+  if (!input.previousStatus || input.previousStatus === input.nextStatus) {
+    return false;
+  }
+
+  const sendsSpecializedPaymentNotification = input.queuePaymentNotification
+    && (input.nextStatus === "processing" || input.nextStatus === "cancelled");
+  const sendsSpecializedFulfilmentNotification = input.queueFulfilmentNotification
+    && (input.nextStatus === "shipped" || input.nextStatus === "delivered");
+
+  return !sendsSpecializedPaymentNotification && !sendsSpecializedFulfilmentNotification;
 }
 
 function buildHash(prefix: string, payload: Record<string, unknown>) {
@@ -205,6 +310,7 @@ async function recordCustomerEngagement(input: {
 async function queueCustomerNotification(input: {
   type:
     | "order_pending"
+    | "order_status_updated"
     | "payment_processing"
     | "payment_failed"
     | "payment_cancelled"
@@ -587,14 +693,25 @@ export async function getOrder(reference: string) {
   return { id: doc.id, ...doc.data() } as Order & { paymentMeta?: Record<string, unknown> };
 }
 
-export async function setOrderStatus(reference: string, status: string, meta?: Record<string, unknown>) {
+export async function setOrderStatus(
+  reference: string,
+  status: string,
+  meta?: Record<string, unknown>,
+  options?: SetOrderStatusOptions,
+) {
   const db = await getOrdersDb();
   const eventId = buildEventId(reference, status, meta);
   const eventRef = db.collection("payment_events").doc(eventId);
   const orderRef = db.collection("orders").doc(reference);
   const timestamp = new Date().toISOString();
   let currentOrder: Order | null = null;
+  let previousOrderStatus: OrderStatus | null = null;
   const internalStatus = mapExternalStatusToInternal(status);
+  const source = options?.source ?? "gateway";
+  const shouldRecordPaymentEvent = options?.recordPaymentEvent ?? (source === "gateway");
+  const shouldQueuePaymentNotification = options?.queuePaymentNotification ?? (source === "gateway");
+  const shouldQueueFulfilmentNotification = options?.queueFulfilmentNotification ?? (source === "admin");
+  const shouldCreateRefundCaseOnCancel = options?.createRefundCaseOnCancel ?? (source === "gateway");
 
   await db.runTransaction(async tx => {
     const [eventDoc, orderDoc] = await Promise.all([tx.get(eventRef), tx.get(orderRef)]);
@@ -603,8 +720,9 @@ export async function setOrderStatus(reference: string, status: string, meta?: R
     }
 
     currentOrder = { id: orderDoc.id, ...orderDoc.data() } as Order;
+    previousOrderStatus = currentOrder.status;
 
-    if (!eventDoc.exists) {
+    if (shouldRecordPaymentEvent && !eventDoc.exists) {
       tx.set(eventRef, stripUndefined({
         reference,
         status,
@@ -637,12 +755,18 @@ export async function setOrderStatus(reference: string, status: string, meta?: R
       lastOrderReference: reference,
       lastOrderAt: currentOrder.createdAt,
       updatedAt: timestamp,
-      lastPaymentIssueAt: internalStatus === "cancelled" ? timestamp : undefined,
+      lastPaymentIssueAt: internalStatus === "cancelled" && shouldCreateRefundCaseOnCancel ? timestamp : undefined,
     }), { merge: true });
   });
 
   const finalOrder = currentOrder ?? await getOrder(reference);
   if (!finalOrder) return;
+  const shouldQueueGenericStatusNotification = shouldQueueGenericOrderStatusNotification({
+    previousStatus: previousOrderStatus,
+    nextStatus: internalStatus,
+    queuePaymentNotification: shouldQueuePaymentNotification,
+    queueFulfilmentNotification: shouldQueueFulfilmentNotification,
+  });
 
   const { syncShipmentStatusForOrder } = await import("@/lib/firestore/shipments");
   await syncShipmentStatusForOrder(finalOrder);
@@ -651,69 +775,180 @@ export async function setOrderStatus(reference: string, status: string, meta?: R
     const { consumeInventoryReservations } = await import("@/lib/firestore/inventory");
     await consumeInventoryReservations(reference);
 
-    await queueCustomerNotification({
-      type: "payment_processing",
-      customerEmail: finalOrder.customerEmail,
-      customerName: finalOrder.customerName,
-      orderReference: finalOrder.id,
-      detail: status,
-      subject: `Payment confirmed for order ${finalOrder.id}`,
-      body: "Your payment was confirmed. We are preparing your order now.",
-      meta: {
-        gatewayStatus: status,
-        gatewayReference:
-          typeof meta?.gatewayReference === "string"
-            ? meta.gatewayReference
-            : typeof meta?.transactionReference === "string"
-              ? meta.transactionReference
-              : undefined,
-      },
-    });
+    if (shouldQueuePaymentNotification) {
+      await queueCustomerNotification({
+        type: "payment_processing",
+        customerEmail: finalOrder.customerEmail,
+        customerName: finalOrder.customerName,
+        orderReference: finalOrder.id,
+        detail: status,
+        subject: `Payment confirmed for order ${finalOrder.id}`,
+        body: "Your payment was confirmed. We are preparing your order now.",
+        meta: {
+          gatewayStatus: status,
+          gatewayReference:
+            typeof meta?.gatewayReference === "string"
+              ? meta.gatewayReference
+              : typeof meta?.transactionReference === "string"
+                ? meta.transactionReference
+                : undefined,
+        },
+      });
+    }
   }
 
   await recordCustomerEngagement({
     customerEmail: finalOrder.customerEmail,
     customerName: finalOrder.customerName,
     orderReference: finalOrder.id,
-    type: "payment_status",
-    title: "Payment status updated",
-    detail: `${status} received from payment gateway.`,
-    meta: meta ?? {},
+    type: source === "gateway" ? "payment_status" : "order_status",
+    title: source === "gateway" ? "Payment status updated" : "Order status updated",
+    detail: source === "gateway"
+      ? `${status} received from payment gateway.`
+      : `${internalStatus} set from admin operations.`,
+    meta: {
+      ...(meta ?? {}),
+      statusSource: source,
+    },
   });
+
+  if (shouldQueueGenericStatusNotification) {
+    await queueCustomerNotification({
+      type: "order_status_updated",
+      customerEmail: finalOrder.customerEmail,
+      customerName: finalOrder.customerName,
+      orderReference: finalOrder.id,
+      detail: internalStatus,
+      subject: `Order ${finalOrder.id} status updated`,
+      body: `Your order status is now ${formatOrderStatusLabel(internalStatus)}.`,
+      meta: {
+        previousStatus: previousOrderStatus ?? undefined,
+        status: internalStatus,
+        statusSource: source,
+      },
+    });
+  }
 
   if (internalStatus === "cancelled") {
     const { releaseInventoryReservations } = await import("@/lib/firestore/inventory");
     await releaseInventoryReservations(reference, `payment_${status.toLowerCase()}`);
 
-    await ensureRefundCaseForPaymentIssue({
-      order: finalOrder,
-      gatewayReference:
-        typeof meta?.gatewayReference === "string"
-          ? meta.gatewayReference
-          : typeof meta?.transactionReference === "string"
-            ? meta.transactionReference
-            : undefined,
-      reason: "gateway_failure",
-      detail: `Payment status ${status} requires refund or manual reconciliation.`,
-    });
-
-    await queueCustomerNotification({
-      type: status.toLowerCase().includes("cancel") ? "payment_cancelled" : "payment_failed",
-      customerEmail: finalOrder.customerEmail,
-      customerName: finalOrder.customerName,
-      orderReference: finalOrder.id,
-      detail: status,
-      subject: `Payment issue for order ${finalOrder.id}`,
-      body: `Your payment could not be completed. Current status: ${status}. Our team can review it if funds were deducted.`,
-      meta: {
-        gatewayStatus: status,
+    if (shouldCreateRefundCaseOnCancel) {
+      await ensureRefundCaseForPaymentIssue({
+        order: finalOrder,
         gatewayReference:
           typeof meta?.gatewayReference === "string"
             ? meta.gatewayReference
             : typeof meta?.transactionReference === "string"
               ? meta.transactionReference
               : undefined,
+        reason: "gateway_failure",
+        detail: `Payment status ${status} requires refund or manual reconciliation.`,
+      });
+    }
+
+    if (shouldQueuePaymentNotification) {
+      await queueCustomerNotification({
+        type: status.toLowerCase().includes("cancel") ? "payment_cancelled" : "payment_failed",
+        customerEmail: finalOrder.customerEmail,
+        customerName: finalOrder.customerName,
+        orderReference: finalOrder.id,
+        detail: status,
+        subject: `Payment issue for order ${finalOrder.id}`,
+        body: `Your payment could not be completed. Current status: ${status}. Our team can review it if funds were deducted.`,
+        meta: {
+          gatewayStatus: status,
+          gatewayReference:
+            typeof meta?.gatewayReference === "string"
+              ? meta.gatewayReference
+              : typeof meta?.transactionReference === "string"
+                ? meta.transactionReference
+                : undefined,
+        },
+      });
+    }
+  }
+
+  if (shouldQueueFulfilmentNotification && (internalStatus === "shipped" || internalStatus === "delivered")) {
+    const type = internalStatus === "delivered" ? "order_delivered" : "order_shipped";
+    const subject = internalStatus === "delivered"
+      ? `Order ${finalOrder.id} delivered`
+      : `Order ${finalOrder.id} shipped`;
+    const body = internalStatus === "delivered"
+      ? "Your order has been completed successfully."
+      : "Your order is now on its way.";
+
+    await queueCustomerNotification({
+      type,
+      customerEmail: finalOrder.customerEmail,
+      customerName: finalOrder.customerName,
+      orderReference: finalOrder.id,
+      detail: internalStatus,
+      subject,
+      body,
+      meta: {
+        statusSource: source,
       },
     });
   }
+}
+
+export async function transitionOrderStatusFromAdmin(reference: string, status: OrderStatus, note?: string) {
+  const { requireStaffPermission } = await import("@/lib/auth");
+  const { getPaymentIntentByOrderReference } = await import("@/lib/firestore/payments");
+  const { createAuditLog } = await import("@/lib/firestore/audit");
+
+  await requireStaffPermission("orders.edit");
+
+  const order = await getOrder(reference);
+  if (!order) {
+    throw new Error(`Order ${reference} not found.`);
+  }
+
+  const paymentIntent = await getPaymentIntentByOrderReference(reference);
+  const paymentConfirmed = hasConfirmedPaymentForOrder({
+    orderStatus: order.status,
+    gatewayStatus: typeof order.paymentMeta?.lastGatewayStatus === "string"
+      ? order.paymentMeta.lastGatewayStatus
+      : null,
+    paymentIntentStatus: paymentIntent?.status ?? null,
+  });
+
+  const transition = canAdminTransitionOrderStatus({
+    currentStatus: order.status,
+    nextStatus: status,
+    paymentConfirmed,
+  });
+  if (!transition.allowed) {
+    throw new Error(transition.reason);
+  }
+
+  await setOrderStatus(
+    reference,
+    status,
+    {
+      ...order.paymentMeta,
+      adminStatusNote: note?.trim() || undefined,
+      statusSource: "admin",
+    },
+    {
+      source: "admin",
+      recordPaymentEvent: false,
+      queuePaymentNotification: paymentConfirmed && (status === "processing" || status === "cancelled"),
+      queueFulfilmentNotification: status === "shipped" || status === "delivered",
+      createRefundCaseOnCancel: paymentConfirmed,
+    },
+  );
+
+  await createAuditLog({
+    action: "order_status_updated",
+    targetType: "order",
+    targetId: reference,
+    detail: `Order status changed to ${status}.${note?.trim() ? ` ${note.trim()}` : ""}`,
+    meta: {
+      status,
+      paymentConfirmed,
+      note: note?.trim() || undefined,
+    },
+  });
 }

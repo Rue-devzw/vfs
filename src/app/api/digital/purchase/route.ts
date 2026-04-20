@@ -4,9 +4,27 @@ import { createPendingOrder, setOrderStatus } from "@/server/orders";
 import { DigitalService, DigitalServiceUnavailableError } from "@/lib/digital-service-logic";
 import { getDigitalServiceConfig } from "@/lib/digital-services";
 import { upsertDigitalOrder } from "@/lib/firestore/digital-orders";
-import { EgressGatewayError } from "@/lib/payments/egress";
-import { ZbGatewayError } from "@/lib/payments/zb";
+import {
+    EgressGatewayError,
+    getEgressServiceUnavailableMessage,
+    isEgressServiceUnavailable,
+} from "@/lib/payments/egress";
+import { SmilePayGatewayError } from "@/lib/payments/smile-pay";
 import { PAYMENT_METHOD_VALUES } from "@/lib/payment-methods";
+import type { CardPaymentDetails } from "@/lib/payments/types";
+
+const optionalTrimmedString = () => z.preprocess((value) => {
+    if (typeof value !== "string") return value;
+    const trimmed = value.trim();
+    return trimmed.length === 0 ? undefined : trimmed;
+}, z.string().optional());
+
+const cardDetailsSchema = z.object({
+    pan: z.string().trim().min(12).max(32),
+    expMonth: z.string().trim().regex(/^\d{1,2}$/),
+    expYear: z.string().trim().regex(/^\d{1,4}$/),
+    securityCode: z.string().trim().regex(/^\d{3,4}$/),
+});
 
 const purchaseSchema = z.object({
     serviceType: z.enum(["ZESA", "AIRTIME", "DSTV", "COUNCILS", "NYARADZO", "INTERNET"]),
@@ -14,35 +32,57 @@ const purchaseSchema = z.object({
     amount: z.number().min(1),
     paymentMethod: z.enum(PAYMENT_METHOD_VALUES),
     currencyCode: z.enum(["840", "924"]).default("840"),
-    customerMobile: z.string().optional(),
+    customerMobile: optionalTrimmedString().pipe(z.string().min(8).optional()),
     customerName: z.string().optional(),
     customerEmail: z.string().optional(),
+    cardDetails: cardDetailsSchema.optional(),
     serviceMeta: z.record(z.string()).optional(),
+}).superRefine((data, ctx) => {
+    if (data.paymentMethod !== "CARD" && !data.customerMobile) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "Customer mobile is required for wallet-based payments.",
+            path: ["customerMobile"],
+        });
+    }
+    if (data.paymentMethod === "CARD" && !data.cardDetails) {
+        ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "Card details are required for card payments.",
+            path: ["cardDetails"],
+        });
+    }
 });
 
 const DIGITAL_SERVICE_IMAGES: Record<string, string> = {
     zesa: "/images/Zesa.webp",
     airtime: "/images/airtime_illustration.png",
-    dstv: "/images/dstv_illustration.png",
-    councils: "/images/councils_illustration.png",
-    nyaradzo: "/images/insurance_illustration.png",
+    dstv: "/images/dstv-logo.png",
+    councils: "/images/city-of-harare.png",
+    nyaradzo: "/images/nyaradzo-logo.png",
     internet: "/images/internet_illustration.png",
 };
 
 export async function POST(req: Request) {
+    let serviceLabel = "Digital service";
+
     try {
         const body = await req.json();
         const validation = purchaseSchema.safeParse(body);
 
         if (!validation.success) {
-            return NextResponse.json({ success: false, error: validation.error.errors }, { status: 400 });
+            return NextResponse.json(
+                { success: false, error: validation.error.errors[0]?.message || "Invalid payment details." },
+                { status: 400 },
+            );
         }
 
-        const { serviceType, accountNumber, amount: amountUsd, paymentMethod, currencyCode, customerMobile, customerName, customerEmail, serviceMeta } = validation.data;
+        const { serviceType, accountNumber, amount: amountUsd, paymentMethod, currencyCode, customerMobile, customerName, customerEmail, serviceMeta, cardDetails } = validation.data;
         const serviceConfig = getDigitalServiceConfig(serviceType.toLowerCase());
         if (!serviceConfig) {
             return NextResponse.json({ success: false, error: "Unsupported digital service." }, { status: 400 });
         }
+        serviceLabel = serviceConfig.label;
         for (const field of serviceConfig.formFields ?? []) {
             if (field.required && !(serviceMeta?.[field.id] ?? "").trim()) {
                 return NextResponse.json(
@@ -71,24 +111,33 @@ export async function POST(req: Request) {
                 },
             };
         const normalizedServiceId = serviceType.toLowerCase() as "zesa" | "airtime" | "dstv" | "councils" | "nyaradzo" | "internet";
+        const resolvedAccountNumber = accountInfo.accountNumber || accountNumber;
+        const resolvedCustomerName = customerName || accountInfo.accountName || "Digital Customer";
+        const enrichedServiceMeta = {
+            ...(serviceMeta ?? {}),
+            accountName: accountInfo.accountName ?? "",
+            billerName: accountInfo.billerName ?? serviceConfig.label,
+            validatedAccountNumber: resolvedAccountNumber,
+        };
 
         // 2. Initiate Payment
         const initiateResult = await DigitalService.initiatePurchase({
             serviceType,
-            accountNumber,
+            accountNumber: resolvedAccountNumber,
             amount: amountUsd,
             paymentMethod,
             currencyCode,
             customerMobile,
             email: customerEmail,
-            serviceMeta,
+            cardDetails: cardDetails as CardPaymentDetails | undefined,
+            serviceMeta: enrichedServiceMeta,
         }, baseUrl);
 
         // 3. Create Pending Order for Tracking
         await createPendingOrder({
             reference: initiateResult.reference,
             items: [{
-                id: `${serviceType.toLowerCase()}-${accountNumber}`,
+                id: `${serviceType.toLowerCase()}-${resolvedAccountNumber}`,
                 name: `${serviceConfig.label} Purchase`,
                 price: initiateResult.amount,
                 quantity: 1,
@@ -102,21 +151,21 @@ export async function POST(req: Request) {
             totalUsd: initiateResult.amountUsd,
             exchangeRate: initiateResult.exchangeRate,
             currencyCode: initiateResult.currencyCode,
-            customerName: customerName || "Digital Customer",
+            customerName: resolvedCustomerName,
             customerEmail: customerEmail || "customer@example.com",
             customerPhone: customerMobile,
             deliveryMethod: "collect",
             paymentMethod: paymentMethod.toLowerCase(),
-            notes: `${serviceConfig.label} for ${accountNumber} (${accountInfo.accountName ?? "Manual verification pending"})`,
+            notes: `${serviceConfig.label} for ${resolvedAccountNumber} (${accountInfo.accountName ?? "Manual verification pending"})`,
         });
 
         await upsertDigitalOrder({
             orderReference: initiateResult.reference,
             serviceId: normalizedServiceId,
             provider: serviceConfig.provider,
-            accountReference: accountNumber,
+            accountReference: resolvedAccountNumber,
             customerEmail,
-            customerName,
+            customerName: resolvedCustomerName,
             validationSnapshot: accountInfo.raw ?? {
                 accountName: accountInfo.accountName,
                 accountNumber: accountInfo.accountNumber,
@@ -127,17 +176,18 @@ export async function POST(req: Request) {
                 transactionReference: initiateResult.transactionReference,
                 status: initiateResult.status,
                 paymentUrl: initiateResult.paymentUrl,
+                authenticationStatus: initiateResult.authenticationStatus,
                 processingMode: serviceConfig.validationMode === "manual" ? "manual_review" : "provider",
-                serviceMeta,
+                serviceMeta: enrichedServiceMeta,
             },
         });
 
         await setOrderStatus(initiateResult.reference, initiateResult.status, {
             gatewayReference: initiateResult.transactionReference,
-            accountNumber,
+            accountNumber: resolvedAccountNumber,
             serviceType,
-            serviceMeta,
-            customerName: customerName || "Digital Customer",
+            serviceMeta: enrichedServiceMeta,
+            customerName: resolvedCustomerName,
             customerMobile,
             currencyCode,
         });
@@ -147,6 +197,8 @@ export async function POST(req: Request) {
             reference: initiateResult.reference,
             transactionReference: initiateResult.transactionReference,
             paymentUrl: initiateResult.paymentUrl,
+            redirectHtml: initiateResult.redirectHtml,
+            authenticationStatus: initiateResult.authenticationStatus,
             status: initiateResult.status,
             message: initiateResult.message || "Payment initiated.",
         });
@@ -163,7 +215,12 @@ export async function POST(req: Request) {
                 { status: error.status }
             );
         }
-        if (error instanceof ZbGatewayError) {
+        if (error instanceof SmilePayGatewayError) {
+            console.error("Smile Pay gateway response:", {
+                status: error.status,
+                message: error.message,
+                responseBody: error.responseBody,
+            });
             return NextResponse.json(
                 {
                     success: false,
@@ -175,6 +232,17 @@ export async function POST(req: Request) {
             );
         }
         if (error instanceof EgressGatewayError) {
+            if (isEgressServiceUnavailable(error)) {
+                return NextResponse.json(
+                    {
+                        success: false,
+                        error: getEgressServiceUnavailableMessage(`${serviceLabel} payments`),
+                        code: "SERVICE_UNAVAILABLE",
+                        gatewayStatus: error.status,
+                    },
+                    { status: 503 }
+                );
+            }
             return NextResponse.json(
                 {
                     success: false,

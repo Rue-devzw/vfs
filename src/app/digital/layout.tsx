@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import Image from "next/image";
+import { CurrencySwitcher } from "@/components/currency/currency-switcher";
 
 export default function DigitalServicesLayout({
     children,
@@ -27,9 +28,12 @@ export default function DigitalServicesLayout({
                     <div className="container py-16 md:py-20 mx-auto px-4 md:px-6 relative z-10">
                         <div className="flex flex-col lg:flex-row items-center gap-10">
                             <div className="relative z-10 max-w-2xl flex-1">
-                                <span className="inline-block px-4 py-1.5 mb-6 text-xs font-bold tracking-widest text-[#2d1515] bg-white rounded-full uppercase shadow-[0_0_15px_rgba(255,255,255,0.3)]">
-                                    Valleyfarm Digital
-                                </span>
+                                <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+                                    <span className="inline-block px-4 py-1.5 text-xs font-bold tracking-widest text-[#2d1515] bg-white rounded-full uppercase shadow-[0_0_15px_rgba(255,255,255,0.3)]">
+                                        Valleyfarm Digital
+                                    </span>
+                                    <CurrencySwitcher />
+                                </div>
                                 <h1 className="text-4xl md:text-5xl lg:text-7xl font-headline font-bold mb-6 leading-[1.1] drop-shadow-lg">
                                     All your bills.
                                     <br />
@@ -38,7 +42,7 @@ export default function DigitalServicesLayout({
                                     </span>
                                 </h1>
                                 <p className="text-lg md:text-xl text-white/80 max-w-xl font-light leading-relaxed">
-                                    Purchase ZESA tokens, buy airtime, and pay your utilities securely with Valleyfarm. Powered by our trusted partnership with <span className="font-semibold text-white">ZB Bank</span>.
+                                    Purchase ZESA tokens, buy airtime, and pay your utilities securely with Valleyfarm. Powered by our trusted partnership with <span className="font-semibold text-white">Smile Pay</span>.
                                 </p>
                             </div>
 

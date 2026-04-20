@@ -1,8 +1,9 @@
 
 import { Button } from "@/components/ui/button";
 import { Check, Copy, Download } from "lucide-react";
-import { TokenResponse } from "../services/zb-service";
+import { TokenResponse } from "../services/smile-pay-service";
 import { useState } from "react";
+import { formatMoney } from "@/lib/currency";
 
 interface StepReceiptProps {
     receipt: TokenResponse;
@@ -11,6 +12,15 @@ interface StepReceiptProps {
 
 export function StepReceipt({ receipt, onDone }: StepReceiptProps) {
     const [copied, setCopied] = useState(false);
+    const hasToken = Boolean(receipt.token);
+    const hasIssue = receipt.issue === true;
+    const hasMultipleTokens = typeof receipt.token === "string" && receipt.token.includes("\n");
+    const title = hasIssue ? "Manual Review Required" : "Payment Update";
+    const description = receipt.message || (hasIssue
+        ? "Your payment was received, but token vending needs manual review."
+        : "Transaction processed through WalletPlus.");
+    const heroLabel = hasToken ? "Electricity Token" : hasIssue ? "Fulfilment Status" : "Transaction Status";
+    const heroValue = hasToken ? receipt.token : hasIssue ? "MANUAL_REVIEW" : receipt.status;
 
     const handleCopy = () => {
         if (!receipt.token) return;
@@ -24,7 +34,7 @@ export function StepReceipt({ receipt, onDone }: StepReceiptProps) {
             `Status: ${receipt.status}`,
             receipt.token ? `Token: ${receipt.token}` : null,
             typeof receipt.units === "number" ? `Units: ${receipt.units} kWh` : null,
-            `Amount Paid: $${receipt.amount.toFixed(2)}`,
+            `Amount Paid: ${formatMoney(receipt.amount, receipt.currencyCode ?? "840")}`,
             `Meter Number: ${receipt.meterNumber}`,
             `Receipt: ${receipt.receiptNumber}`,
             receipt.transactionReference ? `Gateway Ref: ${receipt.transactionReference}` : null,
@@ -43,23 +53,23 @@ export function StepReceipt({ receipt, onDone }: StepReceiptProps) {
     return (
         <div className="space-y-6">
             <div className="text-center">
-                <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-500 text-white shadow-lg animate-in zoom-in spin-in-3">
+                <div className={`mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full text-white shadow-lg animate-in zoom-in spin-in-3 ${hasIssue ? "bg-amber-500" : "bg-green-500"}`}>
                     <Check className="h-8 w-8" />
                 </div>
-                <h2 className="text-2xl font-bold text-foreground">Payment Update</h2>
-                <p className="text-muted-foreground">{receipt.message || "Transaction processed through WalletPlus."}</p>
+                <h2 className="text-2xl font-bold text-foreground">{title}</h2>
+                <p className="mx-auto max-w-sm text-sm leading-6 text-muted-foreground">{description}</p>
             </div>
 
             <div className="overflow-hidden rounded-xl border bg-card shadow-sm">
                 <div className="bg-muted/30 p-6 text-center">
                     <span className="text-xs uppercase tracking-wider text-muted-foreground">
-                        {receipt.token ? "Electricity Token" : "Transaction Status"}
+                        {heroLabel}
                     </span>
                     <div className="mt-2 flex items-center justify-center gap-2">
-                        <code className="text-3xl font-bold tracking-widest text-primary font-mono select-all">
-                            {receipt.token ?? receipt.status}
+                        <code className={`font-bold text-primary font-mono select-all whitespace-pre-wrap break-all ${hasMultipleTokens ? "text-2xl leading-tight tracking-[0.25em]" : "text-3xl tracking-widest"}`}>
+                            {heroValue}
                         </code>
-                        {receipt.token ? (
+                        {hasToken ? (
                             <Button size="icon" variant="ghost" onClick={handleCopy} className="h-8 w-8 rounded-full">
                                 {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
                             </Button>
@@ -79,7 +89,7 @@ export function StepReceipt({ receipt, onDone }: StepReceiptProps) {
                     </div>
                     <div className="flex justify-between py-2">
                         <span className="text-muted-foreground">Amount Paid</span>
-                        <span className="font-medium">${receipt.amount.toFixed(2)}</span>
+                        <span className="font-medium">{formatMoney(receipt.amount, receipt.currencyCode ?? "840")}</span>
                     </div>
                     <div className="flex justify-between py-2">
                         <span className="text-muted-foreground">Meter Number</span>

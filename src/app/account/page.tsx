@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
@@ -6,10 +7,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { formatMoney } from "@/lib/currency";
+import { getOrderDocumentState } from "@/lib/order-documents";
 import { verifyCustomerSession } from "@/lib/auth";
 import { getCustomerAccountSnapshot } from "@/lib/firestore/customers";
 import { AccountLogoutButton, RefundRequestCard } from "./account-client";
+import { CurrencyAmount } from "@/components/currency/currency-amount";
 
 export const metadata = {
   title: "My Account | Valley Farm Secrets",
@@ -57,7 +59,7 @@ export default async function AccountPage() {
 
           <div className="grid gap-4 md:grid-cols-4">
             <MetricCard title="Orders" value={String(profile.orderCount)} detail={profile.lastOrderAt ? `Last order ${formatDate(profile.lastOrderAt)}` : "No orders yet"} />
-            <MetricCard title="Spend" value={formatMoney(profile.totalSpent, "840")} detail="Tracked in USD baseline" />
+            <MetricCard title="Spend" value={<CurrencyAmount amount={profile.totalSpent} />} detail="Displayed in your selected currency" />
             <MetricCard title="Refund cases" value={String(profile.openRefundCaseCount)} detail={profile.lastPaymentIssueAt ? `Latest issue ${formatDate(profile.lastPaymentIssueAt)}` : "No active payment issues"} />
             <MetricCard title="Saved addresses" value={String(profile.savedAddressCount)} detail={profile.preferredDeliveryMethod ? `Preferred ${profile.preferredDeliveryMethod}` : "No default delivery preference"} />
           </div>
@@ -72,6 +74,11 @@ export default async function AccountPage() {
                   <p className="text-sm text-muted-foreground">No orders available for this account yet.</p>
                 ) : orders.map(order => {
                   const hasRefundCase = refunds.some(refund => refund.orderReference === order.id && !["closed", "rejected"].includes(refund.status));
+                  const orderRefunds = refunds.filter(refund => refund.orderReference === order.id);
+                  const documentState = getOrderDocumentState({
+                    order,
+                    refunds: orderRefunds,
+                  });
                   return (
                   <div key={order.id} className="rounded-2xl border p-4">
                     <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
@@ -86,12 +93,22 @@ export default async function AccountPage() {
                     </div>
                     <div className="mt-3 flex flex-col gap-2 text-sm text-muted-foreground md:flex-row md:items-center md:justify-between">
                       <span>{order.items.length} item(s) via {order.paymentMethod?.toUpperCase() ?? "payment"}</span>
-                      <span className="font-medium text-foreground">{formatMoney(order.totalUsd ?? order.total, "840")}</span>
+                      <CurrencyAmount
+                        amount={order.totalUsd ?? order.total}
+                        sourceCurrencyCode={typeof order.totalUsd === "number" ? "840" : (order.currencyCode === "924" ? "924" : "840")}
+                        className="font-medium text-foreground"
+                      />
                     </div>
                     <div className="mt-3 flex flex-wrap gap-3">
-                      <Link href={`/api/orders/${encodeURIComponent(order.id)}/report?format=pdf`} target="_blank">
-                        <Button size="sm" variant="outline">Receipt PDF</Button>
-                      </Link>
+                      {documentState.kind === "receipt" ? (
+                        <Link href={`/api/orders/${encodeURIComponent(order.id)}/report?format=pdf`} target="_blank">
+                          <Button size="sm" variant="outline">Receipt PDF</Button>
+                        </Link>
+                      ) : documentState.kind === "report" ? (
+                        <Link href={`/api/orders/${encodeURIComponent(order.id)}/report?format=report-pdf`} target="_blank">
+                          <Button size="sm" variant="outline">Issue Report PDF</Button>
+                        </Link>
+                      ) : null}
                       <Link href={`/api/orders/${encodeURIComponent(order.id)}/report?format=invoice-pdf`} target="_blank">
                         <Button size="sm" variant="outline">Invoice PDF</Button>
                       </Link>
@@ -167,7 +184,13 @@ export default async function AccountPage() {
                         <Badge variant="outline">{refund.status}</Badge>
                       </div>
                       <p className="mt-1 text-muted-foreground">Reason: {refund.reason.replace(/_/g, " ")}</p>
-                      <p className="mt-1 text-muted-foreground">Amount: {formatMoney(refund.amountUsd ?? refund.amount, "840")}</p>
+                      <p className="mt-1 text-muted-foreground">
+                        Amount:{" "}
+                        <CurrencyAmount
+                          amount={refund.amountUsd ?? refund.amount}
+                          sourceCurrencyCode={typeof refund.amountUsd === "number" ? "840" : (refund.currencyCode === "924" ? "924" : "840")}
+                        />
+                      </p>
                     </div>
                   ))}
                 </CardContent>
@@ -203,7 +226,7 @@ export default async function AccountPage() {
   );
 }
 
-function MetricCard({ title, value, detail }: { title: string; value: string; detail: string }) {
+function MetricCard({ title, value, detail }: { title: string; value: ReactNode; detail: string }) {
   return (
     <Card>
       <CardHeader className="pb-2">

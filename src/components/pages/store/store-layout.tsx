@@ -116,7 +116,7 @@ export function StoreLayout() {
         imageId: "zesa",
         title: "Valleyfarm Digital",
         description: "Pay ZESA, DStv, councils, and more securely via our Digital Services hub.",
-        highlight: "Powered by ZB Bank",
+        highlight: "Powered by Smile Pay",
         category: "Other Items",
         cta: "Explore Digital Services",
         href: "/digital",
@@ -271,6 +271,8 @@ export function StoreLayout() {
                   src="/images/Zesa.webp"
                   alt="ZESA Token"
                   fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  priority
                   className="object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#fdf2f2] to-transparent" />
@@ -282,7 +284,7 @@ export function StoreLayout() {
                 </div>
                 <CardTitle className="font-headline text-2xl font-bold text-[#2d1515]">Buy ZESA Tokens</CardTitle>
                 <p className="mt-2 text-sm text-[#5a3a3a]">
-                  Instant electricity top-up via ZB Bank. Safe and available 24/7.
+                  Instant electricity top-up via Smile Pay. Safe and available 24/7.
                 </p>
                 <div className="mt-auto pt-6">
                   <Button asChild className="w-full rounded-full bg-[#e31e24] font-bold text-white shadow-lg hover:bg-[#c1191f]">

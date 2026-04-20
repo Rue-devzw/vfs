@@ -20,7 +20,7 @@ function getRequestIdentifier() {
 }
 
 export async function loginAction(password: string) {
-    return loginWithRoleAction("admin", password);
+    return loginWithRoleAction("admin", password, "Admin Operator");
 }
 
 function getStaffPassword(role: StaffRole) {
@@ -29,11 +29,15 @@ function getStaffPassword(role: StaffRole) {
     return process.env.AUDITOR_PASSWORD;
 }
 
-export async function loginWithRoleAction(role: StaffRole, password: string) {
+export async function loginWithRoleAction(role: StaffRole, password: string, operatorIdentifier: string) {
     const correctPassword = getStaffPassword(role);
 
     if (!correctPassword) {
         throw new Error(`${role.toUpperCase()} password is not configured on the server.`);
+    }
+
+    if (!operatorIdentifier.trim()) {
+        return { success: false, error: "Operator name or email is required." };
     }
 
     const identifier = `${role}:${await getRequestIdentifier()}`;
@@ -45,8 +49,8 @@ export async function loginWithRoleAction(role: StaffRole, password: string) {
 
     if (password === correctPassword) {
         await clearAdminLoginAttempts(identifier);
-        await createAdminSession(role);
-        return { success: true, role };
+        await createAdminSession({ role, operatorIdentifier });
+        return { success: true, role, operatorLabel: operatorIdentifier.trim() };
     }
 
     await registerFailedAdminLogin(identifier);

@@ -3,7 +3,7 @@
 import crypto from "crypto";
 import { requireStaffPermission } from "../auth";
 import { getDb, isFirebaseConfigured } from "../firebase-admin";
-import { isEmailConfigured, sendEmail } from "../email";
+import { isEmailConfigured, renderTransactionalEmail, sendEmail } from "../email";
 import { createAuditLog } from "./audit";
 
 export type NotificationChannel = "email" | "sms" | "whatsapp" | "in_app";
@@ -11,6 +11,7 @@ export type NotificationStatus = "queued" | "sent" | "failed" | "cancelled";
 export type NotificationAudience = "customer" | "admin";
 export type NotificationType =
   | "order_pending"
+  | "order_status_updated"
   | "payment_processing"
   | "payment_failed"
   | "payment_cancelled"
@@ -81,6 +82,47 @@ function stripUndefined<T extends Record<string, unknown>>(data: T): T {
   return sanitizeValue(data) as T;
 }
 
+function getNotificationEmailSections(notification: NotificationRecord) {
+  const meta = notification.meta ?? {};
+  const sections = [
+    notification.orderReference ? { label: "Order Reference", value: notification.orderReference } : null,
+    notification.refundCaseId ? { label: "Refund Case", value: notification.refundCaseId } : null,
+    typeof meta.serviceId === "string" ? { label: "Service", value: meta.serviceId.toUpperCase() } : null,
+    typeof meta.receiptNumber === "string" ? { label: "Receipt Number", value: meta.receiptNumber } : null,
+    typeof meta.gatewayReference === "string" ? { label: "Gateway Reference", value: meta.gatewayReference } : null,
+    typeof meta.previousStatus === "string"
+      ? { label: "Previous Status", value: meta.previousStatus.replaceAll("_", " ") }
+      : null,
+    typeof meta.status === "string" ? { label: "Current Status", value: meta.status.replaceAll("_", " ") } : null,
+    typeof meta.token === "string" ? { label: "Token", value: meta.token, emphasize: true } : null,
+  ];
+
+  return sections.filter((section): section is NonNullable<typeof section> => Boolean(section));
+}
+
+export async function renderNotificationEmail(notification: NotificationRecord) {
+  const greeting = notification.customerName?.trim()
+    ? `Hello ${notification.customerName.trim()},`
+    : "Hello,";
+  const intro = notification.audience === "customer"
+    ? "Here is your latest account and order update from Valley Farm."
+    : "An operational update is ready for review.";
+
+  return renderTransactionalEmail({
+    title: notification.subject,
+    intro,
+    body: `${greeting}\n\n${notification.body}`,
+    sections: getNotificationEmailSections(notification),
+    ctaLabel: notification.orderReference ? "Review Order Status" : undefined,
+    ctaUrl: notification.orderReference
+      ? `${process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:9002"}/account`
+      : undefined,
+    footerNote: notification.status === "failed"
+      ? "This notification record remains in the queue until delivery succeeds or an operator resolves it."
+      : undefined,
+  });
+}
+
 export async function deliverNotification(id: string) {
   if (!isFirebaseConfigured()) {
     return { delivered: false, reason: "firebase_not_configured" as const };
@@ -111,10 +153,12 @@ export async function deliverNotification(id: string) {
   }
 
   try {
+    const emailPayload = await renderNotificationEmail(notification);
     await sendEmail({
       to: notification.customerEmail,
       subject: notification.subject,
-      text: notification.body,
+      text: emailPayload.text,
+      html: emailPayload.html,
     });
     await markNotificationStatus(notification.id, "sent");
     return { delivered: true, reason: "sent" as const };

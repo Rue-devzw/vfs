@@ -60,6 +60,7 @@ describe("digital fulfilment sync", () => {
     getOrder.mockResolvedValue(createOrder({
       accountNumber: "12345678901",
       serviceType: "ZESA",
+      gatewayReference: "SP-REF-1",
     }));
     vendDigitalFulfilment.mockResolvedValue({
       success: true,
@@ -73,6 +74,7 @@ describe("digital fulfilment sync", () => {
 
     expect(vendDigitalFulfilment).toHaveBeenCalledWith("ZESA", expect.objectContaining({
       orderReference: "ORDER-1",
+      gatewayReference: "SP-REF-1",
       accountNumber: "12345678901",
       amountUsd: 5,
     }));
@@ -112,6 +114,90 @@ describe("digital fulfilment sync", () => {
     expect(result.vendedData).toEqual(expect.objectContaining({
       token: "1111 2222 3333 4444",
       receiptNumber: "REC-1",
+    }));
+  });
+
+  it("uses validated account data during vend attempts", async () => {
+    getOrder.mockResolvedValue(createOrder({
+      accountNumber: "12345678901",
+      serviceType: "ZESA",
+      gatewayReference: "SP-REF-2",
+      serviceMeta: {
+        accountName: "VALLEY FARM CUSTOMER",
+      },
+    }));
+    vendDigitalFulfilment.mockResolvedValue({
+      success: true,
+      token: "1111 2222 3333 4444",
+      receiptNumber: "REC-1",
+    });
+
+    const { syncDigitalFulfilmentForOrder } = await import("@/lib/digital-fulfilment");
+    await syncDigitalFulfilmentForOrder("ORDER-1", "PAID");
+
+    expect(vendDigitalFulfilment).toHaveBeenCalledWith("ZESA", expect.objectContaining({
+      gatewayReference: "SP-REF-2",
+      serviceMeta: expect.objectContaining({
+        accountName: "VALLEY FARM CUSTOMER",
+        customerName: "VALLEY FARM CUSTOMER",
+      }),
+    }));
+  });
+
+  it("does not retry vending after a recorded vend failure", async () => {
+    getOrder.mockResolvedValue(createOrder({
+      accountNumber: "12345678901",
+      serviceType: "ZESA",
+      vendFailureMessage: "ZESA vending failed after payment confirmation and is now queued for manual review.",
+    }));
+
+    const { syncDigitalFulfilmentForOrder } = await import("@/lib/digital-fulfilment");
+    const result = await syncDigitalFulfilmentForOrder("ORDER-1", "PAID");
+
+    expect(vendDigitalFulfilment).not.toHaveBeenCalled();
+    expect(upsertDigitalOrder).toHaveBeenCalledWith(expect.objectContaining({
+      orderReference: "ORDER-1",
+      provisioningStatus: "manual_review",
+    }));
+    expect(result.vendedData).toEqual(expect.objectContaining({
+      issue: true,
+      message: "ZESA vending failed after payment confirmation and is now queued for manual review.",
+    }));
+  });
+
+  it("marks airtime purchases for manual review without attempting provider vending", async () => {
+    getOrder.mockResolvedValue({
+      ...createOrder({
+        accountNumber: "0771234567",
+        serviceType: "AIRTIME",
+        serviceMeta: {
+          network: "Econet",
+          productType: "Airtime",
+        },
+      }),
+      items: [
+        {
+          id: "airtime-0771234567",
+          name: "Airtime",
+          price: 5,
+          quantity: 1,
+          image: "/images/airtime_illustration.png",
+        },
+      ],
+    });
+
+    const { syncDigitalFulfilmentForOrder } = await import("@/lib/digital-fulfilment");
+    const result = await syncDigitalFulfilmentForOrder("ORDER-1", "PAID");
+
+    expect(vendDigitalFulfilment).not.toHaveBeenCalled();
+    expect(upsertDigitalOrder).toHaveBeenCalledWith(expect.objectContaining({
+      orderReference: "ORDER-1",
+      serviceId: "airtime",
+      provisioningStatus: "manual_review",
+    }));
+    expect(result.vendedData).toEqual(expect.objectContaining({
+      manualReview: true,
+      message: "Airtime & Data payment received. The request is queued for fulfilment confirmation.",
     }));
   });
 });

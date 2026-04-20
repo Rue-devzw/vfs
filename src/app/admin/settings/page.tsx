@@ -1,4 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { AdminActionForm } from "@/components/admin/admin-action-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -74,7 +75,12 @@ export default async function AdminSettingsPage() {
         </Card>
       ) : null}
 
-      <form action={saveSettings} className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+      <AdminActionForm
+        action={saveSettings}
+        className="grid grid-cols-1 gap-6 xl:grid-cols-2"
+        pendingTitle="Saving admin settings"
+        pendingMessage="We are updating store settings and delivery zone controls."
+      >
         <Card>
           <CardHeader>
             <CardTitle>General Information</CardTitle>
@@ -213,7 +219,7 @@ export default async function AdminSettingsPage() {
             <Save className="mr-2 h-4 w-4" /> Save Settings
           </Button>
         </div>
-      </form>
+      </AdminActionForm>
     </div>
   );
 }

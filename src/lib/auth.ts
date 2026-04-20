@@ -27,6 +27,9 @@ export type StaffPermission =
 export type StaffSession = {
   role: StaffRole;
   permissions: StaffPermission[];
+  staffId: string;
+  staffLabel: string;
+  staffEmail?: string;
   expires: Date | string;
 };
 
@@ -100,6 +103,30 @@ function getSessionKey() {
   return new TextEncoder().encode(env.ADMIN_SESSION_PASSWORD);
 }
 
+function normalizeStaffIdentifier(value: string) {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9@._-]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 64);
+}
+
+export function createStaffIdentity(role: StaffRole, rawIdentifier: string) {
+  const staffLabel = rawIdentifier.trim().replace(/\s+/g, " ");
+  const normalized = normalizeStaffIdentifier(staffLabel);
+
+  if (!staffLabel || normalized.length < 3) {
+    throw new Error("Operator name or email is required.");
+  }
+
+  return {
+    staffId: `${role}:${normalized}`,
+    staffLabel,
+    staffEmail: staffLabel.includes("@") ? staffLabel.toLowerCase() : undefined,
+  };
+}
+
 export function isStaffRole(value: unknown): value is StaffRole {
   return value === "admin" || value === "store_manager" || value === "auditor";
 }
@@ -132,6 +159,7 @@ export function getPermissionForAdminPath(pathname: string): StaffPermission {
 export function getPermissionForAdminApiPath(pathname: string): StaffPermission {
   if (pathname.startsWith("/api/admin/upload-image")) return "products.edit";
   if (pathname.startsWith("/api/admin/orders/export")) return "orders.view";
+  if (pathname.startsWith("/api/admin/reconciliation/export")) return "dashboard.view";
   return "dashboard.view";
 }
 
@@ -154,11 +182,19 @@ export async function decrypt(input: string): Promise<Record<string, unknown> | 
   }
 }
 
-export async function createAdminSession(role: StaffRole = "admin") {
+export async function createAdminSession(input: {
+  role?: StaffRole;
+  operatorIdentifier: string;
+}) {
+  const role = input.role ?? "admin";
+  const identity = createStaffIdentity(role, input.operatorIdentifier);
   const expires = new Date(Date.now() + 24 * 60 * 60 * 1000);
   const session = await encrypt({
     role,
     permissions: getStaffPermissions(role),
+    staffId: identity.staffId,
+    staffLabel: identity.staffLabel,
+    staffEmail: identity.staffEmail,
     expires,
   } satisfies StaffSession);
 
@@ -211,6 +247,11 @@ export async function verifyAdminSession(): Promise<StaffSession | null> {
   return {
     role: payload.role,
     permissions: payload.permissions.filter((permission): permission is StaffPermission => typeof permission === "string"),
+    staffId: typeof payload.staffId === "string" ? payload.staffId : `${payload.role}:legacy`,
+    staffLabel: typeof payload.staffLabel === "string"
+      ? payload.staffLabel
+      : String(payload.role).replace(/_/g, " "),
+    staffEmail: typeof payload.staffEmail === "string" ? payload.staffEmail : undefined,
     expires: payload.expires as Date | string,
   };
 }

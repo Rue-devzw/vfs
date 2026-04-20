@@ -7,7 +7,8 @@ import {
 } from "@/lib/firestore/orders"
 import { getRefundExecution, updateRefundExecutionStatus } from "@/lib/firestore/refunds"
 import { getShipmentByOrderReference, updateShipmentForOrder } from "@/lib/firestore/shipments"
-import { notFound } from "next/navigation"
+import { notFound, redirect, unstable_rethrow } from "next/navigation"
+import { AdminActionForm } from "@/components/admin/admin-action-form"
 import { Button } from "@/components/ui/button"
 import {
     Card,
@@ -43,10 +44,27 @@ interface OrderDetailsPageProps {
     params: Promise<{
         id: string
     }>
+    searchParams?: Promise<Record<string, string | string[] | undefined>>
 }
 
-export default async function OrderDetailsPage({ params }: OrderDetailsPageProps) {
+function firstParam(value: string | string[] | undefined) {
+    return Array.isArray(value) ? value[0] : value
+}
+
+function buildOrderAdminUrl(id: string, noticeType: "success" | "error", message: string) {
+    return `/admin/orders/${id}?notice=${noticeType}&message=${encodeURIComponent(message)}`
+}
+
+function getActionErrorMessage(error: unknown, fallback: string) {
+    unstable_rethrow(error)
+    return error instanceof Error ? error.message : fallback
+}
+
+export default async function OrderDetailsPage({ params, searchParams }: OrderDetailsPageProps) {
     const { id } = await params
+    const query = (await searchParams) ?? {}
+    const noticeType = firstParam(query.notice)
+    const noticeMessage = firstParam(query.message)
     const [order, refundCases, shipment] = await Promise.all([
         getOrderById(id),
         listRefundCases({ orderReference: id }),
@@ -64,53 +82,98 @@ export default async function OrderDetailsPage({ params }: OrderDetailsPageProps
 
     async function handleStatusUpdate(status: "pending" | "processing" | "shipped" | "delivered" | "cancelled") {
         "use server"
-        await updateOrderStatus(id, status)
-        revalidatePath("/admin")
-        revalidatePath("/admin/orders")
-        revalidatePath(`/admin/orders/${id}`)
-        revalidatePath("/admin/customers")
+        try {
+            await updateOrderStatus(id, status)
+            revalidatePath("/admin")
+            revalidatePath("/admin/orders")
+            revalidatePath(`/admin/orders/${id}`)
+            revalidatePath("/admin/customers")
+            redirect(buildOrderAdminUrl(id, "success", `Order moved to ${status}.`))
+        } catch (error) {
+            redirect(buildOrderAdminUrl(
+                id,
+                "error",
+                getActionErrorMessage(error, "Order status update failed."),
+            ))
+        }
     }
 
     async function handleShippingUpdate(status: "awaiting_payment" | "pickup_pending" | "ready_for_dispatch" | "out_for_delivery" | "delivered" | "collected" | "issue") {
         "use server"
-        await updateOrderShippingStatus(id, status)
-        revalidatePath("/admin/orders")
-        revalidatePath(`/admin/orders/${id}`)
-        revalidatePath("/admin/customers")
+        try {
+            await updateOrderShippingStatus(id, status)
+            revalidatePath("/admin/orders")
+            revalidatePath(`/admin/orders/${id}`)
+            revalidatePath("/admin/customers")
+            redirect(buildOrderAdminUrl(id, "success", `Shipping moved to ${status.replaceAll("_", " ")}.`))
+        } catch (error) {
+            redirect(buildOrderAdminUrl(
+                id,
+                "error",
+                getActionErrorMessage(error, "Shipping status update failed."),
+            ))
+        }
     }
 
     async function handleRefundUpdate(refundCaseId: string, status: "open" | "investigating" | "approved" | "rejected" | "refunded" | "closed") {
         "use server"
-        await updateRefundCaseStatus(refundCaseId, status, `Admin moved refund case to ${status}.`)
-        revalidatePath("/admin/orders")
-        revalidatePath(`/admin/orders/${id}`)
-        revalidatePath("/admin/customers")
-        revalidatePath("/admin/refunds")
+        try {
+            await updateRefundCaseStatus(refundCaseId, status, `Admin moved refund case to ${status}.`)
+            revalidatePath("/admin/orders")
+            revalidatePath(`/admin/orders/${id}`)
+            revalidatePath("/admin/customers")
+            revalidatePath("/admin/refunds")
+            redirect(buildOrderAdminUrl(id, "success", `Refund case moved to ${status}.`))
+        } catch (error) {
+            redirect(buildOrderAdminUrl(
+                id,
+                "error",
+                getActionErrorMessage(error, "Refund case update failed."),
+            ))
+        }
     }
 
     async function handleRefundExecutionUpdate(refundCaseId: string, status: "submitted" | "manual_review" | "failed" | "completed") {
         "use server"
-        await updateRefundExecutionStatus({
-            refundCaseId,
-            status,
-            lastError: status === "failed" ? "Marked as failed from order review." : undefined,
-        })
-        revalidatePath("/admin/orders")
-        revalidatePath(`/admin/orders/${id}`)
-        revalidatePath("/admin/refunds")
+        try {
+            await updateRefundExecutionStatus({
+                refundCaseId,
+                status,
+                lastError: status === "failed" ? "Marked as failed from order review." : undefined,
+            })
+            revalidatePath("/admin/orders")
+            revalidatePath(`/admin/orders/${id}`)
+            revalidatePath("/admin/refunds")
+            redirect(buildOrderAdminUrl(id, "success", `Refund execution moved to ${status}.`))
+        } catch (error) {
+            redirect(buildOrderAdminUrl(
+                id,
+                "error",
+                getActionErrorMessage(error, "Refund execution update failed."),
+            ))
+        }
     }
 
     async function handleShipmentAssignment(formData: FormData) {
         "use server"
-        await updateShipmentForOrder({
-            orderReference: id,
-            courierName: String(formData.get("courierName") || ""),
-            courierPhone: String(formData.get("courierPhone") || ""),
-            assignmentNotes: String(formData.get("assignmentNotes") || ""),
-            proofOfDeliveryUrl: String(formData.get("proofOfDeliveryUrl") || ""),
-        })
-        revalidatePath("/admin/orders")
-        revalidatePath(`/admin/orders/${id}`)
+        try {
+            await updateShipmentForOrder({
+                orderReference: id,
+                courierName: String(formData.get("courierName") || ""),
+                courierPhone: String(formData.get("courierPhone") || ""),
+                assignmentNotes: String(formData.get("assignmentNotes") || ""),
+                proofOfDeliveryUrl: String(formData.get("proofOfDeliveryUrl") || ""),
+            })
+            revalidatePath("/admin/orders")
+            revalidatePath(`/admin/orders/${id}`)
+            redirect(buildOrderAdminUrl(id, "success", "Shipment assignment updated."))
+        } catch (error) {
+            redirect(buildOrderAdminUrl(
+                id,
+                "error",
+                getActionErrorMessage(error, "Shipment assignment update failed."),
+            ))
+        }
     }
 
     return (
@@ -126,6 +189,18 @@ export default async function OrderDetailsPage({ params }: OrderDetailsPageProps
                     <p className="text-sm text-muted-foreground">Placed on {new Date(order.createdAt).toLocaleString()}</p>
                 </div>
             </div>
+
+            {noticeMessage ? (
+                <div
+                    className={`rounded-lg border px-4 py-3 text-sm ${
+                        noticeType === "error"
+                            ? "border-red-200 bg-red-50 text-red-700"
+                            : "border-green-200 bg-green-50 text-green-700"
+                    }`}
+                >
+                    {noticeMessage}
+                </div>
+            ) : null}
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="md:col-span-2 space-y-6">
@@ -173,31 +248,51 @@ export default async function OrderDetailsPage({ params }: OrderDetailsPageProps
                             <CardDescription>Update the current progress of this order</CardDescription>
                         </CardHeader>
                         <CardContent className="flex flex-wrap gap-2">
-                            <form action={handleStatusUpdate.bind(null, 'pending')}>
+                            <AdminActionForm
+                                action={handleStatusUpdate.bind(null, 'pending')}
+                                pendingTitle="Updating order status"
+                                pendingMessage="We are moving this order to pending."
+                            >
                                 <Button variant={order.status === 'pending' ? 'default' : 'outline'} size="sm" type="submit">
                                     <Clock className="mr-2 h-4 w-4" /> Pending
                                 </Button>
-                            </form>
-                            <form action={handleStatusUpdate.bind(null, 'processing')}>
+                            </AdminActionForm>
+                            <AdminActionForm
+                                action={handleStatusUpdate.bind(null, 'processing')}
+                                pendingTitle="Updating order status"
+                                pendingMessage="We are moving this order into processing."
+                            >
                                 <Button variant={order.status === 'processing' ? 'default' : 'outline'} size="sm" type="submit">
                                     <div className="mr-2 h-4 w-4 border-2 border-current border-t-transparent animate-spin rounded-full" /> Processing
                                 </Button>
-                            </form>
-                            <form action={handleStatusUpdate.bind(null, 'shipped')}>
+                            </AdminActionForm>
+                            <AdminActionForm
+                                action={handleStatusUpdate.bind(null, 'shipped')}
+                                pendingTitle="Updating order status"
+                                pendingMessage="We are marking this order as shipped."
+                            >
                                 <Button variant={order.status === 'shipped' ? 'default' : 'outline'} size="sm" type="submit">
                                     <Truck className="mr-2 h-4 w-4" /> Shipped
                                 </Button>
-                            </form>
-                            <form action={handleStatusUpdate.bind(null, 'delivered')}>
+                            </AdminActionForm>
+                            <AdminActionForm
+                                action={handleStatusUpdate.bind(null, 'delivered')}
+                                pendingTitle="Updating order status"
+                                pendingMessage="We are marking this order as delivered."
+                            >
                                 <Button variant={order.status === 'delivered' ? 'default' : 'outline'} size="sm" type="submit">
                                     <CheckCircle2 className="mr-2 h-4 w-4" /> Delivered
                                 </Button>
-                            </form>
-                            <form action={handleStatusUpdate.bind(null, 'cancelled')}>
+                            </AdminActionForm>
+                            <AdminActionForm
+                                action={handleStatusUpdate.bind(null, 'cancelled')}
+                                pendingTitle="Updating order status"
+                                pendingMessage="We are cancelling this order now."
+                            >
                                 <Button variant={order.status === 'cancelled' ? 'destructive' : 'outline'} size="sm" type="submit">
                                     <XCircle className="mr-2 h-4 w-4" /> Cancelled
                                 </Button>
-                            </form>
+                            </AdminActionForm>
                         </CardContent>
                     </Card>
                 </div>
@@ -365,14 +460,24 @@ export default async function OrderDetailsPage({ params }: OrderDetailsPageProps
                             </div>
                             <div className="flex flex-wrap gap-2">
                                 {["awaiting_payment", "pickup_pending", "ready_for_dispatch", "out_for_delivery", "delivered", "collected", "issue"].map(status => (
-                                    <form key={status} action={handleShippingUpdate.bind(null, status as "awaiting_payment" | "pickup_pending" | "ready_for_dispatch" | "out_for_delivery" | "delivered" | "collected" | "issue")}>
+                                    <AdminActionForm
+                                        key={status}
+                                        action={handleShippingUpdate.bind(null, status as "awaiting_payment" | "pickup_pending" | "ready_for_dispatch" | "out_for_delivery" | "delivered" | "collected" | "issue")}
+                                        pendingTitle="Updating fulfilment status"
+                                        pendingMessage={`We are moving this shipment to ${status.replace(/_/g, " ")}.`}
+                                    >
                                         <Button variant={order.shipping?.status === status ? "default" : "outline"} size="sm" type="submit" className="capitalize">
                                             {status.replace(/_/g, " ")}
                                         </Button>
-                                    </form>
+                                    </AdminActionForm>
                                 ))}
                             </div>
-                            <form action={handleShipmentAssignment} className="space-y-3 rounded-lg border p-4">
+                            <AdminActionForm
+                                action={handleShipmentAssignment}
+                                className="space-y-3 rounded-lg border p-4"
+                                pendingTitle="Saving shipment assignment"
+                                pendingMessage="We are updating courier and proof-of-delivery details."
+                            >
                                 <div className="text-sm font-medium">Shipment Assignment</div>
                                 <div className="grid gap-3">
                                     <div className="space-y-1">
@@ -413,7 +518,7 @@ export default async function OrderDetailsPage({ params }: OrderDetailsPageProps
                                     </div>
                                 </div>
                                 <Button type="submit" variant="outline" size="sm">Save Shipment Details</Button>
-                            </form>
+                            </AdminActionForm>
                         </CardContent>
                     </Card>
 
@@ -449,21 +554,31 @@ export default async function OrderDetailsPage({ params }: OrderDetailsPageProps
                                     </div>
                                     <div className="flex flex-wrap gap-2">
                                         {["open", "investigating", "approved", "rejected", "refunded", "closed"].map(status => (
-                                            <form key={status} action={handleRefundUpdate.bind(null, refund.id, status as "open" | "investigating" | "approved" | "rejected" | "refunded" | "closed")}>
+                                            <AdminActionForm
+                                                key={status}
+                                                action={handleRefundUpdate.bind(null, refund.id, status as "open" | "investigating" | "approved" | "rejected" | "refunded" | "closed")}
+                                                pendingTitle="Updating refund case"
+                                                pendingMessage={`We are moving this refund case to ${status}.`}
+                                            >
                                                 <Button variant={refund.status === status ? "default" : "outline"} size="sm" type="submit" className="capitalize">
                                                     {status}
                                                 </Button>
-                                            </form>
+                                            </AdminActionForm>
                                         ))}
                                     </div>
                                     {execution && execution.status !== "completed" ? (
                                         <div className="flex flex-wrap gap-2">
                                             {["submitted", "manual_review", "failed", "completed"].map(status => (
-                                                <form key={status} action={handleRefundExecutionUpdate.bind(null, refund.id, status as "submitted" | "manual_review" | "failed" | "completed")}>
+                                                <AdminActionForm
+                                                    key={status}
+                                                    action={handleRefundExecutionUpdate.bind(null, refund.id, status as "submitted" | "manual_review" | "failed" | "completed")}
+                                                    pendingTitle="Updating refund execution"
+                                                    pendingMessage={`We are marking this refund execution as ${status.replace(/_/g, " ")}.`}
+                                                >
                                                     <Button variant="outline" size="sm" type="submit" className="capitalize">
                                                         {status.replace(/_/g, " ")}
                                                     </Button>
-                                                </form>
+                                                </AdminActionForm>
                                             ))}
                                         </div>
                                     ) : null}

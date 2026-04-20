@@ -15,6 +15,14 @@ export class EgressGatewayError extends Error {
   }
 }
 
+export function isEgressServiceUnavailable(error: EgressGatewayError) {
+  return error.status >= 500;
+}
+
+export function getEgressServiceUnavailableMessage(context: string) {
+  return `${context} is temporarily unavailable because the provider gateway is not responding. Please try again shortly.`;
+}
+
 export type EgressValidateResponse = {
   successful: boolean;
   billerId?: string;

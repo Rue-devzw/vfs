@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ProcessStatusCard } from "@/components/ui/process-status-card";
 import { useToast } from "@/hooks/use-toast";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
@@ -13,22 +14,44 @@ import { CheckCircle2, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { DigitalServiceField } from "@/lib/digital-services";
 import {
+  getDefaultPaymentMethod,
+  getEnabledPaymentMethodOptions,
   getPaymentMethodLabel,
   getPaymentMethodMobileHint,
   isPaymentMethod,
-  PAYMENT_METHOD_OPTIONS,
   requiresMobileNumber,
   type PaymentMethod,
 } from "@/lib/payment-methods";
-import { getPaymentProgressContent, isSuccessfulGatewayStatus, resolvePurchaseFlowAction } from "@/lib/payment-flow";
+import { renderGatewayRedirectHtml } from "@/lib/payments/browser";
+import { getPaymentProgressContent, resolvePurchaseFlowAction } from "@/lib/payment-flow";
+import {
+  convertFromUsd,
+  convertToUsd,
+  formatMoney,
+  getCurrencyMeta,
+  type CurrencyCode,
+} from "@/lib/currency";
+import { useCurrency } from "@/components/currency/currency-provider";
 
 type DigitalReceipt = {
   reference: string;
   status: string;
   amount?: number;
+  currencyCode?: CurrencyCode;
   transactionReference?: string;
+  manualReview?: boolean;
   message: string;
 };
+
+type BackgroundProcessState = {
+  title: string;
+  description: string;
+  detail?: string;
+  progress: number;
+};
+
+const enabledPaymentMethodOptions = getEnabledPaymentMethodOptions();
+const defaultPaymentMethod = getDefaultPaymentMethod();
 
 export function GenericDigitalFlow({
   service,
@@ -48,10 +71,15 @@ export function GenericDigitalFlow({
   const { toast } = useToast();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { currencyCode } = useCurrency();
   const [accountReference, setAccountReference] = useState("");
   const [customerMobile, setCustomerMobile] = useState("");
   const [amount, setAmount] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("WALLETPLUS");
+  const [cardPan, setCardPan] = useState("");
+  const [cardExpMonth, setCardExpMonth] = useState("");
+  const [cardExpYear, setCardExpYear] = useState("");
+  const [cardSecurityCode, setCardSecurityCode] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(defaultPaymentMethod);
   const [loading, setLoading] = useState(false);
   const [awaitingOtp, setAwaitingOtp] = useState(false);
   const [otp, setOtp] = useState("");
@@ -59,17 +87,35 @@ export function GenericDigitalFlow({
   const [orderReference, setOrderReference] = useState("");
   const [receipt, setReceipt] = useState<DigitalReceipt | null>(null);
   const [serviceMeta, setServiceMeta] = useState<Record<string, string>>({});
-  const [activePaymentMethod, setActivePaymentMethod] = useState<PaymentMethod>("WALLETPLUS");
+  const [activePaymentMethod, setActivePaymentMethod] = useState<PaymentMethod>(defaultPaymentMethod);
+  const [processingState, setProcessingState] = useState<BackgroundProcessState | null>(null);
+  const minimumAmount = convertFromUsd(1, currencyCode);
 
   const isAvailable = availabilityStatus === "active";
+
+  useEffect(() => {
+    if (!enabledPaymentMethodOptions.some(option => option.id === paymentMethod)) {
+      setPaymentMethod(defaultPaymentMethod);
+    }
+  }, [paymentMethod]);
 
   const checkStatus = useCallback(async (reference: string) => {
     let latestStatus = "PENDING";
     let latestAmount: number | undefined;
+    let latestCurrencyCode: CurrencyCode | undefined;
     let latestGatewayReference: string | undefined;
+    let manualReview = false;
+    let statusMessage: string | undefined;
+
+    setProcessingState({
+      title: "Checking payment status",
+      description: `We are waiting for the latest ${serviceLabel} payment update.`,
+      detail: "Keep this page open while we confirm the gateway result and save your request.",
+      progress: 68,
+    });
 
     for (let attempt = 0; attempt < 10; attempt += 1) {
-      const res = await fetch(`/api/zb/status/${encodeURIComponent(reference)}`, {
+      const res = await fetch(`/api/payments/status/${encodeURIComponent(reference)}`, {
         method: "GET",
         cache: "no-store",
       });
@@ -80,11 +126,43 @@ export function GenericDigitalFlow({
 
       latestStatus = String(data.data?.status || "PENDING").toUpperCase();
       latestAmount = typeof data.data?.amount === "number" ? data.data.amount : latestAmount;
+      latestCurrencyCode = data.data?.currencyCode === "924" ? "924" : data.data?.currencyCode === "840" ? "840" : latestCurrencyCode;
       latestGatewayReference = typeof data.data?.transactionReference === "string"
         ? data.data.transactionReference
         : latestGatewayReference;
+      const rawVendedData = data.data?.vendedData;
+      if (rawVendedData && typeof rawVendedData === "object") {
+        const candidate = rawVendedData as { manualReview?: unknown; issue?: unknown; message?: unknown };
+        manualReview = candidate.manualReview === true || candidate.issue === true;
+        statusMessage = typeof candidate.message === "string" ? candidate.message : statusMessage;
+      }
       if (typeof data.data?.accountReference === "string") {
         setAccountReference((current) => current || data.data.accountReference);
+      }
+
+      const engagement = getPaymentProgressContent(latestStatus, {
+        paymentMethod: activePaymentMethod,
+        subject: `${serviceLabel} payment`,
+        manualReview: true,
+      });
+      const progress = ["PAID", "SUCCESS"].includes(latestStatus)
+        ? 92
+        : latestStatus === "PROCESSING"
+          ? 82
+          : 72;
+      setProcessingState({
+        title: engagement.title,
+        description: engagement.description,
+        detail: manualReview
+          ? "Payment is confirmed and the request is now waiting for fulfilment confirmation."
+          : ["PAID", "SUCCESS"].includes(latestStatus)
+          ? "Payment is confirmed. We are recording the request so you can track it from your account."
+          : "Your request is active in the background. Approval can happen on your device or at the gateway.",
+        progress,
+      });
+
+      if (manualReview) {
+        break;
       }
 
       if (["PAID", "SUCCESS", "FAILED", "CANCELED", "CANCELLED", "EXPIRED"].includes(latestStatus)) {
@@ -94,22 +172,22 @@ export function GenericDigitalFlow({
       await new Promise(resolve => setTimeout(resolve, 3000));
     }
 
-    const isSuccess = isSuccessfulGatewayStatus(latestStatus);
     const engagement = getPaymentProgressContent(latestStatus, {
       paymentMethod: activePaymentMethod,
       subject: `${serviceLabel} payment`,
       manualReview: true,
     });
+    setProcessingState(null);
     setReceipt({
       reference,
-      status: latestStatus,
+      status: manualReview ? "MANUAL_REVIEW" : latestStatus,
       amount: latestAmount,
+      currencyCode: latestCurrencyCode ?? currencyCode,
       transactionReference: latestGatewayReference,
-      message: isSuccess
-        ? engagement.description
-        : engagement.description,
+      manualReview,
+      message: statusMessage || engagement.description,
     });
-  }, [activePaymentMethod, serviceLabel]);
+  }, [activePaymentMethod, currencyCode, serviceLabel]);
 
   useEffect(() => {
     const reference = searchParams.get("reference");
@@ -163,9 +241,16 @@ export function GenericDigitalFlow({
         body: JSON.stringify({
           serviceType: service.toUpperCase(),
           accountNumber: accountReference,
-          amount: Number(amount),
+          amount: convertToUsd(Number(amount), currencyCode),
+          currencyCode,
           paymentMethod,
-          customerMobile,
+          customerMobile: paymentMethod === "CARD" ? undefined : (customerMobile || undefined),
+          cardDetails: paymentMethod === "CARD" ? {
+            pan: cardPan.replace(/\s/g, ""),
+            expMonth: cardExpMonth,
+            expYear: cardExpYear,
+            securityCode: cardSecurityCode,
+          } : undefined,
           serviceMeta,
         }),
       });
@@ -173,6 +258,12 @@ export function GenericDigitalFlow({
       if (!res.ok || !data.success) throw new Error(data.error || "Failed to initiate payment");
 
       setActivePaymentMethod(paymentMethod);
+      setProcessingState({
+        title: "Preparing payment request",
+        description: `We are creating your ${serviceLabel} payment request now.`,
+        detail: "This includes opening the secure payment session and saving a trackable order reference.",
+        progress: 35,
+      });
       const action = resolvePurchaseFlowAction(data);
       const engagement = getPaymentProgressContent(data.status, {
         paymentMethod,
@@ -184,6 +275,7 @@ export function GenericDigitalFlow({
         setTransactionReference(data.transactionReference);
         setOrderReference(data.reference);
         setAwaitingOtp(true);
+        setProcessingState(null);
         toast({
           title: engagement.title,
           description: data.message || engagement.description,
@@ -192,7 +284,24 @@ export function GenericDigitalFlow({
       }
 
       if (action.type === "redirect") {
+        setProcessingState({
+          title: "Redirecting to secure checkout",
+          description: "We are sending you to the payment gateway now.",
+          detail: "After payment, you will return here automatically so we can continue tracking the result.",
+          progress: 55,
+        });
         window.location.href = action.url;
+        return;
+      }
+
+      if (action.type === "html") {
+        setProcessingState({
+          title: "Opening bank verification",
+          description: "We are handing you off to your bank's secure 3D Secure challenge.",
+          detail: "Complete the challenge and you will be returned here automatically.",
+          progress: 62,
+        });
+        renderGatewayRedirectHtml(action.html);
         return;
       }
 
@@ -201,8 +310,9 @@ export function GenericDigitalFlow({
         title: engagement.title,
         description: data.message || engagement.description,
       });
-      checkStatus(data.reference);
+      await checkStatus(data.reference);
     } catch (error) {
+      setProcessingState(null);
       toast({
         title: "Initiation failed",
         description: error instanceof Error ? error.message : "Unknown error",
@@ -216,7 +326,13 @@ export function GenericDigitalFlow({
   const confirmOtp = async () => {
     setLoading(true);
     try {
-      const res = await fetch("/api/zb/checkout/confirm", {
+      setProcessingState({
+        title: "Confirming your OTP",
+        description: "We are submitting the verification code to the payment gateway.",
+        detail: "Please wait while we confirm the payment result in the background.",
+        progress: 74,
+      });
+      const res = await fetch("/api/payments/confirm", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -224,6 +340,7 @@ export function GenericDigitalFlow({
           transactionReference,
           otp,
           paymentMethod,
+          customerMobile,
         }),
       });
       const data = await res.json();
@@ -234,8 +351,9 @@ export function GenericDigitalFlow({
         description: data.message || "Payment processed. Checking fulfillment status...",
       });
       setAwaitingOtp(false);
-      checkStatus(orderReference);
+      await checkStatus(orderReference);
     } catch (error) {
+      setProcessingState(null);
       toast({
         title: "Confirmation failed",
         description: error instanceof Error ? error.message : "Confirmation failed",
@@ -250,7 +368,10 @@ export function GenericDigitalFlow({
     return (
       <Card className="w-full max-w-md mx-auto p-6 space-y-6 shadow-lg border-primary/10">
         <div className="text-center space-y-3">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary">
+          <div className={cn(
+            "mx-auto flex h-14 w-14 items-center justify-center rounded-full",
+            receipt.manualReview ? "bg-amber-100 text-amber-700" : "bg-primary/10 text-primary",
+          )}>
             <CheckCircle2 className="h-7 w-7" />
           </div>
           <h2 className="text-2xl font-semibold">Payment Update</h2>
@@ -273,7 +394,7 @@ export function GenericDigitalFlow({
           {typeof receipt.amount === "number" ? (
             <div className="flex justify-between py-2">
               <span className="text-muted-foreground">Amount</span>
-              <span className="font-medium">${receipt.amount.toFixed(2)}</span>
+              <span className="font-medium">{formatMoney(receipt.amount, receipt.currencyCode ?? currencyCode)}</span>
             </div>
           ) : null}
           <div className="flex justify-between py-2">
@@ -313,6 +434,19 @@ export function GenericDigitalFlow({
             Open My Account
           </Button>
         </div>
+      </Card>
+    );
+  }
+
+  if (processingState) {
+    return (
+      <Card className="w-full max-w-md mx-auto p-6 shadow-lg border-primary/10">
+        <ProcessStatusCard
+          title={processingState.title}
+          description={processingState.description}
+          detail={processingState.detail}
+          progress={processingState.progress}
+        />
       </Card>
     );
   }
@@ -398,15 +532,16 @@ export function GenericDigitalFlow({
                     {field.helpText ? <p className="text-xs text-muted-foreground">{field.helpText}</p> : null}
                   </div>
                 ))}
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="amount">Amount (USD)</Label>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                    <Label htmlFor="amount">Amount ({getCurrencyMeta(currencyCode).label})</Label>
                     <div className="relative">
-                      <span className="absolute left-3 top-2.5 text-muted-foreground">$</span>
+                      <span className="absolute left-3 top-2.5 text-muted-foreground">{getCurrencyMeta(currencyCode).symbol.trim()}</span>
                       <Input
                         id="amount"
                         type="number"
-                        min="1"
+                        min={String(minimumAmount)}
+                        step="0.01"
                         value={amount}
                         onChange={(e) => setAmount(e.target.value)}
                         className="pl-7"
@@ -429,7 +564,7 @@ export function GenericDigitalFlow({
                   defaultValue={paymentMethod}
                   className="grid grid-cols-2 gap-2"
                 >
-                  {PAYMENT_METHOD_OPTIONS.map((m) => (
+                  {enabledPaymentMethodOptions.map((m) => (
                     <Label
                       key={m.id}
                       className={cn(
@@ -459,6 +594,67 @@ export function GenericDigitalFlow({
                 </div>
               )}
 
+              {paymentMethod === "CARD" && (
+                <div className="grid gap-4 rounded-xl border bg-muted/5 p-4 animate-in fade-in slide-in-from-top-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="card-pan">Card Number</Label>
+                    <Input
+                      id="card-pan"
+                      inputMode="numeric"
+                      autoComplete="cc-number"
+                      value={cardPan}
+                      onChange={(e) => setCardPan(e.target.value.replace(/\D/g, ""))}
+                      placeholder="2223 0000 0000 0007"
+                      className="bg-background"
+                    />
+                  </div>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="card-exp-month">Exp Month</Label>
+                      <Input
+                        id="card-exp-month"
+                        inputMode="numeric"
+                        autoComplete="cc-exp-month"
+                        value={cardExpMonth}
+                        onChange={(e) => setCardExpMonth(e.target.value.replace(/\D/g, ""))}
+                        placeholder="01"
+                        maxLength={2}
+                        className="bg-background"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="card-exp-year">Exp Year</Label>
+                      <Input
+                        id="card-exp-year"
+                        inputMode="numeric"
+                        autoComplete="cc-exp-year"
+                        value={cardExpYear}
+                        onChange={(e) => setCardExpYear(e.target.value.replace(/\D/g, ""))}
+                        placeholder="39"
+                        maxLength={4}
+                        className="bg-background"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="card-security-code">CVV</Label>
+                      <Input
+                        id="card-security-code"
+                        inputMode="numeric"
+                        autoComplete="cc-csc"
+                        value={cardSecurityCode}
+                        onChange={(e) => setCardSecurityCode(e.target.value.replace(/\D/g, ""))}
+                        placeholder="100"
+                        maxLength={4}
+                        className="bg-background"
+                      />
+                    </div>
+                  </div>
+                  <p className="text-[10px] text-muted-foreground">
+                    If your bank requires 3D Secure, the challenge will open automatically and return you here once complete.
+                  </p>
+                </div>
+              )}
+
               <Button
                 disabled={
                   loading
@@ -466,6 +662,7 @@ export function GenericDigitalFlow({
                   || !accountReference
                   || !amount
                   || (requiresMobileNumber(paymentMethod) && !customerMobile)
+                  || (paymentMethod === "CARD" && (!cardPan || !cardExpMonth || !cardExpYear || !cardSecurityCode))
                   || formFields.some(field => field.required && !(serviceMeta[field.id] ?? "").trim())
                 }
                 onClick={initiate}

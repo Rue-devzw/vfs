@@ -11,6 +11,7 @@ type StaffRole = "admin" | "store_manager" | "auditor";
 
 export default function AdminLoginPage() {
     const [password, setPassword] = useState("");
+    const [operatorIdentifier, setOperatorIdentifier] = useState("");
     const [role, setRole] = useState<StaffRole>("admin");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
@@ -22,7 +23,7 @@ export default function AdminLoginPage() {
         setError("");
 
         try {
-            const res = await loginWithRoleAction(role, password);
+            const res = await loginWithRoleAction(role, password, operatorIdentifier);
             if (res.success) {
                 // Redirect to admin dashboard on success
                 router.push("/admin");
@@ -67,16 +68,25 @@ export default function AdminLoginPage() {
                     </div>
                     <div className="space-y-2">
                         <Input
+                            type="text"
+                            placeholder="Operator name or email"
+                            value={operatorIdentifier}
+                            onChange={(e) => setOperatorIdentifier(e.target.value)}
+                            className="w-full"
+                            autoFocus
+                        />
+                    </div>
+                    <div className="space-y-2">
+                        <Input
                             type="password"
                             placeholder="Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             className="w-full"
-                            autoFocus
                         />
                     </div>
                     {error && <p className="text-sm text-destructive">{error}</p>}
-                    <Button type="submit" className="w-full" disabled={loading || !password}>
+                    <Button type="submit" className="w-full" disabled={loading || !password || !operatorIdentifier.trim()}>
                         {loading ? (
                             <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

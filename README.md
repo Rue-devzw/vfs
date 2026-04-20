@@ -28,5 +28,20 @@ Sandbox base URL from the Smile&Pay docs: `https://zbnet.zb.co.zw/wallet_sandbox
 
 Configure the following URLs in Smile&Pay:
 
-- Result URL: `https://<your-base-url>/api/zb/webhook`
-- Return URL: `https://<your-base-url>/store/zb/return`
+- Result URL: `https://<your-base-url>/api/payments/webhook/smile-pay`
+- Return URL: `https://<your-base-url>/store/smile-pay/return`
+
+## Operations Runner
+
+Background operational maintenance can be run locally with:
+
+```bash
+npm run ops:maintain
+```
+
+For scheduled environments, configure `OPS_CRON_SECRET` and call:
+
+- `POST /api/ops/maintenance`
+- Header: `Authorization: Bearer <OPS_CRON_SECRET>` or `x-ops-secret: <OPS_CRON_SECRET>`
+
+The maintenance runner processes queued notifications, releases expired inventory reservations, advances queued refund execution records, and escalates stale digital fulfilment orders into manual review.

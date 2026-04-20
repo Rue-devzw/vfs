@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { formatDocumentDateTime, getOrderDocumentState } from "@/lib/order-documents";
+import type { Order, RefundCase } from "@/lib/firestore/orders";
 import { getOrderTransactionReport } from "@/server/orders";
 import { generateOrderPdf } from "@/lib/pdf-documents";
 
@@ -14,33 +16,63 @@ export async function GET(req: Request, context: RouteContext) {
     if (!report) {
       return NextResponse.json({ success: false, error: "Order not found." }, { status: 404 });
     }
+    const typedOrder = report.order as Order;
+    const typedRefunds = report.refunds as RefundCase[];
 
     const url = new URL(req.url);
     const format = url.searchParams.get("format");
 
-    if (format === "pdf" || format === "invoice-pdf") {
+    if (format === "pdf" || format === "invoice-pdf" || format === "report-pdf") {
+      const documentState = getOrderDocumentState({
+        order: typedOrder,
+        refunds: typedRefunds,
+      });
+      if (format === "pdf" && documentState.kind !== "receipt") {
+        return NextResponse.json(
+          {
+            success: false,
+            error: documentState.kind === "report"
+              ? "This order is not completed. Download the issue report instead."
+              : "Receipt PDF becomes available once the order is completed. Use the invoice until then.",
+          },
+          { status: 409 },
+        );
+      }
+      if (format === "report-pdf" && documentState.kind !== "report") {
+        return NextResponse.json(
+          { success: false, error: "Issue report PDF is only available for orders that need attention." },
+          { status: 409 },
+        );
+      }
+
       const pdf = await generateOrderPdf({
         report,
-        kind: format === "invoice-pdf" ? "invoice" : "receipt",
+        kind: format === "invoice-pdf" ? "invoice" : format === "report-pdf" ? "report" : "receipt",
       });
 
       return new NextResponse(pdf, {
         status: 200,
         headers: {
           "Content-Type": "application/pdf",
-          "Content-Disposition": `attachment; filename="${orderReference}-${format === "invoice-pdf" ? "invoice" : "receipt"}.pdf"`,
+          "Content-Disposition": `attachment; filename="${orderReference}-${format === "invoice-pdf" ? "invoice" : format === "report-pdf" ? "issue-report" : "receipt"}.pdf"`,
         },
       });
     }
 
     if (format === "txt" || format === "invoice") {
-      const order = report.order as Record<string, unknown>;
+      const documentState = getOrderDocumentState({
+        order: typedOrder,
+        refunds: typedRefunds,
+      });
+      const order = typedOrder as unknown as Record<string, unknown>;
       const payload = [
-        format === "invoice" ? `Invoice` : `Transaction Report`,
+        format === "invoice" ? `Invoice` : documentState.documentLabel,
         `Reference: ${orderReference}`,
         `Order Number: ${String(order.orderNumber ?? "")}`,
         `Invoice Number: ${String(order.invoiceNumber ?? "")}`,
-        `Generated At: ${report.generatedAt}`,
+        `Issued: ${formatDocumentDateTime(documentState.issuedAt ?? report.generatedAt)}`,
+        `Status: ${documentState.statusLabel}`,
+        `Currency: ${documentState.currencyLabel}`,
         ``,
         `Customer`,
         `Name: ${String(order.customerName ?? "")}`,

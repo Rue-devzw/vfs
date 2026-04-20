@@ -1,7 +1,7 @@
 "use server";
 
 import crypto from "crypto";
-import { requireStaffPermission } from "../auth";
+import { requireStaffPermission, type StaffRole } from "../auth";
 import { getDb, isFirebaseConfigured } from "../firebase-admin";
 
 export type AuditAction =
@@ -13,13 +13,39 @@ export type AuditAction =
   | "notification_retried"
   | "notification_resent"
   | "settings_updated"
-  | "digital_reprocessed";
+  | "digital_reprocessed"
+  | "digital_escalated"
+  | "ops_maintenance_ran"
+  | "reconciliation_batch_updated"
+  | "reconciliation_exception_assigned"
+  | "inventory_count_recorded";
+
+export type AuditActor = {
+  role: StaffRole | "system";
+  id: string;
+  label: string;
+  email?: string;
+};
 
 export type AuditLogRecord = {
   id: string;
-  actorRole: "admin" | "store_manager" | "auditor";
+  actorRole: StaffRole | "system";
+  actorId: string;
+  actorLabel: string;
+  actorEmail?: string;
   action: AuditAction;
-  targetType: "order" | "refund_case" | "refund_execution" | "notification" | "settings" | "digital_order" | "shipment";
+  targetType:
+    | "order"
+    | "refund_case"
+    | "refund_execution"
+    | "notification"
+    | "settings"
+    | "digital_order"
+    | "shipment"
+    | "ops"
+    | "reconciliation_batch"
+    | "reconciliation_exception"
+    | "inventory_count";
   targetId: string;
   detail: string;
   meta?: Record<string, unknown>;
@@ -28,6 +54,27 @@ export type AuditLogRecord = {
 
 function buildAuditId(action: AuditAction, targetType: AuditLogRecord["targetType"], targetId: string, createdAt: string) {
   return `audit_${crypto.createHash("sha256").update(`${action}:${targetType}:${targetId}:${createdAt}`).digest("hex")}`;
+}
+
+function sanitizeValue(value: unknown): unknown {
+  if (value === undefined) return undefined;
+  if (Array.isArray(value)) {
+    return value
+      .map(item => sanitizeValue(item))
+      .filter(item => item !== undefined);
+  }
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value as Record<string, unknown>)
+        .map(([key, entry]) => [key, sanitizeValue(entry)])
+        .filter(([, entry]) => entry !== undefined),
+    );
+  }
+  return value;
+}
+
+function stripUndefined<T extends Record<string, unknown>>(data: T): T {
+  return sanitizeValue(data) as T;
 }
 
 async function requireAuditWriter() {
@@ -40,8 +87,17 @@ export async function createAuditLog(input: {
   targetId: string;
   detail: string;
   meta?: Record<string, unknown>;
+  actor?: AuditActor;
 }) {
-  const session = await requireAuditWriter();
+  const resolvedActor = input.actor ?? await requireAuditWriter().then(session => ({
+    role: session.role,
+    id: session.staffId,
+    label: session.staffLabel,
+    email: session.staffEmail,
+  }));
+  if (!resolvedActor) {
+    throw new Error("Audit actor resolution failed.");
+  }
   if (!isFirebaseConfigured()) {
     return null;
   }
@@ -50,15 +106,18 @@ export async function createAuditLog(input: {
   const createdAt = new Date().toISOString();
   const id = buildAuditId(input.action, input.targetType, input.targetId, createdAt);
 
-  await db.collection("audit_logs").doc(id).set({
-    actorRole: session.role,
+  await db.collection("audit_logs").doc(id).set(stripUndefined({
+    actorRole: resolvedActor.role,
+    actorId: resolvedActor.id,
+    actorLabel: resolvedActor.label,
+    actorEmail: resolvedActor.email,
     action: input.action,
     targetType: input.targetType,
     targetId: input.targetId,
     detail: input.detail,
     meta: input.meta ?? {},
     createdAt,
-  } satisfies Omit<AuditLogRecord, "id">);
+  } satisfies Omit<AuditLogRecord, "id">));
 
   return id;
 }

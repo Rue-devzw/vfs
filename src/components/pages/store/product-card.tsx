@@ -9,6 +9,7 @@ import { useCart } from './cart-context';
 import { ShoppingCart } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { convertFromUsd, formatMoney } from '@/lib/currency';
+import { useCurrency } from '@/components/currency/currency-provider';
 
 interface ProductCardProps {
   product: Product;
@@ -35,7 +36,8 @@ const formatUnit = (unit: string) => {
 };
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  const { dispatch, state: { currencyCode } } = useCart();
+  const { dispatch } = useCart();
+  const { currencyCode } = useCurrency();
   const { toast } = useToast();
   const image = findProductImagePlaceholder(product.image, product.name);
 

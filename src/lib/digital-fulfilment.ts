@@ -12,6 +12,8 @@ export type DigitalVendedData = {
   units?: number;
   receiptNumber?: string;
   message?: string;
+  issue?: boolean;
+  manualReview?: boolean;
 };
 
 const SUCCESSFUL_GATEWAY_STATUSES = new Set(["PAID", "SUCCESS"]);
@@ -64,6 +66,22 @@ export async function syncDigitalFulfilmentForOrder(orderReference: string, gate
   const accountReference = typeof paymentMeta.accountNumber === "string"
     ? paymentMeta.accountNumber
     : order.items?.[0]?.id?.split(`${digitalServiceId}-`)[1] ?? "unknown";
+  const gatewayReference = typeof paymentMeta.gatewayReference === "string"
+    ? paymentMeta.gatewayReference
+    : undefined;
+
+  if (process.env.NODE_ENV !== "production" && digitalServiceId === "zesa") {
+      console.info("[DEV ZESA] fulfilment sync start", {
+        orderReference,
+        gatewayStatus: status,
+        orderStatus: order.status,
+        paymentMetaGatewayStatus: paymentMeta.lastGatewayStatus,
+        gatewayReference,
+        accountReference,
+        alreadyHasToken: Boolean(paymentMeta.token),
+        alreadyHasReceiptNumber: Boolean(paymentMeta.receiptNumber),
+      });
+  }
 
   if (SUCCESSFUL_GATEWAY_STATUSES.has(status)) {
     const alreadyCompleted = Boolean(paymentMeta.receiptNumber || paymentMeta.token);
@@ -74,6 +92,13 @@ export async function syncDigitalFulfilmentForOrder(orderReference: string, gate
         receiptNumber: typeof paymentMeta.receiptNumber === "string" ? paymentMeta.receiptNumber : undefined,
         message: typeof paymentMeta.narrative === "string" ? paymentMeta.narrative : undefined,
       };
+
+      if (process.env.NODE_ENV !== "production" && digitalServiceId === "zesa") {
+        console.info("[DEV ZESA] fulfilment already completed", {
+          orderReference,
+          vendedData,
+        });
+      }
 
       await upsertDigitalOrder({
         orderReference,
@@ -94,21 +119,123 @@ export async function syncDigitalFulfilmentForOrder(orderReference: string, gate
       return { order: await getOrder(orderReference), digitalServiceId, vendedData };
     }
 
+    const recordedVendFailure = typeof paymentMeta.vendFailureMessage === "string"
+      ? paymentMeta.vendFailureMessage
+      : undefined;
+    if (recordedVendFailure) {
+      const vendedData = {
+        receiptNumber: typeof paymentMeta.receiptNumber === "string" ? paymentMeta.receiptNumber : undefined,
+        message: recordedVendFailure,
+        issue: true,
+      };
+
+      if (process.env.NODE_ENV !== "production" && digitalServiceId === "zesa") {
+        console.warn("[DEV ZESA] skipping repeat vend after recorded failure", {
+          orderReference,
+          recordedVendFailure,
+          vendedData,
+        });
+      }
+
+      await upsertDigitalOrder({
+        orderReference,
+        serviceId: digitalServiceId,
+        provider: digitalConfig.provider,
+        accountReference,
+        customerEmail: order.customerEmail,
+        customerName: order.customerName,
+        provisioningStatus: "manual_review",
+        resultPayload: {
+          status: "MANUAL_REVIEW",
+          error: recordedVendFailure,
+        },
+      });
+
+      return { order: await getOrder(orderReference), digitalServiceId, vendedData };
+    }
+
     const serviceType = digitalServiceId.toUpperCase() as Uppercase<DigitalServiceId>;
     const serviceMeta = extractServiceMeta(order);
+    const resolvedCustomerName = serviceMeta?.accountName || order.customerName;
+    const resolvedCustomerMobile = serviceMeta?.customerMobile || order.customerPhone || "";
+
+    if (digitalConfig.purchaseMode === "manual") {
+      const manualReviewMessage = `${digitalConfig.label} payment received. The request is queued for fulfilment confirmation.`;
+      const vendedData = {
+        message: manualReviewMessage,
+        manualReview: true,
+      };
+
+      await setOrderStatus(orderReference, status, {
+        ...order.paymentMeta,
+        accountNumber: accountReference,
+        serviceType,
+        serviceMeta: {
+          ...(serviceMeta ?? {}),
+          customerName: resolvedCustomerName,
+          customerMobile: resolvedCustomerMobile,
+        },
+        manualReviewMessage,
+        manualReviewAt: new Date().toISOString(),
+      });
+
+      await upsertDigitalOrder({
+        orderReference,
+        serviceId: digitalServiceId,
+        provider: digitalConfig.provider,
+        accountReference,
+        customerEmail: order.customerEmail,
+        customerName: order.customerName,
+        provisioningStatus: "manual_review",
+        resultPayload: {
+          status: "MANUAL_REVIEW",
+          message: manualReviewMessage,
+        },
+      });
+
+      return { order: await getOrder(orderReference), digitalServiceId, vendedData };
+    }
 
     try {
+      if (process.env.NODE_ENV !== "production" && digitalServiceId === "zesa") {
+        console.info("[DEV ZESA] attempting EGRESS vend", {
+          orderReference,
+          gatewayReference,
+          accountReference,
+          amountUsd: order.totalUsd || order.total,
+          serviceMeta: {
+            ...(serviceMeta ?? {}),
+            customerName: resolvedCustomerName,
+            customerMobile: resolvedCustomerMobile,
+            currencyCode: order.currencyCode ?? "840",
+          },
+        });
+      }
+
       const vendResult = await DigitalService.vendDigitalFulfilment(serviceType, {
         orderReference,
+        gatewayReference,
         accountNumber: accountReference,
         amountUsd: order.totalUsd || order.total,
         serviceMeta: {
           ...(serviceMeta ?? {}),
-          customerName: order.customerName,
-          customerMobile: order.customerPhone ?? "",
+          customerName: resolvedCustomerName,
+          customerMobile: resolvedCustomerMobile,
           currencyCode: order.currencyCode ?? "840",
         },
       });
+
+      if (process.env.NODE_ENV !== "production" && digitalServiceId === "zesa") {
+        console.info("[DEV ZESA] EGRESS vend result", {
+          orderReference,
+          success: vendResult.success,
+          token: vendResult.token,
+          units: vendResult.units,
+          receiptNumber: vendResult.receiptNumber,
+          message: vendResult.message,
+          raw: vendResult.raw,
+        });
+      }
 
       if (!vendResult.success) {
         throw new Error(vendResult.message || `${digitalConfig.label} fulfilment failed.`);
@@ -127,7 +254,11 @@ export async function syncDigitalFulfilmentForOrder(orderReference: string, gate
         vendedAt: new Date().toISOString(),
         accountNumber: accountReference,
         serviceType,
-        serviceMeta,
+        serviceMeta: {
+          ...(serviceMeta ?? {}),
+          customerName: resolvedCustomerName,
+          customerMobile: resolvedCustomerMobile,
+        },
       });
       await upsertDigitalOrder({
         orderReference,
@@ -163,6 +294,35 @@ export async function syncDigitalFulfilmentForOrder(orderReference: string, gate
 
       return { order: await getOrder(orderReference), digitalServiceId, vendedData };
     } catch (vendError) {
+      if (process.env.NODE_ENV !== "production" && digitalServiceId === "zesa") {
+        console.error("[DEV ZESA] EGRESS vend failed", {
+          orderReference,
+          message: vendError instanceof Error ? vendError.message : "Vend failed",
+          stack: vendError instanceof Error ? vendError.stack : undefined,
+          responseBody:
+            vendError instanceof Error && "responseBody" in vendError
+              ? (vendError as { responseBody?: unknown }).responseBody
+              : undefined,
+        });
+      }
+
+      const vendFailureMessage = vendError instanceof Error
+        ? `${digitalConfig.label} vending failed after payment confirmation and is now queued for manual review. ${vendError.message}`
+        : `${digitalConfig.label} vending failed after payment confirmation and is now queued for manual review.`;
+
+      await setOrderStatus(orderReference, status, {
+        ...order.paymentMeta,
+        accountNumber: accountReference,
+        serviceType,
+        serviceMeta: {
+          ...(serviceMeta ?? {}),
+          customerName: resolvedCustomerName,
+          customerMobile: resolvedCustomerMobile,
+        },
+        vendFailureMessage,
+        vendFailedAt: new Date().toISOString(),
+      });
+
       await upsertDigitalOrder({
         orderReference,
         serviceId: digitalServiceId,
@@ -172,6 +332,7 @@ export async function syncDigitalFulfilmentForOrder(orderReference: string, gate
         customerName: order.customerName,
         provisioningStatus: "manual_review",
         resultPayload: {
+          status: "MANUAL_REVIEW",
           error: vendError instanceof Error ? vendError.message : "Vend failed",
         },
       });
@@ -191,11 +352,25 @@ export async function syncDigitalFulfilmentForOrder(orderReference: string, gate
         },
       });
 
-      return { order: await getOrder(orderReference), digitalServiceId, vendedData: null as DigitalVendedData | null };
+      return {
+        order: await getOrder(orderReference),
+        digitalServiceId,
+        vendedData: {
+          message: vendFailureMessage,
+          issue: true,
+        },
+      };
     }
   }
 
   if (FAILED_GATEWAY_STATUSES.has(status)) {
+    if (process.env.NODE_ENV !== "production" && digitalServiceId === "zesa") {
+      console.warn("[DEV ZESA] gateway reached failed terminal state", {
+        orderReference,
+        gatewayStatus: status,
+      });
+    }
+
     await upsertDigitalOrder({
       orderReference,
       serviceId: digitalServiceId,

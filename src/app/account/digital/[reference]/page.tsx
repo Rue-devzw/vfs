@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { verifyCustomerSession } from "@/lib/auth";
 import { getDigitalOrderByReference } from "@/lib/firestore/digital-orders";
+import { getOrderDocumentState } from "@/lib/order-documents";
 import { getOrder } from "@/server/orders";
 import { CopyTokenButton } from "./detail-client";
 
@@ -42,6 +43,11 @@ export default async function AccountDigitalOrderPage({ params }: PageProps) {
   if (digitalOrder.customerEmail?.toLowerCase() !== session.email.toLowerCase()) {
     redirect("/account");
   }
+
+  const documentState = getOrderDocumentState({
+    order,
+    digitalProvisioningStatus: digitalOrder.provisioningStatus,
+  });
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -135,16 +141,22 @@ export default async function AccountDigitalOrderPage({ params }: PageProps) {
                   </div>
                   <div>
                     <div className="text-muted-foreground">Payment Status</div>
-                    <div className="font-medium">{order.status}</div>
+                    <div className="font-medium">{documentState.statusLabel}</div>
                   </div>
                   <div>
                     <div className="text-muted-foreground">Customer</div>
                     <div className="font-medium">{order.customerName}</div>
                   </div>
                   <div className="flex flex-wrap gap-3 pt-2">
-                    <Link href={`/api/orders/${encodeURIComponent(order.id)}/report?format=pdf`} target="_blank">
-                      <Button size="sm" variant="outline">Receipt PDF</Button>
-                    </Link>
+                    {documentState.kind === "receipt" ? (
+                      <Link href={`/api/orders/${encodeURIComponent(order.id)}/report?format=pdf`} target="_blank">
+                        <Button size="sm" variant="outline">Receipt PDF</Button>
+                      </Link>
+                    ) : documentState.kind === "report" ? (
+                      <Link href={`/api/orders/${encodeURIComponent(order.id)}/report?format=report-pdf`} target="_blank">
+                        <Button size="sm" variant="outline">Issue Report PDF</Button>
+                      </Link>
+                    ) : null}
                     <Link href={`/api/orders/${encodeURIComponent(order.id)}/report?format=invoice-pdf`} target="_blank">
                       <Button size="sm" variant="outline">Invoice PDF</Button>
                     </Link>

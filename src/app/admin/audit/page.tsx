@@ -36,11 +36,13 @@ export default async function AdminAuditPage() {
                   </div>
                   <div className="flex flex-wrap items-center gap-2">
                     <Badge variant="outline">{log.action}</Badge>
-                    <Badge variant="secondary">{log.actorRole}</Badge>
+                    <Badge variant="secondary">{log.actorLabel || log.actorRole}</Badge>
+                    <Badge variant="outline">{log.actorRole}</Badge>
                   </div>
                 </div>
                 <div className="mt-3 text-xs text-muted-foreground">
                   {new Date(log.createdAt).toLocaleString()}
+                  {log.actorEmail ? ` • ${log.actorEmail}` : ""}
                 </div>
                 {log.meta && Object.keys(log.meta).length > 0 ? (
                   <pre className="mt-3 max-h-52 overflow-auto rounded border bg-muted p-3 text-xs">

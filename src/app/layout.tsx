@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ErrorBoundary } from "@/components/error-boundary";
+import { CurrencyProvider } from "@/components/currency/currency-provider";
 
 export const metadata: Metadata = {
   title: "Valley Farm Secrets",
@@ -55,11 +56,13 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ErrorBoundary>
-            {children}
-            <ValleyAIAssistant />
-          </ErrorBoundary>
-          <Toaster />
+          <CurrencyProvider>
+            <ErrorBoundary>
+              {children}
+              <ValleyAIAssistant />
+            </ErrorBoundary>
+            <Toaster />
+          </CurrencyProvider>
         </ThemeProvider>
       </body>
     </html>

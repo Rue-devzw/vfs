@@ -3,18 +3,18 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { ZBService, CustomerDetails, TokenResponse } from "../services/zb-service";
+import { SmilePayService, CustomerDetails, TokenResponse } from "../services/smile-pay-service";
 import { StepMeterEntry } from "./StepMeterEntry";
 import { StepVerification } from "./StepVerification";
 import { StepPayment } from "./StepPayment";
 import { StepReceipt } from "./StepReceipt";
-import { ZesaSkeleton } from "./ZesaSkeleton";
 import { useToast } from "@/hooks/use-toast";
 import { Card } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { ProcessStatusCard } from "@/components/ui/process-status-card";
 import {
     buildReceiptMessage,
     getPaymentProgressContent,
@@ -22,14 +22,25 @@ import {
     resolvePurchaseFlowAction,
     shouldContinueStatusPolling,
 } from "@/lib/payment-flow";
-import { getPaymentMethodLabel, type PaymentMethod } from "@/lib/payment-methods";
+import { getDefaultPaymentMethod, getPaymentMethodLabel, type PaymentMethod } from "@/lib/payment-methods";
+import { renderGatewayRedirectHtml } from "@/lib/payments/browser";
+import type { CardPaymentDetails } from "@/lib/payments/types";
+import { convertToUsd } from "@/lib/currency";
+import { useCurrency } from "@/components/currency/currency-provider";
 
 type Step = "METER" | "VERIFICATION" | "PAYMENT" | "OTP" | "RECEIPT";
+type BackgroundProcessState = {
+    title: string;
+    description: string;
+    detail?: string;
+    progress: number;
+};
 
 export function ZesaFlow() {
     const { toast } = useToast();
     const router = useRouter();
     const searchParams = useSearchParams();
+    const { currencyCode } = useCurrency();
     const [step, setStep] = useState<Step>("METER");
     const [isLoading, setIsLoading] = useState(false);
     const [meterNumber, setMeterNumber] = useState("");
@@ -38,23 +49,32 @@ export function ZesaFlow() {
     const [otp, setOtp] = useState("");
     const [transactionReference, setTransactionReference] = useState("");
     const [localReference, setLocalReference] = useState("");
-    const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("WALLETPLUS");
+    const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(getDefaultPaymentMethod());
     const [customerMobile, setCustomerMobile] = useState("");
+    const [processingState, setProcessingState] = useState<BackgroundProcessState | null>(null);
 
     const handleMeterSubmit = async (meter: string) => {
         setIsLoading(true);
+        setProcessingState({
+            title: "Validating meter number",
+            description: "We are checking the meter ownership details with the provider.",
+            detail: "This usually takes a few seconds. Keep this page open while we fetch the account information.",
+            progress: 22,
+        });
         try {
-            const details = await ZBService.validateMeter(meter);
+            const details = await SmilePayService.validateMeter(meter);
             setMeterNumber(meter);
             setCustomer(details);
             setStep("VERIFICATION");
         } catch (error) {
+            setProcessingState(null);
             toast({
                 title: "Error",
                 description: error instanceof Error ? error.message : "Failed to validate meter",
                 variant: "destructive",
             });
         } finally {
+            setProcessingState(null);
             setIsLoading(false);
         }
     };
@@ -71,31 +91,79 @@ export function ZesaFlow() {
 
     const pollStatus = useCallback(async (reference: string, fallbackAmount?: number, fallbackMeter?: string) => {
         let status = "PENDING";
-        let vendedData: { token?: string; units?: number } | null = null;
+        let vendedData: { token?: string; units?: number; receiptNumber?: string; message?: string; issue?: boolean } | null = null;
         let resolvedAmount = fallbackAmount ?? 0;
+        let resolvedCurrencyCode = currencyCode;
         let resolvedMeter = fallbackMeter ?? meterNumber;
         let transactionReference: string | undefined;
 
+        setProcessingState({
+            title: "Checking payment status",
+            description: "Your payment request is active and we are waiting for the latest gateway update.",
+            detail: "Approve any payment prompt on your phone, then stay on this page while we continue in the background.",
+            progress: 64,
+        });
+
         for (let attempt = 0; attempt < 12; attempt += 1) {
             try {
-                const statusResult = await ZBService.checkStatus(reference);
+                const statusResult = await SmilePayService.checkStatus(reference);
                 status = String(statusResult.status || "PENDING").toUpperCase();
                 resolvedAmount = statusResult.amount ?? resolvedAmount;
+                resolvedCurrencyCode = statusResult.currencyCode ?? resolvedCurrencyCode;
                 resolvedMeter = statusResult.meterNumber ?? resolvedMeter;
                 transactionReference = statusResult.transactionReference ?? transactionReference;
                 const rawVended = statusResult.vendedData;
                 if (rawVended && typeof rawVended === "object") {
-                    const candidate = rawVended as { token?: unknown; units?: unknown };
+                    const candidate = rawVended as {
+                        token?: unknown;
+                        units?: unknown;
+                        receiptNumber?: unknown;
+                        message?: unknown;
+                        issue?: unknown;
+                    };
                     vendedData = {
                         token: typeof candidate.token === "string" ? candidate.token : undefined,
                         units: typeof candidate.units === "number" ? candidate.units : undefined,
+                        receiptNumber: typeof candidate.receiptNumber === "string" ? candidate.receiptNumber : undefined,
+                        message: typeof candidate.message === "string" ? candidate.message : undefined,
+                        issue: candidate.issue === true,
                     };
                 } else {
                     vendedData = null;
                 }
 
-                if (!shouldContinueStatusPolling(status, Boolean(vendedData?.token))) {
-                    if (isSuccessfulGatewayStatus(status) && !vendedData?.token) {
+                if (vendedData?.issue) {
+                    setProcessingState({
+                        title: "Payment received",
+                        description: "Your payment went through, but token vending needs manual review.",
+                        detail: "We have stopped retrying automatically so the same vend request is not sent over and over.",
+                        progress: 100,
+                    });
+                    break;
+                }
+
+                if (isSuccessfulGatewayStatus(status) && !vendedData?.token && !vendedData?.receiptNumber) {
+                    setProcessingState({
+                        title: "Payment confirmed",
+                        description: "Your payment went through. We are now waiting for your token to be issued.",
+                        detail: "Token vending can take a little longer than payment confirmation. Please keep this page open.",
+                        progress: 90,
+                    });
+                } else {
+                    const engagement = getPaymentProgressContent(status, {
+                        paymentMethod,
+                        subject: "your ZESA purchase",
+                    });
+                    setProcessingState({
+                        title: engagement.title,
+                        description: engagement.description,
+                        detail: "We will move you to the receipt automatically as soon as the background work finishes.",
+                        progress: status === "PROCESSING" ? 78 : 68,
+                    });
+                }
+
+                if (!shouldContinueStatusPolling(status, Boolean(vendedData?.token || vendedData?.receiptNumber))) {
+                    if (isSuccessfulGatewayStatus(status) && !vendedData?.token && !vendedData?.receiptNumber) {
                         await new Promise(resolve => setTimeout(resolve, 3000));
                         continue;
                     }
@@ -107,43 +175,62 @@ export function ZesaFlow() {
             await new Promise(resolve => setTimeout(resolve, 5000));
         }
 
+        setProcessingState(null);
         setReceipt({
             amount: resolvedAmount,
+            currencyCode: resolvedCurrencyCode,
             meterNumber: resolvedMeter,
             date: new Date().toISOString(),
-            receiptNumber: reference,
-            status,
+            receiptNumber: vendedData?.receiptNumber || reference,
+            status: vendedData?.issue ? "MANUAL_REVIEW" : status,
             transactionReference,
             token: vendedData?.token,
             units: vendedData?.units,
-            message: buildReceiptMessage(status, Boolean(vendedData?.token)),
+            message: vendedData?.message || buildReceiptMessage(status, Boolean(vendedData?.token || vendedData?.receiptNumber)),
+            issue: vendedData?.issue,
         });
         setIsLoading(false);
         setStep("RECEIPT");
-    }, [meterNumber]);
+    }, [currencyCode, meterNumber, paymentMethod]);
 
-        const handlePayment = async (
-        amount: number,
-        method: PaymentMethod,
-        mobile?: string,
-    ) => {
+        const handlePayment = async (input: {
+        amount: number;
+        paymentMethod: PaymentMethod;
+        mobile?: string;
+        cardDetails?: CardPaymentDetails;
+    }) => {
         setIsLoading(true);
-        setPaymentMethod(method);
-        setCustomerMobile(mobile || "");
+        setPaymentMethod(input.paymentMethod);
+        setCustomerMobile(input.mobile || "");
+        setProcessingState({
+            title: "Preparing secure checkout",
+            description: "We are creating your payment request and linking it to this meter number.",
+            detail: "Once the gateway responds, we will either ask for an OTP, redirect you, or continue tracking automatically.",
+            progress: 38,
+        });
         try {
             if (!meterNumber) throw new Error("Meter number missing");
-            const result = await ZBService.purchaseToken(meterNumber, amount, method, mobile);
+            const amountUsd = convertToUsd(input.amount, currencyCode);
+            const result = await SmilePayService.purchaseToken(
+                meterNumber,
+                amountUsd,
+                input.paymentMethod,
+                input.mobile,
+                input.cardDetails,
+                currencyCode,
+            );
             
             setLocalReference(result.reference);
 
             const action = resolvePurchaseFlowAction(result);
             const engagement = getPaymentProgressContent(result.status, {
-                paymentMethod: method,
+                paymentMethod: input.paymentMethod,
                 subject: "your ZESA purchase",
             });
             if (action.type === "otp") {
                 setTransactionReference(result.transactionReference);
                 setStep("OTP");
+                setProcessingState(null);
                 toast({
                     title: engagement.title,
                     description: result.message || engagement.description,
@@ -152,7 +239,24 @@ export function ZesaFlow() {
             }
 
             if (action.type === "redirect") {
+                setProcessingState({
+                    title: "Redirecting to secure checkout",
+                    description: "We are taking you to the Smile Pay page now.",
+                    detail: "After payment, you will be sent back here automatically so we can keep checking the result.",
+                    progress: 55,
+                });
                 window.location.href = action.url;
+                return;
+            }
+
+            if (action.type === "html") {
+                setProcessingState({
+                    title: "Opening bank verification",
+                    description: "We are handing you off to your bank's 3D Secure challenge now.",
+                    detail: "Complete the challenge and you will be brought back here automatically.",
+                    progress: 62,
+                });
+                renderGatewayRedirectHtml(action.html);
                 return;
             }
 
@@ -160,8 +264,9 @@ export function ZesaFlow() {
                 title: engagement.title,
                 description: result.message || engagement.description,
             });
-            pollStatus(result.reference);
+            await pollStatus(result.reference, input.amount, meterNumber);
         } catch (error) {
+            setProcessingState(null);
             toast({
                 title: "Payment Failed",
                 description: error instanceof Error ? error.message : "Transaction failed",
@@ -174,8 +279,14 @@ export function ZesaFlow() {
 
     const handleConfirmOtp = async () => {
         setIsLoading(true);
+        setProcessingState({
+            title: "Confirming OTP",
+            description: "We are sending your verification code to the payment gateway now.",
+            detail: "Once the gateway accepts it, we will continue tracking your payment and token in the background.",
+            progress: 76,
+        });
         try {
-            const res = await fetch("/api/zb/checkout/confirm", {
+            const res = await fetch("/api/payments/confirm", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -183,6 +294,7 @@ export function ZesaFlow() {
                     transactionReference,
                     otp,
                     paymentMethod,
+                    customerMobile,
                 }),
             });
             const data = await res.json();
@@ -192,8 +304,9 @@ export function ZesaFlow() {
                 title: "Confirmed",
                 description: "Payment confirmed. Fetching your token...",
             });
-            pollStatus(localReference);
+            await pollStatus(localReference);
         } catch (error) {
+            setProcessingState(null);
             toast({
                 title: "Confirmation Failed",
                 description: error instanceof Error ? error.message : "Failed to confirm OTP",
@@ -254,8 +367,13 @@ export function ZesaFlow() {
     return (
         <Card className="w-full max-w-md bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 shadow-xl border-border/50">
             <div className="p-6">
-                {isLoading ? (
-                    <ZesaSkeleton />
+                {processingState ? (
+                    <ProcessStatusCard
+                        title={processingState.title}
+                        description={processingState.description}
+                        detail={processingState.detail}
+                        progress={processingState.progress}
+                    />
                 ) : (
                     <>
                         {step === "METER" && (
@@ -273,6 +391,7 @@ export function ZesaFlow() {
                                 onPay={handlePayment}
                                 onBack={() => setStep("VERIFICATION")}
                                 isLoading={isLoading}
+                                currencyCode={currencyCode}
                             />
                         )}
                         {step === "OTP" && (

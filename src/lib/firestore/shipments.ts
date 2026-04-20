@@ -4,6 +4,7 @@ import { requireStaffPermission } from "../auth";
 import { getDb, isFirebaseConfigured } from "../firebase-admin";
 import { createAuditLog } from "./audit";
 import type { DeliveryMethod, FulfillmentStatus, Order } from "./orders";
+import { validateShipmentTransitionRules } from "../premium-controls";
 
 export type ShipmentStatus =
   | "awaiting_payment"
@@ -25,6 +26,8 @@ export type ShipmentRecord = {
   courierPhone?: string;
   assignmentNotes?: string;
   proofOfDeliveryUrl?: string;
+  proofOfDeliveryCapturedAt?: string;
+  assignedAt?: string;
   createdAt: string;
   updatedAt: string;
 };
@@ -163,6 +166,17 @@ export async function updateShipmentForOrder(input: {
 
   const nextStatus = normaliseShipmentStatus(input.status ?? existing?.status ?? order.shipping?.status);
   const id = buildShipmentId(input.orderReference);
+  const nextCourierName = input.courierName?.trim() || existing?.courierName || undefined;
+  const nextProofUrl = input.proofOfDeliveryUrl?.trim() || existing?.proofOfDeliveryUrl || undefined;
+  const validation = validateShipmentTransitionRules({
+    deliveryMethod: order.shipping?.deliveryMethod ?? "collect",
+    nextStatus,
+    courierName: nextCourierName,
+    proofOfDeliveryUrl: nextProofUrl,
+  });
+  if (!validation.allowed) {
+    throw new Error(validation.reason);
+  }
 
   await db.collection("shipments").doc(id).set(
     stripUndefined({
@@ -171,10 +185,12 @@ export async function updateShipmentForOrder(input: {
       zoneId: order.shipping?.zoneId,
       zoneName: order.shipping?.zoneName,
       status: nextStatus,
-      courierName: input.courierName?.trim() || undefined,
+      courierName: nextCourierName,
       courierPhone: input.courierPhone?.trim() || undefined,
       assignmentNotes: input.assignmentNotes?.trim() || undefined,
-      proofOfDeliveryUrl: input.proofOfDeliveryUrl?.trim() || undefined,
+      proofOfDeliveryUrl: nextProofUrl,
+      proofOfDeliveryCapturedAt: nextProofUrl ? timestamp : existing?.proofOfDeliveryCapturedAt,
+      assignedAt: nextCourierName ? existing?.assignedAt ?? timestamp : existing?.assignedAt,
       createdAt: existing?.createdAt ?? timestamp,
       updatedAt: timestamp,
     }),
@@ -200,12 +216,12 @@ export async function updateShipmentForOrder(input: {
     targetType: "shipment",
     targetId: id,
     detail: `Shipment updated for order ${input.orderReference}.`,
-    meta: {
+      meta: {
       orderReference: input.orderReference,
       status: nextStatus,
-      courierName: input.courierName?.trim() || undefined,
+      courierName: nextCourierName,
       courierPhone: input.courierPhone?.trim() || undefined,
-      proofOfDeliveryUrl: input.proofOfDeliveryUrl?.trim() || undefined,
+      proofOfDeliveryUrl: nextProofUrl,
     },
   });
 

@@ -19,7 +19,7 @@ export default function ZesaPage() {
                     </Button>
                     <h1 className="font-headline text-3xl font-bold md:text-4xl">ZESA Token Purchase</h1>
                     <p className="mt-2 text-muted-foreground">
-                        Buy electricity tokens instantly. Powered by ZB Bank.
+                        Buy electricity tokens instantly. Powered by Smile Pay.
                     </p>
                 </div>
 

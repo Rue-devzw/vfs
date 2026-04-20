@@ -27,9 +27,12 @@ export default async function AdminLayout({
                         <SidebarTrigger className="mr-4" />
                         <h1 className="text-2xl font-bold">Admin Dashboard</h1>
                       </div>
-                      <Badge variant="secondary" className="capitalize">
-                        {session.role.replace(/_/g, " ")}
-                      </Badge>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="outline">{session.staffLabel}</Badge>
+                        <Badge variant="secondary" className="capitalize">
+                          {session.role.replace(/_/g, " ")}
+                        </Badge>
+                      </div>
                     </div>
                     {children}
                 </main>

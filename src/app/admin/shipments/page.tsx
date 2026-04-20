@@ -58,6 +58,7 @@ export default async function AdminShipmentsPage({ searchParams }: PageProps) {
   const readyToDispatch = shipments.filter(item => item.status === "ready_for_dispatch").length;
   const onTheRoad = shipments.filter(item => item.status === "out_for_delivery").length;
   const deliveryIssues = shipments.filter(item => item.status === "issue").length;
+  const missingProof = deliveryShipments.filter(item => item.status === "delivered" && !item.proofOfDeliveryUrl).length;
 
   return (
     <div className="space-y-6">
@@ -68,7 +69,7 @@ export default async function AdminShipmentsPage({ searchParams }: PageProps) {
         </p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-5">
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">Unassigned delivery</CardTitle>
@@ -92,6 +93,12 @@ export default async function AdminShipmentsPage({ searchParams }: PageProps) {
             <CardTitle className="text-sm font-medium">Delivery issues</CardTitle>
           </CardHeader>
           <CardContent className="text-2xl font-bold">{deliveryIssues}</CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium">Missing proof</CardTitle>
+          </CardHeader>
+          <CardContent className="text-2xl font-bold">{missingProof}</CardContent>
         </Card>
       </div>
 
@@ -212,7 +219,7 @@ export default async function AdminShipmentsPage({ searchParams }: PageProps) {
           </CardHeader>
           <CardContent className="space-y-2 text-sm text-muted-foreground">
             <div>Assign courier before moving a delivery order to out for delivery.</div>
-            <div>Capture proof of delivery URL for completed drop-offs.</div>
+            <div>Capture proof of delivery URL before marking completed drop-offs as delivered.</div>
             <div>Use issue status for failed drops, damaged goods, or customer no-shows.</div>
           </CardContent>
         </Card>
@@ -238,6 +245,10 @@ export default async function AdminShipmentsPage({ searchParams }: PageProps) {
           <CardContent className="space-y-2 text-sm text-muted-foreground">
             <div>{unassignedDelivery} delivery shipment(s) still need courier assignment.</div>
             <div>{deliveryIssues} shipment(s) are currently marked with delivery issues.</div>
+            <div>{missingProof} delivered shipment(s) still need proof capture for clean close.</div>
+            <Link href="/admin/reconciliation" className="inline-flex items-center text-sm font-medium text-primary">
+              Open reconciliation controls
+            </Link>
           </CardContent>
         </Card>
       </div>

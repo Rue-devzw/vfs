@@ -21,10 +21,11 @@ export type DigitalServiceConfig = {
   label: string;
   description: string;
   accountLabel: string;
-  provider: "zb-egress" | "zb-manual-bills" | "unavailable";
+  provider: "smile-pay-utilities" | "smile-pay-egress" | "smile-pay-manual-bills" | "unavailable";
   status: DigitalServiceStatus;
   validationMode: "provider" | "manual" | "unsupported";
   purchaseMode: "provider" | "manual" | "unsupported";
+  validationFallbackMode?: "manual";
   supportMessage?: string;
   formFields?: DigitalServiceField[];
 };
@@ -35,32 +36,48 @@ export const DIGITAL_SERVICES: Record<DigitalServiceId, DigitalServiceConfig> = 
     label: "ZESA Tokens",
     description: "Buy prepaid electricity tokens instantly.",
     accountLabel: "Meter Number",
-    provider: "zb-egress",
+    provider: "smile-pay-egress",
     status: "active",
     validationMode: "provider",
     purchaseMode: "provider",
+    supportMessage: "ZESA validation and token vending run through the EGRESS integration.",
   },
   airtime: {
     id: "airtime",
     label: "Airtime & Data",
     description: "Create a tracked airtime or data payment request and complete payment securely online.",
     accountLabel: "Phone Number",
-    provider: "zb-manual-bills",
+    provider: "smile-pay-manual-bills",
     status: "active",
     validationMode: "manual",
     purchaseMode: "manual",
-    supportMessage: "Payment is processed online and the airtime/data request is queued for manual fulfilment confirmation.",
+    supportMessage: "Payment is processed online and the airtime or data request is queued for fulfilment confirmation after payment succeeds.",
+    formFields: [
+      {
+        id: "network",
+        label: "Network",
+        placeholder: "e.g. Econet, NetOne, Telecel",
+        required: true,
+      },
+      {
+        id: "productType",
+        label: "Product Type",
+        placeholder: "e.g. Airtime or Data",
+        required: true,
+      },
+    ],
   },
   dstv: {
     id: "dstv",
     label: "DStv Payments",
     description: "Validate your smartcard and post your DStv payment through the EGRESS integration.",
     accountLabel: "Smartcard Number",
-    provider: "zb-egress",
+    provider: "smile-pay-egress",
     status: "active",
     validationMode: "provider",
     purchaseMode: "provider",
-    supportMessage: "DStv validation and posting run through the EGRESS integration.",
+    validationFallbackMode: "manual",
+    supportMessage: "DStv validation and payment posting run through the EGRESS integration, with manual fallback only if the provider fails.",
     formFields: [
       {
         id: "bouquet",
@@ -78,25 +95,27 @@ export const DIGITAL_SERVICES: Record<DigitalServiceId, DigitalServiceConfig> = 
   },
   councils: {
     id: "councils",
-    label: "City Councils",
-    description: "Current provider-backed integration is available for City of Harare bill payments through EGRESS.",
+    label: "City of Harare",
+    description: "Validate your City of Harare account and pay council bills securely online.",
     accountLabel: "Account Number",
-    provider: "zb-egress",
+    provider: "smile-pay-egress",
     status: "active",
     validationMode: "provider",
     purchaseMode: "provider",
-    supportMessage: "Council payments currently use the City of Harare EGRESS integration.",
+    validationFallbackMode: "manual",
+    supportMessage: "Council payments currently use the City of Harare EGRESS integration, with manual fallback only if the provider fails.",
   },
   nyaradzo: {
     id: "nyaradzo",
-    label: "Nyaradzo Life",
-    description: "Validate a policy and post premium payments through the EGRESS integration.",
+    label: "Nyaradzo Group",
+    description: "Validate a policy and post Nyaradzo premium payments through the live EGRESS integration.",
     accountLabel: "Policy Number",
-    provider: "zb-egress",
+    provider: "smile-pay-egress",
     status: "active",
     validationMode: "provider",
     purchaseMode: "provider",
-    supportMessage: "Nyaradzo policy validation and payment posting run through the EGRESS integration.",
+    validationFallbackMode: "manual",
+    supportMessage: "Nyaradzo policy validation and payment posting run through the EGRESS integration, with manual fallback only if the provider fails.",
     formFields: [
       {
         id: "months",
@@ -112,7 +131,7 @@ export const DIGITAL_SERVICES: Record<DigitalServiceId, DigitalServiceConfig> = 
     label: "Internet Providers",
     description: "Pay ISP bills online with tracked requests that are verified manually after payment confirmation.",
     accountLabel: "Account Number",
-    provider: "zb-manual-bills",
+    provider: "smile-pay-manual-bills",
     status: "active",
     validationMode: "manual",
     purchaseMode: "manual",

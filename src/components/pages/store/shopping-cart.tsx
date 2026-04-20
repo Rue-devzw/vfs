@@ -2,17 +2,19 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetFooter, SheetTrigger } from '@/components/ui/sheet';
 import { useCart, CartItem } from './cart-context';
 import { ShoppingBag, Trash2, Plus, Minus } from 'lucide-react';
 import Image from 'next/image';
 import { findProductImagePlaceholder } from '@/lib/placeholder-images';
 import { CheckoutDialog } from './checkout-dialog';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { convertFromUsd, formatMoney } from '@/lib/currency';
+import { useCurrency } from '@/components/currency/currency-provider';
+import { CurrencySwitcher } from '@/components/currency/currency-switcher';
 
 export function ShoppingCart() {
-  const { state: { items, currencyCode }, dispatch } = useCart();
+  const { state: { items }, dispatch } = useCart();
+  const { currencyCode } = useCurrency();
   const [isCheckoutOpen, setCheckoutOpen] = useState(false);
   const [isCartOpen, setCartOpen] = useState(false);
 
@@ -50,21 +52,10 @@ export function ShoppingCart() {
         <SheetContent className="flex flex-col w-full sm:max-w-md">
           <SheetHeader>
             <SheetTitle className="font-headline text-2xl">Your Cart</SheetTitle>
-            <div className="w-40">
-              <Select value={currencyCode} onValueChange={(value: string) => {
-                if (value === "840" || value === "924") {
-                  dispatch({ type: "SET_CURRENCY", payload: value });
-                }
-              }}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Currency" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="840">USD</SelectItem>
-                  <SelectItem value="924">ZWG</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+            <SheetDescription className="sr-only">
+              Review the items in your cart, adjust quantities, and continue to checkout.
+            </SheetDescription>
+            <CurrencySwitcher className="w-fit" />
           </SheetHeader>
           {items.length > 0 ? (
             <div className="flex-grow overflow-y-auto -mx-6 px-6">
@@ -98,13 +89,21 @@ export function ShoppingCart() {
 }
 
 function CartLineItem({ item, onUpdateQuantity }: { item: CartItem, onUpdateQuantity: (id: string | number, q: number) => void }) {
-  const { state: { currencyCode } } = useCart();
+  const { currencyCode } = useCurrency();
   const image = findProductImagePlaceholder(item.image, item.name);
   const unitPrice = convertFromUsd(item.price, currencyCode);
   const lineTotal = convertFromUsd(item.price * item.quantity, currencyCode);
   return (
     <div className="flex items-center gap-4 py-4">
-      {image && <Image src={image.imageUrl} alt={item.name} width={64} height={64} className="rounded-md object-cover" />}
+      {image && (
+        <Image
+          src={image.imageUrl}
+          alt={item.name}
+          width={64}
+          height={64}
+          className="h-16 w-16 rounded-md object-cover"
+        />
+      )}
       <div className="flex-grow">
         <p className="font-semibold">{item.name}</p>
         <p className="text-sm text-muted-foreground">{formatMoney(unitPrice, currencyCode)}</p>

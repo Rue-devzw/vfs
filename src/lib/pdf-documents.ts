@@ -2,6 +2,9 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";
 import { PDFDocument, StandardFonts, rgb, type PDFFont, type PDFPage } from "pdf-lib";
+import { formatMoney } from "./currency";
+import type { Order, RefundCase } from "./firestore/orders";
+import { formatDocumentDateTime, getOrderDocumentState } from "./order-documents";
 import { getStoreSettings } from "./firestore/settings";
 
 type TransactionReport = Awaited<ReturnType<typeof import("@/server/orders").getOrderTransactionReport>>;
@@ -17,11 +20,19 @@ function lineText(value: unknown) {
   return String(value ?? "");
 }
 
-function formatAmount(value: unknown) {
+function formatAmount(value: unknown, currencyCode: "840" | "924") {
   if (typeof value === "number" && Number.isFinite(value)) {
-    return value.toFixed(2);
+    return formatMoney(value, currencyCode);
   }
   return lineText(value);
+}
+
+function convertItemAmount(value: number, currencyCode: "840" | "924", exchangeRate: number) {
+  if (currencyCode === "924") {
+    return Number((value * exchangeRate).toFixed(2));
+  }
+
+  return Number(value.toFixed(2));
 }
 
 function wrapText(text: string, maxChars = 78) {
@@ -65,10 +76,19 @@ function drawText(page: PDFPage, text: string, y: number, options: DrawTextOptio
 
 export async function generateOrderPdf(input: {
   report: NonNullable<TransactionReport>;
-  kind: "receipt" | "invoice";
+  kind: "receipt" | "invoice" | "report";
 }) {
   const settings = await getStoreSettings();
-  const order = input.report.order as Record<string, unknown>;
+  const typedOrder = input.report.order as Order;
+  const order = typedOrder as unknown as Record<string, unknown>;
+  const orderDocument = getOrderDocumentState({
+    order: typedOrder,
+    refunds: input.report.refunds as RefundCase[],
+  });
+  const currencyCode = orderDocument.currencyCode;
+  const exchangeRate = typeof order.exchangeRate === "number" && Number.isFinite(order.exchangeRate)
+    ? order.exchangeRate
+    : 1;
   const items = Array.isArray(order.items) ? (order.items as Array<Record<string, unknown>>) : [];
 
   const pdf = await PDFDocument.create();
@@ -122,7 +142,7 @@ export async function generateOrderPdf(input: {
     font: bold,
     color: brandGreen,
   });
-  drawText(page, input.kind === "invoice" ? "Invoice" : "Receipt", height - 84, {
+  drawText(page, input.kind === "invoice" ? "Invoice" : input.kind === "report" ? "Issue Report" : "Receipt", height - 84, {
     x: headerTextX,
     size: 12,
     font: bold,
@@ -147,7 +167,7 @@ export async function generateOrderPdf(input: {
     ["Reference", lineText(order.id ?? order.reference)],
     ["Order Number", lineText(order.orderNumber)],
     ["Invoice Number", lineText(order.invoiceNumber)],
-    ["Issued", lineText(input.report.generatedAt)],
+    ["Issued", formatDocumentDateTime(orderDocument.issuedAt)],
   ];
 
   page.drawRectangle({
@@ -203,13 +223,13 @@ export async function generateOrderPdf(input: {
   for (const item of items.slice(0, 16)) {
     const nameLines = wrapText(lineText(item.name), 34);
     const quantity = Number(item.quantity ?? 0);
-    const unitPrice = Number(item.price ?? 0);
+    const unitPrice = convertItemAmount(Number(item.price ?? 0), currencyCode, exchangeRate);
     const total = quantity * unitPrice;
 
     drawText(page, nameLines[0], y, { x: colProduct, size: 9, font });
     drawText(page, String(quantity), y, { x: colQty, size: 9, font });
-    drawText(page, unitPrice.toFixed(2), y, { x: colUnit, size: 9, font });
-    drawText(page, total.toFixed(2), y, { x: colTotal, size: 9, font: bold });
+    drawText(page, formatAmount(unitPrice, currencyCode), y, { x: colUnit, size: 9, font });
+    drawText(page, formatAmount(total, currencyCode), y, { x: colTotal, size: 9, font: bold });
     y -= 13;
 
     for (const extraLine of nameLines.slice(1)) {
@@ -244,10 +264,10 @@ export async function generateOrderPdf(input: {
 
   let totalsY = totalsTop - 16;
   const totals = [
-    ["Subtotal", formatAmount(order.subtotalUsd ?? order.subtotal)],
-    ["Delivery Fee", formatAmount(order.deliveryFeeUsd ?? order.deliveryFee)],
-    [lineText(order.taxLabel ?? "Tax"), formatAmount(order.taxTotalUsd ?? order.taxTotal)],
-    ["Grand Total", formatAmount(order.totalUsd ?? order.total)],
+    ["Subtotal", formatAmount(order.subtotal, currencyCode)],
+    ["Delivery Fee", formatAmount(order.deliveryFee, currencyCode)],
+    [lineText(order.taxLabel ?? "Tax"), formatAmount(order.taxTotal, currencyCode)],
+    ["Grand Total", formatAmount(order.total, currencyCode)],
   ];
 
   for (const [label, value] of totals) {
@@ -259,7 +279,7 @@ export async function generateOrderPdf(input: {
   const footerY = 76;
   page.drawLine({ start: { x: left, y: footerY + 26 }, end: { x: right, y: footerY + 26 }, thickness: 1, color: border });
   drawText(page, `Payment Method: ${lineText(order.paymentMethod)}`, footerY + 10, { x: left, size: 9, font, color: muted });
-  drawText(page, `Status: ${lineText(order.status)} • Currency: ${lineText(order.currencyCode)}`, footerY - 4, { x: left, size: 9, font, color: muted });
+  drawText(page, `Status: ${orderDocument.statusLabel} • Currency: ${orderDocument.currencyLabel}`, footerY - 4, { x: left, size: 9, font, color: muted });
   drawText(page, "This document was generated automatically by the Valley Farm Secrets commerce platform.", footerY - 24, {
     x: left,
     size: 8,

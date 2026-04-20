@@ -5,10 +5,12 @@ export type PaymentInitLike = {
   transactionReference?: string;
   status?: string;
   paymentUrl?: string;
+  redirectHtml?: string;
 };
 
 export type PurchaseFlowAction =
   | { type: "otp" }
+  | { type: "html"; html: string }
   | { type: "redirect"; url: string }
   | { type: "poll" };
 
@@ -54,6 +56,10 @@ export function resolvePurchaseFlowAction(result: PaymentInitLike): PurchaseFlow
     return { type: "otp" };
   }
 
+  if (result.redirectHtml) {
+    return { type: "html", html: result.redirectHtml };
+  }
+
   if (result.paymentUrl) {
     return { type: "redirect", url: result.paymentUrl };
   }
@@ -77,15 +83,19 @@ export function getPaymentProgressContent(status: string | undefined, options?: 
         description: `Enter the OTP sent by ${methodLabel} to complete ${subject}.`,
       };
     case "SENT":
+    case "AWAITING_PAYMENT":
     case "PENDING":
       return {
         title: "Waiting for confirmation",
         description: `We have submitted ${subject}. Approve the prompt on your device and keep this page open while we confirm the result.`,
       };
     case "PROCESSING":
+    case "PENDING_3DS":
       return {
-        title: "Payment is being processed",
-        description: `The gateway has acknowledged ${subject}. We are waiting for its final confirmation now.`,
+        title: normalized === "PENDING_3DS" ? "Bank verification required" : "Payment is being processed",
+        description: normalized === "PENDING_3DS"
+          ? `Your bank needs one more verification step to complete ${subject}. Continue with the secure challenge to finish payment.`
+          : `The gateway has acknowledged ${subject}. We are waiting for its final confirmation now.`,
       };
     case "PAID":
     case "SUCCESS":

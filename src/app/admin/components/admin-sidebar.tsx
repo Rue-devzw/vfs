@@ -13,7 +13,8 @@ import {
     History,
     Zap,
     Truck,
-    Undo2
+    Undo2,
+    ShieldCheck
 } from "lucide-react"
 import {
     Sidebar,
@@ -93,6 +94,12 @@ const items = [
         url: "/admin/digital",
         icon: Zap,
         permission: "digital.view",
+    },
+    {
+        title: "Reconciliation",
+        url: "/admin/reconciliation",
+        icon: ShieldCheck,
+        permission: "dashboard.view",
     },
     {
         title: "Settings",

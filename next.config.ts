@@ -10,9 +10,10 @@ const nextConfig: NextConfig = {
       "img-src 'self' data: blob: https:",
       "font-src 'self' data: https:",
       "connect-src 'self' https:",
+      "frame-src 'self' https://*.gateway.mastercard.com https://*.zb.co.zw https://*.google.com",
       "frame-ancestors 'none'",
       "base-uri 'self'",
-      "form-action 'self'",
+      "form-action 'self' https://*.gateway.mastercard.com https://*.zb.co.zw",
     ].join("; ");
 
     return [

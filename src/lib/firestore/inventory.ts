@@ -1,4 +1,7 @@
+import crypto from "crypto";
 import { getDb, isFirebaseConfigured } from "../firebase-admin";
+import { requireStaffPermission, verifyAdminSession } from "../auth";
+import { createAuditLog } from "./audit";
 
 export type InventoryStatus = "in_stock" | "out_of_stock" | "backorder";
 export type InventoryReservationStatus = "active" | "consumed" | "released" | "expired";
@@ -29,6 +32,51 @@ export type InventoryReservationRecord = {
   updatedAt: string;
   releasedReason?: string;
 };
+
+export type InventoryMovementType =
+  | "reservation_created"
+  | "reservation_consumed"
+  | "reservation_released"
+  | "reservation_expired"
+  | "count_variance";
+
+export type InventoryMovementRecord = {
+  id: string;
+  sku: string;
+  productId?: string;
+  orderReference?: string;
+  movementType: InventoryMovementType;
+  quantityDeltaOnHand: number;
+  quantityDeltaReserved: number;
+  resultingStockOnHand?: number;
+  resultingReservedQuantity?: number;
+  reason?: string;
+  note?: string;
+  actorId?: string;
+  actorLabel?: string;
+  createdAt: string;
+};
+
+function sanitizeValue(value: unknown): unknown {
+  if (value === undefined) return undefined;
+  if (Array.isArray(value)) {
+    return value
+      .map(entry => sanitizeValue(entry))
+      .filter(entry => entry !== undefined);
+  }
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value as Record<string, unknown>)
+        .map(([key, entry]) => [key, sanitizeValue(entry)])
+        .filter(([, entry]) => entry !== undefined),
+    );
+  }
+  return value;
+}
+
+function stripUndefined<T extends Record<string, unknown>>(data: T): T {
+  return sanitizeValue(data) as T;
+}
 
 const DEFAULT_RESERVATION_WINDOW_MINUTES = 15;
 
@@ -110,6 +158,14 @@ function getReservationExpiry(minutes = DEFAULT_RESERVATION_WINDOW_MINUTES) {
   return new Date(Date.now() + minutes * 60 * 1000).toISOString();
 }
 
+function buildInventoryMovementId(seed: string) {
+  return `inventory_move_${crypto.createHash("sha256").update(seed).digest("hex").slice(0, 24)}`;
+}
+
+async function requireInventoryViewer() {
+  return requireStaffPermission("products.view");
+}
+
 export async function reserveInventoryForOrder(input: {
   orderReference: string;
   items: Array<{ sku?: string | null; productId?: string; quantity: number }>;
@@ -182,6 +238,19 @@ export async function reserveInventoryForOrder(input: {
       };
 
       tx.set(reservationRef, reservation, { merge: true });
+      const movementId = buildInventoryMovementId(`${timestamp}:reserve:${input.orderReference}:${item.sku}`);
+      tx.set(db.collection("inventory_movements").doc(movementId), stripUndefined({
+        sku: item.sku,
+        productId: item.productId,
+        orderReference: input.orderReference,
+        movementType: "reservation_created",
+        quantityDeltaOnHand: 0,
+        quantityDeltaReserved: item.quantity,
+        resultingStockOnHand: inventory.stockOnHand,
+        resultingReservedQuantity: inventory.reservedQuantity + item.quantity,
+        reason: "checkout_reservation",
+        createdAt: timestamp,
+      } satisfies Omit<InventoryMovementRecord, "id">));
       reservations.push(reservation);
     }
 
@@ -241,6 +310,26 @@ async function mutateReservationsForOrder(input: {
       }
 
       tx.set(inventoryRef, inventoryPatch, { merge: true });
+      const movementId = buildInventoryMovementId(`${timestamp}:${input.targetStatus}:${reservation.id}`);
+      tx.set(db.collection("inventory_movements").doc(movementId), stripUndefined({
+        sku: reservation.sku,
+        productId: reservation.productId,
+        orderReference: reservation.orderReference,
+        movementType:
+          input.targetStatus === "consumed"
+            ? "reservation_consumed"
+            : input.targetStatus === "expired"
+              ? "reservation_expired"
+              : "reservation_released",
+        quantityDeltaOnHand: input.targetStatus === "consumed" ? -reservation.quantity : 0,
+        quantityDeltaReserved: -reservation.quantity,
+        resultingStockOnHand: input.targetStatus === "consumed"
+          ? Math.max(0, inventory.stockOnHand - reservation.quantity)
+          : inventory.stockOnHand,
+        resultingReservedQuantity: nextReserved,
+        reason: input.reason,
+        createdAt: timestamp,
+      } satisfies Omit<InventoryMovementRecord, "id">));
       tx.set(reservationRef, {
         status: input.targetStatus,
         releasedReason: input.reason,
@@ -303,5 +392,96 @@ export async function releaseExpiredReservations(limit = 100) {
   return {
     updated,
     orderReferences: expiredOrderReferences,
+  };
+}
+
+export async function listInventoryMovements(limit = 200): Promise<InventoryMovementRecord[]> {
+  await requireInventoryViewer();
+  if (!isFirebaseConfigured()) {
+    return [];
+  }
+
+  const snapshot = await getDb()
+    .collection("inventory_movements")
+    .orderBy("createdAt", "desc")
+    .limit(limit)
+    .get();
+
+  return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }) as InventoryMovementRecord);
+}
+
+export async function recordInventoryCountVariance(input: {
+  sku: string;
+  countedStockOnHand: number;
+  note?: string;
+}) {
+  await requireStaffPermission("products.edit");
+
+  if (!isFirebaseConfigured()) {
+    throw new Error("Firestore is not configured");
+  }
+
+  const sku = input.sku.trim().toUpperCase();
+  if (!sku) {
+    throw new Error("SKU is required.");
+  }
+  const countedStockOnHand = Math.max(0, Math.floor(input.countedStockOnHand));
+  const session = await verifyAdminSession();
+  const db = getDb();
+  const inventoryRef = db.collection("inventory_items").doc(sku);
+  const inventoryDoc = await inventoryRef.get();
+
+  if (!inventoryDoc.exists) {
+    throw new Error("Inventory record not found.");
+  }
+
+  const timestamp = new Date().toISOString();
+  const inventory = normaliseInventoryRecord(sku, inventoryDoc.data() as Partial<InventoryRecord>);
+  const delta = countedStockOnHand - inventory.stockOnHand;
+  if (delta === 0) {
+    return { changed: false, sku, countedStockOnHand };
+  }
+
+  await inventoryRef.set({
+    stockOnHand: countedStockOnHand,
+    updatedAt: timestamp,
+  }, { merge: true });
+
+  const movementId = buildInventoryMovementId(`${timestamp}:count:${sku}:${delta}`);
+  await db.collection("inventory_movements").doc(movementId).set(stripUndefined({
+    sku,
+    productId: inventory.productId,
+    movementType: "count_variance",
+    quantityDeltaOnHand: delta,
+    quantityDeltaReserved: 0,
+    resultingStockOnHand: countedStockOnHand,
+    resultingReservedQuantity: inventory.reservedQuantity,
+    reason: "physical_count",
+    note: input.note?.trim() || undefined,
+    actorId: session?.staffId,
+    actorLabel: session?.staffLabel,
+    createdAt: timestamp,
+  } satisfies Omit<InventoryMovementRecord, "id">));
+
+  await createAuditLog({
+    action: "inventory_count_recorded",
+    targetType: "inventory_count",
+    targetId: movementId,
+    detail: `Physical stock count recorded for ${sku}.`,
+    meta: {
+      sku,
+      previousStockOnHand: inventory.stockOnHand,
+      countedStockOnHand,
+      delta,
+      note: input.note?.trim() || undefined,
+    },
+  });
+
+  return {
+    changed: true,
+    sku,
+    previousStockOnHand: inventory.stockOnHand,
+    countedStockOnHand,
+    delta,
   };
 }

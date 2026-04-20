@@ -1,9 +1,10 @@
 import { Badge } from "@/components/ui/badge";
+import { AdminActionForm } from "@/components/admin/admin-action-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { listDigitalOrders, retryDigitalOrderFulfilment } from "@/lib/firestore/digital-orders";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { redirect, unstable_rethrow } from "next/navigation";
 
 type PageProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
@@ -28,6 +29,7 @@ export default async function AdminDigitalPage({ searchParams }: PageProps) {
       revalidatePath("/account");
       redirect(`/admin/digital?notice=success&message=${encodeURIComponent(`Digital order ${orderReference} reprocessed successfully.`)}`);
     } catch (error) {
+      unstable_rethrow(error);
       redirect(`/admin/digital?notice=error&message=${encodeURIComponent(error instanceof Error ? error.message : "Digital fulfilment retry failed.")}`);
     }
   }
@@ -37,6 +39,10 @@ export default async function AdminDigitalPage({ searchParams }: PageProps) {
   const completed = orders.filter(order => order.provisioningStatus === "completed").length;
   const manualReview = orders.filter(order => order.provisioningStatus === "manual_review").length;
   const failed = orders.filter(order => order.provisioningStatus === "failed").length;
+  const agedManualReview = orders.filter(order =>
+    order.provisioningStatus === "manual_review"
+    && Date.now() - Date.parse(order.updatedAt) > 30 * 60 * 1000,
+  ).length;
 
   return (
     <div className="space-y-8">
@@ -80,6 +86,23 @@ export default async function AdminDigitalPage({ searchParams }: PageProps) {
 
       <Card>
         <CardHeader>
+          <CardTitle>Fulfilment resilience</CardTitle>
+          <CardDescription>
+            Background maintenance now escalates digital orders that remain pending or processing beyond the live-service SLA.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-wrap items-center justify-between gap-3">
+          <div className="text-sm text-muted-foreground">
+            Orders older than 30 minutes are promoted into manual review so the storefront stops hanging and operations can intervene quickly.
+          </div>
+          <Badge variant={agedManualReview > 0 ? "destructive" : "secondary"}>
+            {agedManualReview} aged manual review
+          </Badge>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
           <CardTitle>Recent digital orders</CardTitle>
           <CardDescription>
             These records are the operational view for service fulfilment and support escalation.
@@ -120,11 +143,15 @@ export default async function AdminDigitalPage({ searchParams }: PageProps) {
                 ) : null}
                 {["manual_review", "failed", "pending"].includes(order.provisioningStatus) ? (
                   <div className="mt-4">
-                    <form action={handleReprocess.bind(null, order.orderReference)}>
+                    <AdminActionForm
+                      action={handleReprocess.bind(null, order.orderReference)}
+                      pendingTitle="Reprocessing fulfilment"
+                      pendingMessage="We are retrying this digital order and refreshing the admin view."
+                    >
                       <Button type="submit" size="sm" variant="outline">
                         Reprocess fulfilment
                       </Button>
-                    </form>
+                    </AdminActionForm>
                   </div>
                 ) : null}
               </div>

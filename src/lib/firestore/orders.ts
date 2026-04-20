@@ -153,24 +153,8 @@ export async function listRefundCases(filters: {
 }
 
 export async function updateOrderStatus(id: string, status: OrderStatus): Promise<void> {
-  await requireStaffPermission("orders.edit");
-
-  if (!isFirebaseConfigured()) {
-    throw new Error("Firestore is not configured");
-  }
-
-  const db = getDb();
-  await db.collection("orders").doc(id).update({
-    status,
-    updatedAt: new Date().toISOString(),
-  });
-  await createAuditLog({
-    action: "order_status_updated",
-    targetType: "order",
-    targetId: id,
-    detail: `Order status changed to ${status}.`,
-    meta: { status },
-  });
+  const { transitionOrderStatusFromAdmin } = await import("@/server/orders");
+  await transitionOrderStatusFromAdmin(id, status);
 }
 
 export async function updateOrderShippingStatus(id: string, shippingStatus: FulfillmentStatus): Promise<void> {
@@ -276,8 +260,9 @@ export async function updateRefundCaseStatus(
   });
 
   if (status === "approved") {
-    const { ensureRefundExecutionForCase } = await import("./refunds");
+    const { ensureRefundExecutionForCase, processRefundExecution } = await import("./refunds");
     await ensureRefundExecutionForCase(refundCaseId);
+    await processRefundExecution(refundCaseId);
   }
 
   if (status === "refunded") {

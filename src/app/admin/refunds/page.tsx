@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight, Clock3, Search, ShieldAlert, Undo2 } from "lucide-react";
+import { AdminActionForm } from "@/components/admin/admin-action-form";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -210,18 +211,34 @@ export default async function AdminRefundsPage({ searchParams }: PageProps) {
                       </Button>
                       {execution && execution.status !== "completed" ? (
                         <>
-                          <form action={markExecution.bind(null, refund.id, "submitted")}>
+                          <AdminActionForm
+                            action={markExecution.bind(null, refund.id, "submitted")}
+                            pendingTitle="Updating refund execution"
+                            pendingMessage="We are marking this refund as submitted."
+                          >
                             <Button size="sm" variant="outline">Mark Submitted</Button>
-                          </form>
-                          <form action={markExecution.bind(null, refund.id, "manual_review")}>
+                          </AdminActionForm>
+                          <AdminActionForm
+                            action={markExecution.bind(null, refund.id, "manual_review")}
+                            pendingTitle="Escalating refund"
+                            pendingMessage="We are moving this refund into manual review."
+                          >
                             <Button size="sm" variant="outline">Manual Review</Button>
-                          </form>
-                          <form action={markExecution.bind(null, refund.id, "failed")}>
+                          </AdminActionForm>
+                          <AdminActionForm
+                            action={markExecution.bind(null, refund.id, "failed")}
+                            pendingTitle="Updating refund execution"
+                            pendingMessage="We are marking this refund execution as failed."
+                          >
                             <Button size="sm" variant="outline">Mark Failed</Button>
-                          </form>
-                          <form action={markExecution.bind(null, refund.id, "completed")}>
+                          </AdminActionForm>
+                          <AdminActionForm
+                            action={markExecution.bind(null, refund.id, "completed")}
+                            pendingTitle="Completing refund"
+                            pendingMessage="We are closing out this refund execution now."
+                          >
                             <Button size="sm">Complete Refund</Button>
-                          </form>
+                          </AdminActionForm>
                         </>
                       ) : null}
                     </div>
@@ -274,8 +291,8 @@ export default async function AdminRefundsPage({ searchParams }: PageProps) {
             </div>
           </CardHeader>
           <CardContent className="space-y-2 text-sm text-muted-foreground">
-            <div>Provider-side refund execution is still pending final gateway contract confirmation.</div>
-            <div>This board now tracks internal refund execution state so cases do not disappear after approval.</div>
+            <div>Approved refunds now enter an execution record immediately so they do not disappear after approval.</div>
+            <div>Where gateway automation is unavailable, the execution is escalated to manual review with an explicit operator message.</div>
           </CardContent>
         </Card>
       </div>

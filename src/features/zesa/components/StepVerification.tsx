@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, AlertCircle } from "lucide-react";
-import { CustomerDetails } from "../services/zb-service";
+import { CustomerDetails } from "../services/smile-pay-service";
 
 interface StepVerificationProps {
     customer: CustomerDetails;

@@ -36,7 +36,7 @@ const services = [
         title: DIGITAL_SERVICES.dstv.label,
         description: DIGITAL_SERVICES.dstv.description,
         icon: Tv,
-        image: "/images/dstv_illustration.png",
+        image: "/images/dstv-logo.png",
         href: "/digital/dstv",
         bgClass: "bg-gradient-to-br from-blue-50 to-blue-100",
         iconClass: "text-blue-600 bg-blue-200/50",
@@ -47,10 +47,10 @@ const services = [
         title: DIGITAL_SERVICES.councils.label,
         description: DIGITAL_SERVICES.councils.description,
         icon: Building,
-        image: "/images/councils_illustration.png",
+        image: "/images/city-of-harare.png",
         href: "/digital/councils",
-        bgClass: "bg-gradient-to-br from-amber-50 to-amber-100",
-        iconClass: "text-amber-600 bg-amber-200/50",
+        bgClass: "bg-gradient-to-br from-stone-50 to-amber-100",
+        iconClass: "text-amber-700 bg-amber-200/60",
         status: DIGITAL_SERVICES.councils.status,
     },
     {
@@ -58,10 +58,10 @@ const services = [
         title: DIGITAL_SERVICES.nyaradzo.label,
         description: DIGITAL_SERVICES.nyaradzo.description,
         icon: ShieldPlus,
-        image: "/images/insurance_illustration.png",
+        image: "/images/nyaradzo-logo.png",
         href: "/digital/nyaradzo",
-        bgClass: "bg-gradient-to-br from-purple-50 to-purple-100",
-        iconClass: "text-purple-600 bg-purple-200/50",
+        bgClass: "bg-gradient-to-br from-emerald-50 to-indigo-100",
+        iconClass: "text-indigo-700 bg-indigo-200/60",
         status: DIGITAL_SERVICES.nyaradzo.status,
     },
     {
@@ -167,14 +167,14 @@ export default function DigitalDashboard() {
                 })}
             </div>
 
-            {/* Powered by ZB Box */}
+            {/* Powered by Smile Pay */}
             <div className="mt-12 w-full max-w-2xl mx-auto text-center p-6 bg-white rounded-2xl shadow-sm border border-border/50">
                 <div className="flex items-center justify-center gap-3 text-muted-foreground mb-2">
                     <CreditCard className="w-5 h-5" />
                     <span className="font-medium text-sm tracking-wide uppercase">Secure Payments Guarantee</span>
                 </div>
                 <p className="text-sm">
-                    All Valleyfarm Digital transactions are securely processed directly through the <b>ZB Bank Merchant Gateway</b>. We do not store your banking information.
+                    All Valleyfarm Digital transactions are securely processed directly through <b>Smile Pay</b>. We do not store your banking information.
                 </p>
             </div>
 
