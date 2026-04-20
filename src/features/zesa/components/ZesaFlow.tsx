@@ -180,6 +180,7 @@ export function ZesaFlow() {
             amount: resolvedAmount,
             currencyCode: resolvedCurrencyCode,
             meterNumber: resolvedMeter,
+            customerName: customer?.name,
             date: new Date().toISOString(),
             receiptNumber: vendedData?.receiptNumber || reference,
             status: vendedData?.issue ? "MANUAL_REVIEW" : status,
@@ -191,7 +192,7 @@ export function ZesaFlow() {
         });
         setIsLoading(false);
         setStep("RECEIPT");
-    }, [currencyCode, meterNumber, paymentMethod]);
+    }, [currencyCode, customer?.name, meterNumber, paymentMethod]);
 
         const handlePayment = async (input: {
         amount: number;

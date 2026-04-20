@@ -3,6 +3,7 @@ import { AdminActionForm } from "@/components/admin/admin-action-form";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { listDigitalOrders, retryDigitalOrderFulfilment } from "@/lib/firestore/digital-orders";
+import { formatTokenGroups } from "@/lib/token-format";
 import { revalidatePath } from "next/cache";
 import { redirect, unstable_rethrow } from "next/navigation";
 
@@ -134,7 +135,7 @@ export default async function AdminDigitalPage({ searchParams }: PageProps) {
                   <div>Order Reference: <span className="font-medium text-foreground">{order.orderReference}</span></div>
                   <div>Updated: <span className="font-medium text-foreground">{new Date(order.updatedAt).toLocaleString()}</span></div>
                   {order.receiptNumber ? <div>Receipt: <span className="font-medium text-foreground">{order.receiptNumber}</span></div> : null}
-                  {order.token ? <div className="break-all">Token: <span className="font-mono text-foreground">{order.token}</span></div> : null}
+                  {order.token ? <div className="break-all">Token: <span className="whitespace-pre-line font-mono text-foreground">{formatTokenGroups(order.token)}</span></div> : null}
                 </div>
                 {order.resultPayload ? (
                   <pre className="mt-3 max-h-52 overflow-auto rounded border bg-muted p-3 text-xs">

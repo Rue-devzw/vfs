@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { verifyCustomerSession } from "@/lib/auth";
 import { getDigitalOrderByReference } from "@/lib/firestore/digital-orders";
 import { getOrderDocumentState } from "@/lib/order-documents";
+import { formatTokenGroups } from "@/lib/token-format";
 import { getOrder } from "@/server/orders";
 import { CopyTokenButton } from "./detail-client";
 
@@ -107,9 +108,9 @@ export default async function AccountDigitalOrderPage({ params }: PageProps) {
                 {digitalOrder.token ? (
                   <div className="rounded-2xl border bg-muted/30 p-4">
                     <div className="text-sm text-muted-foreground">Token</div>
-                    <div className="mt-2 break-all font-mono text-lg font-semibold">{digitalOrder.token}</div>
+                    <div className="mt-2 whitespace-pre-line break-all font-mono text-lg font-semibold">{formatTokenGroups(digitalOrder.token)}</div>
                     <div className="mt-3">
-                      <CopyTokenButton token={digitalOrder.token} />
+                      <CopyTokenButton token={formatTokenGroups(digitalOrder.token)} />
                     </div>
                   </div>
                 ) : null}

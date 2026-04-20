@@ -16,6 +16,7 @@ export interface TokenResponse {
     amount: number;
     currencyCode?: CurrencyCode;
     meterNumber: string;
+    customerName?: string;
     date: string;
     receiptNumber: string;
     status: string;

@@ -35,6 +35,27 @@ function buildRefundExecutionId(refundCaseId: string) {
   return `refund_exec_${refundCaseId}`;
 }
 
+function sanitizeValue(value: unknown): unknown {
+  if (value === undefined) return undefined;
+  if (Array.isArray(value)) {
+    return value
+      .map(item => sanitizeValue(item))
+      .filter(item => item !== undefined);
+  }
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value as Record<string, unknown>)
+        .map(([key, entry]) => [key, sanitizeValue(entry)])
+        .filter(([, entry]) => entry !== undefined),
+    );
+  }
+  return value;
+}
+
+function stripUndefined<T extends Record<string, unknown>>(data: T): T {
+  return sanitizeValue(data) as T;
+}
+
 function deriveRefundExecutionProvider(refund: RefundCase) {
   return refund.gatewayReference ? "smile-pay" : "manual";
 }
@@ -74,25 +95,30 @@ async function updateRefundExecutionStatusInternal(input: {
   const existing = executionDoc.exists ? ({ id: executionDoc.id, ...executionDoc.data() } as RefundExecutionRecord) : null;
   const timestamp = new Date().toISOString();
   const attempts = existing ? existing.attempts + 1 : 1;
+  const resolvedProviderReference = input.providerReference ?? existing?.providerReference;
+  const executionPayload: Record<string, unknown> = {
+    refundCaseId: input.refundCaseId,
+    orderReference: refund.orderReference,
+    customerEmail: refund.customerEmail,
+    amount: refund.amount,
+    amountUsd: refund.amountUsd,
+    currencyCode: refund.currencyCode,
+    provider: existing?.provider ?? "smile-pay",
+    status: input.status,
+    attempts,
+    providerResponse: input.providerResponse ?? existing?.providerResponse,
+    lastError: input.lastError ?? (input.status === "completed" ? null : existing?.lastError),
+    createdAt: existing?.createdAt ?? timestamp,
+    updatedAt: timestamp,
+    completedAt: input.status === "completed" ? timestamp : existing?.completedAt ?? null,
+  };
+
+  if (resolvedProviderReference !== undefined) {
+    executionPayload.providerReference = resolvedProviderReference;
+  }
 
   await executionRef.set(
-    {
-      refundCaseId: input.refundCaseId,
-      orderReference: refund.orderReference,
-      customerEmail: refund.customerEmail,
-      amount: refund.amount,
-      amountUsd: refund.amountUsd,
-      currencyCode: refund.currencyCode,
-      provider: existing?.provider ?? "smile-pay",
-      status: input.status,
-      attempts,
-      providerReference: input.providerReference ?? existing?.providerReference,
-      providerResponse: input.providerResponse ?? existing?.providerResponse,
-      lastError: input.lastError ?? (input.status === "completed" ? null : existing?.lastError),
-      createdAt: existing?.createdAt ?? timestamp,
-      updatedAt: timestamp,
-      completedAt: input.status === "completed" ? timestamp : existing?.completedAt ?? null,
-    },
+    stripUndefined(executionPayload),
     { merge: true },
   );
 
@@ -121,11 +147,11 @@ async function updateRefundExecutionStatusInternal(input: {
       channels: ["email", "in_app"],
       subject: `Refund completed for order ${refund.orderReference}`,
       body: "Your refund has been completed successfully.",
-      meta: {
+      meta: stripUndefined({
         refundCaseId: input.refundCaseId,
         status: "refunded",
         providerReference: input.providerReference,
-      },
+      }),
     });
 
     const { upsertPaymentIntent } = await import("./payments");
@@ -144,12 +170,12 @@ async function updateRefundExecutionStatusInternal(input: {
     targetType: "refund_execution",
     targetId: executionId,
     detail: `Refund execution moved to ${input.status}.`,
-    meta: {
+    meta: stripUndefined({
       refundCaseId: input.refundCaseId,
       status: input.status,
       providerReference: input.providerReference,
       lastError: input.lastError,
-    },
+    }),
     actor,
   });
 
@@ -249,7 +275,7 @@ async function ensureRefundExecutionForCaseInternal(refundCaseId: string, actor?
   };
 
   const id = buildRefundExecutionId(refundCaseId);
-  await db.collection("refund_executions").doc(id).set(record, { merge: true });
+  await db.collection("refund_executions").doc(id).set(stripUndefined(record), { merge: true });
 
   await createAuditLog({
     action: "refund_execution_updated",

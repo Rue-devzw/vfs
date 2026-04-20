@@ -4,6 +4,8 @@ import { Check, Copy, Download } from "lucide-react";
 import { TokenResponse } from "../services/smile-pay-service";
 import { useState } from "react";
 import { formatMoney } from "@/lib/currency";
+import { formatTokenGroups } from "@/lib/token-format";
+import { downloadZesaReceiptPdf } from "../lib/receipt-pdf";
 
 interface StepReceiptProps {
     receipt: TokenResponse;
@@ -14,40 +16,32 @@ export function StepReceipt({ receipt, onDone }: StepReceiptProps) {
     const [copied, setCopied] = useState(false);
     const hasToken = Boolean(receipt.token);
     const hasIssue = receipt.issue === true;
-    const hasMultipleTokens = typeof receipt.token === "string" && receipt.token.includes("\n");
     const title = hasIssue ? "Manual Review Required" : "Payment Update";
     const description = receipt.message || (hasIssue
         ? "Your payment was received, but token vending needs manual review."
         : "Transaction processed through WalletPlus.");
-    const heroLabel = hasToken ? "Electricity Token" : hasIssue ? "Fulfilment Status" : "Transaction Status";
-    const heroValue = hasToken ? receipt.token : hasIssue ? "MANUAL_REVIEW" : receipt.status;
+    const normalizedTokens = typeof receipt.token === "string"
+        ? formatTokenGroups(receipt.token)
+            .split("\n")
+            .map((token) => token.trim())
+            .filter(Boolean)
+        : [];
+    const tariffRate = typeof receipt.units === "number" && receipt.units > 0
+        ? receipt.amount / receipt.units
+        : null;
 
     const handleCopy = () => {
         if (!receipt.token) return;
-        navigator.clipboard.writeText(receipt.token);
+        navigator.clipboard.writeText(formatTokenGroups(receipt.token));
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
     };
 
-    const handleDownload = () => {
-        const lines = [
-            `Status: ${receipt.status}`,
-            receipt.token ? `Token: ${receipt.token}` : null,
-            typeof receipt.units === "number" ? `Units: ${receipt.units} kWh` : null,
-            `Amount Paid: ${formatMoney(receipt.amount, receipt.currencyCode ?? "840")}`,
-            `Meter Number: ${receipt.meterNumber}`,
-            `Receipt: ${receipt.receiptNumber}`,
-            receipt.transactionReference ? `Gateway Ref: ${receipt.transactionReference}` : null,
-            `Date: ${new Date(receipt.date).toISOString()}`,
-        ].filter(Boolean);
-
-        const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8" });
-        const url = URL.createObjectURL(blob);
-        const anchor = document.createElement("a");
-        anchor.href = url;
-        anchor.download = `zesa-${receipt.receiptNumber}.txt`;
-        anchor.click();
-        URL.revokeObjectURL(url);
+    const handleDownload = async () => {
+        await downloadZesaReceiptPdf({
+            ...receipt,
+            token: receipt.token ? formatTokenGroups(receipt.token) : receipt.token,
+        });
     };
 
     return (
@@ -60,61 +54,96 @@ export function StepReceipt({ receipt, onDone }: StepReceiptProps) {
                 <p className="mx-auto max-w-sm text-sm leading-6 text-muted-foreground">{description}</p>
             </div>
 
-            <div className="overflow-hidden rounded-xl border bg-card shadow-sm">
-                <div className="bg-muted/30 p-6 text-center">
-                    <span className="text-xs uppercase tracking-wider text-muted-foreground">
-                        {heroLabel}
-                    </span>
-                    <div className="mt-2 flex items-center justify-center gap-2">
-                        <code className={`font-bold text-primary font-mono select-all whitespace-pre-wrap break-all ${hasMultipleTokens ? "text-2xl leading-tight tracking-[0.25em]" : "text-3xl tracking-widest"}`}>
-                            {heroValue}
-                        </code>
-                        {hasToken ? (
-                            <Button size="icon" variant="ghost" onClick={handleCopy} className="h-8 w-8 rounded-full">
-                                {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
-                            </Button>
+            <div className="overflow-hidden rounded-2xl border border-border/70 bg-card shadow-sm">
+                <div className="space-y-5 p-6 text-[15px] leading-tight text-foreground">
+                    <div className="space-y-2">
+                        <div className="flex items-start justify-between gap-4">
+                            <span className="text-muted-foreground">Receipt no:</span>
+                            <span className="text-right font-medium uppercase">{receipt.receiptNumber}</span>
+                        </div>
+                        <div className="flex items-start justify-between gap-4">
+                            <span className="text-muted-foreground">Meter no:</span>
+                            <span className="font-medium">{receipt.meterNumber}</span>
+                        </div>
+                        <div className="text-muted-foreground">Electricity Pre-paid</div>
+                        {receipt.customerName ? (
+                            <div className="space-y-1">
+                                <div className="text-muted-foreground">Customer Name:</div>
+                                <div className="font-medium uppercase leading-snug">{receipt.customerName}</div>
+                            </div>
                         ) : null}
                     </div>
-                </div>
-                <div className="divide-y p-6 text-sm">
-                    {typeof receipt.units === "number" ? (
-                        <div className="flex justify-between py-2">
-                            <span className="text-muted-foreground">Units</span>
-                            <span className="font-medium">{receipt.units} kWh</span>
+
+                    <div className="border-y border-dotted border-border/80 py-3 text-center">
+                        <div className="text-[1.65rem] font-extrabold uppercase tracking-[0.06em] text-primary">
+                            Electricity Token
                         </div>
-                    ) : null}
-                    <div className="flex justify-between py-2">
-                        <span className="text-muted-foreground">Status</span>
-                        <span className="font-medium">{receipt.status}</span>
-                    </div>
-                    <div className="flex justify-between py-2">
-                        <span className="text-muted-foreground">Amount Paid</span>
-                        <span className="font-medium">{formatMoney(receipt.amount, receipt.currencyCode ?? "840")}</span>
-                    </div>
-                    <div className="flex justify-between py-2">
-                        <span className="text-muted-foreground">Meter Number</span>
-                        <span className="font-mono">{receipt.meterNumber}</span>
-                    </div>
-                    <div className="flex justify-between py-2">
-                        <span className="text-muted-foreground">Receipt #</span>
-                        <span className="font-mono">{receipt.receiptNumber}</span>
-                    </div>
-                    {receipt.transactionReference ? (
-                        <div className="flex justify-between py-2">
-                            <span className="text-muted-foreground">Gateway Ref</span>
-                            <span className="font-mono">{receipt.transactionReference}</span>
+                        <div className="mt-1 text-lg font-semibold text-foreground">
+                            Enter this code into your meter:
                         </div>
-                    ) : null}
-                    <div className="flex justify-between py-2">
-                        <span className="text-muted-foreground">Date</span>
-                        <span>{new Date(receipt.date).toLocaleDateString()}</span>
+                        {hasToken ? (
+                            <div className="mt-3 flex items-start justify-center gap-2">
+                                <div className="space-y-1.5">
+                                    {normalizedTokens.map((token) => (
+                                        <div
+                                            key={token}
+                                            className="font-mono text-[1.65rem] font-bold leading-none tracking-[0.08em] text-foreground"
+                                        >
+                                            {token}
+                                        </div>
+                                    ))}
+                                </div>
+                                <Button size="icon" variant="ghost" onClick={handleCopy} className="mt-1 h-8 w-8 rounded-full">
+                                    {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
+                                </Button>
+                            </div>
+                        ) : (
+                            <div className="mt-3 text-sm font-medium uppercase tracking-[0.18em] text-amber-600">
+                                {hasIssue ? "Manual Review" : receipt.status}
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="space-y-2 text-base">
+                        {tariffRate !== null && typeof receipt.units === "number" ? (
+                            <div className="flex items-start justify-between gap-4">
+                                <span className="text-muted-foreground">
+                                    Tariff: {receipt.units.toFixed(2)} kWh @ {tariffRate.toFixed(2)} /kWh:
+                                </span>
+                                <span className="font-medium">{formatMoney(receipt.amount, receipt.currencyCode ?? "840")}</span>
+                            </div>
+                        ) : null}
+                        {typeof receipt.units === "number" ? (
+                            <div className="flex items-start justify-between gap-4">
+                                <span className="text-muted-foreground">Energy Bought (kWh):</span>
+                                <span className="font-medium">{receipt.units.toFixed(2)}</span>
+                            </div>
+                        ) : null}
+                        <div className="flex items-start justify-between gap-4">
+                            <span className="text-muted-foreground">Tender Amount</span>
+                            <span className="font-medium">{formatMoney(receipt.amount, receipt.currencyCode ?? "840")}</span>
+                        </div>
+                        <div className="flex items-start justify-between gap-4">
+                            <span className="text-muted-foreground">Status</span>
+                            <span className="font-medium">{receipt.status}</span>
+                        </div>
+                        {receipt.transactionReference ? (
+                            <div className="flex items-start justify-between gap-4">
+                                <span className="text-muted-foreground">Gateway Ref</span>
+                                <span className="font-mono text-sm">{receipt.transactionReference}</span>
+                            </div>
+                        ) : null}
+                        <div className="flex items-start justify-between gap-4">
+                            <span className="text-muted-foreground">Date</span>
+                            <span className="font-medium">{new Date(receipt.date).toLocaleDateString()}</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div className="flex gap-3">
                 <Button variant="outline" className="flex-1 gap-2" onClick={handleDownload}>
-                    <Download className="h-4 w-4" /> Download
+                    <Download className="h-4 w-4" /> Download PDF
                 </Button>
                 <Button onClick={onDone} className="flex-[2]">
                     Done

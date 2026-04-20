@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { getOrderDocumentState } from "@/lib/order-documents";
+import { formatTokenGroups } from "@/lib/token-format";
 import { verifyCustomerSession } from "@/lib/auth";
 import { getCustomerAccountSnapshot } from "@/lib/firestore/customers";
 import { AccountLogoutButton, RefundRequestCard } from "./account-client";
@@ -138,7 +139,7 @@ export default async function AccountPage() {
                         <Badge variant="outline">{order.provisioningStatus}</Badge>
                       </div>
                       <p className="mt-1 text-muted-foreground">Account: {order.accountReference}</p>
-                      {order.token ? <p className="mt-1 break-all font-mono text-xs">Token: {order.token}</p> : null}
+                      {order.token ? <p className="mt-1 whitespace-pre-line break-all font-mono text-xs">Token: {formatTokenGroups(order.token)}</p> : null}
                       {order.receiptNumber ? <p className="mt-1 text-muted-foreground">Receipt: {order.receiptNumber}</p> : null}
                       <div className="mt-3">
                         <Link href={`/account/digital/${encodeURIComponent(order.orderReference)}`}>
