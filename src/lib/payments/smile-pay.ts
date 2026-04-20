@@ -425,7 +425,8 @@ export function getSmilePayDigitalCheckoutUrl() {
 export function sanitizeSmilePayInitiationResponse(
   response: SmilePayInitiateResponse,
 ): Omit<SmilePayInitiateResponse, "redirectHtml"> & Partial<Pick<SmilePayCardAuthResponse, "authenticationStatus">> {
-  const { redirectHtml: _redirectHtml, ...safeResponse } = response;
+  const safeResponse = { ...response };
+  delete safeResponse.redirectHtml;
   return safeResponse;
 }
 

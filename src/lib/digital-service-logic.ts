@@ -1,4 +1,8 @@
-import { getDigitalProviderAdapter, DigitalProviderUnavailableError } from "@/lib/digital-providers";
+import {
+  getDigitalProviderAdapter,
+  DigitalProviderUnavailableError,
+  type ProviderValidationResult,
+} from "@/lib/digital-providers";
 import { EgressGatewayError } from "@/lib/payments/egress";
 import { SmilePayGatewayError } from "@/lib/payments/smile-pay";
 import type { CardPaymentDetails } from "@/lib/payments/types";
@@ -39,15 +43,17 @@ function buildManualValidationFallback(
   serviceType: DigitalServiceType,
   accountNumber: string,
   fallbackReason?: string,
-) {
+): ProviderValidationResult {
   const { config } = ensureAdapter(serviceType);
 
   return {
     success: true,
+    accountName: "Manual verification pending",
     accountNumber,
     billerName: config.label,
     raw: {
       mode: "manual_review",
+      accountName: "Manual verification pending",
       accountNumber,
       billerName: config.label,
       fallbackReason,
