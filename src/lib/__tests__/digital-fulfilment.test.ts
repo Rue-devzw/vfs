@@ -67,6 +67,14 @@ describe("digital fulfilment sync", () => {
       token: "1111 2222 3333 4444",
       units: 18.2,
       receiptNumber: "REC-1",
+      receiptDetails: {
+        receiptDate: "2026-04-17",
+        receiptTime: "10:00",
+        customerAddress: "Address 1, Harare",
+        energyCharge: 4.8,
+        levyAmount: 0.24,
+        vatAmount: 0.63,
+      },
     });
 
     const { syncDigitalFulfilmentForOrder } = await import("@/lib/digital-fulfilment");
@@ -78,9 +86,14 @@ describe("digital fulfilment sync", () => {
       accountNumber: "12345678901",
       amountUsd: 5,
     }));
-    expect(setOrderStatus).toHaveBeenCalledWith("ORDER-1", "SUCCESS", expect.objectContaining({
+    expect(setOrderStatus).toHaveBeenCalledWith("ORDER-1", "DELIVERED", expect.objectContaining({
       token: "1111 2222 3333 4444",
       receiptNumber: "REC-1",
+      providerGatewayStatus: "PAID",
+      receiptDetails: expect.objectContaining({
+        energyCharge: 4.8,
+        levyAmount: 0.24,
+      }),
     }));
     expect(upsertDigitalOrder).toHaveBeenCalledWith(expect.objectContaining({
       orderReference: "ORDER-1",
@@ -90,6 +103,9 @@ describe("digital fulfilment sync", () => {
     expect(result.vendedData).toEqual(expect.objectContaining({
       token: "1111 2222 3333 4444",
       receiptNumber: "REC-1",
+      receiptDetails: expect.objectContaining({
+        customerAddress: "Address 1, Harare",
+      }),
     }));
   });
 
@@ -106,6 +122,11 @@ describe("digital fulfilment sync", () => {
     const result = await syncDigitalFulfilmentForOrder("ORDER-1", "SUCCESS");
 
     expect(vendDigitalFulfilment).not.toHaveBeenCalled();
+    expect(setOrderStatus).toHaveBeenCalledWith("ORDER-1", "DELIVERED", expect.objectContaining({
+      token: "1111 2222 3333 4444",
+      receiptNumber: "REC-1",
+      providerGatewayStatus: "SUCCESS",
+    }));
     expect(upsertDigitalOrder).toHaveBeenCalledWith(expect.objectContaining({
       orderReference: "ORDER-1",
       provisioningStatus: "completed",
@@ -144,11 +165,11 @@ describe("digital fulfilment sync", () => {
     }));
   });
 
-  it("does not retry vending after a recorded vend failure", async () => {
+  it("does not retry vending after a recorded vend failure and redacts the digital record", async () => {
     getOrder.mockResolvedValue(createOrder({
       accountNumber: "12345678901",
       serviceType: "ZESA",
-      vendFailureMessage: "ZESA vending failed after payment confirmation and is now queued for manual review.",
+      vendFailureMessage: "ZESA vending failed after payment confirmation.",
     }));
 
     const { syncDigitalFulfilmentForOrder } = await import("@/lib/digital-fulfilment");
@@ -157,15 +178,19 @@ describe("digital fulfilment sync", () => {
     expect(vendDigitalFulfilment).not.toHaveBeenCalled();
     expect(upsertDigitalOrder).toHaveBeenCalledWith(expect.objectContaining({
       orderReference: "ORDER-1",
-      provisioningStatus: "manual_review",
+      provisioningStatus: "failed",
+      redactCustomerData: true,
+      resultPayload: expect.objectContaining({
+        status: "FAILED",
+      }),
     }));
     expect(result.vendedData).toEqual(expect.objectContaining({
       issue: true,
-      message: "ZESA vending failed after payment confirmation and is now queued for manual review.",
+      message: "ZESA vending failed after payment confirmation.",
     }));
   });
 
-  it("marks airtime purchases for manual review without attempting provider vending", async () => {
+  it("marks unavailable airtime fulfilment as failed and redacts the digital record", async () => {
     getOrder.mockResolvedValue({
       ...createOrder({
         accountNumber: "0771234567",
@@ -193,11 +218,12 @@ describe("digital fulfilment sync", () => {
     expect(upsertDigitalOrder).toHaveBeenCalledWith(expect.objectContaining({
       orderReference: "ORDER-1",
       serviceId: "airtime",
-      provisioningStatus: "manual_review",
+      provisioningStatus: "failed",
+      redactCustomerData: true,
     }));
     expect(result.vendedData).toEqual(expect.objectContaining({
-      manualReview: true,
-      message: "Airtime & Data payment received. The request is queued for fulfilment confirmation.",
+      issue: true,
+      message: "Airtime and data payments are temporarily unavailable.",
     }));
   });
 });

@@ -34,6 +34,7 @@ export type EgressPaymentPayload = {
   gatewayReference: string;
   billerId: string;
   paymentReference: string;
+  source?: string;
   customerAccount: string;
   amount: number;
   customerPaymentDetails1?: string;
@@ -111,6 +112,23 @@ function xmlNode(name: string, value?: string | number) {
     return `<${name}></${name}>`;
   }
   return `<${name}>${escapeXml(String(value))}</${name}>`;
+}
+
+function asOptionalText(value: unknown) {
+  if (value === undefined || value === null) {
+    return undefined;
+  }
+
+  const text = String(value).trim();
+  return text ? text : undefined;
+}
+
+function asOptionalRecord(value: unknown): Record<string, unknown> | undefined {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return undefined;
+  }
+
+  return value as Record<string, unknown>;
 }
 
 function buildEnvelope(body: string) {
@@ -258,11 +276,12 @@ export async function egressValidateCustomerAccount(input: {
 
 export async function egressPostPayment(input: EgressPaymentPayload) {
   const { source } = getEgressConfig();
+  const resolvedSource = input.source || source;
   const paymentXml = [
     xmlNode("gatewayReference", input.gatewayReference),
     xmlNode("billerId", input.billerId),
     xmlNode("paymentReference", input.paymentReference),
-    xmlNode("source", source),
+    xmlNode("source", resolvedSource),
     xmlNode("customerAccount", input.customerAccount),
     xmlNode("amount", input.amount),
     xmlNode("customerPaymentDetails1", input.customerPaymentDetails1),
@@ -290,8 +309,8 @@ export async function egressPostPayment(input: EgressPaymentPayload) {
 
   return {
     successful: String(result.successful).toLowerCase() === "true",
-    receiptNumber: typeof result.receiptNumber === "string" ? result.receiptNumber : undefined,
-    receiptDetails: typeof result.receiptDetails === "string" ? result.receiptDetails : undefined,
-    payment: typeof result.payment === "object" && result.payment !== null ? result.payment as Record<string, unknown> : undefined,
+    receiptNumber: asOptionalText(result.receiptNumber),
+    receiptDetails: asOptionalText(result.receiptDetails),
+    payment: asOptionalRecord(result.payment),
   } satisfies EgressPostPaymentResponse;
 }

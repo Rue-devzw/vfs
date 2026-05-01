@@ -46,7 +46,7 @@ export async function POST(req: Request) {
         name: "ZESA Token Purchase",
         price: amount,
         quantity: 1,
-        image: "/images/Zesa.webp",
+        image: "/images/zetdc-logo.png",
       }],
       subtotal: amount,
       deliveryFee: 0,

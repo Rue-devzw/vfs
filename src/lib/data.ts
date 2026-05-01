@@ -85,7 +85,7 @@ export const services = [
     description: "Purchase ZESA tokens, buy airtime, and pay your utility bills in one place.",
     purchaseLink: "/digital",
     purchaseLabel: "Explore Digital Services",
-    image: "/images/Zesa.webp",
+    image: "/images/zetdc-logo.png",
   }
 ];
 

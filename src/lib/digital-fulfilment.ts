@@ -11,9 +11,9 @@ export type DigitalVendedData = {
   token?: string;
   units?: number;
   receiptNumber?: string;
+  receiptDetails?: Record<string, unknown>;
   message?: string;
   issue?: boolean;
-  manualReview?: boolean;
 };
 
 const SUCCESSFUL_GATEWAY_STATUSES = new Set(["PAID", "SUCCESS"]);
@@ -90,6 +90,9 @@ export async function syncDigitalFulfilmentForOrder(orderReference: string, gate
         token: typeof paymentMeta.token === "string" ? paymentMeta.token : undefined,
         units: typeof paymentMeta.units === "number" ? paymentMeta.units : undefined,
         receiptNumber: typeof paymentMeta.receiptNumber === "string" ? paymentMeta.receiptNumber : undefined,
+        receiptDetails: paymentMeta.receiptDetails && typeof paymentMeta.receiptDetails === "object"
+          ? paymentMeta.receiptDetails as Record<string, unknown>
+          : undefined,
         message: typeof paymentMeta.narrative === "string" ? paymentMeta.narrative : undefined,
       };
 
@@ -114,6 +117,14 @@ export async function syncDigitalFulfilmentForOrder(orderReference: string, gate
         token: vendedData.token,
         receiptNumber: vendedData.receiptNumber,
         completedAt: typeof paymentMeta.vendedAt === "string" ? paymentMeta.vendedAt : new Date().toISOString(),
+      });
+      await setOrderStatus(orderReference, "DELIVERED", {
+        ...order.paymentMeta,
+        ...vendedData,
+        vendedAt: typeof paymentMeta.vendedAt === "string" ? paymentMeta.vendedAt : new Date().toISOString(),
+        accountNumber: accountReference,
+        serviceType: digitalServiceId.toUpperCase(),
+        providerGatewayStatus: status,
       });
 
       return { order: await getOrder(orderReference), digitalServiceId, vendedData };
@@ -142,11 +153,10 @@ export async function syncDigitalFulfilmentForOrder(orderReference: string, gate
         serviceId: digitalServiceId,
         provider: digitalConfig.provider,
         accountReference,
-        customerEmail: order.customerEmail,
-        customerName: order.customerName,
-        provisioningStatus: "manual_review",
+        provisioningStatus: "failed",
+        redactCustomerData: true,
         resultPayload: {
-          status: "MANUAL_REVIEW",
+          status: "FAILED",
           error: recordedVendFailure,
         },
       });
@@ -159,24 +169,19 @@ export async function syncDigitalFulfilmentForOrder(orderReference: string, gate
     const resolvedCustomerName = serviceMeta?.accountName || order.customerName;
     const resolvedCustomerMobile = serviceMeta?.customerMobile || order.customerPhone || "";
 
-    if (digitalConfig.purchaseMode === "manual") {
-      const manualReviewMessage = `${digitalConfig.label} payment received. The request is queued for fulfilment confirmation.`;
+    if (digitalConfig.purchaseMode !== "provider") {
+      const failureMessage = digitalConfig.supportMessage || `${digitalConfig.label} fulfilment is not available.`;
       const vendedData = {
-        message: manualReviewMessage,
-        manualReview: true,
+        message: failureMessage,
+        issue: true,
       };
 
       await setOrderStatus(orderReference, status, {
         ...order.paymentMeta,
         accountNumber: accountReference,
         serviceType,
-        serviceMeta: {
-          ...(serviceMeta ?? {}),
-          customerName: resolvedCustomerName,
-          customerMobile: resolvedCustomerMobile,
-        },
-        manualReviewMessage,
-        manualReviewAt: new Date().toISOString(),
+        vendFailureMessage: failureMessage,
+        vendFailedAt: new Date().toISOString(),
       });
 
       await upsertDigitalOrder({
@@ -184,12 +189,11 @@ export async function syncDigitalFulfilmentForOrder(orderReference: string, gate
         serviceId: digitalServiceId,
         provider: digitalConfig.provider,
         accountReference,
-        customerEmail: order.customerEmail,
-        customerName: order.customerName,
-        provisioningStatus: "manual_review",
+        provisioningStatus: "failed",
+        redactCustomerData: true,
         resultPayload: {
-          status: "MANUAL_REVIEW",
-          message: manualReviewMessage,
+          status: "FAILED",
+          error: failureMessage,
         },
       });
 
@@ -245,15 +249,17 @@ export async function syncDigitalFulfilmentForOrder(orderReference: string, gate
         token: vendResult.token,
         units: vendResult.units,
         receiptNumber: vendResult.receiptNumber,
+        receiptDetails: vendResult.receiptDetails,
         message: vendResult.message,
       };
 
-      await setOrderStatus(orderReference, "SUCCESS", {
+      await setOrderStatus(orderReference, "DELIVERED", {
         ...order.paymentMeta,
         ...vendedData,
         vendedAt: new Date().toISOString(),
         accountNumber: accountReference,
         serviceType,
+        providerGatewayStatus: status,
         serviceMeta: {
           ...(serviceMeta ?? {}),
           customerName: resolvedCustomerName,
@@ -307,18 +313,13 @@ export async function syncDigitalFulfilmentForOrder(orderReference: string, gate
       }
 
       const vendFailureMessage = vendError instanceof Error
-        ? `${digitalConfig.label} vending failed after payment confirmation and is now queued for manual review. ${vendError.message}`
-        : `${digitalConfig.label} vending failed after payment confirmation and is now queued for manual review.`;
+        ? `${digitalConfig.label} fulfilment failed after payment confirmation. ${vendError.message}`
+        : `${digitalConfig.label} fulfilment failed after payment confirmation.`;
 
       await setOrderStatus(orderReference, status, {
         ...order.paymentMeta,
         accountNumber: accountReference,
         serviceType,
-        serviceMeta: {
-          ...(serviceMeta ?? {}),
-          customerName: resolvedCustomerName,
-          customerMobile: resolvedCustomerMobile,
-        },
         vendFailureMessage,
         vendFailedAt: new Date().toISOString(),
       });
@@ -328,26 +329,10 @@ export async function syncDigitalFulfilmentForOrder(orderReference: string, gate
         serviceId: digitalServiceId,
         provider: digitalConfig.provider,
         accountReference,
-        customerEmail: order.customerEmail,
-        customerName: order.customerName,
-        provisioningStatus: "manual_review",
+        provisioningStatus: "failed",
+        redactCustomerData: true,
         resultPayload: {
-          status: "MANUAL_REVIEW",
-          error: vendError instanceof Error ? vendError.message : "Vend failed",
-        },
-      });
-      await queueNotification({
-        eventKey: `digital:${orderReference}:issue`,
-        type: "digital_fulfilment_issue",
-        audience: "customer",
-        customerEmail: order.customerEmail,
-        customerName: order.customerName,
-        orderReference,
-        channels: ["email", "in_app"],
-        subject: `${digitalConfig.label} fulfilment needs attention for order ${orderReference}`,
-        body: `Your payment was received, but ${digitalConfig.label} fulfilment needs manual review. Support has enough information to investigate.`,
-        meta: {
-          serviceId: digitalServiceId,
+          status: "FAILED",
           error: vendError instanceof Error ? vendError.message : "Vend failed",
         },
       });
@@ -376,9 +361,8 @@ export async function syncDigitalFulfilmentForOrder(orderReference: string, gate
       serviceId: digitalServiceId,
       provider: digitalConfig.provider,
       accountReference,
-      customerEmail: order.customerEmail,
-      customerName: order.customerName,
       provisioningStatus: "failed",
+      redactCustomerData: true,
       resultPayload: {
         status,
       },

@@ -1,8 +1,8 @@
 import { PDFDocument, StandardFonts, degrees, rgb, type PDFFont, type PDFPage } from "pdf-lib";
 
-import { formatMoney } from "@/lib/currency";
 import { formatTokenGroups } from "@/lib/token-format";
 import type { TokenResponse } from "../services/smile-pay-service";
+import { formatZetdcMajorMoney, formatZetdcReceiptMoney, getZetdcTariffRate } from "./receipt-money";
 
 const PAGE_WIDTH = 595.28;
 const PAGE_HEIGHT = 841.89;
@@ -12,6 +12,11 @@ type ReceiptLine = {
   label: string;
   value: string;
 };
+
+const RECEIPT_ROW_HEIGHT = 18;
+const RECEIPT_ROW_FONT_SIZE = 9.5;
+const FOOTER_HEIGHT = 54;
+const FOOTER_BOTTOM = 24;
 
 function drawText(page: PDFPage, text: string, x: number, y: number, options?: {
   font?: PDFFont;
@@ -103,15 +108,29 @@ async function loadPublicImageAsPng(path: string) {
 }
 
 function buildReceiptRows(receipt: TokenResponse) {
-  const tariffRate = typeof receipt.units === "number" && receipt.units > 0
-    ? receipt.amount / receipt.units
-    : null;
+  const receiptCurrencyCode = receipt.receiptCurrencyCode ?? receipt.currencyCode ?? "840";
+  const paymentCurrencyCode = receipt.currencyCode ?? "840";
+  const formatReceiptMoney = (amount: number) => formatZetdcReceiptMoney(amount, receiptCurrencyCode);
+  const tariffReceiptAmount = receipt.energyCharge ?? receipt.tenderAmount;
+  const tariffRate = getZetdcTariffRate({
+    units: receipt.units,
+    receiptAmountMinor: tariffReceiptAmount,
+    fallbackAmountMajor: receipt.amount,
+  });
 
   return [
+    receipt.customerAddress
+      ? {
+          label: "Customer Address",
+          value: receipt.customerAddress.toUpperCase(),
+        }
+      : null,
     tariffRate !== null && typeof receipt.units === "number"
       ? {
-          label: `Tariff: ${receipt.units.toFixed(2)} kWh @ ${tariffRate.toFixed(2)} /kWh`,
-          value: formatMoney(receipt.amount, receipt.currencyCode ?? "840"),
+          label: `Tariff${receipt.tariffName ? ` (${receipt.tariffName})` : ""}: ${receipt.units.toFixed(2)} kWh @ ${tariffRate.toFixed(2)} /kWh`,
+          value: typeof tariffReceiptAmount === "number"
+            ? formatReceiptMoney(tariffReceiptAmount)
+            : formatZetdcMajorMoney(receipt.amount, paymentCurrencyCode),
         }
       : null,
     typeof receipt.units === "number"
@@ -122,8 +141,52 @@ function buildReceiptRows(receipt: TokenResponse) {
       : null,
     {
       label: "Tender Amount",
-      value: formatMoney(receipt.amount, receipt.currencyCode ?? "840"),
+      value: typeof receipt.tenderAmount === "number"
+        ? formatReceiptMoney(receipt.tenderAmount)
+        : formatZetdcMajorMoney(receipt.amount, paymentCurrencyCode),
     },
+    typeof receipt.energyCharge === "number"
+      ? {
+          label: "Energy Charge",
+          value: formatReceiptMoney(receipt.energyCharge),
+        }
+      : null,
+    typeof receipt.debtCollected === "number"
+      ? {
+          label: "Debt Collected",
+          value: formatReceiptMoney(receipt.debtCollected),
+        }
+      : null,
+    typeof receipt.levyAmount === "number"
+      ? {
+          label: `RE Levy${typeof receipt.levyPercent === "number" ? ` (${receipt.levyPercent}%)` : ""}`,
+          value: formatReceiptMoney(receipt.levyAmount),
+        }
+      : null,
+    typeof receipt.vatAmount === "number"
+      ? {
+          label: `VAT${typeof receipt.vatPercent === "number" ? ` (${receipt.vatPercent}%)` : ""}`,
+          value: formatReceiptMoney(receipt.vatAmount),
+        }
+      : null,
+    typeof receipt.totalPaid === "number"
+      ? {
+          label: "Total Paid",
+          value: formatReceiptMoney(receipt.totalPaid),
+        }
+      : null,
+    typeof receipt.totalTendered === "number" && receipt.totalTendered !== receipt.totalPaid
+      ? {
+          label: "Total Tendered",
+          value: formatReceiptMoney(receipt.totalTendered),
+        }
+      : null,
+    receiptCurrencyCode !== paymentCurrencyCode
+      ? {
+          label: "Payment Amount",
+          value: formatZetdcMajorMoney(receipt.amount, paymentCurrencyCode),
+        }
+      : null,
     {
       label: "Status",
       value: receipt.status,
@@ -136,10 +199,12 @@ function buildReceiptRows(receipt: TokenResponse) {
       : null,
     {
       label: "Issued On",
-      value: new Intl.DateTimeFormat("en-ZW", {
-        dateStyle: "medium",
-        timeStyle: "short",
-      }).format(new Date(receipt.date)),
+      value: receipt.receiptDate
+        ? [receipt.receiptDate, receipt.receiptTime].filter(Boolean).join(" ")
+        : new Intl.DateTimeFormat("en-ZW", {
+            dateStyle: "medium",
+            timeStyle: "short",
+          }).format(new Date(receipt.date)),
     },
   ].filter((entry): entry is ReceiptLine => Boolean(entry));
 }
@@ -341,55 +406,56 @@ export async function downloadZesaReceiptPdf(receipt: TokenResponse) {
   });
 
   const rows = buildReceiptRows(receipt);
-  let rowY = height - 540;
+  let rowY = height - 528;
   rows.forEach((row, index) => {
     drawText(page, row.label, PAGE_MARGIN + 6, rowY, {
       font,
-      size: 11,
+      size: RECEIPT_ROW_FONT_SIZE,
       color: muted,
     });
 
-    const valueWidth = bold.widthOfTextAtSize(row.value, 11);
+    const valueWidth = bold.widthOfTextAtSize(row.value, RECEIPT_ROW_FONT_SIZE);
     drawText(page, row.value, width - PAGE_MARGIN - valueWidth - 8, rowY, {
       font: bold,
-      size: 11,
+      size: RECEIPT_ROW_FONT_SIZE,
       color: rgb(0.14, 0.14, 0.14),
     });
 
     if (index < rows.length - 1) {
       page.drawLine({
-        start: { x: PAGE_MARGIN, y: rowY - 10 },
-        end: { x: width - PAGE_MARGIN, y: rowY - 10 },
+        start: { x: PAGE_MARGIN, y: rowY - 7 },
+        end: { x: width - PAGE_MARGIN, y: rowY - 7 },
         thickness: 0.6,
         color: border,
       });
     }
-    rowY -= 28;
+    rowY -= RECEIPT_ROW_HEIGHT;
   });
 
+  const footerY = FOOTER_BOTTOM;
   page.drawRectangle({
     x: PAGE_MARGIN,
-    y: 54,
+    y: footerY,
     width: width - PAGE_MARGIN * 2,
-    height: 74,
+    height: FOOTER_HEIGHT,
     color: rgb(0.965, 0.972, 0.968),
     borderColor: border,
     borderWidth: 1,
   });
 
-  drawText(page, "Powered by Valley Farm Secrets", PAGE_MARGIN + 18, 103, {
+  drawText(page, "Powered by Valley Farm Secrets", PAGE_MARGIN + 18, footerY + 34, {
     font: bold,
     size: 12,
     color: brandGreen,
   });
-  drawText(page, "This receipt was generated from your successful digital electricity purchase.", PAGE_MARGIN + 18, 84, {
+  drawText(page, "This receipt was generated from your successful digital electricity purchase.", PAGE_MARGIN + 18, footerY + 19, {
     font,
-    size: 10,
+    size: 8.5,
     color: muted,
   });
-  drawText(page, "Keep this receipt for your records and enter the token exactly as displayed above.", PAGE_MARGIN + 18, 68, {
+  drawText(page, "Keep this receipt for your records and enter the token exactly as displayed above.", PAGE_MARGIN + 18, footerY + 7, {
     font,
-    size: 10,
+    size: 8.5,
     color: muted,
   });
 

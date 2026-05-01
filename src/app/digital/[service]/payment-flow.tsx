@@ -10,7 +10,8 @@ import { ProcessStatusCard } from "@/components/ui/process-status-card";
 import { useToast } from "@/hooks/use-toast";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
-import { CheckCircle2, Loader2 } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { CheckCircle2, Download, Loader2, Printer } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { DigitalServiceField } from "@/lib/digital-services";
 import {
@@ -32,6 +33,7 @@ import {
   type CurrencyCode,
 } from "@/lib/currency";
 import { useCurrency } from "@/components/currency/currency-provider";
+import { calculateDstvBouquetAmountUsd } from "@/lib/dstv-packages";
 
 type DigitalReceipt = {
   reference: string;
@@ -39,7 +41,8 @@ type DigitalReceipt = {
   amount?: number;
   currencyCode?: CurrencyCode;
   transactionReference?: string;
-  manualReview?: boolean;
+  receiptNumber?: string;
+  receiptDetails?: Record<string, unknown>;
   message: string;
 };
 
@@ -50,8 +53,235 @@ type BackgroundProcessState = {
   progress: number;
 };
 
+type CustomerReceiptSlip = {
+  title: string;
+  subtitle: string;
+  receiptNumber?: string;
+  status?: string;
+  amount?: string;
+  rows: Array<[string, string]>;
+};
+
 const enabledPaymentMethodOptions = getEnabledPaymentMethodOptions();
 const defaultPaymentMethod = getDefaultPaymentMethod();
+
+function asReceiptString(value: unknown) {
+  if (value === undefined || value === null || value === "") {
+    return undefined;
+  }
+  return String(value);
+}
+
+function asReceiptRecord(value: unknown) {
+  return value && typeof value === "object" && !Array.isArray(value)
+    ? value as Record<string, unknown>
+    : undefined;
+}
+
+function formatReceiptMinorMoney(value: unknown, fallbackCurrencyCode: CurrencyCode) {
+  const numeric = typeof value === "number" ? value : Number(String(value ?? "").replace(/[^\d.-]/g, ""));
+  if (!Number.isFinite(numeric)) {
+    return undefined;
+  }
+
+  const symbol = fallbackCurrencyCode === "924" ? "ZiG " : "$";
+  return `${symbol}${(numeric / 100).toFixed(2)}${fallbackCurrencyCode === "840" ? " USD" : ""}`;
+}
+
+function receiptCurrencyCode(value: unknown, fallbackCurrencyCode: CurrencyCode): CurrencyCode {
+  const normalized = asReceiptString(value)?.toUpperCase();
+  if (normalized === "USD") {
+    return "840";
+  }
+  if (normalized === "ZWG" || normalized === "ZIG" || normalized === "ZWL" || normalized === "RTGS") {
+    return "924";
+  }
+  return fallbackCurrencyCode;
+}
+
+function compactDateTime(value: string | undefined) {
+  if (!value) return undefined;
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return value;
+  return new Intl.DateTimeFormat("en-ZW", {
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(parsed);
+}
+
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function buildReceiptHtml(receipt: CustomerReceiptSlip) {
+  const rows = receipt.rows
+    .map(([label, value]) => `<tr><td>${escapeHtml(label)}</td><td>${escapeHtml(value)}</td></tr>`)
+    .join("");
+
+  return `<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>${escapeHtml(receipt.title)} ${receipt.receiptNumber ? escapeHtml(receipt.receiptNumber) : ""}</title>
+  <style>
+    @page { margin: 16mm; }
+    body { margin: 0; background: #f6f8f4; color: #20231f; font-family: Arial, sans-serif; }
+    .receipt { max-width: 420px; margin: 24px auto; background: #fff; border: 1px solid #d8e2d4; border-radius: 10px; overflow: hidden; }
+    .head { background: #2f7d41; color: #fff; padding: 20px 24px; text-align: center; }
+    .brand { font-size: 12px; letter-spacing: .16em; text-transform: uppercase; opacity: .9; }
+    h1 { margin: 8px 0 4px; font-size: 24px; }
+    .sub { margin: 0; font-size: 13px; opacity: .9; }
+    .body { padding: 22px 24px; }
+    .status { display: flex; justify-content: space-between; gap: 16px; border-bottom: 1px dashed #cfd8cc; padding-bottom: 14px; margin-bottom: 14px; }
+    .amount { font-size: 22px; font-weight: 800; color: #2f7d41; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    td { padding: 9px 0; border-bottom: 1px solid #edf1eb; vertical-align: top; }
+    td:first-child { color: #687066; }
+    td:last-child { text-align: right; font-weight: 700; }
+    .foot { padding: 16px 24px 22px; color: #687066; font-size: 12px; line-height: 1.5; }
+    @media print { body { background: #fff; } .receipt { margin: 0 auto; } }
+  </style>
+</head>
+<body>
+  <main class="receipt">
+    <section class="head">
+      <div class="brand">Valley Farm Secrets</div>
+      <h1>${escapeHtml(receipt.title)}</h1>
+      <p class="sub">${escapeHtml(receipt.subtitle)}</p>
+    </section>
+    <section class="body">
+      <div class="status">
+        <div>
+          <div style="color:#687066;font-size:12px;">Status</div>
+          <strong>${escapeHtml(receipt.status || "Successful")}</strong>
+        </div>
+        ${receipt.amount ? `<div class="amount">${escapeHtml(receipt.amount)}</div>` : ""}
+      </div>
+      <table>${rows}</table>
+    </section>
+    <section class="foot">
+      This receipt was generated by Valley Farm Secrets for a successful digital payment. Keep it for your records.
+    </section>
+  </main>
+</body>
+</html>`;
+}
+
+function downloadReceipt(receipt: CustomerReceiptSlip) {
+  const blob = new Blob([buildReceiptHtml(receipt)], { type: "text/html;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `${receipt.title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-${receipt.receiptNumber || "receipt"}.html`;
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+function printReceipt(receipt: CustomerReceiptSlip) {
+  const printWindow = window.open("", "_blank", "noopener,noreferrer,width=520,height=720");
+  if (!printWindow) return;
+  printWindow.document.write(buildReceiptHtml(receipt));
+  printWindow.document.close();
+  printWindow.focus();
+  printWindow.print();
+}
+
+function buildNyaradzoReceiptSlip(receipt: DigitalReceipt, fallbackCurrencyCode: CurrencyCode): CustomerReceiptSlip | null {
+  const details = receipt.receiptDetails;
+  if (!details || details.service !== "Nyaradzo Group") {
+    return null;
+  }
+
+  const detailCurrencyCode = receiptCurrencyCode(details.currency, fallbackCurrencyCode);
+  const details3 = asReceiptRecord(details.details3);
+  const rows: Array<[string, string | undefined]> = [
+    ["Receipt Number", receipt.receiptNumber || asReceiptString(details.receiptNumber)],
+    ["Policy Number", asReceiptString(details.policyNumber)],
+    ["Months Paid", asReceiptString(details.months)],
+    ["Customer Name", asReceiptString(details.customerName)],
+    ["Payment Date", compactDateTime(asReceiptString(details.paymentDate))],
+    ["Premium Amount", formatReceiptMinorMoney(details3?.premiumAmount, detailCurrencyCode)],
+    ["Currency", asReceiptString(details.currency)],
+  ];
+
+  return {
+    title: "Nyaradzo Receipt",
+    subtitle: "Digital premium payment",
+    receiptNumber: receipt.receiptNumber || asReceiptString(details.receiptNumber),
+    status: asReceiptString(details.status) || receipt.status,
+    amount: formatReceiptMinorMoney(details.amount, detailCurrencyCode),
+    rows: rows.filter((row): row is [string, string] => Boolean(row[1])),
+  };
+}
+
+function buildDstvReceiptSlip(receipt: DigitalReceipt, fallbackCurrencyCode: CurrencyCode): CustomerReceiptSlip | null {
+  const details = receipt.receiptDetails;
+  if (!details || details.service !== "DStv Payments") {
+    return null;
+  }
+
+  const detailCurrencyCode = receiptCurrencyCode(details.currency, fallbackCurrencyCode);
+  const paymentType = asReceiptString(details.dstvPaymentType);
+  const rows: Array<[string, string | undefined]> = [
+    ["Receipt Number", receipt.receiptNumber || asReceiptString(details.receiptNumber)],
+    ["Smartcard Number", asReceiptString(details.customerAccount)],
+    ["Customer Name", asReceiptString(details.customerName)],
+    ["Payment Type", paymentType === "TOPUP" ? "Top-up" : "Bouquet"],
+    ["Package Code", asReceiptString(details.customerPaymentDetails1)],
+    ["Months", asReceiptString(details.months)],
+    ["Amount", formatReceiptMinorMoney(details.amount, detailCurrencyCode)],
+    ["Payment Date", compactDateTime(asReceiptString(details.paymentDate))],
+  ];
+
+  const visibleRows = rows.filter((row): row is [string, string] => {
+    if (!row[1]) return false;
+    if (row[0] === "Package Code" && paymentType === "TOPUP") return false;
+    if (row[0] === "Months" && paymentType === "TOPUP") return false;
+    return true;
+  });
+
+  return {
+    title: "DStv Receipt",
+    subtitle: "Digital subscription payment",
+    receiptNumber: receipt.receiptNumber || asReceiptString(details.receiptNumber),
+    status: asReceiptString(details.status) || receipt.status,
+    amount: formatReceiptMinorMoney(details.amount, detailCurrencyCode),
+    rows: visibleRows,
+  };
+}
+
+function buildCimasReceiptSlip(receipt: DigitalReceipt, fallbackCurrencyCode: CurrencyCode): CustomerReceiptSlip | null {
+  const details = receipt.receiptDetails;
+  if (!details || details.service !== "CIMAS") {
+    return null;
+  }
+
+  const detailCurrencyCode = receiptCurrencyCode(details.currency, fallbackCurrencyCode);
+  const referenceType = asReceiptString(details.customerPaymentDetails2);
+  const rows: Array<[string, string | undefined]> = [
+    ["Receipt Number", receipt.receiptNumber || asReceiptString(details.receiptNumber)],
+    ["Reference Number", asReceiptString(details.customerAccount) || asReceiptString(details.customerPaymentDetails3)],
+    ["Reference Type", referenceType === "M" ? "Member" : referenceType === "E" ? "Payer" : referenceType],
+    ["Customer Name", asReceiptString(details.customerName)],
+    ["Payment Date", compactDateTime(asReceiptString(details.paymentDate))],
+    ["Effective Date", asReceiptString(details.customerPaymentDetails1)],
+    ["Currency", asReceiptString(details.currency)],
+  ];
+
+  return {
+    title: "CIMAS Receipt",
+    subtitle: "Digital medical aid payment",
+    receiptNumber: receipt.receiptNumber || asReceiptString(details.receiptNumber),
+    status: asReceiptString(details.status) || receipt.status,
+    amount: formatReceiptMinorMoney(details.amount, detailCurrencyCode),
+    rows: rows.filter((row): row is [string, string] => Boolean(row[1])),
+  };
+}
 
 export function GenericDigitalFlow({
   service,
@@ -90,6 +320,8 @@ export function GenericDigitalFlow({
   const [activePaymentMethod, setActivePaymentMethod] = useState<PaymentMethod>(defaultPaymentMethod);
   const [processingState, setProcessingState] = useState<BackgroundProcessState | null>(null);
   const minimumAmount = convertFromUsd(1, currencyCode);
+  const dstvBouquetAmountUsd = service === "dstv" ? calculateDstvBouquetAmountUsd(serviceMeta) : null;
+  const amountLockedToPackage = dstvBouquetAmountUsd !== null;
 
   const isAvailable = availabilityStatus === "active";
 
@@ -99,12 +331,22 @@ export function GenericDigitalFlow({
     }
   }, [paymentMethod]);
 
+  useEffect(() => {
+    if (dstvBouquetAmountUsd === null) {
+      return;
+    }
+
+    setAmount(convertFromUsd(dstvBouquetAmountUsd, currencyCode).toFixed(2));
+  }, [currencyCode, dstvBouquetAmountUsd]);
+
   const checkStatus = useCallback(async (reference: string) => {
     let latestStatus = "PENDING";
     let latestAmount: number | undefined;
     let latestCurrencyCode: CurrencyCode | undefined;
     let latestGatewayReference: string | undefined;
-    let manualReview = false;
+    let latestReceiptNumber: string | undefined;
+    let latestReceiptDetails: Record<string, unknown> | undefined;
+    let fulfilmentIssue = false;
     let statusMessage: string | undefined;
 
     setProcessingState({
@@ -132,9 +374,16 @@ export function GenericDigitalFlow({
         : latestGatewayReference;
       const rawVendedData = data.data?.vendedData;
       if (rawVendedData && typeof rawVendedData === "object") {
-        const candidate = rawVendedData as { manualReview?: unknown; issue?: unknown; message?: unknown };
-        manualReview = candidate.manualReview === true || candidate.issue === true;
+        const candidate = rawVendedData as {
+          issue?: unknown;
+          message?: unknown;
+          receiptNumber?: unknown;
+          receiptDetails?: unknown;
+        };
+        fulfilmentIssue = candidate.issue === true;
         statusMessage = typeof candidate.message === "string" ? candidate.message : statusMessage;
+        latestReceiptNumber = typeof candidate.receiptNumber === "string" ? candidate.receiptNumber : latestReceiptNumber;
+        latestReceiptDetails = asReceiptRecord(candidate.receiptDetails) ?? latestReceiptDetails;
       }
       if (typeof data.data?.accountReference === "string") {
         setAccountReference((current) => current || data.data.accountReference);
@@ -143,7 +392,6 @@ export function GenericDigitalFlow({
       const engagement = getPaymentProgressContent(latestStatus, {
         paymentMethod: activePaymentMethod,
         subject: `${serviceLabel} payment`,
-        manualReview: true,
       });
       const progress = ["PAID", "SUCCESS"].includes(latestStatus)
         ? 92
@@ -153,15 +401,15 @@ export function GenericDigitalFlow({
       setProcessingState({
         title: engagement.title,
         description: engagement.description,
-        detail: manualReview
-          ? "Payment is confirmed and the request is now waiting for fulfilment confirmation."
+        detail: fulfilmentIssue
+          ? "Payment is confirmed, but provider fulfilment failed. The request was marked failed."
           : ["PAID", "SUCCESS"].includes(latestStatus)
           ? "Payment is confirmed. We are recording the request so you can track it from your account."
           : "Your request is active in the background. Approval can happen on your device or at the gateway.",
         progress,
       });
 
-      if (manualReview) {
+      if (fulfilmentIssue) {
         break;
       }
 
@@ -175,16 +423,17 @@ export function GenericDigitalFlow({
     const engagement = getPaymentProgressContent(latestStatus, {
       paymentMethod: activePaymentMethod,
       subject: `${serviceLabel} payment`,
-      manualReview: true,
     });
     setProcessingState(null);
+
     setReceipt({
       reference,
-      status: manualReview ? "MANUAL_REVIEW" : latestStatus,
+      status: fulfilmentIssue ? "FAILED" : latestStatus,
       amount: latestAmount,
       currencyCode: latestCurrencyCode ?? currencyCode,
       transactionReference: latestGatewayReference,
-      manualReview,
+      receiptNumber: latestReceiptNumber,
+      receiptDetails: latestReceiptDetails,
       message: statusMessage || engagement.description,
     });
   }, [activePaymentMethod, currencyCode, serviceLabel]);
@@ -268,7 +517,6 @@ export function GenericDigitalFlow({
       const engagement = getPaymentProgressContent(data.status, {
         paymentMethod,
         subject: `${serviceLabel} payment`,
-        manualReview: true,
       });
 
       if (action.type === "otp") {
@@ -365,12 +613,17 @@ export function GenericDigitalFlow({
   };
 
   if (receipt) {
+    const customerReceipt = buildDstvReceiptSlip(receipt, receipt.currencyCode ?? currencyCode)
+      ?? buildNyaradzoReceiptSlip(receipt, receipt.currencyCode ?? currencyCode)
+      ?? buildCimasReceiptSlip(receipt, receipt.currencyCode ?? currencyCode);
+    const showPlainSummary = !customerReceipt;
+
     return (
       <Card className="w-full max-w-md mx-auto p-6 space-y-6 shadow-lg border-primary/10">
         <div className="text-center space-y-3">
           <div className={cn(
             "mx-auto flex h-14 w-14 items-center justify-center rounded-full",
-            receipt.manualReview ? "bg-amber-100 text-amber-700" : "bg-primary/10 text-primary",
+            receipt.status === "FAILED" ? "bg-destructive/10 text-destructive" : "bg-primary/10 text-primary",
           )}>
             <CheckCircle2 className="h-7 w-7" />
           </div>
@@ -378,42 +631,77 @@ export function GenericDigitalFlow({
           <p className="text-sm text-muted-foreground">{receipt.message}</p>
         </div>
 
-        <div className="rounded-xl border bg-muted/30 p-4 text-sm">
-          <div className="flex justify-between py-2">
-            <span className="text-muted-foreground">Service</span>
-            <span className="font-medium">{serviceLabel}</span>
-          </div>
-          <div className="flex justify-between py-2">
-            <span className="text-muted-foreground">Status</span>
-            <span className="font-semibold">{receipt.status}</span>
-          </div>
-          <div className="flex justify-between py-2">
-            <span className="text-muted-foreground">{accountLabel}</span>
-            <span className="font-medium">{accountReference || "Submitted in request"}</span>
-          </div>
-          {typeof receipt.amount === "number" ? (
-            <div className="flex justify-between py-2">
-              <span className="text-muted-foreground">Amount</span>
-              <span className="font-medium">{formatMoney(receipt.amount, receipt.currencyCode ?? currencyCode)}</span>
+        {customerReceipt ? (
+          <div className="overflow-hidden rounded-lg border bg-background text-sm shadow-sm">
+            <div className="bg-primary px-5 py-4 text-center text-primary-foreground">
+              <div className="text-xs font-semibold uppercase tracking-[0.18em] opacity-90">Valley Farm Secrets</div>
+              <div className="mt-1 text-xl font-bold">{customerReceipt.title}</div>
+              <div className="text-xs opacity-90">{customerReceipt.subtitle}</div>
             </div>
-          ) : null}
-          <div className="flex justify-between py-2">
-            <span className="text-muted-foreground">Reference</span>
-            <span className="font-mono text-xs">{receipt.reference}</span>
-          </div>
-          {receipt.transactionReference ? (
-            <div className="flex justify-between py-2">
-              <span className="text-muted-foreground">Gateway Ref</span>
-              <span className="font-mono text-xs">{receipt.transactionReference}</span>
+            <div className="p-5">
+              <div className="mb-4 flex items-start justify-between gap-4 border-b border-dashed pb-4">
+                <div>
+                  <div className="text-xs uppercase tracking-wide text-muted-foreground">Status</div>
+                  <div className="font-semibold">{customerReceipt.status || receipt.status}</div>
+                </div>
+                {customerReceipt.amount ? (
+                  <div className="text-right text-xl font-bold text-primary">{customerReceipt.amount}</div>
+                ) : null}
+              </div>
+              <div>
+                {customerReceipt.rows.map(([label, value]) => (
+                  <div key={label} className="flex items-start justify-between gap-4 py-2">
+                    <span className="text-muted-foreground">{label}</span>
+                    <span className="max-w-[60%] break-words text-right font-medium">{value}</span>
+                  </div>
+                ))}
+              </div>
+              <p className="mt-4 border-t border-dashed pt-4 text-xs leading-5 text-muted-foreground">
+                This receipt was generated by Valley Farm Secrets for your successful digital payment.
+              </p>
             </div>
-          ) : null}
-        </div>
+            <div className="grid grid-cols-2 gap-3 border-t bg-muted/30 p-3">
+              <Button type="button" variant="outline" className="gap-2" onClick={() => printReceipt(customerReceipt)}>
+                <Printer className="h-4 w-4" /> Print
+              </Button>
+              <Button type="button" variant="outline" className="gap-2" onClick={() => downloadReceipt(customerReceipt)}>
+                <Download className="h-4 w-4" /> Download
+              </Button>
+            </div>
+          </div>
+        ) : null}
+
+        {showPlainSummary ? (
+          <div className="rounded-xl border bg-muted/30 p-4 text-sm">
+            <div className="flex justify-between py-2">
+              <span className="text-muted-foreground">Service</span>
+              <span className="font-medium">{serviceLabel}</span>
+            </div>
+            <div className="flex justify-between py-2">
+              <span className="text-muted-foreground">Status</span>
+              <span className="font-semibold">{receipt.status}</span>
+            </div>
+            <div className="flex justify-between py-2">
+              <span className="text-muted-foreground">{accountLabel}</span>
+              <span className="font-medium">{accountReference || "Submitted in request"}</span>
+            </div>
+            {typeof receipt.amount === "number" ? (
+              <div className="flex justify-between py-2">
+                <span className="text-muted-foreground">Amount</span>
+                <span className="font-medium">{formatMoney(receipt.amount, receipt.currencyCode ?? currencyCode)}</span>
+              </div>
+            ) : null}
+            <div className="flex justify-between py-2">
+              <span className="text-muted-foreground">Reference</span>
+              <span className="font-mono text-xs">{receipt.reference}</span>
+            </div>
+          </div>
+        ) : null}
 
         <div className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
           {getPaymentProgressContent(receipt.status, {
             paymentMethod: activePaymentMethod,
             subject: `${serviceLabel} request`,
-            manualReview: true,
           }).description} You can track progress from your account once signed in.
         </div>
 
@@ -463,7 +751,7 @@ export function GenericDigitalFlow({
           <div className="rounded-xl border border-primary/20 bg-primary/5 px-4 py-3 text-sm text-primary">
             {awaitingOtp 
               ? "Please enter the OTP sent to your phone to complete the transaction." 
-              : `Pay with ${getPaymentMethodLabel(paymentMethod)}. After payment, the request is tracked in the system and moves into manual processing confirmation.`}
+              : `Pay with ${getPaymentMethodLabel(paymentMethod)}. After payment, provider fulfilment runs automatically and the result is saved to your account.`}
           </div>
         )}
         <div className="space-y-4">
@@ -520,15 +808,33 @@ export function GenericDigitalFlow({
                 {formFields.map((field) => (
                   <div key={field.id} className="space-y-2">
                     <Label htmlFor={field.id}>{field.label}</Label>
-                    <Input
-                      id={field.id}
-                      type={field.type === "number" ? "number" : "text"}
-                      min={field.type === "number" ? "1" : undefined}
-                      value={serviceMeta[field.id] ?? ""}
-                      onChange={(e) => setServiceMeta((current) => ({ ...current, [field.id]: e.target.value }))}
-                      placeholder={field.placeholder}
-                      className="bg-background"
-                    />
+                    {field.options?.length ? (
+                      <Select
+                        value={serviceMeta[field.id] ?? ""}
+                        onValueChange={(value) => setServiceMeta((current) => ({ ...current, [field.id]: value }))}
+                      >
+                        <SelectTrigger id={field.id} className="bg-background">
+                          <SelectValue placeholder={field.placeholder || `Select ${field.label.toLowerCase()}`} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {field.options.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    ) : (
+                      <Input
+                        id={field.id}
+                        type={field.type === "number" ? "number" : "text"}
+                        min={field.type === "number" ? "1" : undefined}
+                        value={serviceMeta[field.id] ?? ""}
+                        onChange={(e) => setServiceMeta((current) => ({ ...current, [field.id]: e.target.value }))}
+                        placeholder={field.placeholder}
+                        className="bg-background"
+                      />
+                    )}
                     {field.helpText ? <p className="text-xs text-muted-foreground">{field.helpText}</p> : null}
                   </div>
                 ))}
@@ -536,7 +842,9 @@ export function GenericDigitalFlow({
                 <div className="space-y-2">
                     <Label htmlFor="amount">Amount ({getCurrencyMeta(currencyCode).label})</Label>
                     <div className="relative">
-                      <span className="absolute left-3 top-2.5 text-muted-foreground">{getCurrencyMeta(currencyCode).symbol.trim()}</span>
+                      <span className="pointer-events-none absolute left-3 top-1/2 min-w-10 -translate-y-1/2 text-sm font-semibold text-muted-foreground">
+                        {getCurrencyMeta(currencyCode).symbol.trim()}
+                      </span>
                       <Input
                         id="amount"
                         type="number"
@@ -544,9 +852,15 @@ export function GenericDigitalFlow({
                         step="0.01"
                         value={amount}
                         onChange={(e) => setAmount(e.target.value)}
-                        className="pl-7"
+                        className="pl-16"
+                        readOnly={amountLockedToPackage}
                       />
                     </div>
+                    {amountLockedToPackage ? (
+                      <p className="text-xs text-muted-foreground">
+                        Amount is calculated from the selected DSTV package, add-on, and months.
+                      </p>
+                    ) : null}
                   </div>
                 </div>
               </div>

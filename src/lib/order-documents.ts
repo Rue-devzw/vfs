@@ -46,8 +46,7 @@ export function getOrderLifecycleState(input: {
     || hasDigitalCompletionEvidence;
   const hasIssue = order.status === "cancelled"
     || refunds.length > 0
-    || digitalProvisioningStatus === "failed"
-    || digitalProvisioningStatus === "manual_review";
+    || digitalProvisioningStatus === "failed";
 
   if (isCompleted) {
     return "completed" as const;

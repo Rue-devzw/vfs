@@ -38,10 +38,9 @@ export default async function AdminDigitalPage({ searchParams }: PageProps) {
   const pending = orders.filter(order => order.provisioningStatus === "pending").length;
   const processing = orders.filter(order => order.provisioningStatus === "processing").length;
   const completed = orders.filter(order => order.provisioningStatus === "completed").length;
-  const manualReview = orders.filter(order => order.provisioningStatus === "manual_review").length;
   const failed = orders.filter(order => order.provisioningStatus === "failed").length;
-  const agedManualReview = orders.filter(order =>
-    order.provisioningStatus === "manual_review"
+  const agedFailed = orders.filter(order =>
+    order.provisioningStatus === "failed"
     && Date.now() - Date.parse(order.updatedAt) > 30 * 60 * 1000,
   ).length;
 
@@ -50,7 +49,7 @@ export default async function AdminDigitalPage({ searchParams }: PageProps) {
       <div className="flex flex-col gap-2">
         <h2 className="text-xl font-semibold">Digital Operations</h2>
         <p className="text-sm text-muted-foreground">
-          Track digital service validations, provisioning outcomes, and manual-review cases.
+          Track digital service validations, provisioning outcomes, and failed provider fulfilment.
         </p>
       </div>
 
@@ -66,12 +65,11 @@ export default async function AdminDigitalPage({ searchParams }: PageProps) {
         </div>
       ) : null}
 
-      <div className="grid gap-4 md:grid-cols-5">
+      <div className="grid gap-4 md:grid-cols-4">
         {[
           { label: "Pending", value: pending },
           { label: "Processing", value: processing },
           { label: "Completed", value: completed },
-          { label: "Manual Review", value: manualReview },
           { label: "Failed", value: failed },
         ].map(item => (
           <Card key={item.label}>
@@ -89,15 +87,15 @@ export default async function AdminDigitalPage({ searchParams }: PageProps) {
         <CardHeader>
           <CardTitle>Fulfilment resilience</CardTitle>
           <CardDescription>
-            Background maintenance now escalates digital orders that remain pending or processing beyond the live-service SLA.
+            Background maintenance now fails and redacts digital orders that remain pending or processing beyond the live-service SLA.
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-wrap items-center justify-between gap-3">
           <div className="text-sm text-muted-foreground">
-            Orders older than 30 minutes are promoted into manual review so the storefront stops hanging and operations can intervene quickly.
+            Orders older than 30 minutes are marked failed so the storefront stops hanging and customer data is not retained on failed digital records.
           </div>
-          <Badge variant={agedManualReview > 0 ? "destructive" : "secondary"}>
-            {agedManualReview} aged manual review
+          <Badge variant={agedFailed > 0 ? "destructive" : "secondary"}>
+            {agedFailed} aged failed
           </Badge>
         </CardContent>
       </Card>
@@ -126,7 +124,7 @@ export default async function AdminDigitalPage({ searchParams }: PageProps) {
                   </div>
                   <div className="flex flex-wrap items-center gap-2">
                     <Badge variant="outline">{order.provider}</Badge>
-                    <Badge variant={order.provisioningStatus === "manual_review" || order.provisioningStatus === "failed" ? "destructive" : "secondary"}>
+                    <Badge variant={order.provisioningStatus === "failed" ? "destructive" : "secondary"}>
                       {order.provisioningStatus}
                     </Badge>
                   </div>
@@ -142,7 +140,7 @@ export default async function AdminDigitalPage({ searchParams }: PageProps) {
                     {JSON.stringify(order.resultPayload, null, 2)}
                   </pre>
                 ) : null}
-                {["manual_review", "failed", "pending"].includes(order.provisioningStatus) ? (
+                {["failed", "pending"].includes(order.provisioningStatus) ? (
                   <div className="mt-4">
                     <AdminActionForm
                       action={handleReprocess.bind(null, order.orderReference)}

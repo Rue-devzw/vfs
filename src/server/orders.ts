@@ -64,6 +64,15 @@ type CustomerShippingAddress = {
   isDefault?: boolean;
 };
 
+export class RefundRequestUnavailableError extends Error {
+  status = 403;
+
+  constructor(message = "Refund requests are not available for successful digital purchases.") {
+    super(message);
+    this.name = "RefundRequestUnavailableError";
+  }
+}
+
 function mapOrderStatusToFulfillment(status: InternalOrderStatus, deliveryMethod: DeliveryMethod): FulfillmentStatus {
   if (status === "cancelled") return "issue";
   if (deliveryMethod === "collect") {
@@ -415,6 +424,12 @@ export async function createCustomerRefundRequest(input: {
 
   if (order.customerEmail.toLowerCase() !== input.customerEmail.toLowerCase()) {
     throw new Error("You are not authorized to request a refund for this order.");
+  }
+
+  const { getDigitalOrderByReference } = await import("@/lib/firestore/digital-orders");
+  const digitalOrder = await getDigitalOrderByReference(input.reference);
+  if (digitalOrder?.provisioningStatus === "completed") {
+    throw new RefundRequestUnavailableError();
   }
 
   const existingSnapshot = await db

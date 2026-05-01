@@ -2,12 +2,20 @@
 import type { PaymentMethod } from "@/lib/payment-methods";
 import type { CardPaymentDetails } from "@/lib/payments/types";
 import type { CurrencyCode } from "@/lib/currency";
+import {
+    extractZetdcAccountCurrency,
+    getAllowedZetdcPaymentCurrencies,
+    getZetdcCurrencyRestrictionMessage,
+} from "@/lib/digital-currency-rules";
 
 export interface CustomerDetails {
     meterNumber: string;
     name?: string;
     address?: string;
     balance?: number;
+    accountCurrency?: string;
+    allowedCurrencyCodes?: CurrencyCode[];
+    currencyRestrictionMessage?: string;
 }
 
 export interface TokenResponse {
@@ -15,8 +23,22 @@ export interface TokenResponse {
     units?: number;
     amount: number;
     currencyCode?: CurrencyCode;
+    receiptCurrencyCode?: CurrencyCode;
     meterNumber: string;
     customerName?: string;
+    customerAddress?: string;
+    receiptDate?: string;
+    receiptTime?: string;
+    tariffName?: string;
+    tenderAmount?: number;
+    energyCharge?: number;
+    debtCollected?: number;
+    levyPercent?: number;
+    levyAmount?: number;
+    vatPercent?: number;
+    vatAmount?: number;
+    totalPaid?: number;
+    totalTendered?: number;
     date: string;
     receiptNumber: string;
     status: string;
@@ -63,11 +85,16 @@ export const SmilePayService = {
             throw new Error(data.error || "Meter verification failed");
         }
 
+        const accountCurrency = extractZetdcAccountCurrency(data.data.raw);
+
         return {
             meterNumber: cleanMeter,
             name: data.data.accountName,
             address: data.data.billerName,
             balance: 0,
+            accountCurrency,
+            allowedCurrencyCodes: getAllowedZetdcPaymentCurrencies(accountCurrency),
+            currencyRestrictionMessage: getZetdcCurrencyRestrictionMessage(accountCurrency),
         };
     },
 

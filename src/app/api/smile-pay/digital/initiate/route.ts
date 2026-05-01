@@ -5,6 +5,7 @@ import { normalizeSmilePayInitiationResult } from "@/lib/payments/smile-pay-serv
 import { createPendingOrder, setOrderStatus } from "@/server/orders";
 import { getDigitalServiceConfig, isDigitalServiceId } from "@/lib/digital-services";
 import { convertFromUsd, CurrencyCode, getZwgPerUsdRate } from "@/lib/currency";
+import { verifyCustomerSession } from "@/lib/auth";
 
 const schema = z.object({
   service: z.string().min(1),
@@ -25,6 +26,7 @@ export async function POST(req: Request) {
     }
 
     const { service, accountReference, amount: amountUsd, smilePayMobile, currencyCode } = validation.data;
+    const customerSession = await verifyCustomerSession();
     if (!isDigitalServiceId(service) || service === "zesa") {
       return NextResponse.json({ success: false, error: "Unsupported digital service." }, { status: 400 });
     }
@@ -43,8 +45,8 @@ export async function POST(req: Request) {
 
     const reference = `DIG-${service.toUpperCase()}-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
     const label = serviceConfig.label;
-    const customerName = validation.data.customerName || "Digital Customer";
-    const customerEmail = validation.data.customerEmail || "customer@example.com";
+    const customerName = validation.data.customerName || customerSession?.name || "Digital Customer";
+    const customerEmail = (validation.data.customerEmail || customerSession?.email || "customer@example.com").toLowerCase();
 
     const exchangeRate = getZwgPerUsdRate();
     const amount = convertFromUsd(amountUsd, currencyCode as CurrencyCode, exchangeRate);

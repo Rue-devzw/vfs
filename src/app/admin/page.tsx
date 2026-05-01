@@ -53,8 +53,8 @@ export default async function AdminDashboardPage() {
   const activeCustomers = customers.filter(customer => customer.orderCount > 0).length;
   const recentOrders = orders.slice(0, 6);
   const agedNotificationBacklog = notificationsNeedAttention(notificationOps.summary);
-  const digitalManualReviewAged = digitalOrders.filter(order =>
-    order.provisioningStatus === "manual_review"
+  const digitalFailedAged = digitalOrders.filter(order =>
+    order.provisioningStatus === "failed"
     && Date.now() - Date.parse(order.updatedAt) > 30 * 60 * 1000,
   ).length;
   const topCategories = categoriesResult.categories
@@ -114,7 +114,7 @@ export default async function AdminDashboardPage() {
     {
       title: "Digital Ops",
       value: `${digitalOrders.length}`,
-      description: `${digitalOrders.filter(order => order.provisioningStatus === "manual_review").length} review • ${digitalManualReviewAged} aged`,
+      description: `${digitalOrders.filter(order => order.provisioningStatus === "failed").length} failed • ${digitalFailedAged} aged`,
       icon: Zap,
       color: "text-cyan-500",
       bgClass: "from-cyan-500/10 to-transparent",
@@ -228,7 +228,7 @@ export default async function AdminDashboardPage() {
                { label: "Notification queue", desc: "Failed customer milestones.", val: agedNotificationBacklog, url: "/admin/notifications", crit: notificationOps.summary.failed > 0 },
                { label: "Daily close exceptions", desc: "Batch locking, stock variance.", val: reconciliation.summary.totalExceptions, url: "/admin/reconciliation", crit: reconciliation.summary.totalExceptions > 0 },
                { label: "Refund execution", desc: "Manual-review refunds.", val: refundOps.queued + refundOps.manualReview + refundOps.failed, url: "/admin/refunds", crit: refundOps.agedQueued > 0 || refundOps.failed > 0 },
-               { label: "Digital SLA backlog", desc: "Manual reviews > 30 minutes.", val: digitalManualReviewAged, url: "/admin/digital", crit: digitalManualReviewAged > 0 },
+               { label: "Digital SLA backlog", desc: "Failed digital orders > 30 minutes.", val: digitalFailedAged, url: "/admin/digital", crit: digitalFailedAged > 0 },
              ].map((alert) => (
                <Link href={alert.url} key={alert.label} className="block">
                  <div 

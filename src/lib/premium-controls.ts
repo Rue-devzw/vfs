@@ -209,7 +209,7 @@ export function buildReconciliationExceptions(input: {
   }
 
   for (const digital of input.digitalOrders) {
-    if (!["pending", "processing", "manual_review", "failed"].includes(digital.provisioningStatus)) {
+    if (!["pending", "processing", "failed"].includes(digital.provisioningStatus)) {
       continue;
     }
 
@@ -219,14 +219,12 @@ export function buildReconciliationExceptions(input: {
         type: "digital",
         reference: digital.orderReference,
         summary: "Digital fulfilment requires intervention",
-        detail: digital.provisioningStatus === "manual_review"
-          ? "Digital order has been escalated to manual review."
-          : `Digital order is still ${digital.provisioningStatus}.`,
-        severity: digital.provisioningStatus === "failed" ? "critical" : digital.provisioningStatus === "manual_review" ? "high" : "medium",
+        detail: `Digital order is ${digital.provisioningStatus}.`,
+        severity: digital.provisioningStatus === "failed" ? "critical" : "medium",
         ageHours,
         ageBucket: toAgeBucket(ageHours, 1),
         orderReference: digital.orderReference,
-        customerEmail: digital.customerEmail,
+        customerEmail: digital.customerEmail ?? undefined,
         detectedAt: digital.updatedAt,
       }, assignments),
     );

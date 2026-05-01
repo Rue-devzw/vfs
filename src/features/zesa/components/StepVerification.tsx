@@ -40,6 +40,12 @@ export function StepVerification({
                         <span className="text-sm text-muted-foreground">Address</span>
                         <span className="font-medium text-right max-w-[60%]">{customer.address}</span>
                     </div>
+                    {customer.accountCurrency ? (
+                        <div className="flex justify-between pb-1">
+                            <span className="text-sm text-muted-foreground">Account Currency</span>
+                            <span className="font-medium">{customer.accountCurrency}</span>
+                        </div>
+                    ) : null}
 
                     {typeof customer.balance === "number" && customer.balance < 0 && (
                         <div className="mt-4 rounded-lg bg-orange-50 p-3 text-xs text-orange-800 flex items-start gap-2">
@@ -50,6 +56,13 @@ export function StepVerification({
                             </p>
                         </div>
                     )}
+
+                    {customer.currencyRestrictionMessage ? (
+                        <div className="mt-4 rounded-lg bg-blue-50 p-3 text-xs text-blue-800 flex items-start gap-2">
+                            <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
+                            <p>{customer.currencyRestrictionMessage}</p>
+                        </div>
+                    ) : null}
                 </div>
             </div>
 

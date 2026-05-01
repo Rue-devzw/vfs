@@ -10,7 +10,7 @@ import {
 import { SmilePayGatewayError } from "@/lib/payments/smile-pay";
 
 const validateSchema = z.object({
-    serviceType: z.enum(["ZESA", "AIRTIME", "DSTV", "COUNCILS", "NYARADZO", "INTERNET"]),
+    serviceType: z.enum(["ZESA", "AIRTIME", "DSTV", "COUNCILS", "NYARADZO", "CIMAS", "INTERNET"]),
     accountNumber: z.string().min(1),
     serviceMeta: z.record(z.string()).optional(),
 });

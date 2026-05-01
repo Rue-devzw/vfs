@@ -91,7 +91,7 @@ export function ZesaFlow() {
 
     const pollStatus = useCallback(async (reference: string, fallbackAmount?: number, fallbackMeter?: string) => {
         let status = "PENDING";
-        let vendedData: { token?: string; units?: number; receiptNumber?: string; message?: string; issue?: boolean } | null = null;
+        let vendedData: (Partial<TokenResponse> & { message?: string; issue?: boolean }) | null = null;
         let resolvedAmount = fallbackAmount ?? 0;
         let resolvedCurrencyCode = currencyCode;
         let resolvedMeter = fallbackMeter ?? meterNumber;
@@ -118,13 +118,32 @@ export function ZesaFlow() {
                         token?: unknown;
                         units?: unknown;
                         receiptNumber?: unknown;
+                        receiptDetails?: unknown;
                         message?: unknown;
                         issue?: unknown;
                     };
+                    const receiptDetails = candidate.receiptDetails && typeof candidate.receiptDetails === "object"
+                        ? candidate.receiptDetails as Record<string, unknown>
+                        : {};
                     vendedData = {
                         token: typeof candidate.token === "string" ? candidate.token : undefined,
                         units: typeof candidate.units === "number" ? candidate.units : undefined,
                         receiptNumber: typeof candidate.receiptNumber === "string" ? candidate.receiptNumber : undefined,
+                        receiptCurrencyCode: receiptDetails.receiptCurrencyCode === "924" ? "924" : receiptDetails.receiptCurrencyCode === "840" ? "840" : undefined,
+                        customerName: typeof receiptDetails.customerName === "string" ? receiptDetails.customerName : undefined,
+                        customerAddress: typeof receiptDetails.customerAddress === "string" ? receiptDetails.customerAddress : undefined,
+                        receiptDate: typeof receiptDetails.receiptDate === "string" ? receiptDetails.receiptDate : undefined,
+                        receiptTime: typeof receiptDetails.receiptTime === "string" ? receiptDetails.receiptTime : undefined,
+                        tariffName: typeof receiptDetails.tariffName === "string" ? receiptDetails.tariffName : undefined,
+                        tenderAmount: typeof receiptDetails.tenderAmount === "number" ? receiptDetails.tenderAmount : undefined,
+                        energyCharge: typeof receiptDetails.energyCharge === "number" ? receiptDetails.energyCharge : undefined,
+                        debtCollected: typeof receiptDetails.debtCollected === "number" ? receiptDetails.debtCollected : undefined,
+                        levyPercent: typeof receiptDetails.levyPercent === "number" ? receiptDetails.levyPercent : undefined,
+                        levyAmount: typeof receiptDetails.levyAmount === "number" ? receiptDetails.levyAmount : undefined,
+                        vatPercent: typeof receiptDetails.vatPercent === "number" ? receiptDetails.vatPercent : undefined,
+                        vatAmount: typeof receiptDetails.vatAmount === "number" ? receiptDetails.vatAmount : undefined,
+                        totalPaid: typeof receiptDetails.totalPaid === "number" ? receiptDetails.totalPaid : undefined,
+                        totalTendered: typeof receiptDetails.totalTendered === "number" ? receiptDetails.totalTendered : undefined,
                         message: typeof candidate.message === "string" ? candidate.message : undefined,
                         issue: candidate.issue === true,
                     };
@@ -134,8 +153,8 @@ export function ZesaFlow() {
 
                 if (vendedData?.issue) {
                     setProcessingState({
-                        title: "Payment received",
-                        description: "Your payment went through, but token vending needs manual review.",
+                        title: "Fulfilment failed",
+                        description: "Your payment went through, but token vending failed.",
                         detail: "We have stopped retrying automatically so the same vend request is not sent over and over.",
                         progress: 100,
                     });
@@ -179,8 +198,22 @@ export function ZesaFlow() {
         setReceipt({
             amount: resolvedAmount,
             currencyCode: resolvedCurrencyCode,
+            receiptCurrencyCode: vendedData?.receiptCurrencyCode,
             meterNumber: resolvedMeter,
-            customerName: customer?.name,
+            customerName: vendedData?.customerName || customer?.name,
+            customerAddress: vendedData?.customerAddress || customer?.address,
+            receiptDate: vendedData?.receiptDate,
+            receiptTime: vendedData?.receiptTime,
+            tariffName: vendedData?.tariffName,
+            tenderAmount: vendedData?.tenderAmount,
+            energyCharge: vendedData?.energyCharge,
+            debtCollected: vendedData?.debtCollected,
+            levyPercent: vendedData?.levyPercent,
+            levyAmount: vendedData?.levyAmount,
+            vatPercent: vendedData?.vatPercent,
+            vatAmount: vendedData?.vatAmount,
+            totalPaid: vendedData?.totalPaid,
+            totalTendered: vendedData?.totalTendered,
             date: new Date().toISOString(),
             receiptNumber: vendedData?.receiptNumber || reference,
             status: vendedData?.issue ? "MANUAL_REVIEW" : status,
@@ -192,7 +225,7 @@ export function ZesaFlow() {
         });
         setIsLoading(false);
         setStep("RECEIPT");
-    }, [currencyCode, customer?.name, meterNumber, paymentMethod]);
+    }, [currencyCode, customer?.address, customer?.name, meterNumber, paymentMethod]);
 
         const handlePayment = async (input: {
         amount: number;
@@ -387,14 +420,16 @@ export function ZesaFlow() {
                                 onCancel={handleVerificationCancel}
                             />
                         )}
-                        {step === "PAYMENT" && (
-                            <StepPayment
-                                onPay={handlePayment}
-                                onBack={() => setStep("VERIFICATION")}
-                                isLoading={isLoading}
-                                currencyCode={currencyCode}
-                            />
-                        )}
+                            {step === "PAYMENT" && (
+                                <StepPayment
+                                    onPay={handlePayment}
+                                    onBack={() => setStep("VERIFICATION")}
+                                    isLoading={isLoading}
+                                    currencyCode={currencyCode}
+                                    allowedCurrencyCodes={customer?.allowedCurrencyCodes}
+                                    currencyRestrictionMessage={customer?.currencyRestrictionMessage}
+                                />
+                            )}
                         {step === "OTP" && (
                             <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4">
                                 <div className="text-center space-y-2">

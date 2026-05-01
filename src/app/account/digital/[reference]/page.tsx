@@ -5,7 +5,9 @@ import { Footer } from "@/components/layout/footer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CurrencyAmount } from "@/components/currency/currency-amount";
 import { verifyCustomerSession } from "@/lib/auth";
+import { getDigitalServiceConfig } from "@/lib/digital-services";
 import { getDigitalOrderByReference } from "@/lib/firestore/digital-orders";
 import { getOrderDocumentState } from "@/lib/order-documents";
 import { formatTokenGroups } from "@/lib/token-format";
@@ -22,6 +24,31 @@ function formatDate(value?: string) {
     dateStyle: "medium",
     timeStyle: "short",
   }).format(new Date(value));
+}
+
+function asRecord(value: unknown) {
+  return value && typeof value === "object" && !Array.isArray(value)
+    ? value as Record<string, unknown>
+    : {};
+}
+
+function asText(value: unknown) {
+  return typeof value === "string" && value.trim() ? value.trim() : undefined;
+}
+
+function formatStatus(status: string) {
+  switch (status) {
+    case "completed":
+      return "Completed";
+    case "failed":
+      return "Unsuccessful";
+    case "processing":
+      return "Processing";
+    case "pending":
+      return "Pending";
+    default:
+      return status.replace(/_/g, " ");
+  }
 }
 
 export default async function AccountDigitalOrderPage({ params }: PageProps) {
@@ -49,6 +76,37 @@ export default async function AccountDigitalOrderPage({ params }: PageProps) {
     order,
     digitalProvisioningStatus: digitalOrder.provisioningStatus,
   });
+  const serviceConfig = getDigitalServiceConfig(digitalOrder.serviceId);
+  const resultPayload = asRecord(digitalOrder.resultPayload);
+  const paymentDetails = asRecord(resultPayload.payment);
+  const serviceMeta = asRecord(resultPayload.serviceMeta);
+  const parsedReceipt = asRecord(resultPayload.parsedReceipt);
+  const validationSnapshot = asRecord(digitalOrder.validationSnapshot);
+  const validationParsed = asRecord(validationSnapshot.parsed);
+  const serviceName = serviceConfig?.label ?? digitalOrder.serviceId.toUpperCase();
+  const accountLabel = serviceConfig?.accountLabel ?? "Account Reference";
+  const customerName = asText(paymentDetails.customerName) || asText(serviceMeta.accountName) || order.customerName;
+  const packageName = asText(serviceMeta.bouquet) || asText(serviceMeta.packageName) || asText(paymentDetails.customerPaymentDetails1);
+  const paymentType = digitalOrder.serviceId === "cimas"
+    ? undefined
+    : asText(serviceMeta.paymentType) || asText(paymentDetails.dstvPaymentType) || asText(paymentDetails.paymentType);
+  const months = asText(serviceMeta.months) || asText(paymentDetails.months);
+  const cimasReferenceType = digitalOrder.serviceId === "cimas"
+    ? asText(paymentDetails.customerPaymentDetails2) || asText(parsedReceipt.customerPaymentDetails2) || asText(serviceMeta.referenceType)
+    : undefined;
+  const cimasProduct = digitalOrder.serviceId === "cimas"
+    ? asText(validationParsed.currentProduct)
+    : undefined;
+  const detailRows = [
+    { label: accountLabel, value: digitalOrder.accountReference },
+    customerName ? { label: "Customer", value: customerName } : null,
+    cimasReferenceType ? { label: "Reference Type", value: cimasReferenceType === "M" ? "Member" : cimasReferenceType === "E" ? "Payer" : cimasReferenceType } : null,
+    cimasProduct ? { label: "Current Product", value: cimasProduct } : null,
+    packageName ? { label: "Package", value: packageName } : null,
+    paymentType ? { label: "Payment Type", value: paymentType.replace(/_/g, " ") } : null,
+    months ? { label: "Months", value: months } : null,
+    digitalOrder.receiptNumber ? { label: "Receipt Number", value: digitalOrder.receiptNumber } : null,
+  ].filter((row): row is { label: string; value: string } => Boolean(row));
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -61,9 +119,9 @@ export default async function AccountDigitalOrderPage({ params }: PageProps) {
                 <Badge variant="secondary">Digital order</Badge>
                 <Badge variant="outline" className="uppercase">{digitalOrder.serviceId}</Badge>
               </div>
-              <h1 className="mt-2 text-3xl font-bold">Digital Purchase Detail</h1>
+              <h1 className="mt-2 text-3xl font-bold">Digital Purchase Details</h1>
               <p className="text-sm text-muted-foreground">
-                Reference {digitalOrder.orderReference} • Updated {formatDate(digitalOrder.updatedAt)}
+                Purchase reference {digitalOrder.orderReference} • Updated {formatDate(digitalOrder.updatedAt)}
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
@@ -77,22 +135,21 @@ export default async function AccountDigitalOrderPage({ params }: PageProps) {
           <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
             <Card>
               <CardHeader>
-                <CardTitle>Fulfilment status</CardTitle>
+                <CardTitle>Purchase status</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex flex-wrap gap-2">
-                  <Badge variant={digitalOrder.provisioningStatus === "completed" ? "secondary" : digitalOrder.provisioningStatus === "manual_review" || digitalOrder.provisioningStatus === "failed" ? "destructive" : "outline"}>
-                    {digitalOrder.provisioningStatus}
+                  <Badge variant={digitalOrder.provisioningStatus === "completed" ? "secondary" : digitalOrder.provisioningStatus === "failed" ? "destructive" : "outline"}>
+                    {formatStatus(digitalOrder.provisioningStatus)}
                   </Badge>
-                  <Badge variant="outline">{digitalOrder.provider}</Badge>
                 </div>
                 <div className="grid gap-3 text-sm md:grid-cols-2">
                   <div>
                     <div className="text-muted-foreground">Service</div>
-                    <div className="font-medium uppercase">{digitalOrder.serviceId}</div>
+                    <div className="font-medium">{serviceName}</div>
                   </div>
                   <div>
-                    <div className="text-muted-foreground">Account Reference</div>
+                    <div className="text-muted-foreground">{accountLabel}</div>
                     <div className="font-medium">{digitalOrder.accountReference}</div>
                   </div>
                   <div>
@@ -122,9 +179,9 @@ export default async function AccountDigitalOrderPage({ params }: PageProps) {
                   </div>
                 ) : null}
 
-                {!digitalOrder.token && (digitalOrder.provisioningStatus === "manual_review" || digitalOrder.provisioningStatus === "failed") ? (
+                {!digitalOrder.token && digitalOrder.provisioningStatus === "failed" ? (
                   <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
-                    This purchase needs manual review. Support has the provider response and can continue investigating from the admin digital operations console.
+                    This purchase could not be completed. Please contact support with your purchase reference if you need help.
                   </div>
                 ) : null}
               </CardContent>
@@ -133,11 +190,11 @@ export default async function AccountDigitalOrderPage({ params }: PageProps) {
             <div className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Commerce order</CardTitle>
+                  <CardTitle>Payment summary</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3 text-sm">
                   <div>
-                    <div className="text-muted-foreground">Order Reference</div>
+                    <div className="text-muted-foreground">Purchase Reference</div>
                     <div className="font-medium">{order.id}</div>
                   </div>
                   <div>
@@ -145,8 +202,12 @@ export default async function AccountDigitalOrderPage({ params }: PageProps) {
                     <div className="font-medium">{documentState.statusLabel}</div>
                   </div>
                   <div>
-                    <div className="text-muted-foreground">Customer</div>
-                    <div className="font-medium">{order.customerName}</div>
+                    <div className="text-muted-foreground">Amount</div>
+                    <CurrencyAmount
+                      amount={order.totalUsd ?? order.total}
+                      sourceCurrencyCode={typeof order.totalUsd === "number" ? "840" : (order.currencyCode === "924" ? "924" : "840")}
+                      className="font-medium text-foreground"
+                    />
                   </div>
                   <div className="flex flex-wrap gap-3 pt-2">
                     {documentState.kind === "receipt" ? (
@@ -165,15 +226,18 @@ export default async function AccountDigitalOrderPage({ params }: PageProps) {
                 </CardContent>
               </Card>
 
-              {digitalOrder.resultPayload ? (
+              {detailRows.length > 0 ? (
                 <Card>
                   <CardHeader>
-                    <CardTitle>Provider details</CardTitle>
+                    <CardTitle>Purchase details</CardTitle>
                   </CardHeader>
-                  <CardContent>
-                    <pre className="max-h-96 overflow-auto rounded-xl border bg-muted p-3 text-xs">
-                      {JSON.stringify(digitalOrder.resultPayload, null, 2)}
-                    </pre>
+                  <CardContent className="space-y-3 text-sm">
+                    {detailRows.map((row) => (
+                      <div key={row.label}>
+                        <div className="text-muted-foreground">{row.label}</div>
+                        <div className="font-medium">{row.value}</div>
+                      </div>
+                    ))}
                   </CardContent>
                 </Card>
               ) : null}

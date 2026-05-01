@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { verifyCustomerSession } from "@/lib/auth";
-import { createCustomerRefundRequest } from "@/server/orders";
+import { createCustomerRefundRequest, RefundRequestUnavailableError } from "@/server/orders";
 
 const requestSchema = z.object({
   detail: z.string().trim().min(10).max(500),
@@ -42,6 +42,13 @@ export async function POST(req: Request, context: RouteContext) {
     });
   } catch (error) {
     console.error("Failed to create refund request:", error);
+    if (error instanceof RefundRequestUnavailableError) {
+      return NextResponse.json(
+        { success: false, error: error.message },
+        { status: error.status },
+      );
+    }
+
     return NextResponse.json(
       { success: false, error: error instanceof Error ? error.message : "Unable to submit refund request." },
       { status: 500 },

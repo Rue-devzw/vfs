@@ -105,7 +105,7 @@ describe("buildReconciliationExceptions", () => {
           provider: "egress",
           accountReference: "123",
           customerEmail: "ada@example.com",
-          provisioningStatus: "manual_review",
+          provisioningStatus: "failed",
           createdAt: "2026-04-18T07:00:00.000Z",
           updatedAt: "2026-04-18T07:00:00.000Z",
         },

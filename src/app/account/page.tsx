@@ -74,11 +74,14 @@ export default async function AccountPage() {
                 {orders.length === 0 ? (
                   <p className="text-sm text-muted-foreground">No orders available for this account yet.</p>
                 ) : orders.map(order => {
+                  const linkedDigitalOrder = digitalOrders.find(digitalOrder => digitalOrder.orderReference === order.id);
+                  const isSuccessfulDigitalOrder = linkedDigitalOrder?.provisioningStatus === "completed";
                   const hasRefundCase = refunds.some(refund => refund.orderReference === order.id && !["closed", "rejected"].includes(refund.status));
                   const orderRefunds = refunds.filter(refund => refund.orderReference === order.id);
                   const documentState = getOrderDocumentState({
                     order,
                     refunds: orderRefunds,
+                    digitalProvisioningStatus: linkedDigitalOrder?.provisioningStatus,
                   });
                   return (
                   <div key={order.id} className="rounded-2xl border p-4">
@@ -113,11 +116,13 @@ export default async function AccountPage() {
                       <Link href={`/api/orders/${encodeURIComponent(order.id)}/report?format=invoice-pdf`} target="_blank">
                         <Button size="sm" variant="outline">Invoice PDF</Button>
                       </Link>
-                      <RefundRequestCard
-                        orderReference={order.id}
-                        existingRefund={hasRefundCase}
-                        disabled={order.status === "pending"}
-                      />
+                      {!isSuccessfulDigitalOrder ? (
+                        <RefundRequestCard
+                          orderReference={order.id}
+                          existingRefund={hasRefundCase}
+                          disabled={order.status === "pending"}
+                        />
+                      ) : null}
                     </div>
                   </div>
                 )})}

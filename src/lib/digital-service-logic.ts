@@ -1,13 +1,10 @@
 import {
   getDigitalProviderAdapter,
   DigitalProviderUnavailableError,
-  type ProviderValidationResult,
 } from "@/lib/digital-providers";
-import { EgressGatewayError } from "@/lib/payments/egress";
-import { SmilePayGatewayError } from "@/lib/payments/smile-pay";
 import type { CardPaymentDetails } from "@/lib/payments/types";
 
-export type DigitalServiceType = "ZESA" | "AIRTIME" | "DSTV" | "COUNCILS" | "NYARADZO" | "INTERNET";
+export type DigitalServiceType = "ZESA" | "AIRTIME" | "DSTV" | "COUNCILS" | "NYARADZO" | "CIMAS" | "INTERNET";
 
 export interface DigitalPurchasePayload {
   serviceType: DigitalServiceType;
@@ -39,36 +36,6 @@ function ensureAdapter(serviceType: DigitalServiceType) {
   return resolved;
 }
 
-function buildManualValidationFallback(
-  serviceType: DigitalServiceType,
-  accountNumber: string,
-  fallbackReason?: string,
-): ProviderValidationResult {
-  const { config } = ensureAdapter(serviceType);
-
-  return {
-    success: true,
-    accountName: "Manual verification pending",
-    accountNumber,
-    billerName: config.label,
-    raw: {
-      mode: "manual_review",
-      accountName: "Manual verification pending",
-      accountNumber,
-      billerName: config.label,
-      fallbackReason,
-    },
-  };
-}
-
-function isRecoverableValidationError(error: unknown) {
-  return (
-    error instanceof DigitalProviderUnavailableError
-    || error instanceof EgressGatewayError
-    || error instanceof SmilePayGatewayError
-  );
-}
-
 export const DigitalService = {
   validateAccount: async (serviceType: DigitalServiceType, accountNumber: string, serviceMeta?: Record<string, string>) => {
     if (!accountNumber) throw new Error("Account number is required.");
@@ -77,13 +44,6 @@ export const DigitalService = {
     try {
       return await adapter.validateAccount(config, accountNumber, serviceMeta);
     } catch (error) {
-      if (config.validationFallbackMode === "manual" && isRecoverableValidationError(error)) {
-        return buildManualValidationFallback(
-          serviceType,
-          accountNumber,
-          error instanceof Error ? error.message : "Provider validation failed.",
-        );
-      }
       if (error instanceof DigitalProviderUnavailableError) {
         throw new DigitalServiceUnavailableError(error.message, error.status);
       }

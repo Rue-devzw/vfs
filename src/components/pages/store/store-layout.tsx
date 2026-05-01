@@ -268,12 +268,12 @@ export function StoreLayout() {
             <Card className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border-none bg-[#fdf2f2] shadow-xl transition-all hover:shadow-2xl lg:h-[420px]">
               <div className="relative h-48 w-full overflow-hidden sm:h-56 lg:h-48">
                 <Image
-                  src="/images/Zesa.webp"
-                  alt="ZESA Token"
+                  src="/images/zetdc-logo.png"
+                  alt="ZETDC logo"
                   fill
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   priority
-                  className="object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="object-contain p-8 transition-transform duration-500 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#fdf2f2] to-transparent" />
               </div>

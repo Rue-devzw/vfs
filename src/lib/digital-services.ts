@@ -1,9 +1,12 @@
+import { DSTV_ADD_ON_PACKAGES, DSTV_PRIMARY_PACKAGES } from "./dstv-packages";
+
 export type DigitalServiceId =
   | "zesa"
   | "airtime"
   | "dstv"
   | "councils"
   | "nyaradzo"
+  | "cimas"
   | "internet";
 
 export type DigitalServiceStatus = "active" | "coming_soon";
@@ -14,6 +17,11 @@ export type DigitalServiceField = {
   type?: "text" | "number";
   required?: boolean;
   helpText?: string;
+  options?: Array<{
+    label: string;
+    value: string;
+    description?: string;
+  }>;
 };
 
 export type DigitalServiceConfig = {
@@ -21,11 +29,10 @@ export type DigitalServiceConfig = {
   label: string;
   description: string;
   accountLabel: string;
-  provider: "smile-pay-utilities" | "smile-pay-egress" | "smile-pay-manual-bills" | "unavailable";
+  provider: "smile-pay-utilities" | "smile-pay-egress" | "unavailable";
   status: DigitalServiceStatus;
-  validationMode: "provider" | "manual" | "unsupported";
-  purchaseMode: "provider" | "manual" | "unsupported";
-  validationFallbackMode?: "manual";
+  validationMode: "provider" | "unsupported";
+  purchaseMode: "provider" | "unsupported";
   supportMessage?: string;
   formFields?: DigitalServiceField[];
 };
@@ -45,13 +52,13 @@ export const DIGITAL_SERVICES: Record<DigitalServiceId, DigitalServiceConfig> = 
   airtime: {
     id: "airtime",
     label: "Airtime & Data",
-    description: "Create a tracked airtime or data payment request and complete payment securely online.",
+    description: "Airtime and data payments are currently unavailable online.",
     accountLabel: "Phone Number",
-    provider: "smile-pay-manual-bills",
-    status: "active",
-    validationMode: "manual",
-    purchaseMode: "manual",
-    supportMessage: "Payment is processed online and the airtime or data request is queued for fulfilment confirmation after payment succeeds.",
+    provider: "unavailable",
+    status: "coming_soon",
+    validationMode: "unsupported",
+    purchaseMode: "unsupported",
+    supportMessage: "Airtime and data payments are temporarily unavailable.",
     formFields: [
       {
         id: "network",
@@ -76,20 +83,42 @@ export const DIGITAL_SERVICES: Record<DigitalServiceId, DigitalServiceConfig> = 
     status: "active",
     validationMode: "provider",
     purchaseMode: "provider",
-    validationFallbackMode: "manual",
-    supportMessage: "DStv validation and payment posting run through the EGRESS integration, with manual fallback only if the provider fails.",
+    supportMessage: "DStv validation and payment posting run through the EGRESS integration.",
     formFields: [
       {
-        id: "bouquet",
-        label: "Bouquet",
-        placeholder: "e.g. Compact Plus",
+        id: "paymentType",
+        label: "Payment Type",
         required: true,
+        placeholder: "Select payment type",
+        options: [
+          { label: "Bouquet Payment", value: "BOUQUET" },
+          { label: "Top-Up Payment", value: "TOPUP" },
+        ],
       },
       {
-        id: "addons",
-        label: "Add-ons",
-        placeholder: "Optional add-ons separated by |",
-        helpText: "Example: HDPVR|ASIAPK",
+        id: "bouquet",
+        label: "DSTV Package",
+        placeholder: "Select bouquet package",
+        options: DSTV_PRIMARY_PACKAGES.map((item) => ({
+          label: `${item.displayName} (${item.code}) - ${item.currency} ${item.amount.toFixed(2)}`,
+          value: item.code,
+        })),
+      },
+      {
+        id: "addon",
+        label: "Add-On Package",
+        placeholder: "Select add-on package",
+        options: DSTV_ADD_ON_PACKAGES.map((item) => ({
+          label: `${item.displayName} (${item.code}) - ${item.currency} ${item.amount.toFixed(2)}`,
+          value: item.code,
+        })),
+      },
+      {
+        id: "months",
+        label: "Number of Months",
+        type: "number",
+        placeholder: "e.g. 1",
+        helpText: "Required for bouquet payments. Top-up payments use TOPUP as the provider detail.",
       },
     ],
   },
@@ -102,8 +131,7 @@ export const DIGITAL_SERVICES: Record<DigitalServiceId, DigitalServiceConfig> = 
     status: "active",
     validationMode: "provider",
     purchaseMode: "provider",
-    validationFallbackMode: "manual",
-    supportMessage: "Council payments currently use the City of Harare EGRESS integration, with manual fallback only if the provider fails.",
+    supportMessage: "Council payments currently use the City of Harare EGRESS integration.",
   },
   nyaradzo: {
     id: "nyaradzo",
@@ -114,8 +142,7 @@ export const DIGITAL_SERVICES: Record<DigitalServiceId, DigitalServiceConfig> = 
     status: "active",
     validationMode: "provider",
     purchaseMode: "provider",
-    validationFallbackMode: "manual",
-    supportMessage: "Nyaradzo policy validation and payment posting run through the EGRESS integration, with manual fallback only if the provider fails.",
+    supportMessage: "Nyaradzo policy validation and payment posting run through the EGRESS integration.",
     formFields: [
       {
         id: "months",
@@ -126,16 +153,39 @@ export const DIGITAL_SERVICES: Record<DigitalServiceId, DigitalServiceConfig> = 
       },
     ],
   },
+  cimas: {
+    id: "cimas",
+    label: "CIMAS",
+    description: "Validate a CIMAS member or payer account and post medical aid payments online.",
+    accountLabel: "Reference Number",
+    provider: "smile-pay-egress",
+    status: "active",
+    validationMode: "provider",
+    purchaseMode: "provider",
+    supportMessage: "CIMAS account validation and payment posting are temporarily unavailable.",
+    formFields: [
+      {
+        id: "referenceType",
+        label: "Reference Type",
+        required: true,
+        placeholder: "Select reference type",
+        options: [
+          { label: "Member", value: "M" },
+          { label: "Payer", value: "E" },
+        ],
+      },
+    ],
+  },
   internet: {
     id: "internet",
     label: "Internet Providers",
-    description: "Pay ISP bills online with tracked requests that are verified manually after payment confirmation.",
+    description: "Internet provider payments are currently unavailable online.",
     accountLabel: "Account Number",
-    provider: "smile-pay-manual-bills",
-    status: "active",
-    validationMode: "manual",
-    purchaseMode: "manual",
-    supportMessage: "Internet bill payments are accepted online and queued for manual fulfilment verification.",
+    provider: "unavailable",
+    status: "coming_soon",
+    validationMode: "unsupported",
+    purchaseMode: "unsupported",
+    supportMessage: "Internet provider payments are temporarily unavailable.",
   },
 };
 

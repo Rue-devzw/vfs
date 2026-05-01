@@ -34,12 +34,21 @@ interface StepPaymentProps {
     onBack: () => void;
     isLoading: boolean;
     currencyCode: CurrencyCode;
+    allowedCurrencyCodes?: CurrencyCode[];
+    currencyRestrictionMessage?: string;
 }
 
 const enabledPaymentMethodOptions = getEnabledPaymentMethodOptions();
 const defaultPaymentMethod = getDefaultPaymentMethod();
 
-export function StepPayment({ onPay, onBack, isLoading, currencyCode }: StepPaymentProps) {
+export function StepPayment({
+    onPay,
+    onBack,
+    isLoading,
+    currencyCode,
+    allowedCurrencyCodes,
+    currencyRestrictionMessage,
+}: StepPaymentProps) {
     const [amount, setAmount] = useState("");
     const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(defaultPaymentMethod);
     const [mobile, setMobile] = useState("");
@@ -50,6 +59,7 @@ export function StepPayment({ onPay, onBack, isLoading, currencyCode }: StepPaym
     const [error, setError] = useState("");
     const minimumAmount = convertFromUsd(2, currencyCode);
     const currencyMeta = getCurrencyMeta(currencyCode);
+    const currencyAllowed = !allowedCurrencyCodes?.length || allowedCurrencyCodes.includes(currencyCode);
 
     useEffect(() => {
         if (!enabledPaymentMethodOptions.some(option => option.id === paymentMethod)) {
@@ -62,6 +72,10 @@ export function StepPayment({ onPay, onBack, isLoading, currencyCode }: StepPaym
         const value = parseFloat(amount);
         if (isNaN(value) || value < minimumAmount) {
             setError(`Minimum purchase amount is ${formatMoney(minimumAmount, currencyCode)}`);
+            return;
+        }
+        if (!currencyAllowed) {
+            setError(currencyRestrictionMessage || "This meter does not accept the selected payment currency.");
             return;
         }
         if (requiresMobileNumber(paymentMethod) && !mobile) {
@@ -103,7 +117,9 @@ export function StepPayment({ onPay, onBack, isLoading, currencyCode }: StepPaym
                     <div className="space-y-2">
                         <Label htmlFor="amount">Amount ({currencyMeta.label})</Label>
                         <div className="relative">
-                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground font-bold">{currencyMeta.symbol.trim()}</span>
+                            <span className="pointer-events-none absolute left-3 top-1/2 min-w-10 -translate-y-1/2 text-sm font-bold text-muted-foreground">
+                                {currencyMeta.symbol.trim()}
+                            </span>
                             <Input
                                 id="amount"
                                 type="number"
@@ -115,11 +131,16 @@ export function StepPayment({ onPay, onBack, isLoading, currencyCode }: StepPaym
                                     setAmount(e.target.value);
                                     setError("");
                                 }}
-                                className="pl-7 text-lg font-bold"
+                                className="pl-16 text-lg font-bold"
                                 disabled={isLoading}
                                 autoFocus
                             />
                         </div>
+                        {!currencyAllowed && (
+                            <p className="text-xs text-amber-700">
+                                {currencyRestrictionMessage || "This meter does not accept the selected payment currency."} Use the navbar currency switcher to change currency before continuing.
+                            </p>
+                        )}
                     </div>
 
                     <div className="space-y-3">
@@ -233,7 +254,7 @@ export function StepPayment({ onPay, onBack, isLoading, currencyCode }: StepPaym
                     <Button type="button" variant="outline" onClick={onBack} disabled={isLoading} className="flex-1 h-12">
                         Back
                     </Button>
-                    <Button type="submit" disabled={isLoading || !amount} className="flex-[2] h-12 text-lg shadow-lg">
+                    <Button type="submit" disabled={isLoading || !amount || !currencyAllowed} className="flex-[2] h-12 text-lg shadow-lg">
                         {isLoading ? "Processing..." : "Continue to Secure Checkout"}
                     </Button>
                 </div>

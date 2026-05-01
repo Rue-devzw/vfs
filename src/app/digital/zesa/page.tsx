@@ -27,13 +27,13 @@ export default function ZesaPage() {
                     <div className="flex flex-col gap-6">
                         <div className="relative aspect-video overflow-hidden rounded-2xl bg-muted shadow-lg md:aspect-square lg:aspect-video">
                             <Image
-                                src="/images/Zesa.webp"
-                                alt="ZESA Token"
+                                src="/images/zetdc-logo.png"
+                                alt="ZETDC logo"
                                 fill
-                                className="object-cover"
+                                className="object-contain p-8"
                                 priority
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/55 to-transparent" />
                             <div className="absolute bottom-4 left-4 text-white">
                                 <p className="text-sm font-medium opacity-90">Instant Top-up</p>
                                 <h2 className="text-xl font-bold">Safe & Reliable</h2>

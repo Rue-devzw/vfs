@@ -6,7 +6,7 @@ import { requireStaffPermission } from "../auth";
 import { createAuditLog } from "./audit";
 import { queueNotification } from "./notifications";
 
-export type DigitalOrderStatus = "pending" | "processing" | "completed" | "failed" | "manual_review";
+export type DigitalOrderStatus = "pending" | "processing" | "completed" | "failed";
 
 export type DigitalOrderRecord = {
   id: string;
@@ -14,14 +14,15 @@ export type DigitalOrderRecord = {
   serviceId: DigitalServiceId;
   provider: string;
   accountReference: string;
-  customerEmail?: string;
-  customerName?: string;
-  validationSnapshot?: Record<string, unknown>;
+  customerEmail?: string | null;
+  customerName?: string | null;
+  validationSnapshot?: Record<string, unknown> | null;
   provisioningStatus: DigitalOrderStatus;
   resultPayload?: Record<string, unknown>;
   token?: string;
   receiptNumber?: string;
   completedAt?: string;
+  redactedAt?: string;
   createdAt: string;
   updatedAt: string;
 };
@@ -55,14 +56,15 @@ export async function upsertDigitalOrder(input: {
   serviceId: DigitalServiceId;
   provider: string;
   accountReference: string;
-  customerEmail?: string;
-  customerName?: string;
-  validationSnapshot?: Record<string, unknown>;
+  customerEmail?: string | null;
+  customerName?: string | null;
+  validationSnapshot?: Record<string, unknown> | null;
   provisioningStatus: DigitalOrderStatus;
   resultPayload?: Record<string, unknown>;
   token?: string;
   receiptNumber?: string;
   completedAt?: string;
+  redactCustomerData?: boolean;
 }) {
   if (!isFirebaseConfigured()) {
     return null;
@@ -79,15 +81,16 @@ export async function upsertDigitalOrder(input: {
     orderReference: input.orderReference,
     serviceId: input.serviceId,
     provider: input.provider,
-    accountReference: input.accountReference,
-    customerEmail: input.customerEmail ?? current?.customerEmail,
-    customerName: input.customerName ?? current?.customerName,
-    validationSnapshot: input.validationSnapshot ?? current?.validationSnapshot,
+    accountReference: input.redactCustomerData ? "redacted" : input.accountReference,
+    customerEmail: input.redactCustomerData ? null : (input.customerEmail ?? current?.customerEmail),
+    customerName: input.redactCustomerData ? null : (input.customerName ?? current?.customerName),
+    validationSnapshot: input.redactCustomerData ? null : (input.validationSnapshot ?? current?.validationSnapshot),
     provisioningStatus: input.provisioningStatus,
     resultPayload: input.resultPayload ?? current?.resultPayload,
     token: input.token ?? current?.token,
     receiptNumber: input.receiptNumber ?? current?.receiptNumber,
     completedAt: input.completedAt ?? current?.completedAt,
+    redactedAt: input.redactCustomerData ? timestamp : undefined,
     createdAt: current?.createdAt ?? timestamp,
     updatedAt: timestamp,
   } satisfies Omit<DigitalOrderRecord, "id">), { merge: true });
@@ -214,7 +217,7 @@ export async function retryDigitalOrderFulfilment(orderReference: string) {
       completedAt: new Date().toISOString(),
     });
 
-    await setOrderStatus(orderReference, "SUCCESS", {
+    await setOrderStatus(orderReference, "DELIVERED", {
       ...(order.paymentMeta ?? {}),
       token: result.token,
       units: result.units,
@@ -222,6 +225,7 @@ export async function retryDigitalOrderFulfilment(orderReference: string) {
       vendedAt: new Date().toISOString(),
       accountNumber: current.accountReference,
       serviceType: toServiceType(current.serviceId),
+      providerGatewayStatus: "SUCCESS",
     });
 
     await createAuditLog({
@@ -236,22 +240,24 @@ export async function retryDigitalOrderFulfilment(orderReference: string) {
       },
     });
 
-    await queueNotification({
-      eventKey: `digital:${orderReference}:completed`,
-      type: "digital_fulfilment_completed",
-      audience: "customer",
-      customerEmail: current.customerEmail,
-      customerName: current.customerName,
-      orderReference,
-      channels: ["email", "in_app"],
-      subject: `Your ${current.serviceId.toUpperCase()} fulfilment is complete`,
-      body: `${current.serviceId.toUpperCase()} fulfilment completed successfully.${result.token ? ` Token: ${result.token}.` : ""}${result.receiptNumber ? ` Receipt: ${result.receiptNumber}.` : ""}`,
-      meta: {
-        serviceId: current.serviceId,
-        receiptNumber: result.receiptNumber,
-        token: result.token,
-      },
-    });
+    if (current.customerEmail) {
+      await queueNotification({
+        eventKey: `digital:${orderReference}:completed`,
+        type: "digital_fulfilment_completed",
+        audience: "customer",
+        customerEmail: current.customerEmail,
+        customerName: current.customerName ?? undefined,
+        orderReference,
+        channels: ["email", "in_app"],
+        subject: `Your ${current.serviceId.toUpperCase()} fulfilment is complete`,
+        body: `${current.serviceId.toUpperCase()} fulfilment completed successfully.${result.token ? ` Token: ${result.token}.` : ""}${result.receiptNumber ? ` Receipt: ${result.receiptNumber}.` : ""}`,
+        meta: {
+          serviceId: current.serviceId,
+          receiptNumber: result.receiptNumber,
+          token: result.token,
+        },
+      });
+    }
 
     return { success: true, status: "completed" as const };
   } catch (error) {
@@ -260,10 +266,8 @@ export async function retryDigitalOrderFulfilment(orderReference: string) {
       serviceId: current.serviceId,
       provider: current.provider,
       accountReference: current.accountReference,
-      customerEmail: current.customerEmail,
-      customerName: current.customerName,
-      validationSnapshot: current.validationSnapshot,
-      provisioningStatus: "manual_review",
+      provisioningStatus: "failed",
+      redactCustomerData: true,
       resultPayload: {
         ...(current.resultPayload ?? {}),
         error: error instanceof Error ? error.message : "Digital fulfilment failed.",
@@ -276,22 +280,6 @@ export async function retryDigitalOrderFulfilment(orderReference: string) {
       targetType: "digital_order",
       targetId: current.id,
       detail: `Digital order ${orderReference} reprocess failed.`,
-      meta: {
-        serviceId: current.serviceId,
-        error: error instanceof Error ? error.message : "Digital fulfilment failed.",
-      },
-    });
-
-    await queueNotification({
-      eventKey: `digital:${orderReference}:issue`,
-      type: "digital_fulfilment_issue",
-      audience: "customer",
-      customerEmail: current.customerEmail,
-      customerName: current.customerName,
-      orderReference,
-      channels: ["email", "in_app"],
-      subject: `Your ${current.serviceId.toUpperCase()} fulfilment needs review`,
-      body: "We retried your digital fulfilment, but it still needs manual review. Support can now follow up with the recorded provider response.",
       meta: {
         serviceId: current.serviceId,
         error: error instanceof Error ? error.message : "Digital fulfilment failed.",
@@ -328,14 +316,12 @@ export async function sweepStaleDigitalOrders(limit = 25, staleMinutes = 30) {
       serviceId: order.serviceId,
       provider: order.provider,
       accountReference: order.accountReference,
-      customerEmail: order.customerEmail,
-      customerName: order.customerName,
-      validationSnapshot: order.validationSnapshot,
-      provisioningStatus: "manual_review",
+      provisioningStatus: "failed",
+      redactCustomerData: true,
       resultPayload: {
         ...(order.resultPayload ?? {}),
-        escalatedAt: new Date().toISOString(),
-        escalationReason: `Digital fulfilment remained ${order.provisioningStatus} for more than ${staleMinutes} minutes.`,
+        failedAt: new Date().toISOString(),
+        failureReason: `Digital fulfilment remained ${order.provisioningStatus} for more than ${staleMinutes} minutes.`,
       },
       token: order.token,
       receiptNumber: order.receiptNumber,
@@ -346,7 +332,7 @@ export async function sweepStaleDigitalOrders(limit = 25, staleMinutes = 30) {
       action: "digital_escalated",
       targetType: "digital_order",
       targetId: order.id,
-      detail: `Digital order ${order.orderReference} escalated to manual review after exceeding the ${staleMinutes}-minute SLA.`,
+      detail: `Digital order ${order.orderReference} marked failed after exceeding the ${staleMinutes}-minute SLA.`,
       meta: {
         orderReference: order.orderReference,
         serviceId: order.serviceId,
@@ -359,24 +345,6 @@ export async function sweepStaleDigitalOrders(limit = 25, staleMinutes = 30) {
         label: "Operations Runner",
       },
     });
-
-    if (order.customerEmail) {
-      await queueNotification({
-        eventKey: `digital:${order.orderReference}:sla_escalated`,
-        type: "digital_fulfilment_issue",
-        audience: "customer",
-        customerEmail: order.customerEmail,
-        customerName: order.customerName,
-        orderReference: order.orderReference,
-        channels: ["email", "in_app"],
-        subject: `Your ${order.serviceId.toUpperCase()} fulfilment is under review`,
-        body: "Your payment succeeded, but fulfilment is taking longer than expected. Our operations team has queued this order for manual review and will follow up if anything else is needed.",
-        meta: {
-          serviceId: order.serviceId,
-          escalationReason: "stale_digital_order",
-        },
-      });
-    }
 
     escalated += 1;
   }

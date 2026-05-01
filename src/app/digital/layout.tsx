@@ -51,7 +51,7 @@ export default function DigitalServicesLayout({
                                 <div className="relative w-[450px] aspect-square rounded-full flex items-center justify-center">
                                     <div className="absolute inset-0 bg-gradient-to-tr from-primary/30 to-green-500/20 rounded-full blur-[60px] animate-pulse"></div>
                                     <Image
-                                        src="/images/Zesa.webp"
+                                        src="/images/zetdc-logo.png"
                                         alt="Valleyfarm Digital"
                                         width={350}
                                         height={350}
