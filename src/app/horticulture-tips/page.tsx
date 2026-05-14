@@ -6,8 +6,16 @@ import { BookMarked } from "lucide-react";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Horticulture Tips | Valley Farm Secrets",
+  title: "Horticulture Tips",
   description: "Explore our knowledge base for farmers and producers. Curated tips for successful farming, soil prep, and pest control.",
+  alternates: {
+    canonical: "/horticulture-tips",
+  },
+  openGraph: {
+    title: "Horticulture Tips | Valley Farm Secrets",
+    description: "Explore our knowledge base for farmers and producers. Curated tips for successful farming, soil prep, and pest control.",
+    url: "/horticulture-tips",
+  },
 };
 
 export default function HorticultureTipsPage() {

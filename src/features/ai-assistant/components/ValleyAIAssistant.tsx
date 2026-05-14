@@ -63,7 +63,7 @@ export function ValleyAIAssistant() {
                 <span>{isOpen ? "Hide Valley AI" : "Chat with Valley AI"}</span>
                 {hasUnread && !isOpen ? (
                     <>
-                        <span className="sr-only">Valley AI has a fresh update for you</span>
+                        <span className="sr-only">Unread assistant message</span>
                         <span
                             className="absolute -right-1.5 -top-1.5 h-3 w-3 rounded-full bg-emerald-400"
                             aria-hidden="true"

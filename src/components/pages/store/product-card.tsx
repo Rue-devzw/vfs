@@ -1,12 +1,14 @@
 "use client";
 
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Product } from '@/app/store/data';
 import { findProductImagePlaceholder } from '@/lib/placeholder-images';
 import { useCart } from './cart-context';
-import { ShoppingCart } from 'lucide-react';
+import { Check, ShoppingCart } from 'lucide-react';
+import { ToastAction } from '@/components/ui/toast';
 import { useToast } from '@/hooks/use-toast';
 import { convertFromUsd, formatMoney } from '@/lib/currency';
 import { useCurrency } from '@/components/currency/currency-provider';
@@ -39,6 +41,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { dispatch } = useCart();
   const { currencyCode } = useCurrency();
   const { toast } = useToast();
+  const [justAdded, setJustAdded] = useState(false);
   const image = findProductImagePlaceholder(product.image, product.name);
 
   const isOutOfStock = !product.availableForSale;
@@ -51,11 +54,26 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     }
 
     dispatch({ type: 'ADD_ITEM', payload: product });
+    setJustAdded(true);
     toast({
-        title: "Added to cart",
-        description: `${product.name} has been added to your cart.`,
+      title: "Added to cart",
+      description: `${product.name} is waiting in your cart.`,
+      action: (
+        <ToastAction
+          altText="View cart"
+          onClick={() => window.dispatchEvent(new Event("vfs:open-cart"))}
+        >
+          View cart
+        </ToastAction>
+      ),
     });
   };
+
+  useEffect(() => {
+    if (!justAdded) return;
+    const timeout = window.setTimeout(() => setJustAdded(false), 1400);
+    return () => window.clearTimeout(timeout);
+  }, [justAdded]);
 
   return (
     <Card className="flex flex-col h-full overflow-hidden transform transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl">
@@ -100,8 +118,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           onClick={handleAddToCart}
           disabled={isOutOfStock}
         >
-          <ShoppingCart className="mr-2 h-4 w-4" />
-          {isOutOfStock ? "Unavailable" : "Add to Cart"}
+          {justAdded ? <Check className="mr-2 h-4 w-4" /> : <ShoppingCart className="mr-2 h-4 w-4" />}
+          {isOutOfStock ? "Unavailable" : justAdded ? "Added" : "Add to Cart"}
         </Button>
       </CardFooter>
     </Card>

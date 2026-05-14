@@ -4,7 +4,6 @@ import { DigitalService, DigitalServiceUnavailableError } from "@/lib/digital-se
 import { getDigitalServiceConfig } from "@/lib/digital-services";
 import {
     EgressGatewayError,
-    getEgressServiceUnavailableMessage,
     isEgressServiceUnavailable,
 } from "@/lib/payments/egress";
 import { SmilePayGatewayError } from "@/lib/payments/smile-pay";
@@ -14,6 +13,16 @@ const validateSchema = z.object({
     accountNumber: z.string().min(1),
     serviceMeta: z.record(z.string()).optional(),
 });
+
+const REMOVED_SERVICE_TYPES = new Set(["COUNCILS", "INTERNET"]);
+
+function digitalProviderUnavailableMessage(context: string) {
+    return `${context} is temporarily unavailable because the provider gateway is not responding. Please try again shortly.`;
+}
+
+function providerValidationFailureMessage(serviceLabel: string) {
+    return `${serviceLabel} validation could not be completed by the provider. Please check the details and try again.`;
+}
 
 export async function POST(req: Request) {
     let serviceLabel = "Digital service";
@@ -27,6 +36,12 @@ export async function POST(req: Request) {
         }
 
         const { serviceType, accountNumber, serviceMeta } = validation.data;
+        if (REMOVED_SERVICE_TYPES.has(serviceType)) {
+            return NextResponse.json(
+                { success: false, error: "This digital payment service is not available." },
+                { status: 404 },
+            );
+        }
         const serviceConfig = getDigitalServiceConfig(serviceType.toLowerCase());
         if (serviceConfig) {
             serviceLabel = serviceConfig.label;
@@ -61,7 +76,7 @@ export async function POST(req: Request) {
                 return NextResponse.json(
                     {
                         success: false,
-                        error: getEgressServiceUnavailableMessage(`${serviceLabel} validation`),
+                        error: digitalProviderUnavailableMessage(`${serviceLabel} validation`),
                         code: "SERVICE_UNAVAILABLE",
                         gatewayStatus: error.status,
                     },
@@ -71,7 +86,7 @@ export async function POST(req: Request) {
             return NextResponse.json(
                 {
                     success: false,
-                    error: error.message,
+                    error: providerValidationFailureMessage(serviceLabel),
                     code: "PROVIDER_VALIDATION_FAILED",
                     gatewayStatus: error.status,
                 },

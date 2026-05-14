@@ -7,8 +7,16 @@ import { PartnerForm } from "@/components/pages/partnership/partner-form";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Become a Partner | Valley Farm Secrets",
+  title: "Become a Partner",
   description: "Partner with us to support food security, farmer development, and youth employment in Zimbabwe. Let's make an impact together.",
+  alternates: {
+    canonical: "/become-a-partner",
+  },
+  openGraph: {
+    title: "Become a Partner | Valley Farm Secrets",
+    description: "Partner with us to support food security, farmer development, and youth employment in Zimbabwe. Let's make an impact together.",
+    url: "/become-a-partner",
+  },
 };
 
 const impactAreas = [
@@ -61,21 +69,33 @@ export default function BecomeAPartnerPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
-      <main className="flex-grow bg-background py-12 md:py-20">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="mx-auto max-w-4xl">
-            {/* Hero/Intro Section */}
-            <div className="text-center">
-              <div className="inline-flex rounded-full bg-primary/10 p-4">
-                <Handshake className="h-10 w-10 text-primary" />
-              </div>
-              <h1 className="mt-4 font-headline text-4xl font-bold md:text-5xl">
-                Let’s Make an Impact Together
-              </h1>
-              <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-                At Valley Farm Secrets, we’re more than a food business — we are building healthy, empowered communities. Partner with us to support food security, farmer development, and youth employment in Zimbabwe.
-              </p>
+      <main className="flex-grow bg-background">
+        {/* Hero/Intro Section */}
+        <section className="relative overflow-hidden bg-black py-20 text-white md:py-28">
+          <video
+            className="absolute inset-0 h-full w-full object-cover opacity-60"
+            src="/videos/vegfarm2.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-background" />
+          <div className="container relative z-10 mx-auto px-4 text-center md:px-6">
+            <div className="inline-flex rounded-full bg-primary/20 p-4 backdrop-blur-sm">
+              <Handshake className="h-10 w-10 text-primary" />
             </div>
+            <h1 className="mt-6 font-headline text-4xl font-bold md:text-5xl lg:text-6xl text-white drop-shadow-md">
+              Let’s Make an Impact Together
+            </h1>
+            <p className="mx-auto mt-6 max-w-2xl text-lg text-white/90 drop-shadow md:text-xl">
+              At Valley Farm Secrets, we’re more than a food business — we are building healthy, empowered communities. Partner with us to support food security, farmer development, and youth employment in Zimbabwe.
+            </p>
+          </div>
+        </section>
+
+        <div className="container mx-auto px-4 md:px-6 py-12 md:py-20">
+          <div className="mx-auto max-w-4xl">
 
             {/* Impact Areas */}
             <section id="impact-areas" className="mt-16">

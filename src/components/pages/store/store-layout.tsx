@@ -41,6 +41,9 @@ import {
   SprayCan,
   Wheat,
   Zap,
+  Tv,
+  ShieldPlus,
+  HeartPulse,
 } from "lucide-react";
 
 export type SortOption = "name-asc" | "name-desc" | "price-asc" | "price-desc";
@@ -53,9 +56,8 @@ type HeroSlide = {
   category: Category;
   cta: string;
   href?: string;
+  videoUrl?: string;
 };
-
-
 
 const categoryIcons: Record<Category, LucideIcon> = {
   "Fruit & Veg": Carrot,
@@ -74,6 +76,77 @@ const categoryIcons: Record<Category, LucideIcon> = {
   "Salad Dressing": Salad,
   "Seasoning": ChefHat,
 };
+
+const utilitySlides = [
+  {
+    id: "zesa",
+    logo: "/images/zetdc-logo.png",
+    title: "Buy ZESA Tokens",
+    description: "Instant electricity top-up via Smile Pay. Safe and available 24/7.",
+    href: "/digital/zesa",
+    icon: Zap,
+    category: "Flash Utility",
+    bg: "bg-[#fdf2f2]",
+    bgGradient: "from-[#fdf2f2]",
+    textPrimary: "text-[#2d1515]",
+    textSecondary: "text-[#5a3a3a]",
+    btnBg: "bg-[#e31e24]",
+    btnHover: "hover:bg-[#c1191f]",
+    iconColor: "text-red-500",
+    btnText: "Buy Tokens",
+  },
+  {
+    id: "dstv",
+    logo: "/images/dstv-logo.png",
+    title: "Pay DStv",
+    description: "Validate your smartcard and pay your DStv subscription securely online.",
+    href: "/digital/dstv",
+    icon: Tv,
+    category: "Entertainment",
+    bg: "bg-[#f0f7ff]",
+    bgGradient: "from-[#f0f7ff]",
+    textPrimary: "text-[#0c4a6e]",
+    textSecondary: "text-[#0284c7]",
+    btnBg: "bg-[#0ea5e9]",
+    btnHover: "hover:bg-[#0284c7]",
+    iconColor: "text-blue-500",
+    btnText: "Pay Subscription",
+  },
+  {
+    id: "nyaradzo",
+    logo: "/images/nyaradzo-logo.png",
+    title: "Nyaradzo Premiums",
+    description: "Validate a policy and pay Nyaradzo premiums securely online.",
+    href: "/digital/nyaradzo",
+    icon: ShieldPlus,
+    category: "Insurance",
+    bg: "bg-[#f5f3ff]",
+    bgGradient: "from-[#f5f3ff]",
+    textPrimary: "text-[#4c1d95]",
+    textSecondary: "text-[#7c3aed]",
+    btnBg: "bg-[#8b5cf6]",
+    btnHover: "hover:bg-[#7c3aed]",
+    iconColor: "text-purple-500",
+    btnText: "Pay Premium",
+  },
+  {
+    id: "cimas",
+    logo: "/images/cimas-logo.svg",
+    title: "CIMAS Payments",
+    description: "Post medical aid payments online instantly.",
+    href: "/digital/cimas",
+    icon: HeartPulse,
+    category: "Health",
+    bg: "bg-[#ecfdf5]",
+    bgGradient: "from-[#ecfdf5]",
+    textPrimary: "text-[#064e3b]",
+    textSecondary: "text-[#059669]",
+    btnBg: "bg-[#10b981]",
+    btnHover: "hover:bg-[#059669]",
+    iconColor: "text-green-500",
+    btnText: "Post Payment",
+  }
+];
 
 export function StoreLayout() {
   const router = useRouter();
@@ -107,7 +180,6 @@ export function StoreLayout() {
     loadData();
   }, []);
 
-
   const specialOffers = useMemo(() => allProducts.filter(product => product.onSpecial), [allProducts]);
 
   const heroSlides = useMemo(() => {
@@ -120,6 +192,7 @@ export function StoreLayout() {
         category: "Other Items",
         cta: "Explore Digital Services",
         href: "/digital",
+        videoUrl: "/videos/digital-services.mp4",
       },
       {
         imageId: "hero-produce",
@@ -128,6 +201,7 @@ export function StoreLayout() {
         highlight: "Up to 25% off farm-fresh staples",
         category: "Fruit & Veg",
         cta: "Shop fresh produce",
+        videoUrl: "/videos/fresh-market.mp4",
       },
       {
         imageId: "gallery-2",
@@ -136,6 +210,7 @@ export function StoreLayout() {
         highlight: "Bundle deals for the weekend braai",
         category: "Butchery",
         cta: "Explore the butchery",
+        videoUrl: "/videos/butchery.mp4",
       },
       {
         imageId: "gallery-4",
@@ -144,6 +219,7 @@ export function StoreLayout() {
         highlight: "Wholesale-ready pack sizes",
         category: "Grocery & Spices",
         cta: "Browse groceries",
+        videoUrl: "/videos/spices-and-pantry.mp4",
       },
     ];
 
@@ -220,7 +296,16 @@ export function StoreLayout() {
                 {heroSlides.map((slide, index) => (
                   <CarouselItem key={slide.imageId}>
                     <div className="relative h-[300px] overflow-hidden rounded-2xl bg-muted sm:h-[360px] lg:h-[420px]">
-                      {slide.image && (
+                      {slide.videoUrl ? (
+                        <video
+                          src={slide.videoUrl}
+                          className="absolute inset-0 h-full w-full object-cover"
+                          autoPlay
+                          muted
+                          loop
+                          playsInline
+                        />
+                      ) : slide.image ? (
                         <Image
                           src={slide.image.imageUrl}
                           alt={slide.image.description}
@@ -231,7 +316,7 @@ export function StoreLayout() {
                           sizes="(min-width: 1024px) 800px, 100vw"
                           data-ai-hint={slide.image.imageHint}
                         />
-                      )}
+                      ) : null}
                       <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/70 to-background/10" />
                       <div className="relative z-10 flex h-full flex-col justify-center gap-4 px-7 py-8 sm:px-10">
                         <Badge className="w-fit bg-primary text-primary-foreground shadow">{slide.highlight}</Badge>
@@ -264,35 +349,47 @@ export function StoreLayout() {
               <CarouselNext className="right-4 top-1/2 hidden h-10 w-10 -translate-y-1/2 rounded-full border-none bg-background/90 shadow-lg lg:flex" />
             </Carousel>
 
-            {/* ZESA Direct Card */}
-            <Card className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border-none bg-[#fdf2f2] shadow-xl transition-all hover:shadow-2xl lg:h-[420px]">
-              <div className="relative h-48 w-full overflow-hidden sm:h-56 lg:h-48">
-                <Image
-                  src="/images/zetdc-logo.png"
-                  alt="ZETDC logo"
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  priority
-                  className="object-contain p-8 transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#fdf2f2] to-transparent" />
-              </div>
-              <div className="relative z-10 flex flex-1 flex-col p-6 pt-0">
-                <div className="mb-2 flex items-center gap-2 text-primary">
-                  <Zap className="h-5 w-5 fill-current" />
-                  <span className="text-xs font-bold uppercase tracking-wider">Flash Utility</span>
-                </div>
-                <CardTitle className="font-headline text-2xl font-bold text-[#2d1515]">Buy ZESA Tokens</CardTitle>
-                <p className="mt-2 text-sm text-[#5a3a3a]">
-                  Instant electricity top-up via Smile Pay. Safe and available 24/7.
-                </p>
-                <div className="mt-auto pt-6">
-                  <Button asChild className="w-full rounded-full bg-[#e31e24] font-bold text-white shadow-lg hover:bg-[#c1191f]">
-                    <Link href="/digital/zesa">Buy Now</Link>
-                  </Button>
-                </div>
-              </div>
-            </Card>
+            {/* Utility Slideshow Card */}
+            <Carousel
+              opts={{ loop: true }}
+              plugins={[Autoplay({ delay: 6000, stopOnInteraction: true })]}
+              className="lg:h-[420px] rounded-2xl shadow-xl bg-background"
+            >
+              <CarouselContent>
+                {utilitySlides.map((slide) => (
+                  <CarouselItem key={slide.id}>
+                    <Card className={`group relative flex flex-col justify-between overflow-hidden rounded-2xl border-none ${slide.bg} h-[300px] sm:h-[360px] lg:h-[420px] transition-all hover:shadow-2xl`}>
+                      <div className="relative h-48 w-full overflow-hidden sm:h-56 lg:h-48 flex-shrink-0">
+                        <Image
+                          src={slide.logo}
+                          alt={`${slide.title} logo`}
+                          fill
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          priority
+                          className="object-contain p-8 transition-transform duration-500 group-hover:scale-110"
+                        />
+                        <div className={`absolute inset-0 bg-gradient-to-t ${slide.bgGradient} to-transparent`} />
+                      </div>
+                      <div className="relative z-10 flex flex-1 flex-col p-6 pt-0">
+                        <div className={`mb-2 flex items-center gap-2 ${slide.iconColor}`}>
+                          <slide.icon className="h-5 w-5 fill-current" />
+                          <span className="text-xs font-bold uppercase tracking-wider">{slide.category}</span>
+                        </div>
+                        <CardTitle className={`font-headline text-2xl font-bold ${slide.textPrimary}`}>{slide.title}</CardTitle>
+                        <p className={`mt-2 text-sm ${slide.textSecondary}`}>
+                          {slide.description}
+                        </p>
+                        <div className="mt-auto pt-6">
+                          <Button asChild className={`w-full rounded-full ${slide.btnBg} font-bold text-white shadow-lg ${slide.btnHover}`}>
+                            <Link href={slide.href}>{slide.btnText}</Link>
+                          </Button>
+                        </div>
+                      </div>
+                    </Card>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
           </div>
 
           {/* Horizontal Category Nav */}

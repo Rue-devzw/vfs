@@ -69,6 +69,9 @@ export async function syncDigitalFulfilmentForOrder(orderReference: string, gate
   const gatewayReference = typeof paymentMeta.gatewayReference === "string"
     ? paymentMeta.gatewayReference
     : undefined;
+  const providerAmountUsd = typeof paymentMeta.providerAmountUsd === "number"
+    ? paymentMeta.providerAmountUsd
+    : order.totalUsd || order.total;
 
   if (process.env.NODE_ENV !== "production" && digitalServiceId === "zesa") {
       console.info("[DEV ZESA] fulfilment sync start", {
@@ -206,7 +209,7 @@ export async function syncDigitalFulfilmentForOrder(orderReference: string, gate
           orderReference,
           gatewayReference,
           accountReference,
-          amountUsd: order.totalUsd || order.total,
+          amountUsd: providerAmountUsd,
           serviceMeta: {
             ...(serviceMeta ?? {}),
             customerName: resolvedCustomerName,
@@ -220,7 +223,7 @@ export async function syncDigitalFulfilmentForOrder(orderReference: string, gate
         orderReference,
         gatewayReference,
         accountNumber: accountReference,
-        amountUsd: order.totalUsd || order.total,
+        amountUsd: providerAmountUsd,
         serviceMeta: {
           ...(serviceMeta ?? {}),
           customerName: resolvedCustomerName,
@@ -257,6 +260,7 @@ export async function syncDigitalFulfilmentForOrder(orderReference: string, gate
         ...order.paymentMeta,
         ...vendedData,
         vendedAt: new Date().toISOString(),
+        fulfilmentStatus: "completed",
         accountNumber: accountReference,
         serviceType,
         providerGatewayStatus: status,
@@ -300,8 +304,8 @@ export async function syncDigitalFulfilmentForOrder(orderReference: string, gate
 
       return { order: await getOrder(orderReference), digitalServiceId, vendedData };
     } catch (vendError) {
-      if (process.env.NODE_ENV !== "production" && digitalServiceId === "zesa") {
-        console.error("[DEV ZESA] EGRESS vend failed", {
+      if (process.env.NODE_ENV !== "production") {
+        console.error(`[DEV ${digitalServiceId.toUpperCase()}] EGRESS vend failed`, {
           orderReference,
           message: vendError instanceof Error ? vendError.message : "Vend failed",
           stack: vendError instanceof Error ? vendError.stack : undefined,
@@ -320,6 +324,7 @@ export async function syncDigitalFulfilmentForOrder(orderReference: string, gate
         ...order.paymentMeta,
         accountNumber: accountReference,
         serviceType,
+        fulfilmentStatus: "failed",
         vendFailureMessage,
         vendFailedAt: new Date().toISOString(),
       });

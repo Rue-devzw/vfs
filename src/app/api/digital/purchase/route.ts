@@ -6,7 +6,6 @@ import { getDigitalServiceConfig } from "@/lib/digital-services";
 import { upsertDigitalOrder } from "@/lib/firestore/digital-orders";
 import {
     EgressGatewayError,
-    getEgressServiceUnavailableMessage,
     isEgressServiceUnavailable,
 } from "@/lib/payments/egress";
 import { SmilePayGatewayError } from "@/lib/payments/smile-pay";
@@ -14,11 +13,18 @@ import { PAYMENT_METHOD_VALUES } from "@/lib/payment-methods";
 import type { CardPaymentDetails } from "@/lib/payments/types";
 import { verifyCustomerSession } from "@/lib/auth";
 import {
+    extractCimasAccountCurrency,
+    extractNyaradzoAccountCurrency,
     extractZetdcAccountCurrency,
+    getCimasCurrencyRestrictionMessage,
+    getNyaradzoCurrencyRestrictionMessage,
     getZetdcCurrencyRestrictionMessage,
+    isAllowedCimasPaymentCurrency,
+    isAllowedNyaradzoPaymentCurrency,
     isAllowedZetdcPaymentCurrency,
 } from "@/lib/digital-currency-rules";
 import { calculateDstvBouquetAmountUsd, getDstvAddOnPackage, getDstvPrimaryPackage } from "@/lib/dstv-packages";
+import { convertToUsd, type CurrencyCode } from "@/lib/currency";
 
 const optionalTrimmedString = () => z.preprocess((value) => {
     if (typeof value !== "string") return value;
@@ -36,7 +42,7 @@ const cardDetailsSchema = z.object({
 const purchaseSchema = z.object({
     serviceType: z.enum(["ZESA", "AIRTIME", "DSTV", "COUNCILS", "NYARADZO", "CIMAS", "INTERNET"]),
     accountNumber: z.string().min(1),
-    amount: z.number().min(1),
+    amount: z.number().positive("Amount must be greater than zero."),
     paymentMethod: z.enum(PAYMENT_METHOD_VALUES),
     currencyCode: z.enum(["840", "924"]).default("840"),
     customerMobile: optionalTrimmedString().pipe(z.string().min(8).optional()),
@@ -71,6 +77,8 @@ const DIGITAL_SERVICE_IMAGES: Record<string, string> = {
     internet: "/images/internet_illustration.png",
 };
 
+const REMOVED_SERVICE_TYPES = new Set(["COUNCILS", "INTERNET"]);
+
 function validateDstvServiceMeta(serviceMeta: Record<string, string> | undefined) {
     const paymentType = serviceMeta?.paymentType?.trim().toUpperCase();
     if (paymentType !== "BOUQUET" && paymentType !== "TOPUP") {
@@ -99,21 +107,88 @@ function validateDstvServiceMeta(serviceMeta: Record<string, string> | undefined
     return null;
 }
 
-function validateDstvPaymentAmount(amountUsd: number, serviceMeta: Record<string, string> | undefined) {
+function getDigitalServiceChargeUsd(serviceType: string, serviceMeta: Record<string, string> | undefined) {
+    if (serviceType === "DSTV") {
+        return serviceMeta?.paymentType?.trim().toUpperCase() === "BOUQUET" ? 3 : 1;
+    }
+    if (serviceType === "NYARADZO" || serviceType === "CIMAS") {
+        return 1;
+    }
+    return 0;
+}
+
+function resolveDstvProviderAmountUsd(amountUsd: number, serviceMeta: Record<string, string> | undefined) {
     const expectedAmount = calculateDstvBouquetAmountUsd(serviceMeta);
     if (expectedAmount === null) {
-        return null;
+        return { amountUsd, error: null as string | null };
     }
 
-    if (Math.round(amountUsd * 100) !== Math.round(expectedAmount * 100)) {
-        return `DSTV bouquet amount must match the selected package total: USD ${expectedAmount.toFixed(2)}.`;
+    const serviceChargeUsd = getDigitalServiceChargeUsd("DSTV", serviceMeta);
+    const expectedChargedAmount = Number((expectedAmount + serviceChargeUsd).toFixed(2));
+    if (amountsMatch(amountUsd, expectedAmount) || amountsMatch(amountUsd, expectedChargedAmount)) {
+        return { amountUsd: expectedAmount, error: null };
     }
 
-    return null;
+    return {
+        amountUsd,
+        error: `DSTV bouquet amount must match the selected package total: USD ${expectedAmount.toFixed(2)} before the USD ${serviceChargeUsd.toFixed(2)} service charge.`,
+    };
 }
 
 function providerValidationMessage(serviceLabel: string, message: string) {
-    return `${serviceLabel} validation was declined by the provider: ${message}. Please check the account details and try again.`;
+    const safeMessage = message.replace(/\bEGRESS\b/gi, "provider").replace(/\bZB[_\s-]?EGRESS\b/gi, "provider");
+    return `${serviceLabel} validation was declined by the provider: ${safeMessage}. Please check the account details and try again.`;
+}
+
+function digitalProviderUnavailableMessage(context: string) {
+    return `${context} is temporarily unavailable because the provider gateway is not responding. Please try again shortly.`;
+}
+
+function providerGatewayFailureMessage(serviceLabel: string) {
+    return `${serviceLabel} could not be completed by the provider. Please try again shortly or contact support if the problem continues.`;
+}
+
+function parseProviderAmount(value: unknown) {
+    if (value === undefined || value === null) return undefined;
+    const parsed = Number(String(value).replace(/[^\d.-]/g, ""));
+    return Number.isFinite(parsed) ? parsed : undefined;
+}
+
+function currencyCodeFromProviderCurrency(value: unknown): CurrencyCode | undefined {
+    const normalized = typeof value === "string" ? value.trim().toUpperCase() : "";
+    if (normalized === "USD" || normalized === "840") return "840";
+    if (normalized === "ZIG" || normalized === "ZWG" || normalized === "ZWL" || normalized === "924") return "924";
+    return undefined;
+}
+
+function getParsedValidation(raw: unknown) {
+    return raw && typeof raw === "object" && !Array.isArray(raw)
+        ? (raw as { parsed?: unknown }).parsed
+        : undefined;
+}
+
+function getExpectedProviderAmountUsd(serviceType: string, validationSnapshot: unknown) {
+    const parsed = getParsedValidation(validationSnapshot);
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+        return undefined;
+    }
+
+    const parsedRecord = parsed as Record<string, unknown>;
+    const amount = serviceType === "NYARADZO"
+        ? parseProviderAmount(parsedRecord.amountToBePaid)
+        : serviceType === "CIMAS"
+            ? parseProviderAmount(parsedRecord.currentBalance)
+            : undefined;
+    const currencyCode = currencyCodeFromProviderCurrency(parsedRecord.currency);
+    if (amount === undefined || !currencyCode) {
+        return undefined;
+    }
+
+    return convertToUsd(amount, currencyCode);
+}
+
+function amountsMatch(left: number, right: number) {
+    return Math.round(left * 100) === Math.round(right * 100);
 }
 
 export async function POST(req: Request) {
@@ -131,6 +206,13 @@ export async function POST(req: Request) {
         }
 
         const { serviceType, accountNumber, amount: amountUsd, paymentMethod, currencyCode, customerMobile, customerName, customerEmail, serviceMeta, cardDetails } = validation.data;
+        let providerAmountUsd = amountUsd;
+        if (REMOVED_SERVICE_TYPES.has(serviceType)) {
+            return NextResponse.json(
+                { success: false, error: "This digital payment service is not available." },
+                { status: 404 },
+            );
+        }
         const customerSession = await verifyCustomerSession();
         const resolvedCustomerEmail = (customerEmail || customerSession?.email || "customer@example.com").toLowerCase();
         const serviceConfig = getDigitalServiceConfig(serviceType.toLowerCase());
@@ -153,22 +235,22 @@ export async function POST(req: Request) {
             }
         }
         if (serviceType === "DSTV") {
+            if (currencyCode !== "840") {
+                return NextResponse.json(
+                    { success: false, error: "DStv payments are available in USD only." },
+                    { status: 400 },
+                );
+            }
             const dstvError = validateDstvServiceMeta(serviceMeta);
             if (dstvError) {
                 return NextResponse.json({ success: false, error: dstvError }, { status: 400 });
             }
-            const dstvAmountError = validateDstvPaymentAmount(amountUsd, serviceMeta);
-            if (dstvAmountError) {
-                return NextResponse.json({ success: false, error: dstvAmountError }, { status: 400 });
+            const dstvAmountResult = resolveDstvProviderAmountUsd(amountUsd, serviceMeta);
+            if (dstvAmountResult.error) {
+                return NextResponse.json({ success: false, error: dstvAmountResult.error }, { status: 400 });
             }
+            providerAmountUsd = dstvAmountResult.amountUsd;
         }
-        if (serviceType === "COUNCILS" && currencyCode !== "924") {
-            return NextResponse.json(
-                { success: false, error: "City of Harare payments are available in ZiG only." },
-                { status: 400 },
-            );
-        }
-
         const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
         if (!baseUrl) {
             return NextResponse.json({ success: false, error: "NEXT_PUBLIC_BASE_URL missing" }, { status: 500 });
@@ -183,7 +265,7 @@ export async function POST(req: Request) {
                     return NextResponse.json(
                         {
                             success: false,
-                            error: getEgressServiceUnavailableMessage(`${serviceLabel} validation`),
+                            error: digitalProviderUnavailableMessage(`${serviceLabel} validation`),
                             code: "SERVICE_UNAVAILABLE",
                             gatewayStatus: error.status,
                         },
@@ -211,7 +293,21 @@ export async function POST(req: Request) {
         const normalizedServiceId = serviceType.toLowerCase() as "zesa" | "airtime" | "dstv" | "councils" | "nyaradzo" | "cimas" | "internet";
         const resolvedAccountNumber = accountInfo.accountNumber || accountNumber;
         const resolvedCustomerName = customerName || customerSession?.name || accountInfo.accountName || "Digital Customer";
+        const expectedProviderAmountUsd = getExpectedProviderAmountUsd(serviceType, accountInfo.raw);
+        if ((serviceType === "NYARADZO" || serviceType === "CIMAS") && expectedProviderAmountUsd !== undefined && !amountsMatch(providerAmountUsd, expectedProviderAmountUsd)) {
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: `${serviceLabel} amount must match the validated full account balance.`,
+                },
+                { status: 400 },
+            );
+        }
+        const serviceChargeUsd = getDigitalServiceChargeUsd(serviceType, serviceMeta);
+        const chargeAmountUsd = Number((providerAmountUsd + serviceChargeUsd).toFixed(2));
         const accountCurrency = serviceType === "ZESA" ? extractZetdcAccountCurrency(accountInfo.raw) : undefined;
+        const nyaradzoAccountCurrency = serviceType === "NYARADZO" ? extractNyaradzoAccountCurrency(accountInfo.raw) : undefined;
+        const cimasAccountCurrency = serviceType === "CIMAS" ? extractCimasAccountCurrency(accountInfo.raw) : undefined;
         if (serviceType === "ZESA") {
             if (!isAllowedZetdcPaymentCurrency(accountCurrency, currencyCode)) {
                 return NextResponse.json(
@@ -224,19 +320,46 @@ export async function POST(req: Request) {
                 );
             }
         }
+        if (serviceType === "NYARADZO") {
+            if (!isAllowedNyaradzoPaymentCurrency(nyaradzoAccountCurrency, currencyCode)) {
+                return NextResponse.json(
+                    {
+                        success: false,
+                        error: getNyaradzoCurrencyRestrictionMessage(nyaradzoAccountCurrency)
+                            || "This Nyaradzo policy does not accept the selected payment currency.",
+                    },
+                    { status: 400 },
+                );
+            }
+        }
+        if (serviceType === "CIMAS") {
+            if (!isAllowedCimasPaymentCurrency(cimasAccountCurrency, currencyCode)) {
+                return NextResponse.json(
+                    {
+                        success: false,
+                        error: getCimasCurrencyRestrictionMessage(cimasAccountCurrency)
+                            || "This CIMAS account does not accept the selected payment currency.",
+                    },
+                    { status: 400 },
+                );
+            }
+        }
         const enrichedServiceMeta = {
             ...(serviceMeta ?? {}),
             accountName: accountInfo.accountName ?? "",
             billerName: accountInfo.billerName ?? serviceConfig.label,
             validatedAccountNumber: resolvedAccountNumber,
+            providerAmountUsd: providerAmountUsd.toFixed(2),
+            serviceChargeUsd: serviceChargeUsd.toFixed(2),
             ...(accountCurrency ? { accountCurrency } : {}),
+            ...(nyaradzoAccountCurrency ? { accountCurrency: nyaradzoAccountCurrency } : {}),
+            ...(cimasAccountCurrency ? { accountCurrency: cimasAccountCurrency } : {}),
         };
 
-        // 2. Initiate Payment
         const initiateResult = await DigitalService.initiatePurchase({
             serviceType,
             accountNumber: resolvedAccountNumber,
-            amount: amountUsd,
+            amount: chargeAmountUsd,
             paymentMethod,
             currencyCode,
             customerMobile,
@@ -245,16 +368,29 @@ export async function POST(req: Request) {
             serviceMeta: enrichedServiceMeta,
         }, baseUrl);
 
-        // 3. Create Pending Order for Tracking
+        const serviceChargeLocal = Number((serviceChargeUsd * initiateResult.exchangeRate).toFixed(2));
+        const basePriceLocal = Number((initiateResult.amount - serviceChargeLocal).toFixed(2));
+        const items = [{
+            id: `${serviceType.toLowerCase()}-${resolvedAccountNumber}`,
+            name: `${serviceConfig.label} Purchase`,
+            price: basePriceLocal,
+            quantity: 1,
+            image: DIGITAL_SERVICE_IMAGES[serviceType.toLowerCase()] ?? "/images/logo.webp",
+        }];
+
+        if (serviceChargeUsd > 0) {
+            items.push({
+                id: `fee-${serviceType.toLowerCase()}`,
+                name: "Platform Convenience Fee",
+                price: serviceChargeLocal,
+                quantity: 1,
+                image: "/images/logo.webp",
+            });
+        }
+
         await createPendingOrder({
             reference: initiateResult.reference,
-            items: [{
-                id: `${serviceType.toLowerCase()}-${resolvedAccountNumber}`,
-                name: `${serviceConfig.label} Purchase`,
-                price: initiateResult.amount,
-                quantity: 1,
-                image: DIGITAL_SERVICE_IMAGES[serviceType.toLowerCase()] ?? "/images/logo.webp",
-            }],
+            items,
             subtotal: initiateResult.amount,
             deliveryFee: 0,
             total: initiateResult.amount,
@@ -268,41 +404,61 @@ export async function POST(req: Request) {
             customerPhone: customerMobile,
             deliveryMethod: "collect",
             paymentMethod: paymentMethod.toLowerCase(),
-            notes: `${serviceConfig.label} for ${resolvedAccountNumber} (${accountInfo.accountName ?? "Validated account"})`,
+            notes: `${serviceConfig.label} for ${resolvedAccountNumber} (${accountInfo.accountName ?? "Validated account"}). Provider amount USD ${providerAmountUsd.toFixed(2)}; service charge USD ${serviceChargeUsd.toFixed(2)}.`,
+            recordEngagement: false,
+            queueNotification: false,
+            ensureShipment: false,
         });
 
-        await upsertDigitalOrder({
-            orderReference: initiateResult.reference,
-            serviceId: normalizedServiceId,
-            provider: serviceConfig.provider,
-            accountReference: resolvedAccountNumber,
-            customerEmail: resolvedCustomerEmail,
-            customerName: resolvedCustomerName,
-            validationSnapshot: accountInfo.raw ?? {
-                accountName: accountInfo.accountName,
-                accountNumber: accountInfo.accountNumber,
-                billerName: accountInfo.billerName,
-            },
-            provisioningStatus: "pending",
-            resultPayload: {
-                transactionReference: initiateResult.transactionReference,
-                status: initiateResult.status,
-                paymentUrl: initiateResult.paymentUrl,
-                authenticationStatus: initiateResult.authenticationStatus,
-                processingMode: "provider",
-                serviceMeta: enrichedServiceMeta,
-            },
-        });
-
-        await setOrderStatus(initiateResult.reference, initiateResult.status, {
-            gatewayReference: initiateResult.transactionReference,
-            accountNumber: resolvedAccountNumber,
-            serviceType,
-            serviceMeta: enrichedServiceMeta,
-            customerName: resolvedCustomerName,
-            customerMobile,
-            currencyCode,
-        });
+        await Promise.all([
+            upsertDigitalOrder({
+                orderReference: initiateResult.reference,
+                serviceId: normalizedServiceId,
+                provider: serviceConfig.provider,
+                accountReference: resolvedAccountNumber,
+                customerEmail: resolvedCustomerEmail,
+                customerName: resolvedCustomerName,
+                validationSnapshot: accountInfo.raw ?? {
+                    accountName: accountInfo.accountName,
+                    accountNumber: accountInfo.accountNumber,
+                    billerName: accountInfo.billerName,
+                },
+                provisioningStatus: "pending",
+                resultPayload: {
+                    transactionReference: initiateResult.transactionReference,
+                    status: initiateResult.status,
+                    paymentUrl: initiateResult.paymentUrl,
+                    authenticationStatus: initiateResult.authenticationStatus,
+                    processingMode: "provider",
+                    providerAmountUsd,
+                    serviceChargeUsd,
+                    chargedAmountUsd: chargeAmountUsd,
+                    serviceMeta: enrichedServiceMeta,
+                },
+            }),
+            setOrderStatus(
+                initiateResult.reference,
+                initiateResult.status,
+                {
+                    gatewayReference: initiateResult.transactionReference,
+                    accountNumber: resolvedAccountNumber,
+                    serviceType,
+                    serviceMeta: enrichedServiceMeta,
+                    customerName: resolvedCustomerName,
+                    customerMobile,
+                    currencyCode,
+                    providerAmountUsd,
+                    serviceChargeUsd,
+                    chargedAmountUsd: chargeAmountUsd,
+                },
+                {
+                    queuePaymentNotification: false,
+                    createRefundCaseOnCancel: false,
+                    recordEngagement: false,
+                    syncShipment: false,
+                },
+            ),
+        ]);
 
         return NextResponse.json({
             success: true,
@@ -312,15 +468,13 @@ export async function POST(req: Request) {
             redirectHtml: initiateResult.redirectHtml,
             authenticationStatus: initiateResult.authenticationStatus,
             status: initiateResult.status,
+            providerAmountUsd,
+            serviceChargeUsd,
+            chargedAmountUsd: chargeAmountUsd,
             message: initiateResult.message || "Payment initiated.",
         });
 
     } catch (error) {
-        console.error("Digital purchase error - FULL DETAILS:", error);
-        if (error instanceof Error) {
-            console.error("Error message:", error.message);
-            console.error("Error stack:", error.stack);
-        }
         if (error instanceof DigitalServiceUnavailableError) {
             return NextResponse.json(
                 { success: false, error: error.message, code: "SERVICE_UNAVAILABLE" },
@@ -328,10 +482,9 @@ export async function POST(req: Request) {
             );
         }
         if (error instanceof SmilePayGatewayError) {
-            console.error("Smile Pay gateway response:", {
+            console.warn("Smile Pay gateway rejected digital purchase:", {
                 status: error.status,
                 message: error.message,
-                responseBody: error.responseBody,
             });
             return NextResponse.json(
                 {
@@ -348,7 +501,7 @@ export async function POST(req: Request) {
                 return NextResponse.json(
                     {
                         success: false,
-                        error: getEgressServiceUnavailableMessage(`${serviceLabel} payments`),
+                        error: digitalProviderUnavailableMessage(`${serviceLabel} payments`),
                         code: "SERVICE_UNAVAILABLE",
                         gatewayStatus: error.status,
                     },
@@ -358,13 +511,14 @@ export async function POST(req: Request) {
             return NextResponse.json(
                 {
                     success: false,
-                    error: error.message,
+                    error: providerGatewayFailureMessage(serviceLabel),
                     code: "PROVIDER_GATEWAY_FAILED",
                     gatewayStatus: error.status,
                 },
                 { status: error.status >= 400 && error.status < 500 ? error.status : 502 }
             );
         }
+        console.error("Digital purchase error:", error);
         return NextResponse.json(
             { success: false, error: error instanceof Error ? error.message : "Purchase failed" },
             { status: 500 }

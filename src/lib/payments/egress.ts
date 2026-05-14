@@ -67,6 +67,8 @@ const parser = new XMLParser({
   parseTagValue: false,
 });
 
+const SOAP_REQUEST_TIMEOUT_MS = 15000;
+
 function getEgressConfig() {
   const apiUrl = env.ZB_EGRESS_API_URL;
   const source = env.ZB_EGRESS_SOURCE;
@@ -144,6 +146,9 @@ function parseSoapReturn<T extends Record<string, unknown>>(xml: string, respons
 }
 
 async function postSoap(body: string) {
+  console.log("\n--- [EGRESS OUTGOING SOAP REQUEST] ---");
+  console.log(body);
+  console.log("--------------------------------------\n");
   const { apiUrl, clientCertPath, clientKeyPath, caCertPath, clientCert, clientKey, caCert } = getEgressConfig();
 
   if ((clientCertPath && clientKeyPath) || (clientCert && clientKey)) {
@@ -157,14 +162,23 @@ async function postSoap(body: string) {
     });
   }
 
-  const response = await fetch(apiUrl, {
-    method: "POST",
-    headers: {
-      "Content-Type": "text/xml; charset=utf-8",
-      SOAPAction: '""',
-    },
-    body,
-  });
+  let response: Response;
+  try {
+    response = await fetch(apiUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "text/xml; charset=utf-8",
+        SOAPAction: '""',
+      },
+      body,
+      signal: AbortSignal.timeout(SOAP_REQUEST_TIMEOUT_MS),
+    });
+  } catch (error) {
+    if (error instanceof Error && (error.name === "AbortError" || error.name === "TimeoutError")) {
+      throw new EgressGatewayError(504, "Provider request timed out while waiting for a response.");
+    }
+    throw error;
+  }
 
   return handleSoapResponse(response.status, await response.text());
 }
@@ -229,7 +243,15 @@ async function postSoapWithMutualTls(
     );
 
     request.on("error", (error) => {
-      reject(new EgressGatewayError(502, `EGRESS TLS request failed: ${error.message}`));
+      if (error instanceof EgressGatewayError) {
+        reject(error);
+        return;
+      }
+      reject(new EgressGatewayError(502, `Provider TLS request failed: ${error.message}`));
+    });
+
+    request.setTimeout(SOAP_REQUEST_TIMEOUT_MS, () => {
+      request.destroy(new EgressGatewayError(504, "Provider request timed out while waiting for a response."));
     });
 
     request.write(body);
@@ -240,6 +262,10 @@ async function postSoapWithMutualTls(
 }
 
 function handleSoapResponse(status: number, text: string) {
+  console.log(`\n--- [EGRESS INCOMING SOAP RESPONSE] (Status: ${status}) ---`);
+  console.log(text);
+  console.log("---------------------------------------\n");
+
   if (status < 200 || status >= 300) {
     throw new EgressGatewayError(status, `EGRESS request failed with status ${status}`, text);
   }

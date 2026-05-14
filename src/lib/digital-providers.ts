@@ -26,6 +26,8 @@ export type ProviderValidationResult = {
   accountName?: string;
   accountNumber: string;
   billerName?: string;
+  amountToBePaid?: string;
+  currency?: string;
   raw?: Record<string, unknown>;
 };
 
@@ -299,7 +301,8 @@ function parseDstvValidationDetails(responseDetails: string | undefined) {
 }
 
 function parseDstvDueAmount(value: string | undefined) {
-  return value?.replace(/[^\d.-]/g, "");
+  const amount = parseEgressMinorAmount(value);
+  return amount !== undefined ? String(amount) : undefined;
 }
 
 function parseOptionalNumber(value: string | undefined) {
@@ -308,8 +311,24 @@ function parseOptionalNumber(value: string | undefined) {
   return Number.isFinite(parsed) ? parsed : undefined;
 }
 
+function parseEgressMoney(value: string | number | undefined) {
+  if (value === undefined || value === null) return undefined;
+  const parsed = Number(String(value).replace(/[^\d.-]/g, ""));
+  return Number.isFinite(parsed) ? parsed : undefined;
+}
+
+function parseEgressMinorAmount(value: string | number | undefined) {
+  const parsed = parseEgressMoney(value);
+  return parsed !== undefined ? parsed / 100 : undefined;
+}
+
+function fallbackEgressMinorAmount(value: string | number | undefined, fallbackMinorUnits: number) {
+  const parsed = parseEgressMinorAmount(value);
+  return parsed !== undefined ? parsed : fallbackMinorUnits / 100;
+}
+
 function parseZetdcMoney(value: string | undefined) {
-  return parseOptionalNumber(value);
+  return parseEgressMoney(value);
 }
 
 function isLikelyZetdcToken(value: string, excludedValues: string[]) {
@@ -412,6 +431,13 @@ function parseZetdcReceiptDetails(receiptDetails: string | undefined, receiptCur
   };
 }
 
+function isProviderUnavailableResponse(message: string | undefined) {
+  return /\bservice unavailable\b/i.test(message ?? "")
+    || /\bnull response\b/i.test(message ?? "")
+    || /\bprovider gateway\b/i.test(message ?? "")
+    || /\btimed out\b/i.test(message ?? "");
+}
+
 function getStringField(record: Record<string, unknown> | undefined, key: string) {
   const value = record?.[key];
   if (value === undefined || value === null) {
@@ -427,10 +453,10 @@ function parseNyaradzoPaymentDetails3(value: string | undefined) {
     paymentDate: parts[1],
     months: parts[2],
     policyNumber: parts[3],
-    amount: parseOptionalNumber(parts[4]),
+    amount: parseEgressMinorAmount(parts[4]),
     currency: parts[5],
     customerName: parts[6],
-    premiumAmount: parseOptionalNumber(parts[7]),
+    premiumAmount: parseEgressMinorAmount(parts[7]),
   };
 }
 
@@ -438,6 +464,7 @@ function parseCimasValidationDetails(value: string | undefined) {
   const parts = parseDelimitedResponse(value);
   const [referenceFromName, ...nameParts] = (parts[0] ?? "").split("-");
   const customerName = nameParts.join("-").trim();
+  const currentBalance = parseEgressMoney(parts[5]);
 
   return {
     referenceName: parts[0],
@@ -446,7 +473,8 @@ function parseCimasValidationDetails(value: string | undefined) {
     accountType: parts[2],
     currentProduct: parts[3],
     currency: parts[4],
-    currentBalance: parseOptionalNumber(parts[5]),
+    currentBalance,
+    amountToBePaid: parseEgressMoney(parts[5]) !== undefined ? String(parseEgressMoney(parts[5])) : parts[5],
   };
 }
 
@@ -465,7 +493,7 @@ function parseNyaradzoReceiptDetails(input: {
   const customerAccount = getStringField(payment, "customerAccount") ?? input.request.customerAccount;
   const [policyNumberFromAccount, monthsFromAccount] = customerAccount.split("|").map(part => part.trim());
   const currency = getStringField(payment, "currency") ?? input.request.currency;
-  const amount = parseOptionalNumber(getStringField(payment, "amount")) ?? input.request.amount;
+  const amount = fallbackEgressMinorAmount(getStringField(payment, "amount"), input.request.amount);
   const customerName = getStringField(payment, "customerName") ?? input.request.customerName;
   const paymentDate = getStringField(payment, "paymentDate") ?? input.request.paymentDate;
   const status = getStringField(payment, "status") ?? (input.result.successful ? "Successful" : undefined);
@@ -525,7 +553,7 @@ function parseCimasReceiptDetails(input: {
     paymentReference: getStringField(payment, "paymentReference") ?? input.request.paymentReference,
     source: getStringField(payment, "source"),
     customerAccount: getStringField(payment, "customerAccount") ?? input.request.customerAccount,
-    amount: parseOptionalNumber(getStringField(payment, "amount")) ?? input.request.amount,
+    amount: fallbackEgressMinorAmount(getStringField(payment, "amount"), input.request.amount),
     currency: getStringField(payment, "currency") ?? input.request.currency,
     customerPaymentDetails1: getStringField(payment, "customerPaymentDetails1") ?? input.request.customerPaymentDetails1,
     customerPaymentDetails2: getStringField(payment, "customerPaymentDetails2") ?? input.request.customerPaymentDetails2,
@@ -565,7 +593,7 @@ function parseCouncilReceiptDetails(input: {
     paymentReference: getStringField(payment, "paymentReference") ?? input.request.paymentReference,
     source: getStringField(payment, "source"),
     customerAccount: getStringField(payment, "customerAccount") ?? input.request.customerAccount,
-    amount: parseOptionalNumber(getStringField(payment, "amount")) ?? input.request.amount,
+    amount: fallbackEgressMinorAmount(getStringField(payment, "amount"), input.request.amount),
     currency: getStringField(payment, "currency") ?? input.request.currency,
     customerPaymentDetails1: getStringField(payment, "customerPaymentDetails1") ?? input.request.customerPaymentDetails1,
     customerPaymentDetails2: getStringField(payment, "customerPaymentDetails2") ?? input.request.customerPaymentDetails2,
@@ -607,7 +635,7 @@ function parseDstvReceiptDetails(input: {
     billerId: getStringField(payment, "billerId") ?? input.request.billerId,
     paymentReference: getStringField(payment, "paymentReference") ?? input.request.paymentReference,
     customerAccount: getStringField(payment, "customerAccount") ?? input.request.customerAccount,
-    amount: parseOptionalNumber(getStringField(payment, "amount")) ?? input.request.amount,
+    amount: fallbackEgressMinorAmount(getStringField(payment, "amount"), input.request.amount),
     currency: getStringField(payment, "currency") ?? input.request.currency,
     customerName: getStringField(payment, "customerName") ?? input.request.customerName,
     status: getStringField(payment, "status") ?? (input.result.successful ? "Successful" : undefined),
@@ -660,7 +688,7 @@ function buildNumericEgressPaymentReference(orderReference: string, gatewayRefer
 function buildValidationAccount(config: DigitalServiceConfig, accountNumber: string, serviceMeta?: Record<string, string>) {
   switch (config.id) {
     case "nyaradzo":
-      return `${accountNumber}|${requireMeta(serviceMeta, "months", "Months to pay")}`;
+      return `${accountNumber}|${serviceMeta?.months?.trim() || "1"}`;
     case "cimas": {
       const referenceType = requireMeta(serviceMeta, "referenceType", "Reference type").toUpperCase();
       if (referenceType !== "M" && referenceType !== "E") {
@@ -748,6 +776,8 @@ function mapValidationResponse(
         accountName: parts[0] || "Policy Holder",
         accountNumber,
         billerName: "NYARADZO",
+        amountToBePaid: parts[2],
+        currency: parts[3],
         raw: {
           ...raw,
           parsed: {
@@ -766,6 +796,8 @@ function mapValidationResponse(
         accountName: parsedCimas.customerName || "CIMAS Customer",
         accountNumber: parsedCimas.referenceNumber || accountNumber,
         billerName: "CIMAS",
+        amountToBePaid: parsedCimas.amountToBePaid,
+        currency: parsedCimas.currency,
         raw: {
           ...raw,
           parsed: parsedCimas,
@@ -827,8 +859,10 @@ function buildEgressPaymentPayload(config: DigitalServiceConfig, input: {
 
   switch (config.id) {
     case "dstv": {
+      const numericPaymentReference = buildNumericEgressPaymentReference(input.orderReference, input.gatewayReference);
       return {
         ...base,
+        paymentReference: numericPaymentReference,
         ...buildDstvPaymentFields(input.serviceMeta),
         customerPrimaryAccountNumber: input.serviceMeta?.customerPrimaryAccountNumber?.trim() || undefined,
         paymentDate: currentDateTimeString(),
@@ -873,6 +907,8 @@ function buildEgressPaymentPayload(config: DigitalServiceConfig, input: {
         customerPaymentDetails4: `ref:${numericGatewayReference}`,
         paymentMethod: "CASH",
         paymentType: "CASH",
+        status: "Successful",
+        narrative: "Cimas Payment Successful",
       };
     }
     case "councils":
@@ -900,7 +936,8 @@ const smilePayEgressAdapter: DigitalProviderAdapter = {
     });
 
     if (!result.successful) {
-      throw new EgressGatewayError(422, result.responseDetails || `${config.label} validation failed.`);
+      const message = result.responseDetails || `${config.label} validation failed.`;
+      throw new EgressGatewayError(isProviderUnavailableResponse(message) ? 503 : 422, message);
     }
 
     return mapValidationResponse(config, accountNumber, result.responseDetails, result as Record<string, unknown>);

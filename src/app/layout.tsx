@@ -8,8 +8,64 @@ import { ErrorBoundary } from "@/components/error-boundary";
 import { CurrencyProvider } from "@/components/currency/currency-provider";
 
 export const metadata: Metadata = {
-  title: "Valley Farm Secrets",
-  description: "Freshness. Quality. Convenience. Your farm-to-table partner.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://valleyfarmsecrets.com"),
+  title: {
+    default: "Valley Farm Secrets | Fresh Farm-to-Table Quality",
+    template: "%s | Valley Farm Secrets",
+  },
+  description: "Freshness. Quality. Convenience. Your premier farm-to-table partner supplying fresh produce, groceries, and digital farm solutions.",
+  keywords: [
+    "Valley Farm Secrets",
+    "Farm to Table",
+    "Fresh Produce",
+    "Groceries",
+    "Agriculture",
+    "Digital Farm Solutions",
+    "Wholesale Produce",
+    "Local Farmers"
+  ],
+  authors: [{ name: "Valley Farm Secrets Team" }],
+  creator: "Valley Farm Secrets",
+  publisher: "Valley Farm Secrets",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  openGraph: {
+    title: "Valley Farm Secrets | Fresh Farm-to-Table Quality",
+    description: "Freshness. Quality. Convenience. Your premier farm-to-table partner supplying fresh produce, groceries, and digital farm solutions.",
+    url: "/",
+    siteName: "Valley Farm Secrets",
+    locale: "en_US",
+    type: "website",
+    images: [
+      {
+        url: "/images/og-image.webp",
+        width: 1200,
+        height: 630,
+        alt: "Valley Farm Secrets",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Valley Farm Secrets | Fresh Farm-to-Table Quality",
+    description: "Freshness. Quality. Convenience. Your premier farm-to-table partner supplying fresh produce, groceries, and digital farm solutions.",
+    images: ["/images/og-image.webp"],
+    creator: "@valleyfarmsecrets",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   icons: {
     icon: [
       { url: "/favicon.ico", type: "image/x-icon" },
@@ -42,7 +98,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
+    <html lang="en" className="scroll-smooth" data-scroll-behavior="smooth" suppressHydrationWarning>
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",

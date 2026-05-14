@@ -7,10 +7,13 @@ export function PartnerCTA() {
     <section className="relative bg-background py-16 md:py-24">
       <div className="container mx-auto px-4 md:px-6">
         <div className="relative mx-auto max-w-4xl overflow-hidden rounded-lg p-8 text-center shadow-lg">
-          <span
-            aria-hidden="true"
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: "url(/images/hero-8.webp)" }}
+          <video
+            className="absolute inset-0 h-full w-full object-cover"
+            src="/videos/vegfarm1.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
           />
           <span
             aria-hidden="true"

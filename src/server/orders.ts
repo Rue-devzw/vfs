@@ -17,6 +17,8 @@ type SetOrderStatusOptions = {
   queuePaymentNotification?: boolean;
   queueFulfilmentNotification?: boolean;
   createRefundCaseOnCancel?: boolean;
+  recordEngagement?: boolean;
+  syncShipment?: boolean;
 };
 
 type PendingOrderInput = {
@@ -52,6 +54,9 @@ type PendingOrderInput = {
   paymentMethod: string;
   gatewayReference?: string;
   notes?: string;
+  recordEngagement?: boolean;
+  queueNotification?: boolean;
+  ensureShipment?: boolean;
 };
 
 type CustomerShippingAddress = {
@@ -515,55 +520,6 @@ export async function createPendingOrder(input: PendingOrderInput) {
   const db = await getOrdersDb();
   const timestamp = new Date().toISOString();
   const customerEmail = input.customerEmail.toLowerCase();
-  const customerRef = db.collection("customers").doc(customerEmail);
-  const customerDoc = await customerRef.get();
-  const existingCustomer = (customerDoc.data() ?? {}) as {
-    createdAt?: string;
-    shippingAddresses?: CustomerShippingAddress[];
-    paymentMethodsUsed?: string[];
-  };
-
-  const shippingAddress = input.customerAddress
-    ? {
-        label: input.deliveryMethod === "delivery" ? "Delivery Address" : "Pickup Contact",
-        address: input.customerAddress,
-        instructions: input.deliveryInstructions,
-        recipientName: input.recipientName ?? input.customerName,
-        recipientPhone: input.recipientPhone ?? input.customerPhone,
-        lastUsedAt: timestamp,
-        isDefault: true,
-      }
-    : undefined;
-
-  const paymentMethodsUsed = Array.isArray(existingCustomer.paymentMethodsUsed)
-    ? [...existingCustomer.paymentMethodsUsed]
-    : [];
-  const nextPaymentMethod = input.paymentMethod.toUpperCase();
-  if (!paymentMethodsUsed.includes(nextPaymentMethod)) {
-    paymentMethodsUsed.push(nextPaymentMethod);
-  }
-
-  const shippingAddresses = shippingAddress
-    ? upsertShippingAddress(
-        Array.isArray(existingCustomer.shippingAddresses) ? existingCustomer.shippingAddresses : [],
-        shippingAddress,
-      )
-    : existingCustomer.shippingAddresses ?? [];
-
-  await customerRef.set(stripUndefined({
-    email: input.customerEmail,
-    name: input.customerName,
-    phone: input.customerPhone,
-    address: input.customerAddress,
-    shippingAddresses,
-    preferredDeliveryMethod: input.deliveryMethod,
-    paymentMethodsUsed,
-    lastOrderReference: input.reference,
-    lastOrderAt: timestamp,
-    updatedAt: timestamp,
-    createdAt: existingCustomer.createdAt ?? timestamp,
-  }), { merge: true });
-
   await db.collection("orders").doc(input.reference).set(stripUndefined({
     id: input.reference,
     reference: input.reference,
@@ -608,43 +564,107 @@ export async function createPendingOrder(input: PendingOrderInput) {
     updatedAt: timestamp,
   }));
 
-  await recordCustomerEngagement({
-    customerEmail: input.customerEmail,
-    customerName: input.customerName,
-    orderReference: input.reference,
-    type: "checkout_started",
-    title: "Checkout initiated",
-    detail: `${input.items.length} item(s) via ${input.paymentMethod.toUpperCase()}.`,
-    meta: {
-      total: input.total,
-      currencyCode: input.currencyCode ?? "840",
-      deliveryMethod: input.deliveryMethod,
-    },
-  });
+  const customerRef = db.collection("customers").doc(customerEmail);
 
-  await queueCustomerNotification({
-    type: "order_pending",
-    customerEmail: input.customerEmail,
-    customerName: input.customerName,
-    orderReference: input.reference,
-    subject: `Order ${input.reference} received`,
-    body: `Your order has been created and is awaiting payment confirmation. Total: ${input.total.toFixed(2)} ${input.currencyCode ?? "840"}.`,
-    meta: {
-      total: input.total,
-      currencyCode: input.currencyCode ?? "840",
-      paymentMethod: input.paymentMethod,
-      deliveryMethod: input.deliveryMethod,
-    },
-  });
+  try {
+    const customerDoc = await customerRef.get();
+    const existingCustomer = (customerDoc.data() ?? {}) as {
+      createdAt?: string;
+      shippingAddresses?: CustomerShippingAddress[];
+      paymentMethodsUsed?: string[];
+    };
 
-  const { ensureShipmentForOrder } = await import("@/lib/firestore/shipments");
-  await ensureShipmentForOrder({
-    orderReference: input.reference,
-    deliveryMethod: input.deliveryMethod,
-    status: mapOrderStatusToFulfillment("pending", input.deliveryMethod),
-    zoneId: input.deliveryZoneId,
-    zoneName: input.deliveryZoneName,
-  });
+    const shippingAddress = input.customerAddress
+      ? {
+          label: input.deliveryMethod === "delivery" ? "Delivery Address" : "Pickup Contact",
+          address: input.customerAddress,
+          instructions: input.deliveryInstructions,
+          recipientName: input.recipientName ?? input.customerName,
+          recipientPhone: input.recipientPhone ?? input.customerPhone,
+          lastUsedAt: timestamp,
+          isDefault: true,
+        }
+      : undefined;
+
+    const paymentMethodsUsed = Array.isArray(existingCustomer.paymentMethodsUsed)
+      ? [...existingCustomer.paymentMethodsUsed]
+      : [];
+    const nextPaymentMethod = input.paymentMethod.toUpperCase();
+    if (!paymentMethodsUsed.includes(nextPaymentMethod)) {
+      paymentMethodsUsed.push(nextPaymentMethod);
+    }
+
+    const shippingAddresses = shippingAddress
+      ? upsertShippingAddress(
+          Array.isArray(existingCustomer.shippingAddresses) ? existingCustomer.shippingAddresses : [],
+          shippingAddress,
+        )
+      : existingCustomer.shippingAddresses ?? [];
+
+    await customerRef.set(stripUndefined({
+      email: input.customerEmail,
+      name: input.customerName,
+      phone: input.customerPhone,
+      address: input.customerAddress,
+      shippingAddresses,
+      preferredDeliveryMethod: input.deliveryMethod,
+      paymentMethodsUsed,
+      lastOrderReference: input.reference,
+      lastOrderAt: timestamp,
+      updatedAt: timestamp,
+      createdAt: existingCustomer.createdAt ?? timestamp,
+    }), { merge: true });
+  } catch (error) {
+    console.warn("Customer profile sync failed while creating pending order:", {
+      reference: input.reference,
+      customerEmail,
+      message: error instanceof Error ? error.message : "Customer sync failed",
+    });
+  }
+
+  if (input.recordEngagement !== false) {
+    await recordCustomerEngagement({
+      customerEmail: input.customerEmail,
+      customerName: input.customerName,
+      orderReference: input.reference,
+      type: "checkout_started",
+      title: "Checkout initiated",
+      detail: `${input.items.length} item(s) via ${input.paymentMethod.toUpperCase()}.`,
+      meta: {
+        total: input.total,
+        currencyCode: input.currencyCode ?? "840",
+        deliveryMethod: input.deliveryMethod,
+      },
+    });
+  }
+
+  if (input.queueNotification !== false) {
+    await queueCustomerNotification({
+      type: "order_pending",
+      customerEmail: input.customerEmail,
+      customerName: input.customerName,
+      orderReference: input.reference,
+      subject: `Order ${input.reference} received`,
+      body: `Your order has been created and is awaiting payment confirmation. Total: ${input.total.toFixed(2)} ${input.currencyCode ?? "840"}.`,
+      meta: {
+        total: input.total,
+        currencyCode: input.currencyCode ?? "840",
+        paymentMethod: input.paymentMethod,
+        deliveryMethod: input.deliveryMethod,
+      },
+    });
+  }
+
+  if (input.ensureShipment !== false) {
+    const { ensureShipmentForOrder } = await import("@/lib/firestore/shipments");
+    await ensureShipmentForOrder({
+      orderReference: input.reference,
+      deliveryMethod: input.deliveryMethod,
+      status: mapOrderStatusToFulfillment("pending", input.deliveryMethod),
+      zoneId: input.deliveryZoneId,
+      zoneName: input.deliveryZoneName,
+    });
+  }
 }
 
 export async function getOrderTransactionReport(reference: string) {
@@ -727,6 +747,8 @@ export async function setOrderStatus(
   const shouldQueuePaymentNotification = options?.queuePaymentNotification ?? (source === "gateway");
   const shouldQueueFulfilmentNotification = options?.queueFulfilmentNotification ?? (source === "admin");
   const shouldCreateRefundCaseOnCancel = options?.createRefundCaseOnCancel ?? (source === "gateway");
+  const shouldRecordEngagement = options?.recordEngagement ?? true;
+  const shouldSyncShipment = options?.syncShipment ?? true;
 
   await db.runTransaction(async tx => {
     const [eventDoc, orderDoc] = await Promise.all([tx.get(eventRef), tx.get(orderRef)]);
@@ -783,8 +805,10 @@ export async function setOrderStatus(
     queueFulfilmentNotification: shouldQueueFulfilmentNotification,
   });
 
-  const { syncShipmentStatusForOrder } = await import("@/lib/firestore/shipments");
-  await syncShipmentStatusForOrder(finalOrder);
+  if (shouldSyncShipment) {
+    const { syncShipmentStatusForOrder } = await import("@/lib/firestore/shipments");
+    await syncShipmentStatusForOrder(finalOrder);
+  }
 
   if (internalStatus === "processing") {
     const { consumeInventoryReservations } = await import("@/lib/firestore/inventory");
@@ -812,20 +836,22 @@ export async function setOrderStatus(
     }
   }
 
-  await recordCustomerEngagement({
-    customerEmail: finalOrder.customerEmail,
-    customerName: finalOrder.customerName,
-    orderReference: finalOrder.id,
-    type: source === "gateway" ? "payment_status" : "order_status",
-    title: source === "gateway" ? "Payment status updated" : "Order status updated",
-    detail: source === "gateway"
-      ? `${status} received from payment gateway.`
-      : `${internalStatus} set from admin operations.`,
-    meta: {
-      ...(meta ?? {}),
-      statusSource: source,
-    },
-  });
+  if (shouldRecordEngagement) {
+    await recordCustomerEngagement({
+      customerEmail: finalOrder.customerEmail,
+      customerName: finalOrder.customerName,
+      orderReference: finalOrder.id,
+      type: source === "gateway" ? "payment_status" : "order_status",
+      title: source === "gateway" ? "Payment status updated" : "Order status updated",
+      detail: source === "gateway"
+        ? `${status} received from payment gateway.`
+        : `${internalStatus} set from admin operations.`,
+      meta: {
+        ...(meta ?? {}),
+        statusSource: source,
+      },
+    });
+  }
 
   if (shouldQueueGenericStatusNotification) {
     await queueCustomerNotification({

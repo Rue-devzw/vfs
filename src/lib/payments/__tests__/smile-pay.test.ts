@@ -168,6 +168,33 @@ describe("smile pay client", () => {
     });
   });
 
+  it("surfaces a friendly error when Smile Pay returns an HTML 404", async () => {
+    const fetchMock = vi.fn(async () => ({
+      ok: false,
+      status: 404,
+      headers: new Headers({ "content-type": "text/html" }),
+      text: async () => "<html><body><h1>404 Not Found</h1></body></html>",
+    }));
+    vi.stubGlobal("fetch", fetchMock as unknown as typeof fetch);
+
+    const { initiateSmileCashExpress } = await import("@/lib/payments/smile-pay");
+
+    await expect(
+      initiateSmileCashExpress({
+        orderReference: "ORDER-404",
+        amount: 20,
+        resultUrl: "https://app.test/api/payments/webhook/smile-pay",
+        itemName: "Order",
+        itemDescription: "Order item",
+        currencyCode: "840",
+        customerMobile: "263771234567",
+      }),
+    ).rejects.toMatchObject({
+      status: 404,
+      message: expect.stringContaining("Smile Pay endpoint was not found"),
+    });
+  });
+
   it("initiates ZWG express and applies conversion (mocked behavior check)", async () => {
     const body = {
       status: "PENDING",

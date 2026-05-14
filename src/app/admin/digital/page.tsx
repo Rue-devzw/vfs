@@ -15,6 +15,11 @@ function firstParam(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value;
 }
 
+function providerLabel(provider: string) {
+  if (provider === "unavailable") return "Unavailable";
+  return "Secure provider";
+}
+
 export default async function AdminDigitalPage({ searchParams }: PageProps) {
   const params = (await searchParams) ?? {};
   const noticeType = firstParam(params.notice);
@@ -123,7 +128,7 @@ export default async function AdminDigitalPage({ searchParams }: PageProps) {
                     </div>
                   </div>
                   <div className="flex flex-wrap items-center gap-2">
-                    <Badge variant="outline">{order.provider}</Badge>
+                    <Badge variant="outline">{providerLabel(order.provider)}</Badge>
                     <Badge variant={order.provisioningStatus === "failed" ? "destructive" : "secondary"}>
                       {order.provisioningStatus}
                     </Badge>
@@ -135,11 +140,6 @@ export default async function AdminDigitalPage({ searchParams }: PageProps) {
                   {order.receiptNumber ? <div>Receipt: <span className="font-medium text-foreground">{order.receiptNumber}</span></div> : null}
                   {order.token ? <div className="break-all">Token: <span className="whitespace-pre-line font-mono text-foreground">{formatTokenGroups(order.token)}</span></div> : null}
                 </div>
-                {order.resultPayload ? (
-                  <pre className="mt-3 max-h-52 overflow-auto rounded border bg-muted p-3 text-xs">
-                    {JSON.stringify(order.resultPayload, null, 2)}
-                  </pre>
-                ) : null}
                 {["failed", "pending"].includes(order.provisioningStatus) ? (
                   <div className="mt-4">
                     <AdminActionForm

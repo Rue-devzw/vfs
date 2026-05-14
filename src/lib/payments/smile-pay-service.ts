@@ -16,6 +16,7 @@ import {
 import { normalizeCardPaymentDetails, type CardPaymentDetails } from "./types";
 
 const PAYMENT_PROVIDER = "smile-pay";
+const BACKGROUND_FULFILMENT_RETRY_MS = 2 * 60 * 1000;
 
 type SharedInitiationInput = {
   reference: string;
@@ -43,6 +44,13 @@ type PersistGatewayUpdateInput = {
   responsePayload?: Record<string, unknown>;
   meta?: Record<string, unknown>;
   syncFulfilment?: boolean;
+};
+
+type SmilePayFulfilmentSyncResult = Awaited<ReturnType<typeof persistSmilePayGatewayUpdate>>;
+type SmilePayOrderStatusSyncResult = {
+  statusResult: SmilePayStatusResponse;
+  order: Awaited<ReturnType<typeof getOrder>>;
+  fulfilmentResult: SmilePayFulfilmentSyncResult;
 };
 
 function splitName(customerName: string) {
@@ -216,6 +224,29 @@ export async function persistSmilePayGatewayUpdate(input: PersistGatewayUpdateIn
   return null;
 }
 
+function shouldStartBackgroundFulfilment(order: Awaited<ReturnType<typeof getOrder>>) {
+  const paymentMeta = order?.paymentMeta ?? {};
+  if (paymentMeta.token || paymentMeta.receiptNumber || paymentMeta.vendFailureMessage) {
+    return false;
+  }
+
+  const startedAt = typeof paymentMeta.fulfilmentStartedAt === "string"
+    ? Date.parse(paymentMeta.fulfilmentStartedAt)
+    : Number.NaN;
+
+  return Number.isNaN(startedAt) || Date.now() - startedAt > BACKGROUND_FULFILMENT_RETRY_MS;
+}
+
+function syncDigitalFulfilmentInBackground(reference: string, status: string) {
+  void syncDigitalFulfilmentForOrder(reference, status).catch((error) => {
+    console.error("Background digital fulfilment sync failed:", {
+      reference,
+      status,
+      message: error instanceof Error ? error.message : "Digital fulfilment failed",
+    });
+  });
+}
+
 export async function confirmSmilePayOrderPayment(input: {
   reference: string;
   transactionReference: string;
@@ -248,7 +279,7 @@ export async function confirmSmilePayOrderPayment(input: {
   return result;
 }
 
-export async function syncSmilePayOrderStatus(reference: string) {
+export async function syncSmilePayOrderStatus(reference: string): Promise<SmilePayOrderStatusSyncResult> {
   const statusResult = await checkSmilePayStatus(reference);
   const status = statusResult.status ?? "PENDING";
   const existingOrder = await getOrder(reference);
@@ -266,7 +297,7 @@ export async function syncSmilePayOrderStatus(reference: string) {
     });
   }
 
-  const fulfilmentResult = await persistSmilePayGatewayUpdate({
+  await persistSmilePayGatewayUpdate({
     reference,
     status,
     paymentMethod: statusResult.paymentOption ?? "UNKNOWN",
@@ -277,9 +308,24 @@ export async function syncSmilePayOrderStatus(reference: string) {
       amount: statusResult.amount,
       currency: statusResult.currency,
     },
+    syncFulfilment: false,
   });
 
-  const order = fulfilmentResult?.order ?? existingOrder;
+  const fulfilmentResult: SmilePayFulfilmentSyncResult = null;
+  let order = await getOrder(reference) ?? existingOrder;
+  if (isSuccessfulGatewayStatus(status) && shouldStartBackgroundFulfilment(order)) {
+    const fulfilmentStartedAt = new Date().toISOString();
+    await setOrderStatus(reference, status, {
+      fulfilmentStartedAt,
+      fulfilmentStatus: "processing",
+    }, {
+      recordPaymentEvent: false,
+      queuePaymentNotification: false,
+      syncShipment: false,
+    });
+    order = await getOrder(reference) ?? order;
+    syncDigitalFulfilmentInBackground(reference, status);
+  }
 
   if (process.env.NODE_ENV !== "production" && reference.startsWith("digi_")) {
     console.info("[DEV STATUS] Smile Pay status sync result", {
@@ -287,8 +333,9 @@ export async function syncSmilePayOrderStatus(reference: string) {
       status,
       fulfilmentOrderStatus: order?.status,
       fulfilmentShippingStatus: order?.shipping?.status,
-      hasVendedData: Boolean(fulfilmentResult?.vendedData),
-      vendedData: fulfilmentResult?.vendedData,
+      fulfilmentStatus: order?.paymentMeta?.fulfilmentStatus,
+      fulfilmentStartedAt: order?.paymentMeta?.fulfilmentStartedAt,
+      hasVendedData: false,
     });
   }
 
@@ -309,6 +356,7 @@ export type SmilePayStatusSummary = {
   transactionReference?: string;
   accountReference?: string;
   meterNumber?: string;
+  receiptData?: unknown;
   vendedData?: unknown;
 };
 
@@ -330,6 +378,29 @@ export function buildSmilePayStatusSummary(input: {
   order: Awaited<ReturnType<typeof getOrder>>;
   vendedData?: unknown;
 }): SmilePayStatusSummary {
+  const paymentMeta = input.order?.paymentMeta ?? {};
+  const serviceType = typeof paymentMeta.serviceType === "string"
+    ? paymentMeta.serviceType.toLowerCase()
+    : undefined;
+  const isReceiptOnlyService = serviceType === "dstv" || serviceType === "nyaradzo" || serviceType === "cimas";
+  const orderFulfilmentData = paymentMeta.token || paymentMeta.receiptNumber
+    ? {
+        token: typeof paymentMeta.token === "string" ? paymentMeta.token : undefined,
+        units: typeof paymentMeta.units === "number" ? paymentMeta.units : undefined,
+        receiptNumber: typeof paymentMeta.receiptNumber === "string" ? paymentMeta.receiptNumber : undefined,
+        receiptDetails: paymentMeta.receiptDetails && typeof paymentMeta.receiptDetails === "object"
+          ? paymentMeta.receiptDetails
+          : undefined,
+        message: typeof paymentMeta.narrative === "string" ? paymentMeta.narrative : undefined,
+      }
+    : typeof paymentMeta.vendFailureMessage === "string"
+      ? {
+          message: paymentMeta.vendFailureMessage,
+          issue: true,
+        }
+      : undefined;
+  const fulfilmentData = input.vendedData ?? orderFulfilmentData;
+
   return {
     reference: input.reference,
     status: input.statusResult.status ?? "PENDING",
@@ -348,7 +419,8 @@ export function buildSmilePayStatusSummary(input: {
     meterNumber: input.order?.items?.[0]?.id?.startsWith?.("zesa-")
       ? String(input.order.items[0].id).split("zesa-")[1]
       : undefined,
-    ...(input.vendedData !== undefined ? { vendedData: input.vendedData } : {}),
+    ...(isReceiptOnlyService && fulfilmentData !== undefined ? { receiptData: fulfilmentData } : {}),
+    ...(!isReceiptOnlyService && fulfilmentData !== undefined ? { vendedData: fulfilmentData } : {}),
   };
 }
 

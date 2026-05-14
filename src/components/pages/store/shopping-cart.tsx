@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetFooter, SheetTrigger } from '@/components/ui/sheet';
 import { useCart, CartItem } from './cart-context';
@@ -31,6 +31,12 @@ export function ShoppingCart() {
     setCheckoutOpen(true);
   }
 
+  useEffect(() => {
+    const openCart = () => setCartOpen(true);
+    window.addEventListener("vfs:open-cart", openCart);
+    return () => window.removeEventListener("vfs:open-cart", openCart);
+  }, []);
+
   return (
     <>
       <Sheet open={isCartOpen} onOpenChange={setCartOpen}>
@@ -38,11 +44,11 @@ export function ShoppingCart() {
           <Button
             variant="outline"
             size="icon"
-            className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg bg-primary text-primary-foreground hover:bg-primary/90 z-50"
+            className="fixed bottom-28 right-6 z-[90] h-14 w-14 rounded-full bg-primary text-primary-foreground shadow-xl ring-4 ring-background/80 transition-transform hover:scale-105 hover:bg-primary/90 sm:bottom-32"
           >
             <ShoppingBag className="h-6 w-6" />
             {totalItems > 0 && (
-              <span className="absolute -top-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-destructive text-destructive-foreground text-xs font-bold">
+              <span className="absolute -right-1 -top-1 flex h-6 min-w-6 items-center justify-center rounded-full bg-destructive px-1.5 text-xs font-bold text-destructive-foreground shadow-md">
                 {totalItems}
               </span>
             )}

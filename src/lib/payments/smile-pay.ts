@@ -162,6 +162,98 @@ function buildAuthHeaders() {
   };
 }
 
+type SmilePayRequestDebug = {
+  label: string;
+  url: string;
+  init: RequestInit;
+};
+
+function shellQuote(value: string) {
+  return `'${value.replace(/'/g, "'\\''")}'`;
+}
+
+function headerEntries(headers: HeadersInit | undefined) {
+  if (!headers) {
+    return [] as Array<[string, string]>;
+  }
+
+  if (headers instanceof Headers) {
+    const entries: Array<[string, string]> = [];
+    headers.forEach((value, key) => entries.push([key, value]));
+    return entries;
+  }
+
+  if (Array.isArray(headers)) {
+    return headers.map(([key, value]) => [key, value] as [string, string]);
+  }
+
+  return Object.entries(headers).map(([key, value]) => [key, String(value)] as [string, string]);
+}
+
+function redactHeaderValue(name: string, value: string) {
+  if (/api[-_]?key|api[-_]?secret|authorization|token|secret/i.test(name)) {
+    return `<redacted:${name}>`;
+  }
+  return value;
+}
+
+function redactJsonBody(value: unknown): unknown {
+  if (Array.isArray(value)) {
+    return value.map(redactJsonBody);
+  }
+
+  if (!value || typeof value !== "object") {
+    return value;
+  }
+
+  return Object.fromEntries(
+    Object.entries(value as Record<string, unknown>).map(([key, fieldValue]) => [
+      key,
+      /pan|securityCode|cvv|cardNumber|password|token|secret/i.test(key)
+        ? `<redacted:${key}>`
+        : redactJsonBody(fieldValue),
+    ]),
+  );
+}
+
+function bodyForCurl(body: BodyInit | null | undefined) {
+  if (typeof body !== "string") {
+    return undefined;
+  }
+
+  try {
+    return JSON.stringify(redactJsonBody(JSON.parse(body)));
+  } catch {
+    return body;
+  }
+}
+
+function buildRedactedSmilePayCurl({ url, init }: SmilePayRequestDebug) {
+  const method = init.method || "GET";
+  const lines = [`curl -i -X ${method} ${shellQuote(url)}`];
+
+  for (const [name, value] of headerEntries(init.headers)) {
+    lines.push(`  -H ${shellQuote(`${name}: ${redactHeaderValue(name, value)}`)}`);
+  }
+
+  const body = bodyForCurl(init.body);
+  if (body) {
+    lines.push(`  --data-raw ${shellQuote(body)}`);
+  }
+
+  return lines.join(" \\\n");
+}
+
+function logRedactedSmilePayCurl(requestDebug?: SmilePayRequestDebug) {
+  if (!requestDebug || process.env.NODE_ENV === "test") {
+    return;
+  }
+
+  console.info(
+    `[Smile Pay upstream cURL - redacted] ${requestDebug.label}\n${buildRedactedSmilePayCurl(requestDebug)}`,
+  );
+}
+
 export function normalizeZimbabweMobileNumber(value: string) {
   const digits = value.replace(/\D/g, "");
   if (digits.startsWith("263") && digits.length >= 12) {
@@ -174,6 +266,9 @@ export function normalizeZimbabweMobileNumber(value: string) {
 }
 
 function withFriendlyGatewayMessage(message: string, paymentMethod?: PaymentMethod) {
+  if (/authentication executing POST/i.test(message) || /\/auth\/authenticate/i.test(message)) {
+    return "Smile Pay could not authenticate this payment request in the current gateway environment. Confirm the merchant API key, secret, and enabled payment methods, then try again.";
+  }
   if (/checking account not found/i.test(message)) {
     const methodLabel = paymentMethod ? getPaymentMethodLabel(paymentMethod) : "This payment method";
     return `${methodLabel} is not provisioned for this Smile Pay merchant in the current environment. Confirm ${methodLabel} is enabled for the merchant and that sandbox credentials use the sandbox base URL.`;
@@ -196,14 +291,35 @@ function parseJsonText<T>(text: string) {
   }
 }
 
+function nonJsonGatewayMessage(status: number) {
+  if (status === 404) {
+    return "Smile Pay endpoint was not found. Confirm the Smile Pay API base URL and that the selected payment method endpoint is available in this environment.";
+  }
+  return "Smile Pay returned an unexpected non-JSON response. Please try again shortly or confirm the gateway base URL configuration.";
+}
+
 async function handleJsonResponse<T>(
   response: Response,
   fallbackMessage: string,
   paymentMethod?: PaymentMethod,
+  requestDebug?: SmilePayRequestDebug,
 ) {
   let data: T & { responseMessage?: string; message?: string };
   if (typeof response.text === "function") {
-    data = parseJsonText<T & { responseMessage?: string; message?: string }>(await response.text());
+    const text = await response.text();
+    try {
+      data = parseJsonText<T & { responseMessage?: string; message?: string }>(text);
+    } catch (error) {
+      if (!response.ok) {
+        logRedactedSmilePayCurl(requestDebug);
+        throw new SmilePayGatewayError(
+          response.status,
+          nonJsonGatewayMessage(response.status),
+          { contentType: response.headers?.get?.("content-type") ?? undefined },
+        );
+      }
+      throw error;
+    }
   } else if (typeof response.json === "function") {
     data = await response.json() as T & { responseMessage?: string; message?: string };
   } else {
@@ -211,6 +327,7 @@ async function handleJsonResponse<T>(
   }
 
   if (!response.ok) {
+    logRedactedSmilePayCurl(requestDebug);
     const configuredBaseUrl = getSmilePayConfig().baseUrl;
     let message = withFriendlyGatewayMessage(data.responseMessage || data.message || fallbackMessage, paymentMethod);
     if (
@@ -233,8 +350,14 @@ async function handleJsonResponse<T>(
 async function handleExpressResponse(
   response: Response,
   paymentMethod?: PaymentMethod,
+  requestDebug?: SmilePayRequestDebug,
 ) {
-  return handleJsonResponse<SmilePayInitiateResponse>(response, "Smile Pay request failed", paymentMethod);
+  return handleJsonResponse<SmilePayInitiateResponse>(
+    response,
+    "Smile Pay request failed",
+    paymentMethod,
+    requestDebug,
+  );
 }
 
 function getExpressPath(paymentMethod: Exclude<PaymentMethod, "CARD">) {
@@ -269,16 +392,19 @@ function getExpressConfirmPath(paymentMethod: Exclude<PaymentMethod, "CARD">) {
 
 export async function initiateSmilePayStandardCheckout(payload: SmilePayInitiatePayload) {
   const { baseUrl } = getSmilePayConfig();
-  const response = await fetch(`${baseUrl}/payments/initiate-transaction`, {
+  const url = `${baseUrl}/payments/initiate-transaction`;
+  const init = {
     method: "POST",
     headers: buildAuthHeaders(),
     body: JSON.stringify(payload),
-  });
+  } satisfies RequestInit;
+  const response = await fetch(url, init);
 
   return handleJsonResponse<SmilePayInitiateResponse>(
     response,
     "Failed to initiate Smile Pay standard checkout",
     "CARD",
+    { label: "standard checkout", url, init },
   );
 }
 
@@ -313,29 +439,33 @@ export async function initiateSmilePayExpressCheckout(
     body.oneMoneyMobile = normalizedMobile;
   }
 
-  const response = await fetch(`${baseUrl}/${path}`, {
+  const url = `${baseUrl}/${path}`;
+  const init = {
     method: "POST",
     headers: buildAuthHeaders(),
     body: JSON.stringify(body),
-  });
+  } satisfies RequestInit;
+  const response = await fetch(url, init);
 
-  return handleExpressResponse(response, paymentMethod);
+  return handleExpressResponse(response, paymentMethod, { label: `${paymentMethod} express checkout`, url, init });
 }
 
 export async function initiateSmilePayCardExpressCheckout(
   payload: SmilePayExpressInitiatePayload & CardPaymentDetails,
 ) {
   const { baseUrl } = getSmilePayConfig();
-  const response = await fetch(`${baseUrl}/payments/express-checkout/mpgs`, {
+  const url = `${baseUrl}/payments/express-checkout/mpgs`;
+  const init = {
     method: "POST",
     headers: buildAuthHeaders(),
     body: JSON.stringify({
       ...payload,
       paymentMethod: "CARD",
     }),
-  });
+  } satisfies RequestInit;
+  const response = await fetch(url, init);
 
-  return handleExpressResponse(response, "CARD");
+  return handleExpressResponse(response, "CARD", { label: "CARD express checkout", url, init });
 }
 
 export async function confirmSmilePayExpressCheckout(
@@ -343,78 +473,84 @@ export async function confirmSmilePayExpressCheckout(
   payload: SmilePayConfirmPayload,
 ) {
   const { baseUrl } = getSmilePayConfig();
-  const response = await fetch(`${baseUrl}/${getExpressConfirmPath(paymentMethod)}`, {
+  const url = `${baseUrl}/${getExpressConfirmPath(paymentMethod)}`;
+  const init = {
     method: "POST",
     headers: buildAuthHeaders(),
     body: JSON.stringify(payload),
-  });
+  } satisfies RequestInit;
+  const response = await fetch(url, init);
 
-  return handleExpressResponse(response, paymentMethod);
+  return handleExpressResponse(response, paymentMethod, { label: `${paymentMethod} express confirmation`, url, init });
 }
 
 export async function checkSmilePayStatus(orderReference: string) {
   const { baseUrl } = getSmilePayConfig();
-  const response = await fetch(
-    `${baseUrl}/payments/transaction/${encodeURIComponent(orderReference)}/status/check`,
-    {
-      method: "GET",
-      headers: buildAuthHeaders(),
-    },
-  );
+  const url = `${baseUrl}/payments/transaction/${encodeURIComponent(orderReference)}/status/check`;
+  const init = {
+    method: "GET",
+    headers: buildAuthHeaders(),
+  } satisfies RequestInit;
+  const response = await fetch(url, init);
 
   return handleJsonResponse<SmilePayStatusResponse>(
     response,
     "Failed to check Smile Pay payment status",
+    undefined,
+    { label: "payment status check", url, init },
   );
 }
 
 export async function cancelSmilePayPayment(orderReference: string) {
   const { baseUrl } = getSmilePayConfig();
-  const response = await fetch(
-    `${baseUrl}/payments/transaction/${encodeURIComponent(orderReference)}/cancel`,
-    {
-      method: "POST",
-      headers: buildAuthHeaders(),
-    },
-  );
+  const url = `${baseUrl}/payments/transaction/${encodeURIComponent(orderReference)}/cancel`;
+  const init = {
+    method: "POST",
+    headers: buildAuthHeaders(),
+  } satisfies RequestInit;
+  const response = await fetch(url, init);
 
   return handleJsonResponse<Record<string, unknown>>(
     response,
     "Failed to cancel Smile Pay payment",
+    undefined,
+    { label: "payment cancellation", url, init },
   );
 }
 
 export async function validateSmilePayUtility(payload: SmilePayUtilityValidationPayload) {
   const { utilitiesBaseUrl } = getSmilePayConfig();
-  const response = await fetch(
-    `${utilitiesBaseUrl.replace(/\/$/, "")}/utilities/v1/customer-validation`,
-    {
-      method: "POST",
-      headers: buildAuthHeaders(),
-      body: JSON.stringify(payload),
-    },
-  );
+  const url = `${utilitiesBaseUrl.replace(/\/$/, "")}/utilities/v1/customer-validation`;
+  const init = {
+    method: "POST",
+    headers: buildAuthHeaders(),
+    body: JSON.stringify(payload),
+  } satisfies RequestInit;
+  const response = await fetch(url, init);
 
   return handleJsonResponse<SmilePayUtilityValidationResponse>(
     response,
     "Smile Pay utility validation failed",
+    undefined,
+    { label: "utility customer validation", url, init },
   );
 }
 
 export async function vendSmilePayUtility(payload: SmilePayUtilityVendPayload) {
   const { utilitiesBaseUrl } = getSmilePayConfig();
-  const response = await fetch(
-    `${utilitiesBaseUrl.replace(/\/$/, "")}/utilities/v1/vend`,
-    {
-      method: "POST",
-      headers: buildAuthHeaders(),
-      body: JSON.stringify(payload),
-    },
-  );
+  const url = `${utilitiesBaseUrl.replace(/\/$/, "")}/utilities/v1/vend`;
+  const init = {
+    method: "POST",
+    headers: buildAuthHeaders(),
+    body: JSON.stringify(payload),
+  } satisfies RequestInit;
+  const response = await fetch(url, init);
 
   return handleJsonResponse<SmilePayUtilityVendResponse>(
     response,
     "Smile Pay utility vend failed",
+    undefined,
+    { label: "utility vend", url, init },
   );
 }
 

@@ -5,8 +5,16 @@ import { CartProvider } from "@/components/pages/store/cart-context";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Store | Valley Farm Secrets",
+  title: "Store",
   description: "Browse our fresh produce, premium meat, and grocery essentials. Order online for delivery or collection.",
+  alternates: {
+    canonical: "/store",
+  },
+  openGraph: {
+    title: "Store | Valley Farm Secrets",
+    description: "Browse our fresh produce, premium meat, and grocery essentials. Order online for delivery or collection.",
+    url: "/store",
+  },
 };
 
 export default function StorePage() {

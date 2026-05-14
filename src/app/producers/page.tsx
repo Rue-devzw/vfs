@@ -5,8 +5,17 @@ import Link from 'next/link';
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Producer's Portal | Valley Farm Secrets",
+  title: "Producer's Portal",
   description: "A reliable market for your produce. Fair prices, commitment to growth, and the Farmers' Forum knowledge base.",
+  alternates: {
+    canonical: "/producers",
+  },
+  openGraph: {
+    title: "Producer's Portal | Valley Farm Secrets",
+    description: "A reliable market for your produce. Join our network of farmers and producers for fair prices and sustainable growth.",
+    url: "/producers",
+    images: [{ url: "/images/og-producers.webp" }],
+  },
 };
 import { Card, CardContent } from "@/components/ui/card";
 import { FarmersForum } from "@/components/pages/producers/farmers-forum";

@@ -777,6 +777,8 @@ describe("digital provider purchase initiation", () => {
       accountName: "MRS BANANA KIWI",
       accountNumber: "11445000",
       billerName: "CIMAS",
+      amountToBePaid: "565380",
+      currency: "USD",
       raw: expect.objectContaining({
         parsed: expect.objectContaining({
           referenceName: "11445000-MRS BANANA KIWI",
@@ -786,6 +788,7 @@ describe("digital provider purchase initiation", () => {
           currentProduct: "PRIVATE HOSPITAL",
           currency: "USD",
           currentBalance: 565380,
+          amountToBePaid: "565380",
         }),
       }),
     }));

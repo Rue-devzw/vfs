@@ -72,6 +72,50 @@ export function extractZetdcAccountCurrency(raw: unknown): string | undefined {
   return pickProviderCurrencyFromDelimitedDetails(rawRecord.responseDetails);
 }
 
+export function extractNyaradzoAccountCurrency(raw: unknown): string | undefined {
+  if (!raw || typeof raw !== "object") {
+    return undefined;
+  }
+
+  const rawRecord = raw as Record<string, unknown>;
+  const parsed = (raw as { parsed?: unknown }).parsed;
+  if (parsed && typeof parsed === "object") {
+    const parsedCurrency = pickProviderCurrencyFromRecord(parsed as Record<string, unknown>);
+    if (parsedCurrency) {
+      return parsedCurrency;
+    }
+  }
+
+  const rawCurrency = pickProviderCurrencyFromRecord(rawRecord);
+  if (rawCurrency) {
+    return rawCurrency;
+  }
+
+  return pickProviderCurrencyFromDelimitedDetails(rawRecord.responseDetails);
+}
+
+export function extractCimasAccountCurrency(raw: unknown): string | undefined {
+  if (!raw || typeof raw !== "object") {
+    return undefined;
+  }
+
+  const rawRecord = raw as Record<string, unknown>;
+  const parsed = (raw as { parsed?: unknown }).parsed;
+  if (parsed && typeof parsed === "object") {
+    const parsedCurrency = pickProviderCurrencyFromRecord(parsed as Record<string, unknown>);
+    if (parsedCurrency) {
+      return parsedCurrency;
+    }
+  }
+
+  const rawCurrency = pickProviderCurrencyFromRecord(rawRecord);
+  if (rawCurrency) {
+    return rawCurrency;
+  }
+
+  return pickProviderCurrencyFromDelimitedDetails(rawRecord.responseDetails);
+}
+
 export function getAllowedZetdcPaymentCurrencies(providerCurrency: string | undefined): CurrencyCode[] {
   switch (normalizeProviderCurrency(providerCurrency)) {
     case "USD":
@@ -93,6 +137,58 @@ export function getZetdcCurrencyRestrictionMessage(providerCurrency: string | un
       return "This ZETDC USD account only accepts USD payments.";
     case "ZIG":
       return "This ZETDC ZiG account accepts both USD and ZiG payments.";
+    default:
+      return undefined;
+  }
+}
+
+export function getAllowedNyaradzoPaymentCurrencies(providerCurrency: string | undefined): CurrencyCode[] {
+  switch (normalizeProviderCurrency(providerCurrency)) {
+    case "USD":
+      return ["840"];
+    case "ZIG":
+      return ["840", "924"];
+    default:
+      return ALL_SUPPORTED_CURRENCIES;
+  }
+}
+
+export function isAllowedNyaradzoPaymentCurrency(providerCurrency: string | undefined, currencyCode: CurrencyCode) {
+  return getAllowedNyaradzoPaymentCurrencies(providerCurrency).includes(currencyCode);
+}
+
+export function getNyaradzoCurrencyRestrictionMessage(providerCurrency: string | undefined) {
+  switch (normalizeProviderCurrency(providerCurrency)) {
+    case "USD":
+      return "This Nyaradzo USD policy only accepts USD payments.";
+    case "ZIG":
+      return "This Nyaradzo ZiG policy accepts both USD and ZiG payments.";
+    default:
+      return undefined;
+  }
+}
+
+export function getAllowedCimasPaymentCurrencies(providerCurrency: string | undefined): CurrencyCode[] {
+  switch (normalizeProviderCurrency(providerCurrency)) {
+    case "USD":
+      return ["840"];
+    case "ZIG":
+      return ["840", "924"];
+    default:
+      return ALL_SUPPORTED_CURRENCIES;
+  }
+}
+
+export function isAllowedCimasPaymentCurrency(providerCurrency: string | undefined, currencyCode: CurrencyCode) {
+  return getAllowedCimasPaymentCurrencies(providerCurrency).includes(currencyCode);
+}
+
+export function getCimasCurrencyRestrictionMessage(providerCurrency: string | undefined) {
+  switch (normalizeProviderCurrency(providerCurrency)) {
+    case "USD":
+      return "This CIMAS USD account only accepts USD payments.";
+    case "ZIG":
+      return "This CIMAS ZiG account accepts both USD and ZiG payments.";
     default:
       return undefined;
   }

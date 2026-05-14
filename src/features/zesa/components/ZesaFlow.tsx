@@ -237,13 +237,21 @@ export function ZesaFlow() {
         setPaymentMethod(input.paymentMethod);
         setCustomerMobile(input.mobile || "");
         setProcessingState({
-            title: "Preparing secure checkout",
-            description: "We are creating your payment request and linking it to this meter number.",
-            detail: "Once the gateway responds, we will either ask for an OTP, redirect you, or continue tracking automatically.",
-            progress: 38,
+            title: "Revalidating meter details",
+            description: "We are checking the meter details again before payment starts.",
+            detail: "Payment will only start after the provider confirms this meter number.",
+            progress: 28,
         });
         try {
             if (!meterNumber) throw new Error("Meter number missing");
+            const latestCustomer = await SmilePayService.validateMeter(meterNumber);
+            setCustomer(latestCustomer);
+            setProcessingState({
+                title: "Preparing secure checkout",
+                description: "We are creating your payment request and linking it to this meter number.",
+                detail: "The meter details were confirmed. We are opening the secure payment session next.",
+                progress: 38,
+            });
             const amountUsd = convertToUsd(input.amount, currencyCode);
             const result = await SmilePayService.purchaseToken(
                 meterNumber,

@@ -47,7 +47,7 @@ export const DIGITAL_SERVICES: Record<DigitalServiceId, DigitalServiceConfig> = 
     status: "active",
     validationMode: "provider",
     purchaseMode: "provider",
-    supportMessage: "ZESA validation and token vending run through the EGRESS integration.",
+    supportMessage: "ZESA validation and token vending are processed through our secure payment provider.",
   },
   airtime: {
     id: "airtime",
@@ -77,13 +77,13 @@ export const DIGITAL_SERVICES: Record<DigitalServiceId, DigitalServiceConfig> = 
   dstv: {
     id: "dstv",
     label: "DStv Payments",
-    description: "Validate your smartcard and post your DStv payment through the EGRESS integration.",
+    description: "Validate your smartcard and pay your DStv subscription securely online.",
     accountLabel: "Smartcard Number",
     provider: "smile-pay-egress",
     status: "active",
     validationMode: "provider",
     purchaseMode: "provider",
-    supportMessage: "DStv validation and payment posting run through the EGRESS integration.",
+    supportMessage: "DStv validation and payment posting are processed through our secure payment provider.",
     formFields: [
       {
         id: "paymentType",
@@ -131,27 +131,18 @@ export const DIGITAL_SERVICES: Record<DigitalServiceId, DigitalServiceConfig> = 
     status: "active",
     validationMode: "provider",
     purchaseMode: "provider",
-    supportMessage: "Council payments currently use the City of Harare EGRESS integration.",
+    supportMessage: "Council payments are processed through our secure payment provider.",
   },
   nyaradzo: {
     id: "nyaradzo",
     label: "Nyaradzo Group",
-    description: "Validate a policy and post Nyaradzo premium payments through the live EGRESS integration.",
+    description: "Validate a policy and pay Nyaradzo premiums securely online.",
     accountLabel: "Policy Number",
     provider: "smile-pay-egress",
     status: "active",
     validationMode: "provider",
     purchaseMode: "provider",
-    supportMessage: "Nyaradzo policy validation and payment posting run through the EGRESS integration.",
-    formFields: [
-      {
-        id: "months",
-        label: "Months to Pay",
-        type: "number",
-        required: true,
-        placeholder: "e.g. 2",
-      },
-    ],
+    supportMessage: "Nyaradzo policy validation and payment posting are processed through our secure payment provider.",
   },
   cimas: {
     id: "cimas",
