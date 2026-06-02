@@ -22,12 +22,11 @@ describe("ZETDC currency rules", () => {
     expect(getZetdcCurrencyRestrictionMessage("USD")).toBe("This ZETDC USD account only accepts USD payments.");
   });
 
-  it("allows both USD and ZiG payments for ZiG accounts", () => {
-    expect(getAllowedZetdcPaymentCurrencies("ZiG")).toEqual(["840", "924"]);
+  it("allows both USD and ZWG payments for ZWG accounts", () => {
     expect(getAllowedZetdcPaymentCurrencies("ZWG")).toEqual(["840", "924"]);
-    expect(isAllowedZetdcPaymentCurrency("ZiG", "840")).toBe(true);
-    expect(isAllowedZetdcPaymentCurrency("ZiG", "924")).toBe(true);
-    expect(getZetdcCurrencyRestrictionMessage("ZWG")).toBe("This ZETDC ZiG account accepts both USD and ZiG payments.");
+    expect(isAllowedZetdcPaymentCurrency("ZWG", "840")).toBe(true);
+    expect(isAllowedZetdcPaymentCurrency("ZWG", "924")).toBe(true);
+    expect(getZetdcCurrencyRestrictionMessage("ZWG")).toBe("This ZETDC ZWG account accepts both USD and ZWG payments.");
   });
 
   it("extracts the account currency from the provider validation snapshot", () => {
@@ -38,9 +37,9 @@ describe("ZETDC currency rules", () => {
     })).toBe("USD");
     expect(extractZetdcAccountCurrency({
       parsed: {
-        currency: "ZiG",
+        currency: "ZWG",
       },
-    })).toBe("ZiG");
+    })).toBe("ZWG");
   });
 
   it("extracts the account currency from raw EGRESS response details when parsed currency is missing", () => {
@@ -61,12 +60,11 @@ describe("CIMAS currency rules", () => {
     expect(getCimasCurrencyRestrictionMessage("USD")).toBe("This CIMAS USD account only accepts USD payments.");
   });
 
-  it("allows both USD and ZiG payments for ZiG accounts", () => {
-    expect(getAllowedCimasPaymentCurrencies("ZiG")).toEqual(["840", "924"]);
+  it("allows both USD and ZWG payments for ZWG accounts", () => {
     expect(getAllowedCimasPaymentCurrencies("ZWG")).toEqual(["840", "924"]);
-    expect(isAllowedCimasPaymentCurrency("ZiG", "840")).toBe(true);
-    expect(isAllowedCimasPaymentCurrency("ZiG", "924")).toBe(true);
-    expect(getCimasCurrencyRestrictionMessage("ZWG")).toBe("This CIMAS ZiG account accepts both USD and ZiG payments.");
+    expect(isAllowedCimasPaymentCurrency("ZWG", "840")).toBe(true);
+    expect(isAllowedCimasPaymentCurrency("ZWG", "924")).toBe(true);
+    expect(getCimasCurrencyRestrictionMessage("ZWG")).toBe("This CIMAS ZWG account accepts both USD and ZWG payments.");
   });
 
   it("extracts the account currency from validation snapshots", () => {
@@ -89,12 +87,11 @@ describe("Nyaradzo currency rules", () => {
     expect(getNyaradzoCurrencyRestrictionMessage("USD")).toBe("This Nyaradzo USD policy only accepts USD payments.");
   });
 
-  it("allows both USD and ZiG payments for ZiG policies", () => {
-    expect(getAllowedNyaradzoPaymentCurrencies("ZiG")).toEqual(["840", "924"]);
-    expect(getAllowedNyaradzoPaymentCurrencies("ZWG")).toEqual(["840", "924"]);
-    expect(isAllowedNyaradzoPaymentCurrency("ZiG", "840")).toBe(true);
-    expect(isAllowedNyaradzoPaymentCurrency("ZiG", "924")).toBe(true);
-    expect(getNyaradzoCurrencyRestrictionMessage("ZWG")).toBe("This Nyaradzo ZiG policy accepts both USD and ZiG payments.");
+  it("allows only ZWG payments for ZWG policies", () => {
+    expect(getAllowedNyaradzoPaymentCurrencies("ZWG")).toEqual(["924"]);
+    expect(isAllowedNyaradzoPaymentCurrency("ZWG", "840")).toBe(false);
+    expect(isAllowedNyaradzoPaymentCurrency("ZWG", "924")).toBe(true);
+    expect(getNyaradzoCurrencyRestrictionMessage("ZWG")).toBe("This Nyaradzo ZWG policy only accepts ZWG payments.");
   });
 
   it("extracts the policy currency from validation snapshots", () => {

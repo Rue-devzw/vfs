@@ -71,6 +71,7 @@ type AccountCheckState = {
   accountName?: string;
   accountNumber: string;
   billerName?: string;
+  validationSnapshot?: unknown;
   accountCurrency?: string;
   accountCurrencyCode?: CurrencyCode;
   dueAmount?: string;
@@ -172,6 +173,40 @@ function getServiceChargeUsd(service: string, serviceMeta: Record<string, string
   return 0;
 }
 
+function isDigitalFieldVisible(service: string, serviceMeta: Record<string, string>, fieldId: string) {
+  if (service !== "dstv") {
+    return true;
+  }
+
+  const paymentType = serviceMeta.paymentType?.trim().toUpperCase();
+  if (paymentType === "TOPUP") {
+    return fieldId === "paymentType";
+  }
+
+  return true;
+}
+
+function isDigitalFieldRequired(service: string, serviceMeta: Record<string, string>, field: DigitalServiceField) {
+  if (!field.required) {
+    return false;
+  }
+
+  return isDigitalFieldVisible(service, serviceMeta, field.id);
+}
+
+function updateDigitalServiceMetaForField(
+  current: Record<string, string>,
+  fieldId: string,
+  value: string,
+) {
+  if (fieldId !== "paymentType" || value.trim().toUpperCase() !== "TOPUP") {
+    return { ...current, [fieldId]: value };
+  }
+
+  const { bouquet: _bouquet, addon: _addon, addons: _addons, months: _months, ...rest } = current;
+  return { ...rest, paymentType: value };
+}
+
 function buildAccountCheckState(result: DigitalValidationResult, fallbackAccountNumber: string): AccountCheckState {
   const raw = asRecord(result.raw);
   const parsed = asRecord(raw?.parsed);
@@ -187,6 +222,7 @@ function buildAccountCheckState(result: DigitalValidationResult, fallbackAccount
     accountName: result.accountName || pickString(parsed, "policyHolder") || pickString(parsed, "customerName"),
     accountNumber: result.accountNumber || fallbackAccountNumber,
     billerName: result.billerName,
+    validationSnapshot: result.raw,
     accountCurrency,
     accountCurrencyCode: currencyCodeFromProviderCurrency(accountCurrency),
     dueAmount: pickString(parsed, "dueAmount"),
@@ -373,12 +409,15 @@ function buildCimasReceiptSlip(receipt: DigitalReceipt, fallbackCurrencyCode: Cu
 
   const detailCurrencyCode = receiptCurrencyCode(details.currency, fallbackCurrencyCode);
   const referenceType = asReceiptString(details.customerPaymentDetails2);
+  const paymentReference = asReceiptString(details.paymentReference)
+    || receipt.receiptNumber
+    || asReceiptString(details.receiptNumber);
   const billerAmount = typeof details.amount === "number" ? details.amount : parseProviderAmount(asReceiptString(details.amount));
   const grandTotal = typeof receipt.amount === "number" ? receipt.amount : undefined;
   const serviceCharge = billerAmount !== undefined && grandTotal !== undefined && grandTotal >= billerAmount ? grandTotal - billerAmount : undefined;
 
   const rows: Array<[string, string | undefined]> = [
-    ["Receipt Number", receipt.receiptNumber || asReceiptString(details.receiptNumber)],
+    ["Payment Reference", paymentReference],
     ["Reference Number", asReceiptString(details.customerAccount) || asReceiptString(details.customerPaymentDetails3)],
     ["Reference Type", referenceType === "M" ? "Member" : referenceType === "E" ? "Payer" : referenceType],
     ["Customer Name", asReceiptString(details.customerName)],
@@ -393,7 +432,7 @@ function buildCimasReceiptSlip(receipt: DigitalReceipt, fallbackCurrencyCode: Cu
   return {
     title: "CIMAS Receipt",
     subtitle: "Digital medical aid payment",
-    receiptNumber: receipt.receiptNumber || asReceiptString(details.receiptNumber),
+    receiptNumber: paymentReference,
     status: asReceiptString(details.status) || receipt.status,
     amount: typeof receipt.amount === "number" ? formatMoney(receipt.amount, receipt.currencyCode ?? fallbackCurrencyCode) : formatReceiptMoney(details.amount, detailCurrencyCode),
     rows: rows.filter((row): row is [string, string] => Boolean(row[1])),
@@ -799,9 +838,18 @@ export function GenericDigitalFlow({
       if (!accountCurrencyAllowed) {
         throw new Error(accountCurrencyRestrictionMessage || "This account does not accept the selected payment currency.");
       }
-      const validationResult = await validateCustomerDetails();
+      const validationResult = service === "dstv" && accountCheck
+        ? {
+          accountName: accountCheck.accountName,
+          accountNumber: accountCheck.accountNumber,
+          billerName: accountCheck.billerName,
+          raw: accountCheck.validationSnapshot,
+        } satisfies DigitalValidationResult
+        : await validateCustomerDetails();
       const validatedAccountNumber = validationResult.accountNumber || accountReference;
-      const validatedAccountCheck = buildAccountCheckState(validationResult, validatedAccountNumber);
+      const validatedAccountCheck = service === "dstv" && accountCheck
+        ? accountCheck
+        : buildAccountCheckState(validationResult, validatedAccountNumber);
       if (requiresAccountVerification) {
         const validatedCurrencyAllowed = service === "nyaradzo"
           ? isAllowedNyaradzoPaymentCurrency(validatedAccountCheck.accountCurrency, currencyCode)
@@ -851,6 +899,7 @@ export function GenericDigitalFlow({
             securityCode: cardSecurityCode,
           } : undefined,
           serviceMeta: validatedServiceMeta,
+          validationSnapshot: service === "dstv" ? validatedAccountCheck.validationSnapshot : undefined,
         }),
       });
       const data = await res.json();
@@ -1264,14 +1313,14 @@ export function GenericDigitalFlow({
                     </p>
                   ) : null}
                 </div>
-                {formFields.map((field) => (
+                {formFields.filter((field) => isDigitalFieldVisible(service, serviceMeta, field.id)).map((field) => (
                   <div key={field.id} className="space-y-2">
                     <Label htmlFor={field.id}>{field.label}</Label>
                     {field.options?.length ? (
                       <Select
                         value={serviceMeta[field.id] ?? ""}
                         onValueChange={(value) => {
-                          setServiceMeta((current) => ({ ...current, [field.id]: value }));
+                          setServiceMeta((current) => updateDigitalServiceMetaForField(current, field.id, value));
                           if (shouldResetAccountCheckOnMetaChange) {
                             setAccountCheck(null);
                           }
@@ -1298,7 +1347,7 @@ export function GenericDigitalFlow({
                         min={field.type === "number" ? "1" : undefined}
                         value={serviceMeta[field.id] ?? ""}
                         onChange={(e) => {
-                          setServiceMeta((current) => ({ ...current, [field.id]: e.target.value }));
+                          setServiceMeta((current) => updateDigitalServiceMetaForField(current, field.id, e.target.value));
                           if (shouldResetAccountCheckOnMetaChange) {
                             setAccountCheck(null);
                           }
@@ -1476,7 +1525,7 @@ export function GenericDigitalFlow({
                   || !accountCurrencyAllowed
                   || (requiresMobileNumber(paymentMethod) && !customerMobile)
                   || (paymentMethod === "CARD" && (!cardPan || !cardExpMonth || !cardExpYear || !cardSecurityCode))
-                  || formFields.some(field => field.required && !(serviceMeta[field.id] ?? "").trim())
+                  || formFields.some(field => isDigitalFieldRequired(service, serviceMeta, field) && !(serviceMeta[field.id] ?? "").trim())
                 }
                 onClick={initiate}
                 className="h-12 w-full shadow-sm"

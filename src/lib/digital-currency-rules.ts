@@ -13,7 +13,7 @@ function normalizeProviderCurrency(value: string | undefined) {
   }
 
   if (normalized === "ZWG" || normalized === "ZIG") {
-    return "ZIG";
+    return "ZWG";
   }
 
   return null;
@@ -120,7 +120,7 @@ export function getAllowedZetdcPaymentCurrencies(providerCurrency: string | unde
   switch (normalizeProviderCurrency(providerCurrency)) {
     case "USD":
       return ["840"];
-    case "ZIG":
+    case "ZWG":
       return ["840", "924"];
     default:
       return ALL_SUPPORTED_CURRENCIES;
@@ -135,8 +135,8 @@ export function getZetdcCurrencyRestrictionMessage(providerCurrency: string | un
   switch (normalizeProviderCurrency(providerCurrency)) {
     case "USD":
       return "This ZETDC USD account only accepts USD payments.";
-    case "ZIG":
-      return "This ZETDC ZiG account accepts both USD and ZiG payments.";
+    case "ZWG":
+      return "This ZETDC ZWG account accepts both USD and ZWG payments.";
     default:
       return undefined;
   }
@@ -146,8 +146,8 @@ export function getAllowedNyaradzoPaymentCurrencies(providerCurrency: string | u
   switch (normalizeProviderCurrency(providerCurrency)) {
     case "USD":
       return ["840"];
-    case "ZIG":
-      return ["840", "924"];
+    case "ZWG":
+      return ["924"];
     default:
       return ALL_SUPPORTED_CURRENCIES;
   }
@@ -161,8 +161,8 @@ export function getNyaradzoCurrencyRestrictionMessage(providerCurrency: string |
   switch (normalizeProviderCurrency(providerCurrency)) {
     case "USD":
       return "This Nyaradzo USD policy only accepts USD payments.";
-    case "ZIG":
-      return "This Nyaradzo ZiG policy accepts both USD and ZiG payments.";
+    case "ZWG":
+      return "This Nyaradzo ZWG policy only accepts ZWG payments.";
     default:
       return undefined;
   }
@@ -172,7 +172,7 @@ export function getAllowedCimasPaymentCurrencies(providerCurrency: string | unde
   switch (normalizeProviderCurrency(providerCurrency)) {
     case "USD":
       return ["840"];
-    case "ZIG":
+    case "ZWG":
       return ["840", "924"];
     default:
       return ALL_SUPPORTED_CURRENCIES;
@@ -187,8 +187,8 @@ export function getCimasCurrencyRestrictionMessage(providerCurrency: string | un
   switch (normalizeProviderCurrency(providerCurrency)) {
     case "USD":
       return "This CIMAS USD account only accepts USD payments.";
-    case "ZIG":
-      return "This CIMAS ZiG account accepts both USD and ZiG payments.";
+    case "ZWG":
+      return "This CIMAS ZWG account accepts both USD and ZWG payments.";
     default:
       return undefined;
   }

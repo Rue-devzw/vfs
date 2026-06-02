@@ -16,7 +16,15 @@ export class EgressGatewayError extends Error {
 }
 
 export function isEgressServiceUnavailable(error: EgressGatewayError) {
-  return error.status >= 500;
+  return error.status >= 500 || isEgressEndpointNotFound(error);
+}
+
+function isEgressEndpointNotFound(error: EgressGatewayError) {
+  if (error.status !== 404) {
+    return false;
+  }
+
+  return /requested resource is not available|JBoss Web|404 Not Found/i.test(error.responseBody ?? "");
 }
 
 export function getEgressServiceUnavailableMessage(context: string) {
@@ -267,6 +275,13 @@ function handleSoapResponse(status: number, text: string) {
   console.log("---------------------------------------\n");
 
   if (status < 200 || status >= 300) {
+    if (status === 404 && /requested resource is not available|JBoss Web|404 Not Found/i.test(text)) {
+      throw new EgressGatewayError(
+        status,
+        "EGRESS endpoint was not found. Check ZB_EGRESS_API_URL with the provider.",
+        text,
+      );
+    }
     throw new EgressGatewayError(status, `EGRESS request failed with status ${status}`, text);
   }
 

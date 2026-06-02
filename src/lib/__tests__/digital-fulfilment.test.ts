@@ -199,9 +199,9 @@ describe("digital fulfilment sync", () => {
           customerMobile: "0711111111",
           paymentType: "BOUQUET",
           bouquet: "LITES20",
-          addon: "ADD2SEC",
+          addon: "DUALS20",
           months: "1",
-          providerAmountUsd: "23.00",
+          providerAmountUsd: "22.00",
           serviceChargeUsd: "3.00",
         },
       }),
@@ -209,7 +209,7 @@ describe("digital fulfilment sync", () => {
         {
           id: "dstv-4117068963",
           name: "DStv Payments Purchase",
-          price: 23,
+          price: 22,
           quantity: 1,
           image: "/images/dstv-logo.png",
         },
@@ -222,7 +222,7 @@ describe("digital fulfilment sync", () => {
         },
       ],
       total: 26,
-      totalUsd: 26,
+      totalUsd: 25,
     });
     vendDigitalFulfilment.mockResolvedValue({
       success: true,
@@ -239,9 +239,9 @@ describe("digital fulfilment sync", () => {
       orderReference: "ORDER-1",
       gatewayReference: "BQVZ2782TYHP",
       accountNumber: "4117068963",
-      amountUsd: 23,
+      amountUsd: 22,
       serviceMeta: expect.objectContaining({
-        providerAmountUsd: "23.00",
+        providerAmountUsd: "22.00",
         serviceChargeUsd: "3.00",
         customerName: "Mr A ROSCOE",
       }),
@@ -302,6 +302,43 @@ describe("digital fulfilment sync", () => {
     expect(upsertDigitalOrder).toHaveBeenCalledWith(expect.objectContaining({
       orderReference: "ORDER-1",
       serviceId: "cimas",
+      provisioningStatus: "processing",
+      redactCustomerData: true,
+      resultPayload: expect.objectContaining({
+        status: "RETRY_PENDING",
+      }),
+    }));
+    expect(result.vendedData).toEqual(expect.objectContaining({
+      message: expect.stringContaining("will retry shortly"),
+    }));
+  });
+
+  it("keeps DSTV provider resend responses retryable instead of recording a permanent failure", async () => {
+    getOrder.mockResolvedValue(createOrder({
+      accountNumber: "4117068963",
+      serviceType: "DSTV",
+      gatewayReference: "0401572146129",
+      serviceMeta: {
+        paymentType: "TOPUP",
+      },
+    }));
+    const { EgressGatewayError } = await import("@/lib/payments/egress");
+    vendDigitalFulfilment.mockRejectedValue(
+      new EgressGatewayError(503, "Service unavailable - Service unavailable - null response from ZSS - Resend"),
+    );
+
+    const { syncDigitalFulfilmentForOrder } = await import("@/lib/digital-fulfilment");
+    const result = await syncDigitalFulfilmentForOrder("ORDER-1", "PAID");
+
+    expect(setOrderStatus).toHaveBeenCalledWith("ORDER-1", "PAID", expect.objectContaining({
+      accountNumber: "4117068963",
+      serviceType: "DSTV",
+      fulfilmentStatus: "retry_pending",
+      fulfilmentLastError: expect.stringContaining("null response"),
+    }));
+    expect(upsertDigitalOrder).toHaveBeenCalledWith(expect.objectContaining({
+      orderReference: "ORDER-1",
+      serviceId: "dstv",
       provisioningStatus: "processing",
       redactCustomerData: true,
       resultPayload: expect.objectContaining({

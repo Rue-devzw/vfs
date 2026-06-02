@@ -21,6 +21,10 @@ function digitalProviderUnavailableMessage(context: string) {
 }
 
 function providerValidationFailureMessage(serviceLabel: string) {
+    if (/zesa|zetdc/i.test(serviceLabel)) {
+        return "We could not validate that ZETDC meter number. Please check the digits on the meter or token slip and try again.";
+    }
+
     return `${serviceLabel} validation could not be completed by the provider. Please check the details and try again.`;
 }
 

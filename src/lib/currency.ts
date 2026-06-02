@@ -1,14 +1,14 @@
 export type CurrencyCode = "840" | "924";
 
 const CURRENCY_META: Record<CurrencyCode, { label: string; symbol: string }> = {
-  "840": { label: "USD", symbol: "$" },
-  "924": { label: "ZiG", symbol: "ZiG " },
+  "840": { label: "USD", symbol: "USD" },
+  "924": { label: "ZWG", symbol: "ZWG" },
 };
 
 export const DEFAULT_CURRENCY_CODE: CurrencyCode = "840";
 export const CURRENCY_OPTIONS = [
   { code: "840", label: "USD" },
-  { code: "924", label: "ZiG" },
+  { code: "924", label: "ZWG" },
 ] as const satisfies ReadonlyArray<{ code: CurrencyCode; label: string }>;
 
 export function getCurrencyMeta(code: CurrencyCode) {
@@ -56,6 +56,6 @@ export function convertCurrencyAmount(
 }
 
 export function formatMoney(amount: number, code: CurrencyCode) {
-  const { label, symbol } = getCurrencyMeta(code);
-  return `${symbol}${amount.toFixed(2)} ${label}`;
+  const { label } = getCurrencyMeta(code);
+  return `${amount.toFixed(2)} ${label}`;
 }

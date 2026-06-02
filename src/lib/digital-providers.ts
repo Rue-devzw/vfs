@@ -122,12 +122,18 @@ function buildReference(prefix: string) {
   return `${prefix}_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
 }
 
+function buildNumericReference(length = 13) {
+  const timestamp = String(Date.now()).slice(-10);
+  const random = Math.floor(Math.random() * 1000).toString().padStart(3, "0");
+  return `${timestamp}${random}`.slice(0, length);
+}
+
 async function initiateDigitalSmilePayPayment(
   config: DigitalServiceConfig,
   payload: ProviderPurchasePayload,
   baseUrl: string,
 ) {
-  const reference = buildReference("digi");
+  const reference = config.id === "dstv" ? buildNumericReference() : buildReference("digi");
   const currencyCode = payload.currencyCode ?? "840";
   const exchangeRate = getZwgPerUsdRate();
   const amount = convertFromUsd(payload.amount, currencyCode, exchangeRate);
@@ -303,8 +309,8 @@ function parseDstvValidationDetails(responseDetails: string | undefined) {
 }
 
 function parseDstvDueAmount(value: string | undefined) {
-  const amount = parseEgressMinorAmount(value);
-  return amount !== undefined ? String(amount) : undefined;
+  const normalized = value?.replace(/[^\d.-]/g, "").trim();
+  return normalized || undefined;
 }
 
 function parseOptionalNumber(value: string | undefined) {
@@ -434,10 +440,21 @@ function parseZetdcReceiptDetails(receiptDetails: string | undefined, receiptCur
 }
 
 function isProviderUnavailableResponse(message: string | undefined) {
-  return /\bservice unavailable\b/i.test(message ?? "")
-    || /\bnull response\b/i.test(message ?? "")
-    || /\bprovider gateway\b/i.test(message ?? "")
-    || /\btimed out\b/i.test(message ?? "");
+  const value = message ?? "";
+  return /\bservice unavailable\b/i.test(value)
+    || /\bnull response\b/i.test(value)
+    || /\bprovider gateway\b/i.test(value)
+    || /\bresend\b/i.test(value)
+    || /\btimed out\b/i.test(value)
+    || (/\bduplicate transaction detected\b/i.test(value) && /\bpending\b/i.test(value));
+}
+
+function getProviderValidationFailureMessage(config: DigitalServiceConfig, accountNumber: string, providerMessage: string) {
+  if (config.id === "zesa") {
+    return `We could not validate meter number ${accountNumber} with ZETDC. Please check the digits on the meter or token slip and try again.`;
+  }
+
+  return providerMessage;
 }
 
 function getStringField(record: Record<string, unknown> | undefined, key: string) {
@@ -446,6 +463,22 @@ function getStringField(record: Record<string, unknown> | undefined, key: string
     return undefined;
   }
   return String(value);
+}
+
+function getEgressPostPaymentFailure(result: {
+  receiptDetails?: string;
+  payment?: Record<string, unknown>;
+}, fallbackMessage: string) {
+  const message = [
+    result.receiptDetails,
+    getStringField(result.payment, "narrative"),
+    getStringField(result.payment, "status"),
+  ].filter(Boolean).join(" - ") || fallbackMessage;
+
+  return {
+    message,
+    status: isProviderUnavailableResponse(message) ? 503 : 422,
+  };
 }
 
 function parseNyaradzoPaymentDetails3(value: string | undefined) {
@@ -950,8 +983,9 @@ const smilePayEgressAdapter: DigitalProviderAdapter = {
     });
 
     if (!result.successful) {
-      const message = result.responseDetails || `${config.label} validation failed.`;
-      throw new EgressGatewayError(isProviderUnavailableResponse(message) ? 503 : 422, message);
+      const providerMessage = result.responseDetails || `${config.label} validation failed.`;
+      const message = getProviderValidationFailureMessage(config, accountNumber, providerMessage);
+      throw new EgressGatewayError(isProviderUnavailableResponse(providerMessage) ? 503 : 422, message);
     }
 
     return mapValidationResponse(config, accountNumber, result.responseDetails, result as Record<string, unknown>);
@@ -988,7 +1022,8 @@ const smilePayEgressAdapter: DigitalProviderAdapter = {
 
     const result = await egressPostPayment(payment);
     if (!result.successful) {
-      throw new EgressGatewayError(422, result.receiptDetails || `${config.label} fulfilment failed.`);
+      const failure = getEgressPostPaymentFailure(result, `${config.label} fulfilment failed.`);
+      throw new EgressGatewayError(failure.status, failure.message);
     }
 
     let token: string | undefined;
@@ -1055,6 +1090,9 @@ const smilePayEgressAdapter: DigitalProviderAdapter = {
 
     const providerOrderReference = getStringField(result.payment, "paymentReference");
     const providerTransactionReference = getStringField(result.payment, "gatewayReference");
+    const receiptNumber = config.id === "cimas"
+      ? providerOrderReference ?? result.receiptNumber
+      : result.receiptNumber;
 
     return {
       success: true,
@@ -1062,7 +1100,7 @@ const smilePayEgressAdapter: DigitalProviderAdapter = {
       transactionReference: providerTransactionReference,
       token,
       units,
-      receiptNumber: result.receiptNumber,
+      receiptNumber,
       receiptDetails: parsedReceipt,
       message: config.id === "zesa" && parsedReceipt
         ? formatZetdcVendMessage(parsedReceipt as ReturnType<typeof parseZetdcReceiptDetails>)

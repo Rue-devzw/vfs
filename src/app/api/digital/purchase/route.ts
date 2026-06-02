@@ -50,6 +50,7 @@ const purchaseSchema = z.object({
     customerEmail: z.string().optional(),
     cardDetails: cardDetailsSchema.optional(),
     serviceMeta: z.record(z.string()).optional(),
+    validationSnapshot: z.unknown().optional(),
 }).superRefine((data, ctx) => {
     if (data.paymentMethod !== "CARD" && !data.customerMobile) {
         ctx.addIssue({
@@ -107,6 +108,21 @@ function validateDstvServiceMeta(serviceMeta: Record<string, string> | undefined
     return null;
 }
 
+function isDigitalServiceFieldRequired(serviceType: string, serviceMeta: Record<string, string> | undefined, field: {
+    id: string;
+    required?: boolean;
+}) {
+    if (!field.required) {
+        return false;
+    }
+
+    if (serviceType === "DSTV" && serviceMeta?.paymentType?.trim().toUpperCase() === "TOPUP") {
+        return field.id === "paymentType";
+    }
+
+    return true;
+}
+
 function getDigitalServiceChargeUsd(serviceType: string, serviceMeta: Record<string, string> | undefined) {
     if (serviceType === "DSTV") {
         return serviceMeta?.paymentType?.trim().toUpperCase() === "BOUQUET" ? 3 : 1;
@@ -148,6 +164,20 @@ function providerGatewayFailureMessage(serviceLabel: string) {
     return `${serviceLabel} could not be completed by the provider. Please try again shortly or contact support if the problem continues.`;
 }
 
+function isPersistenceUnavailableError(error: unknown) {
+    if (!error || typeof error !== "object") {
+        return false;
+    }
+
+    const record = error as { code?: unknown; details?: unknown; message?: unknown };
+    const message = [
+        typeof record.message === "string" ? record.message : "",
+        typeof record.details === "string" ? record.details : "",
+    ].join(" ");
+
+    return record.code === 13 && /EHOSTUNREACH|RST_STREAM|Firestore|unreachable/i.test(message);
+}
+
 function parseProviderAmount(value: unknown) {
     if (value === undefined || value === null) return undefined;
     const parsed = Number(String(value).replace(/[^\d.-]/g, ""));
@@ -165,6 +195,40 @@ function getParsedValidation(raw: unknown) {
     return raw && typeof raw === "object" && !Array.isArray(raw)
         ? (raw as { parsed?: unknown }).parsed
         : undefined;
+}
+
+function asRecord(value: unknown) {
+    return value && typeof value === "object" && !Array.isArray(value)
+        ? value as Record<string, unknown>
+        : undefined;
+}
+
+function getStringValue(record: Record<string, unknown> | undefined, key: string) {
+    const value = record?.[key];
+    return typeof value === "string" && value.trim() ? value.trim() : undefined;
+}
+
+function buildReusableDstvValidation(accountNumber: string, validationSnapshot: unknown) {
+    const snapshot = asRecord(validationSnapshot);
+    if (!snapshot) {
+        return null;
+    }
+
+    const validatedCustomerAccount = getStringValue(snapshot, "customerAccount");
+    if (validatedCustomerAccount && validatedCustomerAccount !== accountNumber) {
+        return null;
+    }
+
+    const parsed = asRecord(snapshot.parsed);
+    return {
+        success: true,
+        accountName: getStringValue(parsed, "customerName") || "DSTV Customer",
+        accountNumber,
+        billerName: "DSTV",
+        amountToBePaid: getStringValue(parsed, "dueAmount"),
+        currency: getStringValue(parsed, "currency"),
+        raw: snapshot,
+    };
 }
 
 function getExpectedProviderAmountUsd(serviceType: string, validationSnapshot: unknown) {
@@ -193,6 +257,11 @@ function amountsMatch(left: number, right: number) {
 
 export async function POST(req: Request) {
     let serviceLabel = "Digital service";
+    let initiatedPayment: {
+        reference?: string;
+        transactionReference?: string;
+        status?: string;
+    } | null = null;
 
     try {
         const body = await req.json();
@@ -205,7 +274,7 @@ export async function POST(req: Request) {
             );
         }
 
-        const { serviceType, accountNumber, amount: amountUsd, paymentMethod, currencyCode, customerMobile, customerName, customerEmail, serviceMeta, cardDetails } = validation.data;
+        const { serviceType, accountNumber, amount: amountUsd, paymentMethod, currencyCode, customerMobile, customerName, customerEmail, serviceMeta, cardDetails, validationSnapshot } = validation.data;
         let providerAmountUsd = amountUsd;
         if (REMOVED_SERVICE_TYPES.has(serviceType)) {
             return NextResponse.json(
@@ -227,7 +296,7 @@ export async function POST(req: Request) {
             );
         }
         for (const field of serviceConfig.formFields ?? []) {
-            if (field.required && !(serviceMeta?.[field.id] ?? "").trim()) {
+            if (isDigitalServiceFieldRequired(serviceType, serviceMeta, field) && !(serviceMeta?.[field.id] ?? "").trim()) {
                 return NextResponse.json(
                     { success: false, error: `${field.label} is required.` },
                     { status: 400 },
@@ -257,38 +326,45 @@ export async function POST(req: Request) {
         }
 
         let accountInfo: Awaited<ReturnType<typeof DigitalService.validateAccount>>;
-        try {
-            accountInfo = await DigitalService.validateAccount(serviceType, accountNumber, serviceMeta);
-        } catch (error) {
-            if (error instanceof EgressGatewayError) {
-                if (isEgressServiceUnavailable(error)) {
+        const reusableDstvValidation = serviceType === "DSTV"
+            ? buildReusableDstvValidation(accountNumber, validationSnapshot)
+            : null;
+        if (reusableDstvValidation) {
+            accountInfo = reusableDstvValidation;
+        } else {
+            try {
+                accountInfo = await DigitalService.validateAccount(serviceType, accountNumber, serviceMeta);
+            } catch (error) {
+                if (error instanceof EgressGatewayError) {
+                    if (isEgressServiceUnavailable(error)) {
+                        return NextResponse.json(
+                            {
+                                success: false,
+                                error: digitalProviderUnavailableMessage(`${serviceLabel} validation`),
+                                code: "SERVICE_UNAVAILABLE",
+                                gatewayStatus: error.status,
+                            },
+                            { status: 503 },
+                        );
+                    }
+
+                    console.warn("Digital provider validation declined:", {
+                        serviceType,
+                        status: error.status,
+                        message: error.message,
+                    });
                     return NextResponse.json(
                         {
                             success: false,
-                            error: digitalProviderUnavailableMessage(`${serviceLabel} validation`),
-                            code: "SERVICE_UNAVAILABLE",
+                            error: providerValidationMessage(serviceLabel, error.message),
+                            code: "PROVIDER_VALIDATION_FAILED",
                             gatewayStatus: error.status,
                         },
-                        { status: 503 },
+                        { status: error.status >= 400 && error.status < 500 ? error.status : 502 },
                     );
                 }
-
-                console.warn("Digital provider validation declined:", {
-                    serviceType,
-                    status: error.status,
-                    message: error.message,
-                });
-                return NextResponse.json(
-                    {
-                        success: false,
-                        error: providerValidationMessage(serviceLabel, error.message),
-                        code: "PROVIDER_VALIDATION_FAILED",
-                        gatewayStatus: error.status,
-                    },
-                    { status: error.status >= 400 && error.status < 500 ? error.status : 502 },
-                );
+                throw error;
             }
-            throw error;
         }
         const normalizedServiceId = serviceType.toLowerCase() as "zesa" | "airtime" | "dstv" | "councils" | "nyaradzo" | "cimas" | "internet";
         const resolvedAccountNumber = accountInfo.accountNumber || accountNumber;
@@ -367,6 +443,11 @@ export async function POST(req: Request) {
             cardDetails: cardDetails as CardPaymentDetails | undefined,
             serviceMeta: enrichedServiceMeta,
         }, baseUrl);
+        initiatedPayment = {
+            reference: initiateResult.reference,
+            transactionReference: initiateResult.transactionReference,
+            status: initiateResult.status,
+        };
 
         const serviceChargeLocal = Number((serviceChargeUsd * initiateResult.exchangeRate).toFixed(2));
         const basePriceLocal = Number((initiateResult.amount - serviceChargeLocal).toFixed(2));
@@ -516,6 +597,26 @@ export async function POST(req: Request) {
                     gatewayStatus: error.status,
                 },
                 { status: error.status >= 400 && error.status < 500 ? error.status : 502 }
+            );
+        }
+        if (isPersistenceUnavailableError(error)) {
+            console.error("Digital purchase persistence unavailable:", {
+                serviceLabel,
+                reference: initiatedPayment?.reference,
+                transactionReference: initiatedPayment?.transactionReference,
+                status: initiatedPayment?.status,
+                message: error instanceof Error ? error.message : "Persistence unavailable",
+            });
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: "We could not save the payment request because the order database is temporarily unreachable. Please try again shortly.",
+                    code: "PERSISTENCE_UNAVAILABLE",
+                    reference: initiatedPayment?.reference,
+                    transactionReference: initiatedPayment?.transactionReference,
+                    status: initiatedPayment?.status,
+                },
+                { status: 503 },
             );
         }
         console.error("Digital purchase error:", error);

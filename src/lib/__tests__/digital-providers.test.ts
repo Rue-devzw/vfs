@@ -109,6 +109,33 @@ describe("digital provider purchase initiation", () => {
     expect(result.transactionReference).toBe("ONE-TRX-1");
   });
 
+  it("uses a numeric checkout reference for DSTV payments", async () => {
+    initiateSmilePayOrderPayment.mockResolvedValue({
+      status: "PENDING",
+      transactionReference: "DSTV-TRX-1",
+    });
+
+    const { DigitalService } = await import("@/lib/digital-service-logic");
+    const result = await DigitalService.initiatePurchase({
+      serviceType: "DSTV",
+      accountNumber: "4117068963",
+      amount: 10,
+      paymentMethod: "WALLETPLUS",
+      customerMobile: "263771234567",
+      serviceMeta: {
+        paymentType: "TOPUP",
+      },
+    }, "https://app.test");
+
+    expect(result.reference).toMatch(/^\d{13}$/);
+    expect(initiateSmilePayOrderPayment).toHaveBeenCalledWith(expect.objectContaining({
+      reference: expect.stringMatching(/^\d{13}$/),
+      returnUrl: expect.stringMatching(/reference=\d{13}/),
+      cancelUrl: expect.stringMatching(/reference=\d{13}/),
+      failureUrl: expect.stringMatching(/reference=\d{13}/),
+    }));
+  });
+
   it("uses EGRESS validation for ZESA meter lookups", async () => {
     egressValidateCustomerAccount.mockResolvedValue({
       successful: true,
@@ -130,6 +157,19 @@ describe("digital provider purchase initiation", () => {
         currency: "USD",
       }),
     }));
+  });
+
+  it("returns a customer-friendly message when ZETDC rejects a meter number", async () => {
+    egressValidateCustomerAccount.mockResolvedValue({
+      successful: false,
+      responseDetails: "07088128645Kindly USe the Meter Numbers provided by the Developer",
+    });
+
+    const { DigitalService } = await import("@/lib/digital-service-logic");
+    await expect(DigitalService.validateAccount("ZESA", "07088128645")).rejects.toMatchObject({
+      status: 422,
+      message: "We could not validate meter number 07088128645 with ZETDC. Please check the digits on the meter or token slip and try again.",
+    });
   });
 
   it("uses EGRESS validation for DStv smartcard lookups", async () => {
@@ -183,12 +223,14 @@ describe("digital provider purchase initiation", () => {
     ]));
     expect(fields.find(field => field.id === "bouquet")?.options).toEqual(expect.arrayContaining([
       expect.objectContaining({ value: "COMPS20", label: expect.stringContaining("Compact") }),
-      expect.objectContaining({ value: "SHOWCOMPLS", label: expect.stringContaining("Compact Plus + Showmax") }),
+      expect.objectContaining({ value: "COMPLS20", label: expect.stringContaining("Compact Plus") }),
+      expect.objectContaining({ value: "ACSSS20", label: expect.stringContaining("Access") }),
+      expect.objectContaining({ value: "PREMOTT", label: expect.stringContaining("Premium Streaming") }),
     ]));
     const addOnOptions = fields.find(field => field.id === "addon")?.options ?? [];
     expect(addOnOptions).toEqual(expect.arrayContaining([
-      expect.objectContaining({ value: "ACSSS20", label: expect.stringContaining("Access") }),
-      expect.objectContaining({ value: "ADD2SEC", label: expect.stringContaining("XtraView") }),
+      expect.objectContaining({ value: "DUALS20", label: expect.stringContaining("Dual View") }),
+      expect.objectContaining({ value: "MOVIESS20", label: expect.stringContaining("Movie Bundle") }),
       expect.objectContaining({ value: "None", label: expect.stringContaining("No Add-On") }),
     ]));
   });
@@ -485,7 +527,7 @@ describe("digital provider purchase initiation", () => {
         currencyCode: "840",
         paymentType: "BOUQUET",
         bouquet: "COMPS20",
-        addon: "ADD2SEC",
+        addon: "DUALS20",
         months: "2",
         customerPrimaryAccountNumber: "0120240627378",
       },
@@ -496,12 +538,12 @@ describe("digital provider purchase initiation", () => {
       gatewayReference: expect.stringMatching(/^\d{13}$/),
       paymentReference: expect.stringMatching(/^\d{13}$/),
       customerAccount: "1234567890",
-      amount: 9200,
+      amount: 9000,
       customerName: "John Subscriber",
       customerMobile: "0771234567",
       currency: "USD",
       customerPaymentDetails1: "COMPS20",
-      customerPaymentDetails2: "ADD2SEC",
+      customerPaymentDetails2: "DUALS20",
       customerPaymentDetails3: "BOUQUET|2",
       customerPrimaryAccountNumber: "0120240627378",
       status: "PENDING",
@@ -518,7 +560,7 @@ describe("digital provider purchase initiation", () => {
         dstvPaymentType: "BOUQUET",
         months: "2",
         customerPaymentDetails1: "COMPS20",
-        customerPaymentDetails2: "ADD2SEC",
+        customerPaymentDetails2: "DUALS20",
         customerPaymentDetails3: "BOUQUET|2",
       }),
     }));
@@ -543,7 +585,7 @@ describe("digital provider purchase initiation", () => {
         currencyCode: "840",
         paymentType: "BOUQUET",
         bouquet: "LITES20",
-        addon: "ACSSS20",
+        addon: "MOVIESS20",
         months: "1",
       },
     });
@@ -551,10 +593,10 @@ describe("digital provider purchase initiation", () => {
     expect(egressPostPayment).toHaveBeenCalledWith(expect.objectContaining({
       billerId: "DSTV",
       customerAccount: "4117068963",
-      amount: 2400,
+      amount: 1500,
       currency: "USD",
       customerPaymentDetails1: "LITES20",
-      customerPaymentDetails2: "ACSSS20",
+      customerPaymentDetails2: "MOVIESS20",
       customerPaymentDetails3: "BOUQUET|1",
     }));
   });
@@ -562,12 +604,12 @@ describe("digital provider purchase initiation", () => {
   it("posts DStv top-up payments with TOPUP in customerPaymentDetails3", async () => {
     egressPostPayment.mockResolvedValue({
       successful: true,
-      receiptNumber: "DSTV-RCT-2",
+      receiptNumber: "2170477",
       receiptDetails: "Transaction Successful",
       payment: {
         gatewayReference: "11889",
         billerId: "DSTV",
-        paymentReference: "DSTV-ORDER-2",
+        paymentReference: "59921006",
         customerAccount: "4117068963",
         amount: "1000.0",
         status: "Successful",
@@ -602,17 +644,103 @@ describe("digital provider purchase initiation", () => {
     }));
     expect(result).toEqual(expect.objectContaining({
       success: true,
-      receiptNumber: "DSTV-RCT-2",
+      orderReference: "59921006",
+      transactionReference: "11889",
+      receiptNumber: "2170477",
       message: "DSTV Payment Successful",
       receiptDetails: expect.objectContaining({
         service: "DStv Payments",
+        gatewayReference: "11889",
+        paymentReference: "59921006",
+        amount: 10,
         dstvPaymentType: "TOPUP",
         customerPaymentDetails3: "TOPUP",
       }),
     }));
   });
 
-  it("posts City of Harare EGRESS payments as ZiG-only cents with COH fields", async () => {
+  it("treats DSTV resend/null response postPayment results as retryable provider unavailability", async () => {
+    egressPostPayment.mockResolvedValue({
+      successful: false,
+      receiptDetails: "Service unavailable",
+      payment: {
+        gatewayReference: "12961",
+        billerId: "DSTV",
+        paymentReference: "0401572146129",
+        customerAccount: "4117068963",
+        amount: "200.0",
+        customerPaymentDetails3: "TOPUP",
+        status: "Resend",
+        narrative: "Service unavailable - null response from ZSS",
+        currency: "USD",
+        customerName: "Mr A ROSCOE",
+        paymentMethod: "CASH",
+        paymentType: "BILLPAY",
+      },
+    });
+
+    const { DigitalService } = await import("@/lib/digital-service-logic");
+    await expect(DigitalService.vendDigitalFulfilment("DSTV", {
+      orderReference: "0401572146129",
+      gatewayReference: "0401572146129",
+      accountNumber: "4117068963",
+      amountUsd: 2,
+      serviceMeta: {
+        customerName: "Mr A ROSCOE",
+        customerMobile: "0711111111",
+        currencyCode: "840",
+        paymentType: "TOPUP",
+      },
+    })).rejects.toMatchObject({
+      status: 503,
+      message: expect.stringContaining("Service unavailable"),
+    });
+  });
+
+  it("treats DSTV duplicate pending postPayment results as retryable provider unavailability", async () => {
+    egressPostPayment.mockResolvedValue({
+      successful: false,
+      receiptDetails: "Duplicate transaction detected",
+      payment: {
+        gatewayReference: "406958361034",
+        billerId: "DSTV",
+        paymentReference: "0406958361034",
+        customerAccount: "4117068963",
+        amount: "3400.0",
+        customerPaymentDetails1: "COFAMS20",
+        customerPaymentDetails2: "DUALS20",
+        customerPaymentDetails3: "BOUQUET|1",
+        status: "PENDING",
+        narrative: "dstv Bill Payment",
+        currency: "USD",
+        customerName: "Mr A ROSCOE",
+        paymentMethod: "CASH",
+        paymentType: "BILLPAY",
+      },
+    });
+
+    const { DigitalService } = await import("@/lib/digital-service-logic");
+    await expect(DigitalService.vendDigitalFulfilment("DSTV", {
+      orderReference: "0406958361034",
+      gatewayReference: "0406958361034",
+      accountNumber: "4117068963",
+      amountUsd: 34,
+      serviceMeta: {
+        customerName: "Mr A ROSCOE",
+        customerMobile: "0711111111",
+        currencyCode: "840",
+        paymentType: "BOUQUET",
+        bouquet: "COFAMS20",
+        addon: "DUALS20",
+        months: "1",
+      },
+    })).rejects.toMatchObject({
+      status: 503,
+      message: expect.stringContaining("Duplicate transaction detected"),
+    });
+  });
+
+  it("posts City of Harare EGRESS payments as ZWG-only cents with COH fields", async () => {
     egressPostPayment.mockResolvedValue({
       successful: true,
       receiptNumber: "BUS0006063",
@@ -676,7 +804,7 @@ describe("digital provider purchase initiation", () => {
         billerId: "COH",
         paymentReference: "ZB-2024438COH",
         customerAccount: "BUS0006063",
-        amount: 3000,
+        amount: 30,
         currency: "USD",
         customerPaymentDetails1: "INTERNET",
         customerPaymentDetails2: "CASH",
@@ -776,7 +904,7 @@ describe("digital provider purchase initiation", () => {
       customerAccount: "SCPK551161|2",
       policyNumber: "SCPK551161",
       months: "2",
-      amount: 5000,
+      amount: 50,
       currency: "USD",
       customerPaymentDetails3: "78945612|2022-08-28|2|SCPK551161|5000|USD|Testerthree Tester|5000",
       customerMobile: "0775554554",
@@ -790,10 +918,10 @@ describe("digital provider purchase initiation", () => {
         paymentDate: "2022-08-28",
         months: "2",
         policyNumber: "SCPK551161",
-        amount: 5000,
+        amount: 50,
         currency: "USD",
         customerName: "Testerthree Tester",
-        premiumAmount: 5000,
+        premiumAmount: 50,
       }),
     }));
   });
@@ -894,7 +1022,7 @@ describe("digital provider purchase initiation", () => {
       success: true,
       orderReference: "2124435",
       transactionReference: "2240134",
-      receiptNumber: "11445000",
+      receiptNumber: "2124435",
       message: "Cimas Payment Successful",
       receiptDetails: expect.objectContaining({
         service: "CIMAS",
@@ -905,7 +1033,7 @@ describe("digital provider purchase initiation", () => {
         billerId: "CIMAS",
         paymentReference: "2124435",
         customerAccount: "11445000",
-        amount: 7000000,
+        amount: 70000,
         currency: "RTGS",
         customerPaymentDetails1: "04-Sep-23",
         customerPaymentDetails2: "M",

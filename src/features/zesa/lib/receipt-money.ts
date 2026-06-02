@@ -6,10 +6,10 @@ export function zetdcReceiptMinorToMajor(amount: number) {
 
 export function formatZetdcMajorMoney(amount: number, currencyCode: CurrencyCode) {
   if (currencyCode === "924") {
-    return `ZiG ${amount.toFixed(2)}`;
+    return `${amount.toFixed(2)} ZWG`;
   }
 
-  return `$${amount.toFixed(2)} USD`;
+  return `${amount.toFixed(2)} USD`;
 }
 
 export function formatZetdcReceiptMoney(amount: number, currencyCode: CurrencyCode) {

@@ -10,18 +10,18 @@ import {
 describe("ZETDC receipt money formatting", () => {
   it("renders EGRESS cents as readable USD values", () => {
     expect(zetdcReceiptMinorToMajor(500)).toBe(5);
-    expect(formatZetdcReceiptMoney(500, "840")).toBe("$5.00 USD");
-    expect(formatZetdcReceiptMoney(943395, "840")).toBe("$9433.95 USD");
-    expect(formatZetdcReceiptMoney(56604, "840")).toBe("$566.04 USD");
+    expect(formatZetdcReceiptMoney(500, "840")).toBe("5.00 USD");
+    expect(formatZetdcReceiptMoney(943395, "840")).toBe("9433.95 USD");
+    expect(formatZetdcReceiptMoney(56604, "840")).toBe("566.04 USD");
   });
 
-  it("renders EGRESS cents as readable ZiG values", () => {
-    expect(formatZetdcReceiptMoney(943395, "924")).toBe("ZiG 9433.95");
+  it("renders EGRESS cents as readable ZWG values", () => {
+    expect(formatZetdcReceiptMoney(943395, "924")).toBe("9433.95 ZWG");
   });
 
   it("renders already-major payment fallback values readably", () => {
-    expect(formatZetdcMajorMoney(5, "840")).toBe("$5.00 USD");
-    expect(formatZetdcMajorMoney(5, "924")).toBe("ZiG 5.00");
+    expect(formatZetdcMajorMoney(5, "840")).toBe("5.00 USD");
+    expect(formatZetdcMajorMoney(5, "924")).toBe("5.00 ZWG");
   });
 
   it("calculates tariff rate from readable major units", () => {
