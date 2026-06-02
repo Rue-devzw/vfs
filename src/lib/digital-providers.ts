@@ -17,7 +17,7 @@ import {
   type DigitalServiceConfig,
   type DigitalServiceId,
 } from "@/lib/digital-services";
-import { getDstvAddOnPackage, getDstvPrimaryPackage } from "@/lib/dstv-packages";
+import { calculateDstvBouquetAmountUsd, getDstvAddOnPackage, getDstvPrimaryPackage } from "@/lib/dstv-packages";
 import { initiateSmilePayOrderPayment } from "@/lib/payments/smile-pay-service";
 import type { CardPaymentDetails } from "@/lib/payments/types";
 
@@ -59,6 +59,8 @@ export type ProviderPurchaseResult = {
 
 export type ProviderVendResult = {
   success: boolean;
+  orderReference?: string;
+  transactionReference?: string;
   token?: string;
   units?: number;
   receiptNumber?: string;
@@ -664,25 +666,34 @@ function formatZetdcVendMessage(parsedReceipt: ReturnType<typeof parseZetdcRecei
   return "Payment successful. Token vending completed.";
 }
 
-function buildNumericEgressGatewayReference(orderReference: string, gatewayReference?: string) {
-  const orderDigits = orderReference.replace(/\D/g, "");
-  const gatewayDigits = (gatewayReference ?? "").replace(/\D/g, "");
-  const combined = `${orderDigits}${gatewayDigits}`;
+const EGRESS_REFERENCE_LENGTH = 13;
 
-  if (combined.length > 0) {
-    return combined.slice(0, 18);
+function buildReferenceHash(value: string) {
+  let hash = 0;
+  for (let index = 0; index < value.length; index += 1) {
+    hash = (hash * 31 + value.charCodeAt(index)) >>> 0;
+  }
+  return String(hash).padStart(10, "0");
+}
+
+function buildFixedLengthEgressReference(...parts: Array<string | undefined>) {
+  const normalizedParts = parts.map(part => part ?? "");
+  const digits = normalizedParts.map(part => part.replace(/\D/g, "")).join("");
+  if (digits.length >= EGRESS_REFERENCE_LENGTH) {
+    return digits.slice(0, EGRESS_REFERENCE_LENGTH);
   }
 
-  return String(Date.now());
+  return `${digits}${buildReferenceHash(normalizedParts.join("|"))}`
+    .padEnd(EGRESS_REFERENCE_LENGTH, "0")
+    .slice(0, EGRESS_REFERENCE_LENGTH);
+}
+
+function buildNumericEgressGatewayReference(orderReference: string, gatewayReference?: string) {
+  return buildFixedLengthEgressReference(orderReference, gatewayReference);
 }
 
 function buildNumericEgressPaymentReference(orderReference: string, gatewayReference?: string) {
-  const orderDigits = orderReference.replace(/\D/g, "");
-  if (orderDigits.length > 0) {
-    return orderDigits.slice(0, 18);
-  }
-
-  return buildNumericEgressGatewayReference(orderReference, gatewayReference);
+  return buildFixedLengthEgressReference(orderReference, gatewayReference);
 }
 
 function buildValidationAccount(config: DigitalServiceConfig, accountNumber: string, serviceMeta?: Record<string, string>) {
@@ -841,7 +852,10 @@ function buildEgressPaymentPayload(config: DigitalServiceConfig, input: {
 }) {
   const resolvedCurrencyCode = input.currencyCode ?? "840";
   const currency = config.id === "councils" ? "ZWL" : mapCurrencyCode(resolvedCurrencyCode);
-  const amount = amountToEgressMinorUnits(input.amountUsd, resolvedCurrencyCode);
+  const egressAmountUsd = config.id === "dstv"
+    ? calculateDstvBouquetAmountUsd(input.serviceMeta) ?? input.amountUsd
+    : input.amountUsd;
+  const amount = amountToEgressMinorUnits(egressAmountUsd, resolvedCurrencyCode);
   const numericGatewayReference = buildNumericEgressGatewayReference(input.orderReference, input.gatewayReference);
   const base: EgressPaymentPayload = {
     gatewayReference: numericGatewayReference,
@@ -1039,8 +1053,13 @@ const smilePayEgressAdapter: DigitalProviderAdapter = {
       });
     }
 
+    const providerOrderReference = getStringField(result.payment, "paymentReference");
+    const providerTransactionReference = getStringField(result.payment, "gatewayReference");
+
     return {
       success: true,
+      orderReference: providerOrderReference,
+      transactionReference: providerTransactionReference,
       token,
       units,
       receiptNumber: result.receiptNumber,

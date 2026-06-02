@@ -159,4 +159,39 @@ describe("smile pay service", () => {
       message: expect.stringContaining("OneMoney initiation was rejected"),
     });
   });
+
+  it("exposes retry-pending fulfilment status without marking the receipt as failed", async () => {
+    const { buildSmilePayStatusSummary } = await import("@/lib/payments/smile-pay-service");
+
+    const summary = buildSmilePayStatusSummary({
+      reference: "digi_retry_1",
+      statusResult: {
+        status: "PAID",
+        reference: "PMFG1330AAIB",
+        paymentOption: "WALLETPLUS",
+      },
+      order: {
+        id: "digi_retry_1",
+        items: [],
+        total: 30,
+        totalUsd: 30,
+        customerName: "Test Customer",
+        customerEmail: "customer@example.com",
+        status: "processing",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        currencyCode: "840",
+        paymentMeta: {
+          serviceType: "CIMAS",
+          fulfilmentStatus: "retry_pending",
+          fulfilmentRetryMessage: "CIMAS fulfilment is still pending because the provider gateway did not respond in time. We will retry shortly.",
+        },
+      },
+    });
+
+    expect(summary.receiptData).toEqual({
+      message: expect.stringContaining("will retry shortly"),
+      retryable: true,
+    });
+  });
 });

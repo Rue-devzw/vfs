@@ -482,13 +482,15 @@ export function GenericDigitalFlow({
   const dstvBouquetAmountUsd = service === "dstv" ? calculateDstvBouquetAmountUsd(serviceMeta) : null;
   const amountLockedToPackage = dstvBouquetAmountUsd !== null;
   const requiresAccountVerification = service === "dstv" || service === "nyaradzo" || service === "cimas";
-  const amountSetFromAccountCheck = service === "nyaradzo" || service === "cimas";
+  const amountSetFromAccountCheck = service === "nyaradzo";
+  const requiresAccountCurrencyCheck = service === "nyaradzo" || service === "cimas";
+  const shouldResetAccountCheckOnMetaChange = service === "nyaradzo" || service === "cimas";
   const accountCurrencyRestrictionMessage = service === "nyaradzo"
     ? getNyaradzoCurrencyRestrictionMessage(accountCheck?.accountCurrency)
     : service === "cimas"
       ? getCimasCurrencyRestrictionMessage(accountCheck?.accountCurrency)
     : undefined;
-  const accountCurrencyAllowed = !amountSetFromAccountCheck
+  const accountCurrencyAllowed = !requiresAccountCurrencyCheck
     || (service === "nyaradzo" && accountCheck ? isAllowedNyaradzoPaymentCurrency(accountCheck.accountCurrency, currencyCode) : false)
     || (service === "cimas" && accountCheck ? isAllowedCimasPaymentCurrency(accountCheck.accountCurrency, currencyCode) : false);
   const serviceChargeUsd = getServiceChargeUsd(service, serviceMeta);
@@ -1253,7 +1255,7 @@ export function GenericDigitalFlow({
                       </div>
                     </div>
                   ) : null}
-                  {amountSetFromAccountCheck && accountCheck && accountCurrencyRestrictionMessage ? (
+                  {requiresAccountCurrencyCheck && accountCheck && accountCurrencyRestrictionMessage ? (
                     <p className={cn(
                       "text-xs",
                       accountCurrencyAllowed ? "text-muted-foreground" : "text-destructive",
@@ -1270,8 +1272,10 @@ export function GenericDigitalFlow({
                         value={serviceMeta[field.id] ?? ""}
                         onValueChange={(value) => {
                           setServiceMeta((current) => ({ ...current, [field.id]: value }));
-                          if (amountSetFromAccountCheck) {
+                          if (shouldResetAccountCheckOnMetaChange) {
                             setAccountCheck(null);
+                          }
+                          if (amountSetFromAccountCheck) {
                             setAmount("");
                           }
                         }}
@@ -1295,8 +1299,10 @@ export function GenericDigitalFlow({
                         value={serviceMeta[field.id] ?? ""}
                         onChange={(e) => {
                           setServiceMeta((current) => ({ ...current, [field.id]: e.target.value }));
-                          if (amountSetFromAccountCheck) {
+                          if (shouldResetAccountCheckOnMetaChange) {
                             setAccountCheck(null);
+                          }
+                          if (amountSetFromAccountCheck) {
                             setAmount("");
                           }
                         }}

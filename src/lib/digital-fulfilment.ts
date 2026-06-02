@@ -3,11 +3,14 @@ import { getDigitalServiceConfig, isDigitalServiceId, type DigitalServiceId } fr
 import { upsertDigitalOrder } from "@/lib/firestore/digital-orders";
 import { queueNotification } from "@/lib/firestore/notifications";
 import type { Order } from "@/lib/firestore/orders";
+import { EgressGatewayError, isEgressServiceUnavailable } from "@/lib/payments/egress";
 import { getOrder, setOrderStatus } from "@/server/orders";
 
 type OrderWithPaymentMeta = Order & { paymentMeta?: Record<string, unknown> };
 
 export type DigitalVendedData = {
+  orderReference?: string;
+  transactionReference?: string;
   token?: string;
   units?: number;
   receiptNumber?: string;
@@ -19,6 +22,10 @@ export type DigitalVendedData = {
 const SUCCESSFUL_GATEWAY_STATUSES = new Set(["PAID", "SUCCESS"]);
 const FAILED_GATEWAY_STATUSES = new Set(["FAILED", "CANCELED", "CANCELLED", "EXPIRED"]);
 
+function isRetryableVendError(error: unknown): error is EgressGatewayError {
+  return error instanceof EgressGatewayError && isEgressServiceUnavailable(error);
+}
+
 function extractServiceMeta(order: OrderWithPaymentMeta) {
   if (!order.paymentMeta || typeof order.paymentMeta.serviceMeta !== "object" || order.paymentMeta.serviceMeta === null) {
     return undefined;
@@ -28,6 +35,19 @@ function extractServiceMeta(order: OrderWithPaymentMeta) {
     Object.entries(order.paymentMeta.serviceMeta as Record<string, unknown>)
       .filter((entry): entry is [string, string] => typeof entry[1] === "string"),
   );
+}
+
+function parsePersistedAmount(value: unknown) {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return value;
+  }
+
+  if (typeof value === "string") {
+    const parsed = Number(value.replace(/[^\d.-]/g, ""));
+    return Number.isFinite(parsed) ? parsed : undefined;
+  }
+
+  return undefined;
 }
 
 function extractDigitalServiceId(order: OrderWithPaymentMeta): DigitalServiceId | null {
@@ -69,9 +89,11 @@ export async function syncDigitalFulfilmentForOrder(orderReference: string, gate
   const gatewayReference = typeof paymentMeta.gatewayReference === "string"
     ? paymentMeta.gatewayReference
     : undefined;
-  const providerAmountUsd = typeof paymentMeta.providerAmountUsd === "number"
-    ? paymentMeta.providerAmountUsd
-    : order.totalUsd || order.total;
+  const serviceMeta = extractServiceMeta(order);
+  const providerAmountUsd = parsePersistedAmount(paymentMeta.providerAmountUsd)
+    ?? parsePersistedAmount(serviceMeta?.providerAmountUsd)
+    ?? order.totalUsd
+    ?? order.total;
 
   if (process.env.NODE_ENV !== "production" && digitalServiceId === "zesa") {
       console.info("[DEV ZESA] fulfilment sync start", {
@@ -168,7 +190,6 @@ export async function syncDigitalFulfilmentForOrder(orderReference: string, gate
     }
 
     const serviceType = digitalServiceId.toUpperCase() as Uppercase<DigitalServiceId>;
-    const serviceMeta = extractServiceMeta(order);
     const resolvedCustomerName = serviceMeta?.accountName || order.customerName;
     const resolvedCustomerMobile = serviceMeta?.customerMobile || order.customerPhone || "";
 
@@ -249,6 +270,8 @@ export async function syncDigitalFulfilmentForOrder(orderReference: string, gate
       }
 
       const vendedData = {
+        orderReference: vendResult.orderReference,
+        transactionReference: vendResult.transactionReference,
         token: vendResult.token,
         units: vendResult.units,
         receiptNumber: vendResult.receiptNumber,
@@ -264,6 +287,8 @@ export async function syncDigitalFulfilmentForOrder(orderReference: string, gate
         accountNumber: accountReference,
         serviceType,
         providerGatewayStatus: status,
+        providerOrderReference: vendResult.orderReference,
+        providerTransactionReference: vendResult.transactionReference,
         serviceMeta: {
           ...(serviceMeta ?? {}),
           customerName: resolvedCustomerName,
@@ -278,8 +303,12 @@ export async function syncDigitalFulfilmentForOrder(orderReference: string, gate
         customerEmail: order.customerEmail,
         customerName: order.customerName,
         provisioningStatus: "completed",
-        resultPayload: vendResult.raw ?? {
-          status: "SUCCESS",
+        resultPayload: {
+          ...(vendResult.raw ?? {
+            status: "SUCCESS",
+          }),
+          providerOrderReference: vendResult.orderReference,
+          providerTransactionReference: vendResult.transactionReference,
         },
         token: vendResult.token,
         receiptNumber: vendResult.receiptNumber,
@@ -314,6 +343,41 @@ export async function syncDigitalFulfilmentForOrder(orderReference: string, gate
               ? (vendError as { responseBody?: unknown }).responseBody
               : undefined,
         });
+      }
+
+      if (isRetryableVendError(vendError)) {
+        const retryMessage = `${digitalConfig.label} fulfilment is still pending because the provider gateway did not respond in time. We will retry shortly.`;
+
+        await setOrderStatus(orderReference, status, {
+          ...order.paymentMeta,
+          accountNumber: accountReference,
+          serviceType,
+          fulfilmentStatus: "retry_pending",
+          fulfilmentRetryMessage: retryMessage,
+          fulfilmentLastError: vendError.message,
+          fulfilmentLastErrorAt: new Date().toISOString(),
+        });
+
+        await upsertDigitalOrder({
+          orderReference,
+          serviceId: digitalServiceId,
+          provider: digitalConfig.provider,
+          accountReference,
+          provisioningStatus: "processing",
+          redactCustomerData: true,
+          resultPayload: {
+            status: "RETRY_PENDING",
+            error: vendError.message,
+          },
+        });
+
+        return {
+          order: await getOrder(orderReference),
+          digitalServiceId,
+          vendedData: {
+            message: retryMessage,
+          },
+        };
       }
 
       const vendFailureMessage = vendError instanceof Error

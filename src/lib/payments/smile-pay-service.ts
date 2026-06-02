@@ -398,6 +398,11 @@ export function buildSmilePayStatusSummary(input: {
           message: paymentMeta.vendFailureMessage,
           issue: true,
         }
+      : paymentMeta.fulfilmentStatus === "retry_pending" && typeof paymentMeta.fulfilmentRetryMessage === "string"
+        ? {
+            message: paymentMeta.fulfilmentRetryMessage,
+            retryable: true,
+          }
       : undefined;
   const fulfilmentData = input.vendedData ?? orderFulfilmentData;
 

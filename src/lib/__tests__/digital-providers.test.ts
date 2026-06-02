@@ -185,7 +185,9 @@ describe("digital provider purchase initiation", () => {
       expect.objectContaining({ value: "COMPS20", label: expect.stringContaining("Compact") }),
       expect.objectContaining({ value: "SHOWCOMPLS", label: expect.stringContaining("Compact Plus + Showmax") }),
     ]));
-    expect(fields.find(field => field.id === "addon")?.options).toEqual(expect.arrayContaining([
+    const addOnOptions = fields.find(field => field.id === "addon")?.options ?? [];
+    expect(addOnOptions).toEqual(expect.arrayContaining([
+      expect.objectContaining({ value: "ACSSS20", label: expect.stringContaining("Access") }),
       expect.objectContaining({ value: "ADD2SEC", label: expect.stringContaining("XtraView") }),
       expect.objectContaining({ value: "None", label: expect.stringContaining("No Add-On") }),
     ]));
@@ -277,7 +279,7 @@ describe("digital provider purchase initiation", () => {
 
     expect(egressPostPayment).toHaveBeenCalledWith(expect.objectContaining({
       billerId: "ZETDC",
-      gatewayReference: expect.stringMatching(/^\d+$/),
+      gatewayReference: expect.stringMatching(/^\d{13}$/),
       paymentReference: "ORDER-1",
       customerAccount: "12345678901",
       amount: 500,
@@ -352,7 +354,7 @@ describe("digital provider purchase initiation", () => {
       message: "Payment and vending successful. 2 electricity tokens issued.",
     }));
     expect(egressPostPayment).toHaveBeenCalledWith(expect.objectContaining({
-      gatewayReference: expect.stringMatching(/^\d+$/),
+      gatewayReference: expect.stringMatching(/^\d{13}$/),
       paymentReference: "ORDER-2",
     }));
   });
@@ -491,8 +493,8 @@ describe("digital provider purchase initiation", () => {
 
     expect(egressPostPayment).toHaveBeenCalledWith(expect.objectContaining({
       billerId: "DSTV",
-      gatewayReference: expect.stringMatching(/^\d+$/),
-      paymentReference: "DSTV-ORDER-1",
+      gatewayReference: expect.stringMatching(/^\d{13}$/),
+      paymentReference: expect.stringMatching(/^\d{13}$/),
       customerAccount: "1234567890",
       amount: 9200,
       customerName: "John Subscriber",
@@ -519,6 +521,41 @@ describe("digital provider purchase initiation", () => {
         customerPaymentDetails2: "ADD2SEC",
         customerPaymentDetails3: "BOUQUET|2",
       }),
+    }));
+  });
+
+  it("excludes DSTV service charges from the EGRESS bouquet amount", async () => {
+    egressPostPayment.mockResolvedValue({
+      successful: true,
+      receiptNumber: "DSTV-RCT-FEE",
+      receiptDetails: "DStv payment accepted",
+    });
+
+    const { DigitalService } = await import("@/lib/digital-service-logic");
+    await DigitalService.vendDigitalFulfilment("DSTV", {
+      orderReference: "DSTV-ORDER-FEE",
+      gatewayReference: "BQVZ2782TYHP",
+      accountNumber: "4117068963",
+      amountUsd: 27,
+      serviceMeta: {
+        customerName: "Mr A ROSCOE",
+        customerMobile: "0711111111",
+        currencyCode: "840",
+        paymentType: "BOUQUET",
+        bouquet: "LITES20",
+        addon: "ACSSS20",
+        months: "1",
+      },
+    });
+
+    expect(egressPostPayment).toHaveBeenCalledWith(expect.objectContaining({
+      billerId: "DSTV",
+      customerAccount: "4117068963",
+      amount: 2400,
+      currency: "USD",
+      customerPaymentDetails1: "LITES20",
+      customerPaymentDetails2: "ACSSS20",
+      customerPaymentDetails3: "BOUQUET|1",
     }));
   });
 
@@ -614,6 +651,7 @@ describe("digital provider purchase initiation", () => {
 
     expect(egressPostPayment).toHaveBeenCalledWith(expect.objectContaining({
       billerId: "COH",
+      gatewayReference: expect.stringMatching(/^\d{13}$/),
       paymentReference: "ZB-2024438COH",
       customerAccount: "BUS0006063",
       amount: 30000,
@@ -625,6 +663,8 @@ describe("digital provider purchase initiation", () => {
     }));
     expect(result).toEqual(expect.objectContaining({
       success: true,
+      orderReference: "ZB-2024438COH",
+      transactionReference: "2240891",
       receiptNumber: "BUS0006063",
       message: "City of Harare Payment Successful",
       receiptDetails: expect.objectContaining({
@@ -673,13 +713,14 @@ describe("digital provider purchase initiation", () => {
 
     expect(egressPostPayment).toHaveBeenCalledWith(expect.objectContaining({
       billerId: "NYARADZO",
-      paymentReference: expect.stringMatching(/^\d+$/),
+      gatewayReference: expect.stringMatching(/^\d{13}$/),
+      paymentReference: expect.stringMatching(/^\d{13}$/),
       source: "NYA-SOURCE",
       customerAccount: "POL-12345|2",
       amount: 5500,
       currency: "USD",
       paymentMethod: "cash",
-      customerPaymentDetails3: expect.stringMatching(/^\d+\|\d{4}-\d{2}-\d{2}\|2\|POL-12345\|5500\|USD\|John Policy Holder\|5500$/),
+      customerPaymentDetails3: expect.stringMatching(/^\d{13}\|\d{4}-\d{2}-\d{2}\|2\|POL-12345\|5500\|USD\|John Policy Holder\|5500$/),
     }));
   });
 
@@ -721,6 +762,8 @@ describe("digital provider purchase initiation", () => {
     });
 
     expect(result.receiptNumber).toBe("879664123");
+    expect(result.orderReference).toBe("879664123");
+    expect(result.transactionReference).toBe("139452");
     expect(result.message).toBe("Transaction Proccessed Successfully");
     expect(result.receiptDetails).toEqual(expect.objectContaining({
       service: "Nyaradzo Group",
@@ -836,18 +879,21 @@ describe("digital provider purchase initiation", () => {
 
     expect(egressPostPayment).toHaveBeenCalledWith(expect.objectContaining({
       billerId: "CIMAS",
-      paymentReference: expect.stringMatching(/^\d+$/),
+      gatewayReference: expect.stringMatching(/^\d{13}$/),
+      paymentReference: expect.stringMatching(/^\d{13}$/),
       customerAccount: "11445000",
       amount: 3000000,
       customerPaymentDetails1: expect.stringMatching(/^\d{2}-[A-Z][a-z]{2}-\d{2}$/),
       customerPaymentDetails2: "M",
       customerPaymentDetails3: "11445000",
-      customerPaymentDetails4: expect.stringMatching(/^ref:\d+$/),
+      customerPaymentDetails4: expect.stringMatching(/^ref:\d{13}$/),
       paymentMethod: "CASH",
       paymentType: "CASH",
     }));
     expect(result).toEqual(expect.objectContaining({
       success: true,
+      orderReference: "2124435",
+      transactionReference: "2240134",
       receiptNumber: "11445000",
       message: "Cimas Payment Successful",
       receiptDetails: expect.objectContaining({

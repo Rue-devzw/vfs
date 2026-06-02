@@ -294,7 +294,7 @@ export async function POST(req: Request) {
         const resolvedAccountNumber = accountInfo.accountNumber || accountNumber;
         const resolvedCustomerName = customerName || customerSession?.name || accountInfo.accountName || "Digital Customer";
         const expectedProviderAmountUsd = getExpectedProviderAmountUsd(serviceType, accountInfo.raw);
-        if ((serviceType === "NYARADZO" || serviceType === "CIMAS") && expectedProviderAmountUsd !== undefined && !amountsMatch(providerAmountUsd, expectedProviderAmountUsd)) {
+        if (serviceType === "NYARADZO" && expectedProviderAmountUsd !== undefined && !amountsMatch(providerAmountUsd, expectedProviderAmountUsd)) {
             return NextResponse.json(
                 {
                     success: false,

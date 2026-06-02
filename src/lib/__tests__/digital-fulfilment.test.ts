@@ -53,7 +53,20 @@ function createOrder(paymentMeta?: Record<string, unknown>): Order & { paymentMe
 
 describe("digital fulfilment sync", () => {
   beforeEach(() => {
+    vi.resetModules();
     vi.clearAllMocks();
+    process.env.NEXT_PUBLIC_FIREBASE_API_KEY = "dummy";
+    process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN = "dummy.firebaseapp.com";
+    process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID = "dummy-project";
+    process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET = "dummy.appspot.com";
+    process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID = "123456789";
+    process.env.NEXT_PUBLIC_FIREBASE_APP_ID = "1:123456789:web:abcdef";
+    process.env.FIREBASE_PROJECT_ID = "dummy-project";
+    process.env.FIREBASE_CLIENT_EMAIL = "dummy@example.com";
+    process.env.FIREBASE_PRIVATE_KEY = "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDlEZW+fv4PIxj6\n-----END PRIVATE KEY-----\n";
+    process.env.ADMIN_SESSION_PASSWORD = "a".repeat(32);
+    process.env.ZB_API_KEY = "key";
+    process.env.ZB_API_SECRET = "secret";
   });
 
   it("vends a token when the gateway reports PAID", async () => {
@@ -64,6 +77,8 @@ describe("digital fulfilment sync", () => {
     }));
     vendDigitalFulfilment.mockResolvedValue({
       success: true,
+      orderReference: "EGRESS-ORDER-1",
+      transactionReference: "1234567890123",
       token: "1111 2222 3333 4444",
       units: 18.2,
       receiptNumber: "REC-1",
@@ -89,6 +104,8 @@ describe("digital fulfilment sync", () => {
     expect(setOrderStatus).toHaveBeenCalledWith("ORDER-1", "DELIVERED", expect.objectContaining({
       token: "1111 2222 3333 4444",
       receiptNumber: "REC-1",
+      providerOrderReference: "EGRESS-ORDER-1",
+      providerTransactionReference: "1234567890123",
       providerGatewayStatus: "PAID",
       receiptDetails: expect.objectContaining({
         energyCharge: 4.8,
@@ -98,10 +115,16 @@ describe("digital fulfilment sync", () => {
     expect(upsertDigitalOrder).toHaveBeenCalledWith(expect.objectContaining({
       orderReference: "ORDER-1",
       provisioningStatus: "completed",
+      resultPayload: expect.objectContaining({
+        providerOrderReference: "EGRESS-ORDER-1",
+        providerTransactionReference: "1234567890123",
+      }),
       token: "1111 2222 3333 4444",
     }));
     expect(result.vendedData).toEqual(expect.objectContaining({
       token: "1111 2222 3333 4444",
+      orderReference: "EGRESS-ORDER-1",
+      transactionReference: "1234567890123",
       receiptNumber: "REC-1",
       receiptDetails: expect.objectContaining({
         customerAddress: "Address 1, Harare",
@@ -165,6 +188,66 @@ describe("digital fulfilment sync", () => {
     }));
   });
 
+  it("uses the persisted DSTV provider amount instead of the charged total during vend attempts", async () => {
+    getOrder.mockResolvedValue({
+      ...createOrder({
+        accountNumber: "4117068963",
+        serviceType: "DSTV",
+        gatewayReference: "BQVZ2782TYHP",
+        serviceMeta: {
+          accountName: "Mr A ROSCOE",
+          customerMobile: "0711111111",
+          paymentType: "BOUQUET",
+          bouquet: "LITES20",
+          addon: "ADD2SEC",
+          months: "1",
+          providerAmountUsd: "23.00",
+          serviceChargeUsd: "3.00",
+        },
+      }),
+      items: [
+        {
+          id: "dstv-4117068963",
+          name: "DStv Payments Purchase",
+          price: 23,
+          quantity: 1,
+          image: "/images/dstv-logo.png",
+        },
+        {
+          id: "fee-dstv",
+          name: "Platform Convenience Fee",
+          price: 3,
+          quantity: 1,
+          image: "/images/logo.webp",
+        },
+      ],
+      total: 26,
+      totalUsd: 26,
+    });
+    vendDigitalFulfilment.mockResolvedValue({
+      success: true,
+      receiptNumber: "DSTV-RCT-1",
+      receiptDetails: {
+        service: "DStv Payments",
+      },
+    });
+
+    const { syncDigitalFulfilmentForOrder } = await import("@/lib/digital-fulfilment");
+    await syncDigitalFulfilmentForOrder("ORDER-1", "PAID");
+
+    expect(vendDigitalFulfilment).toHaveBeenCalledWith("DSTV", expect.objectContaining({
+      orderReference: "ORDER-1",
+      gatewayReference: "BQVZ2782TYHP",
+      accountNumber: "4117068963",
+      amountUsd: 23,
+      serviceMeta: expect.objectContaining({
+        providerAmountUsd: "23.00",
+        serviceChargeUsd: "3.00",
+        customerName: "Mr A ROSCOE",
+      }),
+    }));
+  });
+
   it("does not retry vending after a recorded vend failure and redacts the digital record", async () => {
     getOrder.mockResolvedValue(createOrder({
       accountNumber: "12345678901",
@@ -187,6 +270,46 @@ describe("digital fulfilment sync", () => {
     expect(result.vendedData).toEqual(expect.objectContaining({
       issue: true,
       message: "ZESA vending failed after payment confirmation.",
+    }));
+  });
+
+  it("keeps provider timeouts retryable instead of recording a permanent vend failure", async () => {
+    getOrder.mockResolvedValue(createOrder({
+      accountNumber: "15155617",
+      serviceType: "CIMAS",
+      gatewayReference: "PMFG1330AAIB",
+      serviceMeta: {
+        referenceType: "M",
+      },
+    }));
+    const { EgressGatewayError } = await import("@/lib/payments/egress");
+    vendDigitalFulfilment.mockRejectedValue(
+      new EgressGatewayError(504, "Provider request timed out while waiting for a response."),
+    );
+
+    const { syncDigitalFulfilmentForOrder } = await import("@/lib/digital-fulfilment");
+    const result = await syncDigitalFulfilmentForOrder("ORDER-1", "PAID");
+
+    expect(setOrderStatus).toHaveBeenCalledWith("ORDER-1", "PAID", expect.objectContaining({
+      accountNumber: "15155617",
+      serviceType: "CIMAS",
+      fulfilmentStatus: "retry_pending",
+      fulfilmentLastError: "Provider request timed out while waiting for a response.",
+    }));
+    expect(setOrderStatus.mock.calls[0][2]).not.toEqual(expect.objectContaining({
+      vendFailureMessage: expect.any(String),
+    }));
+    expect(upsertDigitalOrder).toHaveBeenCalledWith(expect.objectContaining({
+      orderReference: "ORDER-1",
+      serviceId: "cimas",
+      provisioningStatus: "processing",
+      redactCustomerData: true,
+      resultPayload: expect.objectContaining({
+        status: "RETRY_PENDING",
+      }),
+    }));
+    expect(result.vendedData).toEqual(expect.objectContaining({
+      message: expect.stringContaining("will retry shortly"),
     }));
   });
 
