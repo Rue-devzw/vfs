@@ -35,12 +35,14 @@ async function main() {
     { getDb, isFirebaseConfigured },
     { getStoreSettings },
     { calculateOrderTaxTotals, buildFinanceDocumentNumber },
-    { convertFromUsd, getZwgPerUsdRate },
+    { convertFromUsd },
+    { getExchangeRate },
   ] = await Promise.all([
     import("../src/lib/firebase-admin"),
     import("../src/lib/firestore/settings"),
     import("../src/lib/finance"),
     import("../src/lib/currency"),
+    import("../src/lib/zb-exchange-rate"),
   ]);
 
   if (!isFirebaseConfigured()) {
@@ -50,7 +52,7 @@ async function main() {
   const db = getDb();
   const settings = await getStoreSettings();
   const snapshot = await db.collection("orders").get();
-  const exchangeRate = getZwgPerUsdRate();
+  const exchangeRate = await getExchangeRate();
 
   let updated = 0;
   let batch = db.batch();

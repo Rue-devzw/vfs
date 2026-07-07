@@ -17,6 +17,7 @@ import {
   type PaymentMethod,
 } from "@/lib/payment-methods";
 import type { CardPaymentDetails } from "@/lib/payments/types";
+import { useCurrency } from "@/components/currency/currency-provider";
 import {
     convertFromUsd,
     formatMoney,
@@ -57,7 +58,8 @@ export function StepPayment({
     const [cardExpYear, setCardExpYear] = useState("");
     const [cardSecurityCode, setCardSecurityCode] = useState("");
     const [error, setError] = useState("");
-    const minimumAmount = convertFromUsd(2, currencyCode);
+    const { exchangeRate } = useCurrency();
+    const minimumAmount = exchangeRate ? convertFromUsd(2, currencyCode, exchangeRate) : 2;
     const currencyMeta = getCurrencyMeta(currencyCode);
     const currencyAllowed = !allowedCurrencyCodes?.length || allowedCurrencyCodes.includes(currencyCode);
 

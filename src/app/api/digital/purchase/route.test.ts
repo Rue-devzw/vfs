@@ -42,9 +42,12 @@ vi.mock("@/lib/currency", async () => {
     ...actual,
     convertFromUsd: (amount: number) => amount,
     convertToUsd: (amount: number) => amount,
-    getZwgPerUsdRate: () => 1,
   };
 });
+
+vi.mock("@/lib/zb-exchange-rate", () => ({
+  getExchangeRate: () => Promise.resolve(1),
+}));
 
 describe("POST /api/digital/purchase", () => {
   beforeEach(() => {

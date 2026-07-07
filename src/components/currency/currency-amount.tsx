@@ -17,10 +17,10 @@ export function CurrencyAmount({
   sourceCurrencyCode?: CurrencyCode;
   className?: string;
 }) {
-  const { currencyCode } = useCurrency();
+  const { currencyCode, exchangeRate } = useCurrency();
   const displayAmount = React.useMemo(
-    () => convertCurrencyAmount(amount, sourceCurrencyCode, currencyCode),
-    [amount, currencyCode, sourceCurrencyCode],
+    () => exchangeRate ? convertCurrencyAmount(amount, sourceCurrencyCode, currencyCode, exchangeRate) : amount,
+    [amount, currencyCode, exchangeRate, sourceCurrencyCode],
   );
 
   return (

@@ -3,7 +3,8 @@ import { z } from "zod";
 import { initiateSmileCashExpress, SmilePayGatewayError } from "@/lib/payments/smile-pay";
 import { normalizeSmilePayInitiationResult } from "@/lib/payments/smile-pay-service";
 import { createPendingOrder, setOrderStatus } from "@/server/orders";
-import { convertFromUsd, CurrencyCode, getZwgPerUsdRate } from "@/lib/currency";
+import { convertFromUsd, CurrencyCode } from "@/lib/currency";
+import { getExchangeRate } from "@/lib/zb-exchange-rate";
 
 const initiateSmilePaySchema = z.object({
   meterNumber: z.string().min(1, "Meter number is required"),
@@ -36,7 +37,7 @@ export async function POST(req: Request) {
     const customerName = validation.data.customerName || "Digital Customer";
     const customerEmail = validation.data.customerEmail || "customer@example.com";
 
-    const exchangeRate = getZwgPerUsdRate();
+    const exchangeRate = currencyCode === "924" ? await getExchangeRate() : 1;
     const amount = convertFromUsd(amountUsd, currencyCode as CurrencyCode, exchangeRate);
 
     await createPendingOrder({

@@ -40,7 +40,7 @@ export function ZesaFlow() {
     const { toast } = useToast();
     const router = useRouter();
     const searchParams = useSearchParams();
-    const { currencyCode } = useCurrency();
+    const { currencyCode, exchangeRate } = useCurrency();
     const [step, setStep] = useState<Step>("METER");
     const [isLoading, setIsLoading] = useState(false);
     const [meterNumber, setMeterNumber] = useState("");
@@ -252,7 +252,7 @@ export function ZesaFlow() {
                 detail: "The meter details were confirmed. We are opening the secure payment session next.",
                 progress: 38,
             });
-            const amountUsd = convertToUsd(input.amount, currencyCode);
+            const amountUsd = exchangeRate ? convertToUsd(input.amount, currencyCode, exchangeRate) : input.amount;
             const result = await SmilePayService.purchaseToken(
                 meterNumber,
                 amountUsd,

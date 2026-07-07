@@ -1,5 +1,6 @@
 import { requireStaffRoles } from "../auth";
-import { convertFromUsd, CurrencyCode, getZwgPerUsdRate } from "../currency";
+import { convertFromUsd, CurrencyCode } from "../currency";
+import { getExchangeRate } from "../zb-exchange-rate";
 import { getDb, isFirebaseConfigured } from "../firebase-admin";
 
 export type DeliveryZone = {
@@ -115,7 +116,7 @@ export async function createDeliveryQuote(input: {
   const createdAt = new Date();
   const expiresAt = new Date(createdAt.getTime() + 30 * 60 * 1000).toISOString();
   const feeUsd = Number(zone.baseFeeUsd.toFixed(2));
-  const fee = convertFromUsd(feeUsd, input.currencyCode, getZwgPerUsdRate());
+  const fee = convertFromUsd(feeUsd, input.currencyCode, input.currencyCode === "924" ? await getExchangeRate() : 1);
   const quote: DeliveryQuote = {
     id: `dq_${createdAt.getTime()}_${zone.id}`,
     zoneId: zone.id,

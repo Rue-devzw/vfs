@@ -1,4 +1,5 @@
-import { convertFromUsd, type CurrencyCode, getZwgPerUsdRate } from "@/lib/currency";
+import { convertFromUsd, type CurrencyCode } from "@/lib/currency";
+import { getExchangeRate } from "@/lib/zb-exchange-rate";
 import type { PaymentMethod } from "@/lib/payment-methods";
 import {
   type EgressPaymentPayload,
@@ -135,7 +136,7 @@ async function initiateDigitalSmilePayPayment(
 ) {
   const reference = config.id === "dstv" ? buildNumericReference() : buildReference("digi");
   const currencyCode = payload.currencyCode ?? "840";
-  const exchangeRate = getZwgPerUsdRate();
+  const exchangeRate = currencyCode === "924" ? await getExchangeRate() : 1;
   const amount = convertFromUsd(payload.amount, currencyCode, exchangeRate);
   const encodedReference = encodeURIComponent(reference);
   const serviceReturnBase = `${baseUrl}/digital/${config.id}`;
@@ -226,8 +227,8 @@ function currentEffectiveDateString() {
   return `${day}-${month}-${year}`;
 }
 
-function amountToEgressMinorUnits(amountUsd: number, currencyCode: CurrencyCode) {
-  const amountInCustomerCurrency = convertFromUsd(amountUsd, currencyCode, getZwgPerUsdRate());
+function amountToEgressMinorUnits(amountUsd: number, currencyCode: CurrencyCode, exchangeRate: number) {
+  const amountInCustomerCurrency = convertFromUsd(amountUsd, currencyCode, exchangeRate);
   return Math.round(amountInCustomerCurrency * 100);
 }
 
@@ -873,7 +874,7 @@ function mapValidationResponse(
   }
 }
 
-function buildEgressPaymentPayload(config: DigitalServiceConfig, input: {
+async function buildEgressPaymentPayload(config: DigitalServiceConfig, input: {
   orderReference: string;
   accountNumber: string;
   amountUsd: number;
@@ -888,7 +889,7 @@ function buildEgressPaymentPayload(config: DigitalServiceConfig, input: {
   const egressAmountUsd = config.id === "dstv"
     ? calculateDstvBouquetAmountUsd(input.serviceMeta) ?? input.amountUsd
     : input.amountUsd;
-  const amount = amountToEgressMinorUnits(egressAmountUsd, resolvedCurrencyCode);
+  const amount = amountToEgressMinorUnits(egressAmountUsd, resolvedCurrencyCode, resolvedCurrencyCode === "924" ? await getExchangeRate() : 1);
   const numericGatewayReference = buildNumericEgressGatewayReference(input.orderReference, input.gatewayReference);
   const base: EgressPaymentPayload = {
     gatewayReference: numericGatewayReference,
@@ -994,7 +995,7 @@ const smilePayEgressAdapter: DigitalProviderAdapter = {
     return initiateDigitalSmilePayPayment(config, payload, baseUrl);
   },
   async vend(config, input) {
-    const payment = buildEgressPaymentPayload(config, {
+    const payment = await buildEgressPaymentPayload(config, {
       orderReference: input.orderReference,
       accountNumber: input.accountNumber,
       amountUsd: input.amountUsd,

@@ -14,13 +14,13 @@ import { CurrencySwitcher } from '@/components/currency/currency-switcher';
 
 export function ShoppingCart() {
   const { state: { items }, dispatch } = useCart();
-  const { currencyCode } = useCurrency();
+  const { currencyCode, exchangeRate } = useCurrency();
   const [isCheckoutOpen, setCheckoutOpen] = useState(false);
   const [isCartOpen, setCartOpen] = useState(false);
 
   const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
   const subtotalUsd = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const subtotal = convertFromUsd(subtotalUsd, currencyCode);
+  const subtotal = exchangeRate ? convertFromUsd(subtotalUsd, currencyCode, exchangeRate) : subtotalUsd;
 
   const updateQuantity = (id: string | number, quantity: number) => {
     dispatch({ type: 'UPDATE_QUANTITY', payload: { id, quantity } });
@@ -95,10 +95,10 @@ export function ShoppingCart() {
 }
 
 function CartLineItem({ item, onUpdateQuantity }: { item: CartItem, onUpdateQuantity: (id: string | number, q: number) => void }) {
-  const { currencyCode } = useCurrency();
+  const { currencyCode, exchangeRate } = useCurrency();
   const image = findProductImagePlaceholder(item.image, item.name);
-  const unitPrice = convertFromUsd(item.price, currencyCode);
-  const lineTotal = convertFromUsd(item.price * item.quantity, currencyCode);
+  const unitPrice = exchangeRate ? convertFromUsd(item.price, currencyCode, exchangeRate) : item.price;
+  const lineTotal = exchangeRate ? convertFromUsd(item.price * item.quantity, currencyCode, exchangeRate) : item.price * item.quantity;
   return (
     <div className="flex items-center gap-4 py-4">
       {image && (

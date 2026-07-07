@@ -4,7 +4,8 @@ import { initiateSmileCashExpress, SmilePayGatewayError } from "@/lib/payments/s
 import { normalizeSmilePayInitiationResult } from "@/lib/payments/smile-pay-service";
 import { createPendingOrder, setOrderStatus } from "@/server/orders";
 import { getDigitalServiceConfig, isDigitalServiceId } from "@/lib/digital-services";
-import { convertFromUsd, CurrencyCode, getZwgPerUsdRate } from "@/lib/currency";
+import { convertFromUsd, CurrencyCode } from "@/lib/currency";
+import { getExchangeRate } from "@/lib/zb-exchange-rate";
 import { verifyCustomerSession } from "@/lib/auth";
 
 const schema = z.object({
@@ -48,7 +49,7 @@ export async function POST(req: Request) {
     const customerName = validation.data.customerName || customerSession?.name || "Digital Customer";
     const customerEmail = (validation.data.customerEmail || customerSession?.email || "customer@example.com").toLowerCase();
 
-    const exchangeRate = getZwgPerUsdRate();
+    const exchangeRate = currencyCode === "924" ? await getExchangeRate() : 1;
     const amount = convertFromUsd(amountUsd, currencyCode as CurrencyCode, exchangeRate);
 
     await createPendingOrder({

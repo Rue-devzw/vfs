@@ -131,7 +131,7 @@ interface CheckoutDialogProps {
 
 export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
   const { state, dispatch } = useCart();
-  const { currencyCode } = useCurrency();
+  const { currencyCode, exchangeRate } = useCurrency();
   const [currentStep, setCurrentStep] = React.useState(0);
   const [receiptItemsSnapshot, setReceiptItemsSnapshot] = React.useState<typeof state.items>([]);
   const [receiptDeliveryFeeUsdSnapshot, setReceiptDeliveryFeeUsdSnapshot] = React.useState<number | null>(null);
@@ -185,8 +185,8 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
   const subtotalUsd = state.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const deliveryFeeUsd = deliveryMethod === "delivery" ? (deliveryQuote?.feeUsd ?? 0) : 0;
   const totalUsd = subtotalUsd + deliveryFeeUsd;
-  const subtotal = convertFromUsd(subtotalUsd, currencyCode);
-  const total = convertFromUsd(totalUsd, currencyCode);
+  const subtotal = exchangeRate ? convertFromUsd(subtotalUsd, currencyCode, exchangeRate) : subtotalUsd;
+  const total = exchangeRate ? convertFromUsd(totalUsd, currencyCode, exchangeRate) : totalUsd;
 
   const captureReceiptSnapshot = React.useCallback(() => {
     setReceiptItemsSnapshot([...state.items]);
@@ -727,7 +727,7 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
                                             <SelectContent>
                                               {deliveryZones.map(zone => (
                                                   <SelectItem key={zone.id} value={zone.id}>
-                                                  {zone.name} • {formatMoney(convertFromUsd(zone.baseFeeUsd, currencyCode), currencyCode)}
+                                                  {zone.name} • {formatMoney(exchangeRate ? convertFromUsd(zone.baseFeeUsd, currencyCode, exchangeRate) : zone.baseFeeUsd, currencyCode)}
                                                 </SelectItem>
                                               ))}
                                             </SelectContent>
@@ -910,20 +910,20 @@ export function CheckoutDialog({ isOpen, onOpenChange }: CheckoutDialogProps) {
                                     {receiptItemsSnapshot.map(item => (
                                         <div key={item.id} className="flex justify-between items-start text-sm">
                                             <span className="font-medium pr-4">{item.quantity}x {item.name}</span>
-                                            <span className="font-semibold">{formatMoney(convertFromUsd(item.price * item.quantity, currencyCode), currencyCode)}</span>
+                                            <span className="font-semibold">{formatMoney(exchangeRate ? convertFromUsd(item.price * item.quantity, currencyCode, exchangeRate) : item.price * item.quantity, currencyCode)}</span>
                                         </div>
                                     ))}
                                     {typeof receiptDeliveryFeeUsdSnapshot === "number" && receiptDeliveryFeeUsdSnapshot > 0 ? (
                                       <div className="flex justify-between items-start text-sm">
                                         <span className="font-medium pr-4">Delivery</span>
-                                        <span className="font-semibold">{formatMoney(convertFromUsd(receiptDeliveryFeeUsdSnapshot, currencyCode), currencyCode)}</span>
+                                        <span className="font-semibold">{formatMoney(exchangeRate ? convertFromUsd(receiptDeliveryFeeUsdSnapshot, currencyCode, exchangeRate) : receiptDeliveryFeeUsdSnapshot, currencyCode)}</span>
                                       </div>
                                     ) : null}
                                 </div>
 
                                 <div className="pt-4 border-t-2 border-dashed flex justify-between items-center bg-muted/10 -mx-8 px-8 pb-4">
                                     <span className="font-bold text-lg">Total Paid</span>
-                                    <span className="text-2xl font-bold text-primary">{formatMoney(convertFromUsd(receiptTotalUsdSnapshot ?? totalUsd, currencyCode), currencyCode)}</span>
+                                    <span className="text-2xl font-bold text-primary">{formatMoney(exchangeRate ? convertFromUsd(receiptTotalUsdSnapshot ?? totalUsd, currencyCode, exchangeRate) : receiptTotalUsdSnapshot ?? totalUsd, currencyCode)}</span>
                                 </div>
                             </div>
                         </div>

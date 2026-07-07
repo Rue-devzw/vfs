@@ -37,7 +37,10 @@ vi.mock("@/lib/payments/smile-pay", async () => {
 
 vi.mock("@/lib/currency", () => ({
   convertFromUsd: (amount: number) => amount,
-  getZwgPerUsdRate: () => 1,
+}));
+
+vi.mock("@/lib/zb-exchange-rate", () => ({
+  getExchangeRate: () => Promise.resolve(1),
 }));
 
 vi.mock("@/lib/env", () => ({

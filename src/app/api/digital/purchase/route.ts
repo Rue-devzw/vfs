@@ -25,6 +25,7 @@ import {
 } from "@/lib/digital-currency-rules";
 import { calculateDstvBouquetAmountUsd, getDstvAddOnPackage, getDstvPrimaryPackage } from "@/lib/dstv-packages";
 import { convertToUsd, type CurrencyCode } from "@/lib/currency";
+import { getExchangeRate } from "@/lib/zb-exchange-rate";
 
 const optionalTrimmedString = () => z.preprocess((value) => {
     if (typeof value !== "string") return value;
@@ -231,7 +232,7 @@ function buildReusableDstvValidation(accountNumber: string, validationSnapshot: 
     };
 }
 
-function getExpectedProviderAmountUsd(serviceType: string, validationSnapshot: unknown) {
+async function getExpectedProviderAmountUsd(serviceType: string, validationSnapshot: unknown) {
     const parsed = getParsedValidation(validationSnapshot);
     if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
         return undefined;
@@ -248,7 +249,7 @@ function getExpectedProviderAmountUsd(serviceType: string, validationSnapshot: u
         return undefined;
     }
 
-    return convertToUsd(amount, currencyCode);
+    return convertToUsd(amount, currencyCode, currencyCode === "924" ? await getExchangeRate() : 1);
 }
 
 function amountsMatch(left: number, right: number) {
@@ -369,7 +370,7 @@ export async function POST(req: Request) {
         const normalizedServiceId = serviceType.toLowerCase() as "zesa" | "airtime" | "dstv" | "councils" | "nyaradzo" | "cimas" | "internet";
         const resolvedAccountNumber = accountInfo.accountNumber || accountNumber;
         const resolvedCustomerName = customerName || customerSession?.name || accountInfo.accountName || "Digital Customer";
-        const expectedProviderAmountUsd = getExpectedProviderAmountUsd(serviceType, accountInfo.raw);
+        const expectedProviderAmountUsd = await getExpectedProviderAmountUsd(serviceType, accountInfo.raw);
         if (serviceType === "NYARADZO" && expectedProviderAmountUsd !== undefined && !amountsMatch(providerAmountUsd, expectedProviderAmountUsd)) {
             return NextResponse.json(
                 {

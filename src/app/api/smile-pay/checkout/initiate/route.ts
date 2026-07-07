@@ -3,7 +3,8 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createPendingOrder, setOrderStatus } from "@/server/orders";
 import { getProductById } from "@/lib/firestore/products";
-import { convertFromUsd, CurrencyCode, getZwgPerUsdRate } from "@/lib/currency";
+import { convertFromUsd, CurrencyCode } from "@/lib/currency";
+import { getExchangeRate } from "@/lib/zb-exchange-rate";
 import { env } from "@/lib/env";
 import { getDeliveryQuote } from "@/lib/firestore/shipping";
 import { getStoreSettings } from "@/lib/firestore/settings";
@@ -223,7 +224,7 @@ export async function POST(req: Request) {
       taxRatePercent: settings.taxRatePercent,
       pricesIncludeTax: settings.pricesIncludeTax,
     });
-    const exchangeRate = getZwgPerUsdRate();
+    const exchangeRate = currencyCode === "924" ? await getExchangeRate() : 1;
     const subtotal = convertFromUsd(subtotalUsd, currencyCode as CurrencyCode, exchangeRate);
     const deliveryFee = convertFromUsd(deliveryFeeUsd, currencyCode as CurrencyCode, exchangeRate);
     const taxTotal = convertFromUsd(taxTotalUsd, currencyCode as CurrencyCode, exchangeRate);

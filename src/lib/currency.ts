@@ -19,22 +19,14 @@ export function isCurrencyCode(value: unknown): value is CurrencyCode {
   return value === "840" || value === "924";
 }
 
-export function getZwgPerUsdRate() {
-  const raw = process.env.NEXT_PUBLIC_CURRENCY_RATE_ZWG_PER_USD
-    ?? process.env.CURRENCY_RATE_ZWG_PER_USD
-    ?? "1";
-  const value = Number(raw);
-  return Number.isFinite(value) && value > 0 ? value : 1;
-}
-
-export function convertFromUsd(amountUsd: number, code: CurrencyCode, zwgPerUsd = getZwgPerUsdRate()) {
+export function convertFromUsd(amountUsd: number, code: CurrencyCode, zwgPerUsd: number) {
   if (code === "924") {
     return Number((amountUsd * zwgPerUsd).toFixed(2));
   }
   return Number(amountUsd.toFixed(2));
 }
 
-export function convertToUsd(amount: number, code: CurrencyCode, zwgPerUsd = getZwgPerUsdRate()) {
+export function convertToUsd(amount: number, code: CurrencyCode, zwgPerUsd: number) {
   if (code === "924") {
     return Number((amount / zwgPerUsd).toFixed(2));
   }
@@ -45,7 +37,7 @@ export function convertCurrencyAmount(
   amount: number,
   fromCode: CurrencyCode,
   toCode: CurrencyCode,
-  zwgPerUsd = getZwgPerUsdRate(),
+  zwgPerUsd: number,
 ) {
   if (fromCode === toCode) {
     return Number(amount.toFixed(2));

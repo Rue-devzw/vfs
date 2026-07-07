@@ -39,14 +39,14 @@ const formatUnit = (unit: string) => {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const { dispatch } = useCart();
-  const { currencyCode } = useCurrency();
+  const { currencyCode, exchangeRate } = useCurrency();
   const { toast } = useToast();
   const [justAdded, setJustAdded] = useState(false);
   const image = findProductImagePlaceholder(product.image, product.name);
 
   const isOutOfStock = !product.availableForSale;
-  const displayPrice = convertFromUsd(product.price, currencyCode);
-  const displayOldPrice = product.oldPrice ? convertFromUsd(product.oldPrice, currencyCode) : undefined;
+  const displayPrice = exchangeRate ? convertFromUsd(product.price, currencyCode, exchangeRate) : product.price;
+  const displayOldPrice = product.oldPrice ? (exchangeRate ? convertFromUsd(product.oldPrice, currencyCode, exchangeRate) : product.oldPrice) : undefined;
 
   const handleAddToCart = () => {
     if (isOutOfStock) {

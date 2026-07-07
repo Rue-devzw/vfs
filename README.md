@@ -16,8 +16,13 @@ This project uses Smile&Pay (ZB) for payments. Add the following environment var
 ZB_API_KEY=<your-zb-api-key>
 ZB_API_SECRET=<your-zb-api-secret>
 ZB_API_BASE_URL=<optional-override>
+ZB_EXCHANGE_RATE_BASE_URL=https://zbnet.zb.co.zw
+ZB_EXCHANGE_RATE_USERNAME=<exchange-rate-adapter-username>
+ZB_EXCHANGE_RATE_PASSWORD=<exchange-rate-adapter-password>
 NEXT_PUBLIC_BASE_URL=<your-base-url>
 ```
+
+USD/ZWG conversions use the ZB Exchange Rate Adapter at runtime. Adapter credentials are server-only; the storefront receives only the current rate through `/api/exchange-rate`.
 
 ### Testing
 

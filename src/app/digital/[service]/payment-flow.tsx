@@ -496,7 +496,7 @@ export function GenericDigitalFlow({
   const { toast } = useToast();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { currencyCode } = useCurrency();
+  const { currencyCode, exchangeRate } = useCurrency();
   const [accountReference, setAccountReference] = useState("");
   const [customerMobile, setCustomerMobile] = useState("");
   const [amount, setAmount] = useState("");
@@ -533,7 +533,7 @@ export function GenericDigitalFlow({
     || (service === "nyaradzo" && accountCheck ? isAllowedNyaradzoPaymentCurrency(accountCheck.accountCurrency, currencyCode) : false)
     || (service === "cimas" && accountCheck ? isAllowedCimasPaymentCurrency(accountCheck.accountCurrency, currencyCode) : false);
   const serviceChargeUsd = getServiceChargeUsd(service, serviceMeta);
-  const serviceCharge = convertFromUsd(serviceChargeUsd, currencyCode);
+  const serviceCharge = exchangeRate ? convertFromUsd(serviceChargeUsd, currencyCode, exchangeRate) : serviceChargeUsd;
   const providerAmount = Number(amount);
   const paymentTotal = Number.isFinite(providerAmount)
     ? Number((providerAmount + serviceCharge).toFixed(2))
@@ -568,16 +568,16 @@ export function GenericDigitalFlow({
       return;
     }
 
-    setAmount(convertFromUsd(dstvBouquetAmountUsd, currencyCode).toFixed(2));
-  }, [currencyCode, dstvBouquetAmountUsd]);
+    setAmount((exchangeRate ? convertFromUsd(dstvBouquetAmountUsd, currencyCode, exchangeRate) : dstvBouquetAmountUsd).toFixed(2));
+  }, [currencyCode, dstvBouquetAmountUsd, exchangeRate]);
 
   useEffect(() => {
     if (!amountSetFromAccountCheck || accountCheck?.amountValue === undefined || !accountCheck.accountCurrencyCode) {
       return;
     }
 
-    setAmount(convertCurrencyAmount(accountCheck.amountValue, accountCheck.accountCurrencyCode, currencyCode).toFixed(2));
-  }, [accountCheck, amountSetFromAccountCheck, currencyCode]);
+    setAmount((exchangeRate ? convertCurrencyAmount(accountCheck.amountValue, accountCheck.accountCurrencyCode, currencyCode, exchangeRate) : accountCheck.amountValue).toFixed(2));
+  }, [accountCheck, amountSetFromAccountCheck, currencyCode, exchangeRate]);
 
   useEffect(() => {
     if (!receipt || !customerReceipt || receipt.status === "FAILED" || receiptPromptReference === receipt.reference) {
@@ -888,7 +888,7 @@ export function GenericDigitalFlow({
         body: JSON.stringify({
           serviceType: service.toUpperCase(),
           accountNumber: validatedAccountNumber,
-          amount: convertToUsd(Number(amount), currencyCode),
+          amount: exchangeRate ? convertToUsd(Number(amount), currencyCode, exchangeRate) : Number(amount),
           currencyCode,
           paymentMethod,
           customerMobile: paymentMethod === "CARD" ? undefined : (customerMobile || undefined),

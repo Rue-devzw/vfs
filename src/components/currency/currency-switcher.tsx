@@ -12,7 +12,7 @@ export function CurrencySwitcher({
   className?: string;
   label?: string;
 }) {
-  const { currencyCode, isHydrated, setCurrencyCode } = useCurrency();
+  const { currencyCode, exchangeRate, isHydrated, setCurrencyCode } = useCurrency();
 
   return (
     <div
@@ -32,7 +32,7 @@ export function CurrencySwitcher({
             type="button"
             role="radio"
             aria-checked={isActive}
-            disabled={!isHydrated}
+            disabled={!isHydrated || (option.code === "924" && !exchangeRate)}
             onClick={() => setCurrencyCode(option.code)}
             className={cn(
               "rounded-full px-3 py-1.5 text-xs font-semibold transition-colors disabled:cursor-wait disabled:opacity-70",
