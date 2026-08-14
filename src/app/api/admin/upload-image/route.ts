@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { requireStaffPermission } from '@/lib/auth';
-import { getStorageBucket } from '@/lib/firebase-admin';
+import { uploadProductImageToGitHub } from '@/lib/github-images';
+import { randomUUID } from 'node:crypto';
+
+const MAX_IMAGE_BYTES = 10 * 1024 * 1024;
 
 // WebP magic bytes: RIFF....WEBP
 const WEBP_RIFF = Buffer.from([0x52, 0x49, 0x46, 0x46]);
@@ -36,6 +39,13 @@ export async function POST(req: Request) {
             );
         }
 
+        if (file.size > MAX_IMAGE_BYTES) {
+            return NextResponse.json(
+                { error: 'Image is too large. The maximum upload size is 10 MB.' },
+                { status: 400 }
+            );
+        }
+
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
 
@@ -46,27 +56,19 @@ export async function POST(req: Request) {
             );
         }
 
-        // Sanitise filename
-        const originalName = file.name.replace(/[^a-zA-Z0-9\-_]/g, '-');
-        const filename = `${originalName.replace(/\.webp$/i, '')}-${Date.now()}.webp`;
-        const filePath = `products/${filename}`;
+        const baseName = file.name
+            .replace(/\.webp$/i, '')
+            .replace(/[^a-zA-Z0-9\-_]+/g, '-')
+            .replace(/^-+|-+$/g, '') || 'product';
+        const filename = `${baseName}-${Date.now()}-${randomUUID().slice(0, 8)}.webp`;
+        const upload = await uploadProductImageToGitHub(buffer, filename);
 
-        // Get initialized bucket
-        const bucket = getStorageBucket();
-        const fileRef = bucket.file(filePath);
-
-        // Upload buffer to Firebase Storage
-        await fileRef.save(buffer, {
-            metadata: {
-                contentType: 'image/webp',
-            },
-            public: true, // Make file publicly readable
+        return NextResponse.json({
+            success: true,
+            path: upload.downloadUrl,
+            repositoryPath: upload.repositoryPath,
+            commitUrl: upload.commitUrl,
         });
-
-        // Generate public URL for the file
-        const publicUrl = `https://storage.googleapis.com/${bucket.name}/${filePath}`;
-
-        return NextResponse.json({ success: true, path: publicUrl });
     } catch (error) {
         console.error('Image upload failed:', error);
         const message = error instanceof Error ? error.message : 'Failed to upload image.';

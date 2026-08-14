@@ -141,7 +141,7 @@ export function ProductForm({ initialData, onSubmit }: ProductFormProps) {
             form.setValue("image", data.path, { shouldValidate: true })
             toast({
                 title: "Image uploaded",
-                description: "Product image updated successfully.",
+                description: "Product image saved to GitHub successfully.",
             })
         } catch (err) {
             toast({
@@ -332,7 +332,7 @@ export function ProductForm({ initialData, onSubmit }: ProductFormProps) {
                         <FormItem>
                             <FormLabel>Product Image</FormLabel>
                             <FormDescription>
-                                Only <strong>WebP</strong> format images are accepted.
+                                Only <strong>WebP</strong> images up to 10 MB are accepted and saved to GitHub.
                             </FormDescription>
 
                             {/* Image Preview */}

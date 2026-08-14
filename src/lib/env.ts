@@ -57,6 +57,12 @@ const envSchema = z.object({
   SMTP_FROM_NAME: z.string().min(1).optional(),
   OPS_CRON_SECRET: z.string().min(1).optional(),
 
+  // GitHub-backed product image storage
+  GITHUB_IMAGE_TOKEN: z.string().min(1).optional(),
+  GITHUB_IMAGE_REPOSITORY: z.string().regex(/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/).optional(),
+  GITHUB_IMAGE_FOLDER: z.string().min(1).optional(),
+  GITHUB_IMAGE_BRANCH: z.string().min(1).optional(),
+
   // Edge protection
   RATE_LIMIT_CHECKOUT_PER_MINUTE: z.coerce.number().int().positive().optional(),
   RATE_LIMIT_ACCOUNT_LOGIN_PER_MINUTE: z.coerce.number().int().positive().optional(),
@@ -117,6 +123,10 @@ if (skipValidation) {
     SMTP_FROM_EMAIL: process.env.SMTP_FROM_EMAIL,
     SMTP_FROM_NAME: process.env.SMTP_FROM_NAME,
     OPS_CRON_SECRET: process.env.OPS_CRON_SECRET,
+    GITHUB_IMAGE_TOKEN: process.env.GITHUB_IMAGE_TOKEN,
+    GITHUB_IMAGE_REPOSITORY: process.env.GITHUB_IMAGE_REPOSITORY,
+    GITHUB_IMAGE_FOLDER: process.env.GITHUB_IMAGE_FOLDER,
+    GITHUB_IMAGE_BRANCH: process.env.GITHUB_IMAGE_BRANCH,
     RATE_LIMIT_CHECKOUT_PER_MINUTE: process.env.RATE_LIMIT_CHECKOUT_PER_MINUTE ? Number(process.env.RATE_LIMIT_CHECKOUT_PER_MINUTE) : undefined,
     RATE_LIMIT_ACCOUNT_LOGIN_PER_MINUTE: process.env.RATE_LIMIT_ACCOUNT_LOGIN_PER_MINUTE ? Number(process.env.RATE_LIMIT_ACCOUNT_LOGIN_PER_MINUTE) : undefined,
     RATE_LIMIT_ACCOUNT_REGISTER_PER_MINUTE: process.env.RATE_LIMIT_ACCOUNT_REGISTER_PER_MINUTE ? Number(process.env.RATE_LIMIT_ACCOUNT_REGISTER_PER_MINUTE) : undefined,
@@ -170,6 +180,10 @@ if (skipValidation) {
       SMTP_FROM_EMAIL: process.env.SMTP_FROM_EMAIL,
       SMTP_FROM_NAME: process.env.SMTP_FROM_NAME,
       OPS_CRON_SECRET: process.env.OPS_CRON_SECRET,
+      GITHUB_IMAGE_TOKEN: process.env.GITHUB_IMAGE_TOKEN,
+      GITHUB_IMAGE_REPOSITORY: process.env.GITHUB_IMAGE_REPOSITORY,
+      GITHUB_IMAGE_FOLDER: process.env.GITHUB_IMAGE_FOLDER,
+      GITHUB_IMAGE_BRANCH: process.env.GITHUB_IMAGE_BRANCH,
       RATE_LIMIT_CHECKOUT_PER_MINUTE: process.env.RATE_LIMIT_CHECKOUT_PER_MINUTE,
       RATE_LIMIT_ACCOUNT_LOGIN_PER_MINUTE: process.env.RATE_LIMIT_ACCOUNT_LOGIN_PER_MINUTE,
       RATE_LIMIT_ACCOUNT_REGISTER_PER_MINUTE: process.env.RATE_LIMIT_ACCOUNT_REGISTER_PER_MINUTE,

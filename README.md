@@ -8,6 +8,21 @@ To get started, take a look at src/app/page.tsx.
 
 The storefront data is also available through dedicated API routes designed for the upcoming Flutter client. Refer to [docs/store-api.md](docs/store-api.md) for endpoint descriptions, Firestore setup instructions, and deployment guidance.
 
+## Product image storage
+
+Images uploaded from the admin product create/edit form are committed to GitHub. Configure these server-side environment variables locally and in the deployed app:
+
+```bash
+GITHUB_IMAGE_TOKEN=<fine-grained-token-with-contents-write-access>
+GITHUB_IMAGE_REPOSITORY=Rue-devzw/vfs-product-images
+GITHUB_IMAGE_FOLDER=products
+GITHUB_IMAGE_BRANCH=main
+```
+
+Create the image repository separately before enabling uploads; do not use the application repository (`Rue-devzw/vfs`). `GITHUB_IMAGE_TOKEN` and `GITHUB_IMAGE_REPOSITORY` are required. The folder defaults to `products`; when the branch is omitted, GitHub uses the image repository's default branch.
+
+The image repository must be public because product records use `raw.githubusercontent.com`. Each stored URL is pinned to the exact Git commit created by its upload—not to a moving branch—so future application deployments, code syncs, and ordinary GitHub commits cannot change an existing product image. Uploading or replacing a product image is the only operation that adds an image commit. The uploader never overwrites or deletes an existing image. Existing Google-hosted URLs remain readable.
+
 ## Smile&Pay (ZB) Integration
 
 This project uses Smile&Pay (ZB) for payments. Add the following environment variables to your `.env.local` file:
